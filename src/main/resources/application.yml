@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: memehub
+  config:
+    # Secrets live in .env (git-ignored, created by scripts/init-env.ps1) and are shared
+    # with docker-compose. Real environment variables take precedence over the file.
+    import: optional:file:.env[.properties]
+  datasource:
+    url: jdbc:postgresql://localhost:5433/memehub
+    username: ${DB_USERNAME:memehub}
+    password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+memehub:
+  security:
+    jwt:
+      secret: ${MEMEHUB_JWT_SECRET}
+      ttl: PT2H
+    bootstrap-admin:
+      username: ${MEMEHUB_ADMIN_USERNAME:admin}
+      password: ${MEMEHUB_ADMIN_PASSWORD}
+  storage:
+    endpoint: http://localhost:9000
+    region: us-east-1
+    access-key: ${S3_ACCESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    bucket: memehub
+  llm:
+    provider: mock            # mock | ollama
+    ollama:
+      base-url: http://localhost:11434
+      model: qwen2.5:7b
+    mock:
+      min-latency-ms: 200
+      max-latency-ms: 1500
+      failure-rate: 0.0
+  embedding:
+    provider: mock            # mock | ollama
+    dimension: 1024           # bge-m3
+    ollama:
+      base-url: http://localhost:11434
+      model: bge-m3
