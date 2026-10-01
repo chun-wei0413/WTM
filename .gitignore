@@ -1,0 +1,39 @@
+# Build output (also holds the evaluation reports and generated memes)
+target/
+
+# IDE and OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and crash dumps
+*.log
+hs_err_pid*
+
+# --- Secrets and local configuration ---------------------------------------
+# Environment files (keep .env.example as the committed template)
+.env
+.env.*
+!.env.example
+
+# Spring Boot reads ./config/application.yml on top of the bundled one, so put
+# real passwords and keys there, or in a local profile file
+/config/
+application-local.yml
+application-local.yaml
+application-local.properties
+application-*-local.yml
+
+# Keys, certificates and keystores
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+secrets/
+
+# Claude Code personal settings
+.claude/settings.local.json
