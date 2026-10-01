@@ -1,0 +1,27 @@
+[
+  {"query": "比起寫文件我寧可直接動手寫 code", "expected": "Drake"},
+  {"query": "拒絕加班,選擇準時下班", "expected": "Drake"},
+  {"query": "手上專案還沒做完,又看到新技術想去玩", "expected": "分心男友"},
+  {"query": "專案快炸了但大家都假裝沒事", "expected": "This is fine"},
+  {"query": "老闆臨時改需求,我假裝沒事繼續工作", "expected": "This is fine"},
+  {"query": "when you pretend everything is fine", "expected": "This is fine"},
+  {"query": "兩個選擇我都想要,真的好難選", "expected": "Two Buttons"},
+  {"query": "要存錢還是買新手機,好糾結", "expected": "Two Buttons"},
+  {"query": "我認為泡麵一定要先放調味粉,有不同意見嗎", "expected": "Change My Mind"},
+  {"query": "咖啡配甜甜圈才是最好的早餐,來辯啊", "expected": "Change My Mind"},
+  {"query": "沒有備份資料,結果硬碟壞了,好意外喔", "expected": "驚訝皮卡丘"},
+  {"query": "怎麼會這樣,明明是我自己忘記存檔", "expected": "驚訝皮卡丘"},
+  {"query": "從土法煉鋼進化到全自動化", "expected": "Expanding Brain"},
+  {"query": "對方一直在吵,我只想繼續吃飯", "expected": "Woman Yelling at Cat"},
+  {"query": "老闆在會議上罵人,我腦袋放空", "expected": "Woman Yelling at Cat"},
+  {"query": "今天出門剛好遇到綠燈一路順暢", "expected": "Success Kid"},
+  {"query": "debug 一次就成功了,太爽了", "expected": "Success Kid"},
+  {"query": "這個東西我完全看不懂", "expected": "黑人問號"},
+  {"query": "我把客人的抱怨當成讚美來回覆", "expected": "這是蝴蝶嗎"},
+  {"query": "原來薪水都是拿來繳帳單,一直都是這樣", "expected": "Always Has Been"},
+
+  {"query": "今天天氣真好", "expected": null},
+  {"query": "how to cook fried rice", "expected": null},
+  {"query": "台北到高雄高鐵時刻表", "expected": null},
+  {"query": "量子力學入門", "expected": null}
+]

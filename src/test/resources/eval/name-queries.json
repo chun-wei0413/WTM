@@ -1,0 +1,12 @@
+[
+  {"query": "Drake", "expected": "Drake"},
+  {"query": "德雷克", "expected": "Drake"},
+  {"query": "分心男友", "expected": "分心男友"},
+  {"query": "Distracted Boyfriend", "expected": "分心男友"},
+  {"query": "this is fine", "expected": "This is fine"},
+  {"query": "皮卡丘", "expected": "驚訝皮卡丘"},
+  {"query": "Expanding Brain", "expected": "Expanding Brain"},
+  {"query": "黑人問號", "expected": "黑人問號"},
+  {"query": "太空人", "expected": "Always Has Been"},
+  {"query": "蝴蝶", "expected": "這是蝴蝶嗎"}
+]

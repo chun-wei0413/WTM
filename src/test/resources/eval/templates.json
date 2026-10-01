@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Drake",
+    "aliases": ["德雷克", "Drake Hotline Bling", "嫌棄與喜歡"],
+    "meaning": "拒絕或嫌棄某件事,轉而偏好另一件事。上方是不要的,下方是想要的。",
+    "usageExamples": ["不想寫文件,只想直接寫程式", "拒絕早起運動,選擇繼續賴床", "不要吃減肥餐,要吃炸雞"],
+    "emotions": ["嫌棄", "偏好", "得意"],
+    "slots": [
+      {"role": "被拒絕的事物", "maxChars": 14, "x": 300, "y": 0, "width": 300, "height": 300},
+      {"role": "偏好的事物", "maxChars": 14, "x": 300, "y": 300, "width": 300, "height": 300}
+    ]
+  },
+  {
+    "name": "分心男友",
+    "aliases": ["Distracted Boyfriend", "劈腿男友", "看別人的女友"],
+    "meaning": "對眼前既有的事物不專心,被新出現、更吸引人的東西誘惑而分心。",
+    "usageExamples": ["看到新框架就想放棄手上的專案", "明明有進度要趕,卻一直想開新坑", "用了一陣子的手機,看到新款又心動"],
+    "emotions": ["誘惑", "喜新厭舊", "背叛"],
+    "slots": [
+      {"role": "新的誘惑", "maxChars": 10, "x": 400, "y": 40, "width": 180, "height": 80},
+      {"role": "我(男友)", "maxChars": 10, "x": 220, "y": 40, "width": 160, "height": 80},
+      {"role": "舊的事物", "maxChars": 10, "x": 20, "y": 40, "width": 180, "height": 80}
+    ]
+  },
+  {
+    "name": "This is fine",
+    "aliases": ["這樣很好", "狗在著火的房間", "This Is Fine"],
+    "meaning": "明明情況已經失控、一團糟,卻假裝一切正常、故作鎮定。",
+    "usageExamples": ["專案快要炸了,大家還在開會假裝沒事", "月底帳戶快見底,仍然若無其事地訂外送", "伺服器一直報錯,我只能淡定地喝咖啡"],
+    "emotions": ["故作鎮定", "無奈", "崩潰前夕"],
+    "slots": [
+      {"role": "失控的情境", "maxChars": 20, "x": 0, "y": 0, "width": 600, "height": 100}
+    ]
+  },
+  {
+    "name": "Two Buttons",
+    "aliases": ["兩個按鈕", "二選一", "Daily Struggle"],
+    "meaning": "面對兩個都很吸引人或都很糟的選項,難以抉擇,內心掙扎冒汗。",
+    "usageExamples": ["想睡覺又想追劇,兩個都放不下", "兩個方案各有優缺點,不知道要選哪個", "又想存錢又想買新耳機"],
+    "emotions": ["猶豫", "糾結", "焦慮"],
+    "slots": [
+      {"role": "選項一", "maxChars": 12, "x": 20, "y": 20, "width": 250, "height": 100},
+      {"role": "選項二", "maxChars": 12, "x": 300, "y": 20, "width": 250, "height": 100},
+      {"role": "糾結的人", "maxChars": 12, "x": 150, "y": 480, "width": 300, "height": 100}
+    ]
+  },
+  {
+    "name": "Change My Mind",
+    "aliases": ["來改變我的想法", "桌前舉牌", "來辯啊"],
+    "meaning": "拋出一個有爭議、帶點挑釁的個人看法,並邀請別人來反駁。",
+    "usageExamples": ["鳳梨放在披薩上就是好吃,來辯啊", "寫程式用 tab 比空白鍵好,誰能說服我", "週一應該是放假日,不服來戰"],
+    "emotions": ["挑釁", "自信", "固執"],
+    "slots": [
+      {"role": "有爭議的看法", "maxChars": 18, "x": 150, "y": 330, "width": 300, "height": 120}
+    ]
+  },
+  {
+    "name": "驚訝皮卡丘",
+    "aliases": ["Surprised Pikachu", "皮卡丘震驚"],
+    "meaning": "明明可以預料到後果,事情發生時卻假裝很驚訝。",
+    "usageExamples": ["上線前完全沒測試,結果真的出包,好驚訝", "整個月都沒複習,考試成績竟然不好", "一直熬夜,隔天居然很想睡"],
+    "emotions": ["假裝驚訝", "自作自受", "諷刺"],
+    "slots": [
+      {"role": "原因", "maxChars": 20, "x": 0, "y": 0, "width": 600, "height": 120},
+      {"role": "意料中的後果", "maxChars": 20, "x": 0, "y": 480, "width": 600, "height": 120}
+    ]
+  },
+  {
+    "name": "Expanding Brain",
+    "aliases": ["進化腦", "腦袋越來越大", "Galaxy Brain"],
+    "meaning": "用四個階段由淺到深的想法,表現某件事越來越『高明』或越來越荒謬。",
+    "usageExamples": ["從用 console.log 除錯進化到用 debugger 再到直接重寫", "從手動整理檔案到寫腳本再到買現成軟體", "從存錢到投資再到中樂透"],
+    "emotions": ["進化", "自嘲", "越來越誇張"],
+    "slots": [
+      {"role": "第一階段", "maxChars": 14, "x": 0, "y": 0, "width": 300, "height": 150},
+      {"role": "第二階段", "maxChars": 14, "x": 0, "y": 150, "width": 300, "height": 150},
+      {"role": "第三階段", "maxChars": 14, "x": 0, "y": 300, "width": 300, "height": 150},
+      {"role": "第四階段", "maxChars": 14, "x": 0, "y": 450, "width": 300, "height": 150}
+    ]
+  },
+  {
+    "name": "Woman Yelling at Cat",
+    "aliases": ["女人對貓大吼", "吵架的女人與貓"],
+    "meaning": "一方情緒激動地指責,另一方卻一臉無辜、毫不在意,雙方完全溝通不了。",
+    "usageExamples": ["同事一直指責我,但我只想安靜吃午餐", "女朋友問我在想什麼,我其實什麼都沒想", "老闆在罵人,而我腦袋一片空白"],
+    "emotions": ["被指責", "無辜", "雞同鴨講"],
+    "slots": [
+      {"role": "激動指責的一方", "maxChars": 16, "x": 0, "y": 0, "width": 300, "height": 150},
+      {"role": "無辜的一方", "maxChars": 16, "x": 300, "y": 0, "width": 300, "height": 150}
+    ]
+  },
+  {
+    "name": "Success Kid",
+    "aliases": ["成功小孩", "握拳小孩"],
+    "meaning": "遇到小小的順利或意外的成功,忍不住握拳慶祝。",
+    "usageExamples": ["今天剛好趕上末班車", "一次就把 bug 修好了", "點外送剛好遇到免運優惠"],
+    "emotions": ["小確幸", "得意", "開心"],
+    "slots": [
+      {"role": "上方情境", "maxChars": 16, "x": 0, "y": 0, "width": 600, "height": 100},
+      {"role": "下方結果", "maxChars": 16, "x": 0, "y": 500, "width": 600, "height": 100}
+    ]
+  },
+  {
+    "name": "黑人問號",
+    "aliases": ["Confused Nick Young", "滿臉問號", "困惑"],
+    "meaning": "看到無法理解的事情,滿臉困惑、腦中一堆問號。",
+    "usageExamples": ["看不懂這個需求文件到底在寫什麼", "朋友突然講了一個完全聽不懂的梗", "老闆說這週要做完,但連題目都沒講清楚"],
+    "emotions": ["困惑", "傻眼", "一頭霧水"],
+    "slots": []
+  },
+  {
+    "name": "這是蝴蝶嗎",
+    "aliases": ["Is This a Pigeon", "這是鴿子嗎", "認錯東西"],
+    "meaning": "對眼前的事物完全認錯或誤解,還一臉認真地提問。",
+    "usageExamples": ["把設計稿的按鈕當成裝飾圖案", "把客訴信當成稱讚信來回覆", "看到普通的語法錯誤,卻以為是系統當機"],
+    "emotions": ["誤解", "天真", "認錯"],
+    "slots": [
+      {"role": "提問的人", "maxChars": 10, "x": 20, "y": 20, "width": 200, "height": 80},
+      {"role": "被誤認的事物", "maxChars": 10, "x": 380, "y": 20, "width": 200, "height": 80},
+      {"role": "疑問", "maxChars": 14, "x": 100, "y": 500, "width": 400, "height": 80}
+    ]
+  },
+  {
+    "name": "Always Has Been",
+    "aliases": ["一直都是這樣", "太空人", "其實一直都是"],
+    "meaning": "突然領悟到某個真相,而對方回答『其實一直都是這樣』。",
+    "usageExamples": ["等等,公司所謂的彈性上班其實就是隨時待命?一直都是", "原來我們賺的錢都拿去繳房租?一直都是", "啊所有的專案最後都靠 Excel 在撐?一直都是"],
+    "emotions": ["恍然大悟", "驚覺真相", "諷刺"],
+    "slots": [
+      {"role": "恍然大悟的疑問", "maxChars": 20, "x": 20, "y": 20, "width": 340, "height": 80},
+      {"role": "一直都是", "maxChars": 12, "x": 300, "y": 300, "width": 280, "height": 80}
+    ]
+  }
+]
