@@ -1,0 +1,21 @@
+package com.memehub.application.port.out;
+
+import com.memehub.domain.template.Slot;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * Read side of template search. Each method returns template ids ranked best first.
+ */
+public interface TemplateSearchPort {
+
+    List<UUID> byVector(float[] queryEmbedding, int limit);
+
+    List<UUID> byKeyword(String query, int limit);
+
+    List<SearchCard> cards(Collection<UUID> templateIds);
+
+    record SearchCard(UUID id, String name, String imageKey, List<Slot> slots) {
+    }
+}
