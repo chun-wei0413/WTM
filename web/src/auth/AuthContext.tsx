@@ -12,7 +12,7 @@ import {
 import { api, configureAuth } from '../api/client';
 import { decodeToken, isExpired, type TokenInfo } from '../lib/jwt';
 
-const STORAGE_KEY = 'usethatmeme.token';
+const STORAGE_KEY = 'wtm.token';
 
 export interface CurrentUser {
   id: string;

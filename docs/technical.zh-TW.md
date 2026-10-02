@@ -1,4 +1,4 @@
-# usethatmeme
+# wtm
 
 個人的梗圖圖庫:從網路上收集梗圖,由視覺模型自動標上標籤,之後只要用自己的話描述情境,
 就能找到想用的那一張。
@@ -8,7 +8,7 @@
 ## 為什麼做這個
 
 跟別人聊天時,有時候想用梗圖回應,但你只記得它適用的**情境**,不記得梗圖的名稱,所以找不到當下想用的那一張。
-而手機裡存了一大堆梗圖,既不好找,又佔空間。usethatmeme 把圖片集中放在一個地方,並標上它的意思與使用時機,
+而手機裡存了一大堆梗圖,既不好找,又佔空間。wtm 把圖片集中放在一個地方,並標上它的意思與使用時機,
 讓你只憑記得的情境就能找到。
 
 [English](README.md) · **繁體中文**
@@ -114,7 +114,7 @@ docker compose up -d
 mvn spring-boot:run
 ```
 
-第一位管理員會在啟動時,依 `.env` 裡的 `USETHATMEME_ADMIN_USERNAME` 與 `USETHATMEME_ADMIN_PASSWORD` 建立。
+第一位管理員會在啟動時,依 `.env` 裡的 `WTM_ADMIN_USERNAME` 與 `WTM_ADMIN_PASSWORD` 建立。
 只要缺少任何必要的密碼,應用程式就會拒絕啟動。在 Linux 或 macOS 上,請參考
 [`.env.example`](.env.example) 自行建立 `.env`。
 
@@ -123,8 +123,8 @@ mvn spring-boot:run
 ```powershell
 ollama pull bge-m3
 ollama pull qwen2.5:7b
-$env:USETHATMEME_EMBEDDING_PROVIDER = "ollama"
-$env:USETHATMEME_LLM_PROVIDER = "ollama"
+$env:WTM_EMBEDDING_PROVIDER = "ollama"
+$env:WTM_LLM_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
@@ -148,8 +148,8 @@ npm run dev        # http://localhost:5173
 ```bash
 BASE=http://localhost:8080
 
-# 以管理員登入(密碼是 .env 裡的 USETHATMEME_ADMIN_PASSWORD)
-ADMIN=$(curl -s -H 'Content-Type: application/json'   -d '{"username":"admin","password":"<USETHATMEME_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
+# 以管理員登入(密碼是 .env 裡的 WTM_ADMIN_PASSWORD)
+ADMIN=$(curl -s -H 'Content-Type: application/json'   -d '{"username":"admin","password":"<WTM_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
 
 # 加入一張你在網路上找到的梗圖:Nick Young 一臉困惑、周圍飄著「???」
 # ([docs/images/confused-nick-young.jpeg](docs/images/confused-nick-young.jpeg))。
@@ -208,8 +208,8 @@ EOF
 | 每位使用者每天的生成請求 | 50 個 |
 | 每個應用程式實例同時執行的生成任務 | 4 個 |
 
-都可以透過 `usethatmeme.security.throttling.*` 與 `usethatmeme.generation.*` 調整;
-也可以用 `usethatmeme.security.registration-enabled=false` 關閉註冊。
+都可以透過 `wtm.security.throttling.*` 與 `wtm.generation.*` 調整;
+也可以用 `wtm.security.registration-enabled=false` 關閉註冊。
 
 ## 測試
 
@@ -231,8 +231,8 @@ npm run typecheck
 兩個評測使用**真正**的模型,不包含在一般建置裡:
 
 ```bash
-mvn test -Dtest=SearchQualityEvalTest -Dusethatmeme.eval=true       # 檢索品質 → target/search-eval.txt
-mvn test -Dtest=GenerationQualityEvalTest -Dusethatmeme.eval=true   # 完整流程 → target/eval-memes/
+mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # 檢索品質 → target/search-eval.txt
+mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # 完整流程 → target/eval-memes/
 ```
 
 ## 實測結果
@@ -271,7 +271,7 @@ mvn test -Dtest=GenerationQualityEvalTest -Dusethatmeme.eval=true   # 完整流�
 ## 專案結構
 
 ```
-src/main/java/com/usethatmeme
+src/main/java/com/wtm
 ├── domain          MemeTemplate、Meme 聚合與使用者(不含框架程式碼)
 ├── application     指令與查詢處理器,以及它們依賴的 Port
 ├── adapter
@@ -295,8 +295,8 @@ docs/DECISIONS.md                  為什麼這樣設計(英文)
 |---|---|
 | `DB_USERNAME`、`DB_PASSWORD` | PostgreSQL |
 | `S3_ACCESS_KEY`、`S3_SECRET_KEY` | 物件儲存 |
-| `USETHATMEME_JWT_SECRET` | 簽發 token 的密鑰(至少 32 個字元)。知道它的人可以偽造管理員 token |
-| `USETHATMEME_ADMIN_USERNAME`、`USETHATMEME_ADMIN_PASSWORD` | 第一位管理員 |
-| `USETHATMEME_LLM_PROVIDER`、`USETHATMEME_EMBEDDING_PROVIDER` | `mock`(預設)或 `ollama` |
+| `WTM_JWT_SECRET` | 簽發 token 的密鑰(至少 32 個字元)。知道它的人可以偽造管理員 token |
+| `WTM_ADMIN_USERNAME`、`WTM_ADMIN_PASSWORD` | 第一位管理員 |
+| `WTM_LLM_PROVIDER`、`WTM_EMBEDDING_PROVIDER` | `mock`(預設)或 `ollama` |
 
 其他設定都在 [`application.yml`](src/main/resources/application.yml)。

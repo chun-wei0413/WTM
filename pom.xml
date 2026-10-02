@@ -11,10 +11,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.usethatmeme</groupId>
-    <artifactId>usethatmeme</artifactId>
+    <groupId>com.wtm</groupId>
+    <artifactId>wtm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>usethatmeme</name>
+    <name>wtm</name>
     <description>Describe a situation, get a meme.</description>
 
     <properties>

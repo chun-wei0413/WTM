@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/images/logo.svg" alt="UseThatMeme" width="420"></p>
+<p align="center"><img src="docs/images/logo.svg" alt="Where&#39;s That Meme? (WTM)" width="420"></p>
 
 [English](README.md) · **繁體中文**
 
@@ -9,7 +9,7 @@
 跟別人聊天時,有時候想用梗圖回應,但你只記得它適用的**情境**,不記得梗圖的**名稱**,所以找不到當下想用的那一張。
 而手機裡存了一大堆梗圖,既不好找,又佔空間。
 
-UseThatMeme 把你的梗圖集中放在一個地方,每一張都記錄了它的意思與使用時機,
+WTM(Where's That Meme?)把你的梗圖集中放在一個地方,每一張都記錄了它的意思與使用時機,
 所以只要記得情境,就能找到它。
 
 ## 範例

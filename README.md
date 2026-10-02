@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/images/logo.svg" alt="UseThatMeme" width="420"></p>
+<p align="center"><img src="docs/images/logo.svg" alt="Where&#39;s That Meme? (WTM)" width="420"></p>
 
 **English** · [繁體中文](README.zh-TW.md)
 
@@ -10,7 +10,7 @@ While chatting, you sometimes want to answer with a meme. You remember the **sit
 but not its **name**, so you cannot find the one you want at that moment. And a phone full of saved
 memes is hard to search and takes up space.
 
-UseThatMeme keeps your memes in one place, each one described by what it means and when to use it,
+WTM keeps your memes in one place, each one described by what it means and when to use it,
 so remembering the situation is enough to find it.
 
 ## Example

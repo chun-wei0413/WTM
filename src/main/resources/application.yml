@@ -1,13 +1,13 @@
 spring:
   application:
-    name: usethatmeme
+    name: wtm
   config:
     # Secrets live in .env (git-ignored, created by scripts/init-env.ps1) and are shared
     # with docker-compose. Real environment variables take precedence over the file.
     import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:postgresql://localhost:5433/usethatmeme
-    username: ${DB_USERNAME:usethatmeme}
+    url: jdbc:postgresql://localhost:5433/wtm
+    username: ${DB_USERNAME:wtm}
     password: ${DB_PASSWORD}
   flyway:
     enabled: true
@@ -22,21 +22,21 @@ management:
       exposure:
         include: health,info,metrics
 
-usethatmeme:
-  data-dir: ${USETHATMEME_DATA_DIR:}   # holds the inbox folder; empty means no inbox is watched
+wtm:
+  data-dir: ${WTM_DATA_DIR:}   # holds the inbox folder; empty means no inbox is watched
   security:
     jwt:
-      secret: ${USETHATMEME_JWT_SECRET}
+      secret: ${WTM_JWT_SECRET}
       ttl: PT2H
     bootstrap-admin:
-      username: ${USETHATMEME_ADMIN_USERNAME:admin}
-      password: ${USETHATMEME_ADMIN_PASSWORD}
+      username: ${WTM_ADMIN_USERNAME:admin}
+      password: ${WTM_ADMIN_PASSWORD}
   storage:
     endpoint: http://localhost:9000
     region: us-east-1
     access-key: ${S3_ACCESS_KEY}
     secret-key: ${S3_SECRET_KEY}
-    bucket: usethatmeme
+    bucket: wtm
   vision:                     # looks at collected pictures and describes them
     provider: mock            # mock | ollama
     ollama:

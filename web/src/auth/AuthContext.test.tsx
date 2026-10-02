@@ -50,7 +50,7 @@ describe('AuthProvider', () => {
     // before its parent's, so the token must be ready before any page effect runs. (Not wrapped in
     // StrictMode on purpose: StrictMode runs effects twice in development and would hide a late setup.)
     const token = tokenExpiringIn(3600);
-    sessionStorage.setItem('usethatmeme.token', token);
+    sessionStorage.setItem('wtm.token', token);
 
     render(
       <AuthProvider>
@@ -63,7 +63,7 @@ describe('AuthProvider', () => {
   });
 
   it('ignores a saved token that has already expired', async () => {
-    sessionStorage.setItem('usethatmeme.token', tokenExpiringIn(-60));
+    sessionStorage.setItem('wtm.token', tokenExpiringIn(-60));
 
     render(
       <AuthProvider>

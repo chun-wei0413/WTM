@@ -1,4 +1,4 @@
-# usethatmeme
+# wtm
 
 A personal meme library: collect memes from the web, let a vision model tag them, and find the
 one you want later by describing the situation in your own words.
@@ -10,7 +10,7 @@ one you want later by describing the situation in your own words.
 
 While chatting, you sometimes want to answer with a meme. You remember the **situation** it fits,
 not its name, so you cannot find it. And a phone camera roll full of saved memes is hard to search
-and takes up space. usethatmeme keeps the pictures in one place, tagged with what they mean and when to
+and takes up space. wtm keeps the pictures in one place, tagged with what they mean and when to
 use them, so the situation you remember is enough to find them.
 
 **English** · [繁體中文](README.zh-TW.md)
@@ -120,8 +120,8 @@ docker compose up -d
 mvn spring-boot:run
 ```
 
-The first administrator is created at startup from `USETHATMEME_ADMIN_USERNAME` and
-`USETHATMEME_ADMIN_PASSWORD` in `.env`. The application refuses to start if a required secret is
+The first administrator is created at startup from `WTM_ADMIN_USERNAME` and
+`WTM_ADMIN_PASSWORD` in `.env`. The application refuses to start if a required secret is
 missing. On Linux or macOS, create `.env` by hand from [`.env.example`](.env.example).
 
 By default the models are **mocks**: fast, deterministic and fake. To use the real ones:
@@ -129,8 +129,8 @@ By default the models are **mocks**: fast, deterministic and fake. To use the re
 ```powershell
 ollama pull bge-m3
 ollama pull qwen2.5:7b
-$env:USETHATMEME_EMBEDDING_PROVIDER = "ollama"
-$env:USETHATMEME_LLM_PROVIDER = "ollama"
+$env:WTM_EMBEDDING_PROVIDER = "ollama"
+$env:WTM_LLM_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
@@ -156,8 +156,8 @@ them itself).
 ```bash
 BASE=http://localhost:8080
 
-# Sign in as the administrator (password is USETHATMEME_ADMIN_PASSWORD in .env)
-ADMIN=$(curl -s -H 'Content-Type: application/json'   -d '{"username":"admin","password":"<USETHATMEME_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
+# Sign in as the administrator (password is WTM_ADMIN_PASSWORD in .env)
+ADMIN=$(curl -s -H 'Content-Type: application/json'   -d '{"username":"admin","password":"<WTM_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
 
 # Add a meme you found on the web: a picture of Nick Young looking confused, with "???" around him
 # ([docs/images/confused-nick-young.jpeg](docs/images/confused-nick-young.jpeg)). It is stored once
@@ -217,8 +217,8 @@ Errors are returned as problem-details JSON. `429` responses carry `Retry-After`
 | Meme requests per user per day | 50 |
 | Concurrent generation jobs per instance | 4 |
 
-All are configurable under `usethatmeme.security.throttling.*` and `usethatmeme.generation.*`;
-registration can be switched off with `usethatmeme.security.registration-enabled=false`.
+All are configurable under `wtm.security.throttling.*` and `wtm.generation.*`;
+registration can be switched off with `wtm.security.registration-enabled=false`.
 
 ## Tests
 
@@ -241,8 +241,8 @@ npm run typecheck
 Two evaluations use the **real** models and are excluded from the normal build:
 
 ```bash
-mvn test -Dtest=SearchQualityEvalTest -Dusethatmeme.eval=true       # retrieval quality → target/search-eval.txt
-mvn test -Dtest=GenerationQualityEvalTest -Dusethatmeme.eval=true   # full pipeline → target/eval-memes/
+mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # retrieval quality → target/search-eval.txt
+mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # full pipeline → target/eval-memes/
 ```
 
 ## What was measured
@@ -283,7 +283,7 @@ More detail, including an experiment that was **not** adopted and why, is in
 ## Project layout
 
 ```
-src/main/java/com/usethatmeme
+src/main/java/com/wtm
 ├── domain          MemeTemplate and Meme aggregates, users (no framework code)
 ├── application     handlers (commands and queries) and the ports they depend on
 ├── adapter
@@ -307,8 +307,8 @@ Secrets come from `.env` or real environment variables. None has a default.
 |---|---|
 | `DB_USERNAME`, `DB_PASSWORD` | PostgreSQL |
 | `S3_ACCESS_KEY`, `S3_SECRET_KEY` | Object storage |
-| `USETHATMEME_JWT_SECRET` | Signs tokens (at least 32 characters). Anyone who knows it can forge admin tokens |
-| `USETHATMEME_ADMIN_USERNAME`, `USETHATMEME_ADMIN_PASSWORD` | The first administrator |
-| `USETHATMEME_LLM_PROVIDER`, `USETHATMEME_EMBEDDING_PROVIDER` | `mock` (default) or `ollama` |
+| `WTM_JWT_SECRET` | Signs tokens (at least 32 characters). Anyone who knows it can forge admin tokens |
+| `WTM_ADMIN_USERNAME`, `WTM_ADMIN_PASSWORD` | The first administrator |
+| `WTM_LLM_PROVIDER`, `WTM_EMBEDDING_PROVIDER` | `mock` (default) or `ollama` |
 
 Everything else is in [`application.yml`](src/main/resources/application.yml).
