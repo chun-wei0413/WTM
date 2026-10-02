@@ -137,6 +137,28 @@ class FavoritesAndBrowsingApiTest extends IntegrationTestBase {
         hot.forEach(h -> assertThat(h.get("term").asText()).hasSizeLessThanOrEqualTo(30));
     }
 
+    @Test
+    void aSearchCanBeMadeWithoutLeavingATraceInThePopularSearches() throws Exception {
+        String admin = adminToken();
+        String memeId = publishedMeme();
+        mvc.perform(post("/api/admin/index/sync").header("Authorization", bearer(admin))).andExpect(status().isOk());
+        String name = json.readTree(mvc.perform(get("/api/admin/templates/" + memeId)
+                .header("Authorization", bearer(admin))).andReturn().getResponse().getContentAsString())
+                .get("name").asText();
+        String user = ordinaryUserToken();
+
+        for (int i = 0; i < 3; i++) {
+            JsonNode found = json.readTree(mvc.perform(get("/api/templates/search").param("q", name)
+                    .param("record", "false").header("Authorization", bearer(user)))
+                    .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+            assertThat(found).as("it still searches").isNotEmpty();
+        }
+
+        JsonNode hot = json.readTree(mvc.perform(get("/api/library/hot-searches").header("Authorization", bearer(user)))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+        hot.forEach(h -> assertThat(h.get("term").asText()).isNotEqualTo(name.toLowerCase()));
+    }
+
     // -- helpers ------------------------------------------------------------
 
     /** Collects one new picture and waits until the (mock) vision model has published it. */

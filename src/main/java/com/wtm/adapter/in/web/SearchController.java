@@ -33,9 +33,12 @@ class SearchController {
     @GetMapping("/search")
     List<SearchResult> search(@RequestParam("q") String query,
                               @RequestParam(defaultValue = "10") @Min(1) @Max(50) int limit,
+                              // Searching without leaving a trace: for measuring the search, which must not
+                              // turn its own test queries into "popular searches".
+                              @RequestParam(defaultValue = "true") boolean record,
                               @AuthenticationPrincipal Jwt jwt) {
         List<SearchResult> results = search.handle(query, limit);
-        if (!results.isEmpty()) {
+        if (record && !results.isEmpty()) {
             try {
                 history.record(UUID.fromString(jwt.getSubject()), query);
             } catch (RuntimeException e) {

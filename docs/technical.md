@@ -179,7 +179,7 @@ fill the library (`POST /api/admin/collection/runs`).
 |---|---|---|
 | `POST /api/auth/register` | anyone | Create a user account |
 | `POST /api/auth/login` | anyone | Get a bearer token (2 h) |
-| `GET /api/templates/search?q=&limit=` | signed in | Search the library by meaning and keywords (short searches that find something are counted) |
+| `GET /api/templates/search?q=&limit=` | signed in | Search the library by meaning and keywords (short searches that find something are counted, unless `record=false`) |
 | `GET /api/library/random?limit=` | signed in | Published memes in random order |
 | `GET /api/library/hot-searches?limit=` | signed in | The most common searches of the last 7 days |
 | `GET /api/library/{id}/image` | signed in | The original picture of a published meme (download, or drawing on a canvas) |

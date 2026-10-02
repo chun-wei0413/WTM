@@ -3,8 +3,8 @@
 //   node scripts/eval-search.mjs [--limit 10] [--out eval/results/latest.json]
 //
 // Needs the application running (WTM_BASE, default http://localhost:8080) and the administrator from .env
-// (WTM_ADMIN_USERNAME / WTM_ADMIN_PASSWORD). Searches are counted in the hot-search list like any other, so
-// run it against a library you are happy to have that in.
+// (WTM_ADMIN_USERNAME / WTM_ADMIN_PASSWORD). Its searches are sent with record=false, so they do not become
+// "popular searches".
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -40,7 +40,7 @@ const results = [];
 
 for (const item of queries) {
   const started = performance.now();
-  const response = await fetch(`${base}/api/templates/search?q=${encodeURIComponent(item.q)}&limit=${limit}`, {
+  const response = await fetch(`${base}/api/templates/search?q=${encodeURIComponent(item.q)}&limit=${limit}&record=false`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   const milliseconds = performance.now() - started;
