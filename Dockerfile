@@ -9,7 +9,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn -B -q dependency:go-offline
 COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 mvn -B -q -DskipTests package
 
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:24-jre
 RUN useradd --system --create-home --uid 10001 wtm
 WORKDIR /app
 COPY --from=build /build/target/wtm-*.jar /app/app.jar
