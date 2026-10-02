@@ -62,6 +62,20 @@ only once, and each picture keeps a note of where it came from.
 When someone reports a meme, the vision model looks at the picture again, with their complaint in hand, and the
 administrator sees both side by side ("user report: ...; suggested change: ...") to adopt or dismiss.
 
+## Before you run it for real
+
+- **It is a personal tool, not a service.** There is no logout or password reset, the sign-in token is kept in the
+  browser's `sessionStorage` and there is no Content-Security-Policy, so do not expose it to the internet as it is.
+- **The library is yours to fill, and yours to answer for.** The repository contains no collected pictures. The
+  collector reads Imgflip, Wikimedia Commons and PTT politely (it obeys `robots.txt`, waits between requests and says
+  who it is), but what you collect is still other people's work: follow each site's terms and respect the copyright
+  of the pictures.
+
+## License
+
+The code is under the [MIT License](LICENSE). That covers the code, not everything in the repository: the example
+picture in `docs/images/confused-nick-young.jpeg` is a meme collected from the web and belongs to whoever made it.
+
 ## More
 
 How to run it, the API, the design decisions and the known limitations are in
