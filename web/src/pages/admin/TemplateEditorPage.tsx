@@ -18,7 +18,7 @@ import {
 
 type Busy = null | 'slots' | 'profile' | 'approve' | 'retire';
 
-const EMPTY_FIELDS: ProfileFields = { meaning: '', examples: '', emotions: '', aliases: '' };
+const EMPTY_FIELDS: ProfileFields = { meaning: '', examples: '', emotions: '', aliases: '', imageText: '', tags: '' };
 
 export function TemplateEditorPage() {
   const { id = '' } = useParams();
@@ -297,6 +297,23 @@ export function TemplateEditorPage() {
                   disabled={retired}
                   onChange={(e) => setFields({ ...fields, aliases: e.target.value })}
                   placeholder="Drake、德雷克"
+                />
+              </label>
+              <label>
+                標籤(用頓號或逗號分隔;搜尋會用到)
+                <input
+                  value={fields.tags}
+                  disabled={retired}
+                  onChange={(e) => setFields({ ...fields, tags: e.target.value })}
+                  placeholder="政治、請願、選舉"
+                />
+              </label>
+              <label>
+                圖中文字(照圖上的字抄)
+                <input
+                  value={fields.imageText}
+                  disabled={retired}
+                  onChange={(e) => setFields({ ...fields, imageText: e.target.value })}
                 />
               </label>
               <div>

@@ -21,7 +21,7 @@ WTM has three things, one page each.
 
 Type what you would say out loud, or describe the picture itself. Below the search bar are the most common
 recent searches as shortcuts, and below those a random handful of memes to browse. Every meme has a
-**download** and a **favorite** button.
+**download** and a **favorite** button, and a **report** button for when the description or tags do not fit.
 
 You are chatting, and the other person says something you cannot make sense of. You do not know what
 that "confused guy" meme is called, so you type:
@@ -58,6 +58,9 @@ The library is filled by the administrator: choose pictures or a folder, paste a
 collector read a source (Imgflip, Wikimedia Commons, a PTT board). A vision model looks at every new picture and
 writes what it means, when to use it, and the text in it. Identical and near-identical pictures are collected
 only once, and each picture keeps a note of where it came from.
+
+When someone reports a meme, the vision model looks at the picture again, with their complaint in hand, and the
+administrator sees both side by side ("user report: ...; suggested change: ...") to adopt or dismiss.
 
 ## More
 

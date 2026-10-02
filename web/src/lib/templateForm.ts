@@ -21,6 +21,8 @@ export interface ProfileFields {
   examples: string;
   emotions: string;
   aliases: string;
+  imageText: string;
+  tags: string;
 }
 
 export function profileToFields(profile: MemeProfile): ProfileFields {
@@ -29,6 +31,8 @@ export function profileToFields(profile: MemeProfile): ProfileFields {
     examples: profile.usageExamples.join('\n'),
     emotions: profile.emotions.join('、'),
     aliases: profile.aliases.join('、'),
+    imageText: profile.imageText,
+    tags: profile.tags.join('、'),
   };
 }
 
@@ -38,6 +42,8 @@ export function fieldsToProfile(fields: ProfileFields): MemeProfile {
     usageExamples: parseLines(fields.examples),
     emotions: parseList(fields.emotions),
     aliases: parseList(fields.aliases),
+    imageText: fields.imageText.trim(),
+    tags: parseList(fields.tags),
   };
 }
 

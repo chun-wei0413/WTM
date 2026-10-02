@@ -7,6 +7,7 @@ import { EditorPage } from './pages/EditorPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './pages/SearchPage';
 import { CollectionPage } from './pages/admin/CollectionPage';
+import { ReportsPage } from './pages/admin/ReportsPage';
 import { TemplateEditorPage } from './pages/admin/TemplateEditorPage';
 import { TemplatesPage } from './pages/admin/TemplatesPage';
 
@@ -39,6 +40,7 @@ export function App() {
           <Route path="create" element={<EditorPage />} />
           <Route element={<RequireAdmin />}>
             <Route path="admin/collection" element={<CollectionPage />} />
+            <Route path="admin/reports" element={<ReportsPage />} />
             <Route path="admin/templates" element={<TemplatesPage />} />
             <Route path="admin/templates/:id" element={<TemplateEditorPage />} />
           </Route>

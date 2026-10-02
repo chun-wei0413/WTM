@@ -45,15 +45,31 @@ describe('profile fields', () => {
       usageExamples: ['不想寫文件', '拒絕加班'],
       emotions: ['嫌棄', '偏好'],
       aliases: ['Drake'],
+      imageText: 'NO / YES',
+      tags: ['饒舌歌手', '對比'],
     };
 
     expect(fieldsToProfile(profileToFields(profile))).toEqual(profile);
   });
 
   it('a profile needs a meaning and at least one usage example', () => {
-    expect(profileIsComplete({ meaning: 'x', usageExamples: ['y'], emotions: [], aliases: [] })).toBe(true);
-    expect(profileIsComplete({ meaning: '  ', usageExamples: ['y'], emotions: [], aliases: [] })).toBe(false);
-    expect(profileIsComplete({ meaning: 'x', usageExamples: [], emotions: [], aliases: [] })).toBe(false);
+    const base = { emotions: [], aliases: [], imageText: '', tags: [] };
+    expect(profileIsComplete({ ...base, meaning: 'x', usageExamples: ['y'] })).toBe(true);
+    expect(profileIsComplete({ ...base, meaning: '  ', usageExamples: ['y'] })).toBe(false);
+    expect(profileIsComplete({ ...base, meaning: 'x', usageExamples: [] })).toBe(false);
+  });
+
+  it('keeps the tags and the picture text, so saving a description never wipes them', () => {
+    const fields = profileToFields({
+      meaning: 'm',
+      usageExamples: ['u'],
+      emotions: [],
+      aliases: [],
+      imageText: 'I am once again asking',
+      tags: ['政治', '請願'],
+    });
+
+    expect(fieldsToProfile(fields)).toMatchObject({ imageText: 'I am once again asking', tags: ['政治', '請願'] });
   });
 });
 

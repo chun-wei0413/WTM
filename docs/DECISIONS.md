@@ -22,6 +22,7 @@ Contents
 14. [Rendering captions with Java2D](#14-rendering-captions-with-java2d)
 15. [The web client](#15-the-web-client)
 16. [Favorites, hot searches and a meme maker that stays in the browser](#16-favorites-hot-searches-and-a-meme-maker-that-stays-in-the-browser)
+17. [Reports: a complaint plus a second look by the vision model](#17-reports-a-complaint-plus-a-second-look-by-the-vision-model)
 
 ---
 
@@ -360,3 +361,32 @@ to say and the problem is finding the picture.
 **Cost.** Server-side rendering (decision 14) is unused by the web client now; it stays for the generation
 endpoints. The browser's text metrics differ slightly from Java2D, which is fine because both the preview and
 the export use the browser's. An animated GIF loses its animation once text is added.
+
+## 17. Reports: a complaint plus a second look by the vision model
+
+**Context.** The vision model writes every meme's description and tags, and it is sometimes wrong. The people who
+notice are the users, and the person who can fix it is the administrator. A bare "this is wrong" costs the
+administrator the same effort as finding the mistake alone.
+
+**Decisions.**
+
+- **A report is a reason plus an optional comment, one open report per person per meme.** Reporting again replaces
+  the first one, so one person cannot pile up reports, and each person may have 30 open at most.
+- **Every report puts the meme in line for a second look.** The vision model is shown the picture, the current
+  description and the complaints, and answers with a new description and a sentence on what it changed and why.
+  The administrator sees the complaints and the proposal side by side and chooses: adopt, dismiss, ask again, or
+  withdraw the meme. The line is a table claimed with `FOR UPDATE SKIP LOCKED`, like tagging, with one row per
+  meme: several reports about the same meme share one analysis, and a later report starts it over.
+- **The model proposes, a person decides.** Nothing about a meme changes until the administrator adopts the proposal,
+  because the complaint may be wrong, the model may agree with a wrong complaint, and either may be an attempt to
+  steer the library. The complaint is placed in the prompt as quoted opinion to weigh against the picture, with its
+  line breaks removed, and an instruction in it is not followed. This makes it harder, not impossible, to push the
+  model; the human step is what actually protects the library.
+- **Adopting keeps the meme's other names** (aliases) and only replaces the meaning, usage examples, emotions, tags
+  and picture text. The search index follows by itself (decision 3).
+
+**Cost.** Each report costs the vision model about a minute, on the same graphics card that does tagging, so a flood
+of reports delays tagging. The per-person limit and the shared analysis keep that bounded, not eliminated.
+
+**A bug this work exposed.** The administrator's description form never sent the tags or the picture text, so
+saving any description wiped them on the server. The form now carries both, and they can be edited there.

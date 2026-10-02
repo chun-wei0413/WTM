@@ -11,6 +11,8 @@ import type {
   MemeProfile,
   MemeSummary,
   SearchResult,
+  ReportCase,
+  ReportReason,
   Slot,
   TemplateStatus,
   TemplateSummary,
@@ -145,6 +147,12 @@ export const api = {
     },
   },
 
+  reports: {
+    /** Tells the administrators a meme's description or tags do not fit it. */
+    submit: (templateId: string, reason: ReportReason, comment: string) =>
+      request<void>('POST', '/api/reports', { json: { templateId, reason, comment } }),
+  },
+
   favorites: {
     list: () => request<LibraryItem[]>('GET', '/api/favorites'),
 
@@ -183,6 +191,18 @@ export const api = {
     retire: (id: string) => request<void>('POST', `/api/admin/templates/${enc(id)}/retire`),
 
     syncIndex: () => request<IndexSyncResult>('POST', '/api/admin/index/sync'),
+
+    reports: {
+      list: () => request<ReportCase[]>('GET', '/api/admin/reports'),
+
+      /** Adopts the model's proposal as the meme's description and closes its reports. */
+      apply: (templateId: string) => request<void>('POST', `/api/admin/reports/${enc(templateId)}/apply`),
+
+      dismiss: (templateId: string) => request<void>('POST', `/api/admin/reports/${enc(templateId)}/dismiss`),
+
+      /** Has the vision model look at the meme again. */
+      reanalyze: (templateId: string) => request<void>('POST', `/api/admin/reports/${enc(templateId)}/reanalyze`),
+    },
 
     collection: {
       stats: () => request<LibraryStats>('GET', '/api/admin/collection/status'),

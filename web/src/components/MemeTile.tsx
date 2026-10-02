@@ -5,6 +5,7 @@ import { useFavorites } from '../favorites/FavoritesContext';
 import { isHttpUrl, sourceTypeLabel } from '../lib/collection';
 import { fileNameFor, saveBlob } from '../lib/download';
 import { ErrorNotice } from './ErrorNotice';
+import { ReportForm } from './ReportForm';
 
 interface Props {
   item: LibraryItem;
@@ -19,6 +20,8 @@ export function MemeTile({ item, children }: Props) {
   const [downloading, setDownloading] = useState(false);
   const [starring, setStarring] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  const [reporting, setReporting] = useState(false);
+  const [reported, setReported] = useState(false);
   const source = sourceTypeLabel(item.sourceType);
 
   async function download() {
@@ -73,7 +76,32 @@ export function MemeTile({ item, children }: Props) {
             {favorite ? '★ 已收藏' : '☆ 收藏'}
           </button>
           {children}
+          <button
+            type="button"
+            className="button button-quiet"
+            onClick={() => setReporting((open) => !open)}
+            disabled={reported}
+            aria-expanded={reporting}
+            title="標籤或描述不精確?告訴管理員"
+          >
+            {reported ? '已回報' : '回報'}
+          </button>
         </div>
+        {reporting && !reported && (
+          <ReportForm
+            templateId={item.templateId}
+            onSent={() => {
+              setReported(true);
+              setReporting(false);
+            }}
+            onCancel={() => setReporting(false)}
+          />
+        )}
+        {reported && (
+          <p className="notice notice-success" role="status">
+            已回報,謝謝你!管理員會查看,並請影像模型重新看這張圖。
+          </p>
+        )}
         {(source || item.attribution) && (
           <span className="muted">
             來源:

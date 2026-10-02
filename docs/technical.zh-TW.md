@@ -140,12 +140,13 @@ npm run dev        # http://localhost:5173
 
 用 `.env` 裡的管理員登入,或在登入頁建立一般帳號。網頁前端對所有人有三個頁面:
 
-- **找梗圖**:搜尋列、下方是最近熱門搜尋,再下面是隨機的梗圖。每張梗圖都有下載與收藏兩個按鈕。
+- **找梗圖**:搜尋列、下方是最近熱門搜尋,再下面是隨機的梗圖。每張梗圖都有下載、收藏與回報(描述或標籤不精確時用)三個按鈕。
 - **梗圖收藏**:你自己的收藏清單,之後要用不必再搜尋。
 - **梗圖模板**:從收藏挑一張,在圖上畫文字框、輸入文字,再下載。圖是在瀏覽器裡畫的,不會送到伺服器,
   所以做出來的梗圖只供自己使用。
 
-管理員另外有「圖庫收集」(加入圖片:選檔案或資料夾、貼網址、從來源收集,並顯示標記進度)和
+管理員另外有「圖庫收集」(加入圖片:選檔案或資料夾、貼網址、從來源收集,並顯示標記進度)、
+「意見回報」(被回報的梗圖:用戶意見與影像模型重新分析的建議並排,由你決定採用或忽略)和
 「圖庫管理」(描述、編輯並核准圖庫條目與模板)。開發伺服器會把 `/api` 轉送到 `localhost:8080`,所以瀏覽器只看到
 一個來源,不需要設定 CORS。`npm run build` 會在 `web/dist` 產生靜態檔案,可以用任何靜態網站服務提供,
 只要把 `/api` 轉送到後端即可(應用程式本身不提供這些檔案)。
@@ -193,6 +194,7 @@ EOF
 | `GET /api/library/hot-searches?limit=` | 已登入 | 最近 7 天最常被搜尋的詞 |
 | `GET /api/library/{id}/image` | 已登入 | 已發佈梗圖的原圖(下載,或拿來畫在 canvas 上) |
 | `GET /api/favorites` · `PUT` · `DELETE /api/favorites/{id}` | 已登入 | 自己的收藏 |
+| `POST /api/reports` | 已登入 | 回報一張梗圖(`templateId`、`reason`、`comment`),並請影像模型重新看一遍 |
 | `POST /api/generations` | 已登入 | 為一個情境要求產生梗圖(`202`,回傳 `jobId`) |
 | `GET /api/generations/{id}` | 擁有者 | 任務狀態與候選梗圖 |
 | `POST /api/memes/{id}/keep` | 擁有者 | 留下一張候選 |
@@ -203,6 +205,8 @@ EOF
 | `PUT /api/admin/templates/{id}/profile` | 管理員 | 含意、使用範例、情緒、別名 |
 | `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | 管理員 | 新增、修改、刪除文字格 |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | 管理員 | 發佈 / 下架模板 |
+| `GET /api/admin/reports` | 管理員 | 被回報的梗圖:用戶意見、目前的描述、模型的新建議 |
+| `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` | 管理員 | 採用建議、忽略回報、請模型重新分析 |
 | `POST /api/admin/index/sync` | 管理員 | 立刻同步搜尋索引 |
 | `GET /actuator/health` | 任何人 | 健康檢查 |
 
@@ -277,6 +281,9 @@ mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # 完整流程 → t
   [設計決策 9](docs/DECISIONS.md#9-stateless-jwt-and-throttling-that-is-honest-about-its-limits)。
 - **熱門搜尋是共用的。** 找得到結果的短詞(2 到 30 個字)會被計數,最常見的幾個會顯示給所有已登入的使用者,
   不會顯示是誰輸入的;較長的句子完全不記錄。紀錄不會自動清除,只是只讀最近 7 天。
+- **每則回報會花影像模型約一分鐘。** 同一張梗圖的回報共用一次重新分析,一個人最多同時有 30 則未處理的回報,
+  對同一張再回報會取代前一則。用 mock 模型時建議是固定文字。使用者寫的話會當成「要對照圖片判斷的意見」放進提示詞,
+  模型的回答也只是建議:管理員採用之前,梗圖不會有任何改變。
 - **梗圖模板不留任何東西。** 做好的圖只存在到你下載它或關掉分頁為止;GIF 動圖加上文字後會變成靜態圖片。
 - 生成相關的端點(`/api/generations`、`/api/memes`)仍然存在,但網頁前端已經不使用。
 - 沒有忘記密碼、信箱驗證與登出功能。

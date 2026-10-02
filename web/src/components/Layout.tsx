@@ -17,6 +17,7 @@ export function Layout() {
           <NavLink to="/favorites">梗圖收藏</NavLink>
           <NavLink to="/create">梗圖模板</NavLink>
           {user?.isAdmin && <NavLink to="/admin/collection">圖庫收集</NavLink>}
+          {user?.isAdmin && <NavLink to="/admin/reports">意見回報</NavLink>}
           {user?.isAdmin && <NavLink to="/admin/templates">圖庫管理</NavLink>}
         </nav>
         <div className="topbar-user">

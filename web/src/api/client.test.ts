@@ -131,6 +131,30 @@ describe('requests', () => {
     expect(calls[0]?.init.headers).toMatchObject({ Authorization: 'Bearer the-token' });
   });
 
+  it('sends a report with the meme, the reason and the words', async () => {
+    respond(undefined, { status: 204 });
+
+    await api.reports.submit('t1', 'WRONG_TAGS', '這是狗');
+
+    expect(calls[0]?.url).toBe('/api/reports');
+    expect(calls[0]?.init.method).toBe('POST');
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ templateId: 't1', reason: 'WRONG_TAGS', comment: '這是狗' });
+  });
+
+  it('adopts, dismisses and re-runs a report case by meme id', async () => {
+    respond(undefined, { status: 204 });
+
+    await api.admin.reports.apply('t/1');
+    await api.admin.reports.dismiss('t/1');
+    await api.admin.reports.reanalyze('t/1');
+
+    expect(calls.map((c) => [c.init.method, c.url])).toEqual([
+      ['POST', '/api/admin/reports/t%2F1/apply'],
+      ['POST', '/api/admin/reports/t%2F1/dismiss'],
+      ['POST', '/api/admin/reports/t%2F1/reanalyze'],
+    ]);
+  });
+
   it('returns nothing for a 204', async () => {
     respond(undefined, { status: 204 });
 

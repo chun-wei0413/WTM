@@ -21,6 +21,10 @@ export interface MemeProfile {
   usageExamples: string[];
   emotions: string[];
   aliases: string[];
+  /** Words that appear in the picture itself. */
+  imageText: string;
+  /** Keywords: what is shown, the topic, the joke format. */
+  tags: string[];
 }
 
 export type TemplateStatus = 'DRAFT' | 'APPROVED' | 'RETIRED';
@@ -164,4 +168,46 @@ export interface CollectionRun {
   message: string | null;
   startedAt: string;
   finishedAt: string | null;
+}
+
+export type ReportReason = 'WRONG_TAGS' | 'WRONG_MEANING' | 'INAPPROPRIATE' | 'OTHER';
+
+/** What the vision model proposes after looking at a reported meme again. */
+export interface ReportSuggestion {
+  isMeme: boolean;
+  meaning: string;
+  usageExamples: string[];
+  emotions: string[];
+  tags: string[];
+  imageText: string;
+  /** In the model's words: what it changed and why. */
+  reasoning: string;
+}
+
+export interface OpenReport {
+  id: string;
+  templateId: string;
+  username: string;
+  reason: ReportReason;
+  comment: string;
+  createdAt: string;
+}
+
+export type ReviewStatus = 'PENDING' | 'RUNNING' | 'DONE' | 'FAILED';
+
+export interface ReportReview {
+  status: ReviewStatus;
+  suggestion: ReportSuggestion | null;
+  error: string | null;
+}
+
+/** One reported meme: the complaints, how it is described now, and the model's new proposal. */
+export interface ReportCase {
+  templateId: string;
+  name: string;
+  status: TemplateStatus;
+  imageUrl: string;
+  current: MemeProfile;
+  reports: OpenReport[];
+  review: ReportReview | null;
 }

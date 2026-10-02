@@ -148,13 +148,14 @@ Sign in with the administrator from `.env`, or create an ordinary account from t
 The web client has three pages for everyone:
 
 - **找梗圖** (find memes): a search bar, the most common recent searches as shortcuts, and below them random memes.
-  Every meme has a download button and a favorite button.
+  Every meme has a download button, a favorite button and a report button (for a description or tags that do not fit).
 - **梗圖收藏** (favorites): your own shortlist, so a meme you will need again is one click away.
 - **梗圖模板** (meme maker): pick a favorite, draw text boxes on it, type the text and download the result. The
   picture is drawn in the browser and never sent to the server, so what you make is for your own use.
 
 Administrators also get **圖庫收集** (add pictures: choose files or a folder, paste an address, or start a collection
-run from a source; shows tagging progress) and **圖庫管理** (describe, edit and approve library entries and templates).
+run from a source; shows tagging progress), **意見回報** (reported memes: the complaints next to the vision model's new
+proposal, to adopt or dismiss) and **圖庫管理** (describe, edit and approve library entries and templates).
 The dev server forwards `/api` to `localhost:8080`, so the browser sees
 a single origin and no CORS setup is needed. `npm run build` produces static files in `web/dist` that
 any static host can serve, as long as `/api` is forwarded to the backend (the application does not serve
@@ -204,6 +205,7 @@ fill the library (`POST /api/admin/collection/runs`).
 | `GET /api/library/hot-searches?limit=` | signed in | The most common searches of the last 7 days |
 | `GET /api/library/{id}/image` | signed in | The original picture of a published meme (download, or drawing on a canvas) |
 | `GET /api/favorites` · `PUT` · `DELETE /api/favorites/{id}` | signed in | Your own favorites |
+| `POST /api/reports` | signed in | Report a meme (`templateId`, `reason`, `comment`); asks the vision model to look again |
 | `POST /api/generations` | signed in | Request memes for a situation (`202`, returns `jobId`) |
 | `GET /api/generations/{id}` | owner | Job status and candidate memes |
 | `POST /api/memes/{id}/keep` | owner | Keep a candidate |
@@ -214,6 +216,8 @@ fill the library (`POST /api/admin/collection/runs`).
 | `PUT /api/admin/templates/{id}/profile` | admin | Meaning, usage examples, emotions, aliases |
 | `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | admin | Define, change, remove a caption slot |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | admin | Publish / withdraw a template |
+| `GET /api/admin/reports` | admin | Reported memes: complaints, current description, the model's proposal |
+| `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` | admin | Adopt the proposal, set the reports aside, or ask the model again |
 | `POST /api/admin/index/sync` | admin | Bring the search index up to date now |
 | `GET /actuator/health` | anyone | Health check |
 
@@ -292,6 +296,10 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **Hot searches are shared.** A short phrase (2 to 30 characters) that found something is counted, and the most
   common ones are shown to every signed-in user, without saying who typed them. Longer sentences are never
   recorded. Rows are kept forever; only the last 7 days are read.
+- **Each report costs the vision model about a minute.** Reports about one meme share a single re-analysis, a person
+  can have 30 open reports at most and a second report on the same meme replaces the first. With the mock model the
+  proposal is fixed text. A user's words are put in the prompt as opinions to weigh against the picture, and the model's
+  answer is only a proposal: nothing changes until an administrator adopts it.
 - **The meme maker keeps nothing.** What you make exists only until you download it or close the tab, and an
   animated GIF becomes a still picture once text is added.
 - The generation endpoints (`/api/generations`, `/api/memes`) still exist, but the web client no longer uses them.
