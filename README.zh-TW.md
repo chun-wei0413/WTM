@@ -70,6 +70,16 @@ WTM 有三個功能,各有一個頁面。
 程式碼採用 [MIT 授權](LICENSE)。它涵蓋的是程式碼,不是倉庫裡的所有東西:`docs/images/confused-nick-young.jpeg`
 這張示範圖是從網路上收集的梗圖,著作權屬於原作者。
 
+## 用 Docker 執行
+
+映像檔放在 Docker Hub(`ressellli/wtm-backend`、`ressellli/wtm-web`)。準備好專案的 `.env` 之後:
+
+```bash
+docker compose -f docker-compose.app.yml up -d   # 然後開 http://localhost:8080
+```
+
+它會啟動什麼、怎麼發布版本,請看 [docs/technical.zh-TW.md](docs/technical.zh-TW.md)。
+
 ## 更多
 
 怎麼執行、API、設計決策與已知限制,請看 [docs/technical.zh-TW.md](docs/technical.zh-TW.md)

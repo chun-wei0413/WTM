@@ -26,6 +26,7 @@ Contents
 18. [Keeping reports from keeping the model busy, and closing the clear-cut ones without an administrator](#18-keeping-reports-from-keeping-the-model-busy-and-closing-the-clear-cut-ones-without-an-administrator)
 19. [Removing caption generation](#19-removing-caption-generation)
 20. [The vision model answers in a bounded JSON Schema](#20-the-vision-model-answers-in-a-bounded-json-schema)
+21. [Images, CI and releases](#21-images-ci-and-releases)
 
 ---
 
@@ -490,3 +491,29 @@ came back as valid JSON in 8 seconds.
 **Cost / limits.** The limits are guesses (200 characters of meaning, 8 tags). A picture with a lot of text now has
 its picture-text cut at 200 characters. The schema does nothing for the quality of the descriptions, which is
 what search depends on.
+
+## 21. Images, CI and releases
+
+**Decisions.**
+
+- **CI on GitHub Actions, three parallel jobs** (backend tests, web checks, image builds). The tests are the safety net
+  of the project and were only run by hand; a pull request now shows whether they pass. The real-model evaluation is
+  deliberately left out: it needs a graphics card and the real library, so it cannot be a reliable check.
+- **Release by tag, to Docker Hub.** `v*` tags run CI again and then publish. Publishing is tied to a tag, not to every
+  push, so what is published is a version somebody chose. The images are public because the repository is, and
+  they contain only the code: no `.env`, no secrets, no pictures (a `.dockerignore` keeps them out).
+- **One address was not enough for the object storage.** The application used a single storage address both to talk to the
+  store and to sign the temporary picture addresses handed to browsers. In a container the first is a name only that network
+  knows (`object-storage`) and the second must be something a browser can open. `WTM_STORAGE_PUBLIC_ENDPOINT` is the
+  address used for signing only (a test checks it). This showed up only by running the built images together, which is
+  why the build was smoke-tested end to end before the workflows were written: sign in, add a picture, have it described,
+  fetch it from the address it is given.
+- **The storage image is pinned** (`rustfs/rustfs:1.0.0`, in Compose and in the tests) instead of `latest`. The MinIO
+  image that was used before disappeared once (decision 11); an unpinned tag lets the next break arrive unannounced.
+- **Dependabot** opens weekly update PRs, grouped by minor and patch, so an update that breaks something fails CI instead
+  of being found later.
+
+**Not done.** Only `linux/amd64` images are built (building `arm64` with Maven under emulation is slow). The first
+publication has not been run yet: the two repository secrets have to be created first. There is no automatic deployment:
+the application needs Ollama and a graphics card, and it is a personal tool (see the README), so "publish the image" is
+where continuous delivery stops.

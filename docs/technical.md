@@ -82,7 +82,8 @@ trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
 | Models | [Ollama](https://ollama.com): `bge-m3` for embeddings, `qwen2.5vl:7b` for looking at pictures; a deterministic mock is the default |
 | Security | Spring Security resource server, HS256 JWT, BCrypt |
 | Concurrency | PostgreSQL queues for tagging and report review (`FOR UPDATE SKIP LOCKED`), workers on virtual threads |
-| Tests | JUnit 5, Mockito, Testcontainers, ArchUnit, Awaitility |
+| Tests | JUnit 5, Mockito, Testcontainers, ArchUnit, Awaitility (backend); Vitest, Testing Library (web) |
+| CI/CD | GitHub Actions, Docker (multi-stage builds), nginx, Docker Hub, Dependabot |
 
 ## Quick start
 
@@ -172,6 +173,33 @@ fill the library (`POST /api/admin/collection/runs`).
 > JSON is not valid UTF-8 and the server answers `400`. Pass such JSON on standard input instead
 > (`--data-binary @-` with a here-document) or from a UTF-8 file. [README.zh-TW.md](README.zh-TW.md)
 > shows this form.
+
+## Docker images, CI and releases
+
+**CI** (`.github/workflows/ci.yml`) runs on every push to `main` and every pull request, three jobs in parallel: the
+backend tests (`mvn verify`, with Testcontainers; no graphics card is needed because the models are mocks), the web
+checks (type check, tests, build) and a check that both Docker images build. The evaluation of the search
+(`eval/`) uses the real models and a real library, so it is not part of CI.
+
+**Images.** `Dockerfile` builds the backend (Maven, then a Java 21 runtime, running as a non-root user) and
+`web/Dockerfile` builds the web client (Vite, then nginx, which also passes `/api` on to the backend). Nothing secret
+is inside an image: the database, storage, secrets and model settings are environment variables.
+
+**Release.** Pushing a tag such as `v0.1.0` runs CI again and then publishes `ressellli/wtm-backend` and
+`ressellli/wtm-web` to Docker Hub as `0.1.0`, `0.1` and `latest`. It needs two repository secrets,
+`DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` (an access token, not the password).
+
+**Run it from the images.** [`docker-compose.app.yml`](docker-compose.app.yml) starts the web client, the backend,
+PostgreSQL and the object storage together; open http://localhost:8080. Ollama is not in a container: run it on the
+same machine, or leave the model providers on `mock`.
+
+```bash
+docker compose -f docker-compose.app.yml up -d
+```
+
+The backend reaches the object storage by its container name, but a browser cannot, so the temporary picture
+addresses use `WTM_STORAGE_PUBLIC_ENDPOINT` (default `http://localhost:9000`). If the application is opened from
+another machine, set it to an address that machine can reach.
 
 ## API
 

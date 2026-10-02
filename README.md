@@ -76,6 +76,16 @@ administrator sees both side by side ("user report: ...; suggested change: ...")
 The code is under the [MIT License](LICENSE). That covers the code, not everything in the repository: the example
 picture in `docs/images/confused-nick-young.jpeg` is a meme collected from the web and belongs to whoever made it.
 
+## Run it from Docker
+
+The images are on Docker Hub (`ressellli/wtm-backend`, `ressellli/wtm-web`). With the project's `.env` in place:
+
+```bash
+docker compose -f docker-compose.app.yml up -d   # then open http://localhost:8080
+```
+
+See [docs/technical.md](docs/technical.md#docker-images-ci-and-releases) for what it starts and how releases are made.
+
 ## More
 
 How to run it, the API, the design decisions and the known limitations are in

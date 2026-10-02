@@ -80,7 +80,8 @@ flowchart TB
 | 模型 | [Ollama](https://ollama.com):`bge-m3` 做 embedding、`qwen2.5vl:7b` 看圖;預設使用可重現的模擬模型 |
 | 安全 | Spring Security Resource Server、HS256 JWT、BCrypt |
 | 併發 | 標記與回報審查用的 PostgreSQL 佇列(`FOR UPDATE SKIP LOCKED`)、以虛擬執行緒執行的背景工作 |
-| 測試 | JUnit 5、Mockito、Testcontainers、ArchUnit、Awaitility |
+| 測試 | JUnit 5、Mockito、Testcontainers、ArchUnit、Awaitility(後端);Vitest、Testing Library(前端) |
+| CI/CD | GitHub Actions、Docker(多階段建置)、nginx、Docker Hub、Dependabot |
 
 ## 快速開始
 
@@ -165,6 +166,30 @@ EOF
 > `curl` 的 `-d '...'` 參數裡,Windows 會用舊的系統編碼把參數交給 `curl.exe`,送出的 JSON 不是合法的 UTF-8,
 > 伺服器會回 `400`。所以含中文的內容請像上面這樣用 `--data-binary @-` 從標準輸入傳入(或存成 UTF-8 檔案後用
 > `--data-binary @檔名`)。
+
+## Docker 映像檔、CI 與發布
+
+**CI**(`.github/workflows/ci.yml`)在每次推到 `main` 和每個 pull request 時執行,三個工作並行:後端測試(`mvn verify`,
+用 Testcontainers;因為模型是 mock,不需要顯示卡)、前端檢查(型別檢查、測試、建置),以及確認兩個 Docker 映像檔建得起來。
+搜尋評測(`eval/`)要用真模型和真實圖庫,所以不在 CI 裡。
+
+**映像檔。** `Dockerfile` 建置後端(Maven 編譯,再放進 Java 21 執行環境,以非 root 使用者執行);`web/Dockerfile`
+建置前端(Vite 編譯,再放進 nginx,由 nginx 把 `/api` 轉給後端)。映像檔裡沒有任何秘密:資料庫、儲存、密碼與模型設定
+都用環境變數傳入。
+
+**發布。** 推上像 `v0.1.0` 這樣的 tag,會先再跑一次 CI,通過後把 `ressellli/wtm-backend` 與 `ressellli/wtm-web`
+以 `0.1.0`、`0.1`、`latest` 三個標籤發布到 Docker Hub。需要在倉庫設定兩個 secret:`DOCKERHUB_USERNAME` 與
+`DOCKERHUB_TOKEN`(存取權杖,不是密碼)。
+
+**用映像檔執行。** [`docker-compose.app.yml`](docker-compose.app.yml) 會一次啟動前端、後端、PostgreSQL 與物件儲存,
+開 http://localhost:8080 即可。Ollama 不在容器裡:請在同一台機器上執行它,或把模型維持在 `mock`。
+
+```bash
+docker compose -f docker-compose.app.yml up -d
+```
+
+後端用容器名稱連物件儲存,但瀏覽器連不到那個名稱,所以暫時的圖片位址使用 `WTM_STORAGE_PUBLIC_ENDPOINT`
+(預設 `http://localhost:9000`)。如果是從另一台機器開啟應用程式,要把它設成那台機器連得到的位址。
 
 ## API
 
