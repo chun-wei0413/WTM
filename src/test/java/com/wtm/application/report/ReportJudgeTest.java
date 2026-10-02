@@ -129,6 +129,14 @@ class ReportJudgeTest {
     }
 
     @Test
+    void sayingItIsNotAMemeIsLeftToAPersonEvenWhenTheModelDisagrees() {
+        var open = List.of(newcomer(ReportReason.NOT_A_MEME), newcomer(ReportReason.NOT_A_MEME));
+
+        assertThat(judge.decide(open, keep())).as("the model finds it a meme").isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(open, change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+    }
+
+    @Test
     void aModelThatCallsItNotAMemeIsLeftToAPerson() {
         var open = List.of(newcomer(ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_TAGS),
                 newcomer(ReportReason.WRONG_TAGS));

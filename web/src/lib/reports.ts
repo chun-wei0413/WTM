@@ -3,11 +3,12 @@ import type { ReportCase, ReportReason, ReviewStatus } from '../api/types';
 export const REASON_LABELS: Record<ReportReason, string> = {
   WRONG_TAGS: '標籤不精確',
   WRONG_MEANING: '描述不貼切',
+  NOT_A_MEME: '這不是梗圖',
   INAPPROPRIATE: '不適合放在圖庫',
   OTHER: '其他問題',
 };
 
-export const REASON_ORDER: ReportReason[] = ['WRONG_TAGS', 'WRONG_MEANING', 'INAPPROPRIATE', 'OTHER'];
+export const REASON_ORDER: ReportReason[] = ['WRONG_TAGS', 'WRONG_MEANING', 'NOT_A_MEME', 'INAPPROPRIATE', 'OTHER'];
 
 export const REVIEW_LABELS: Record<ReviewStatus, string> = {
   PENDING: '排隊等影像模型',

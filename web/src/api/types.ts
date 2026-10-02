@@ -137,7 +137,7 @@ export interface CollectionRun {
   finishedAt: string | null;
 }
 
-export type ReportReason = 'WRONG_TAGS' | 'WRONG_MEANING' | 'INAPPROPRIATE' | 'OTHER';
+export type ReportReason = 'WRONG_TAGS' | 'WRONG_MEANING' | 'NOT_A_MEME' | 'INAPPROPRIATE' | 'OTHER';
 
 /** What the vision model proposes after looking at a reported meme again. */
 export interface ReportSuggestion {

@@ -200,6 +200,24 @@ class ReportApiTest extends IntegrationTestBase {
         assertThat(automaticEntry(admin, memeId)).isNull();
     }
 
+    @Test
+    void sayingAPictureIsNotAMemeReachesTheAdministratorWhoDecidesWhateverTheModelThinks() throws Exception {
+        String admin = adminToken();
+        String memeId = publishedMeme(admin);
+
+        // The mock model finds nothing wrong when a complaint says "[keep]"; for a question of whether the picture
+        // belongs, that must still not close the reports by itself.
+        report(ordinaryUserToken(), memeId, "NOT_A_MEME", "[keep] 這只是一張照片");
+        report(ordinaryUserToken(), memeId, "NOT_A_MEME", "不是梗圖");
+
+        JsonNode theCase = await().atMost(PATIENCE).pollInterval(Duration.ofMillis(200))
+                .until(() -> caseOf(admin, memeId), c -> c != null && "DONE".equals(c.path("review").path("status").asText()));
+        assertThat(theCase.get("reports").findValuesAsText("reason")).containsOnly("NOT_A_MEME");
+        Thread.sleep(500);
+        assertThat(caseOf(admin, memeId)).isNotNull();
+        assertThat(automaticEntry(admin, memeId)).isNull();
+    }
+
     // -- limits ----------------------------------------------------------------------------
 
     @Test

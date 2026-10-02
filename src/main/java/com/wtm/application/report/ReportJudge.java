@@ -43,7 +43,7 @@ public class ReportJudge {
 
     public Outcome decide(List<OpenReport> open, Suggestion suggestion) {
         // Anything about whether a picture belongs in the library at all is a person's call.
-        if (open.isEmpty() || open.stream().anyMatch(r -> r.reason() == ReportReason.INAPPROPRIATE)
+        if (open.isEmpty() || open.stream().anyMatch(r -> r.reason().questionsWhetherItBelongs())
                 || !suggestion.isMeme()) {
             return Outcome.NEEDS_ADMINISTRATOR;
         }

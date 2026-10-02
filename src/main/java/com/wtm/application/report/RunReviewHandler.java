@@ -94,6 +94,7 @@ public class RunReviewHandler {
         String label = switch (report.reason()) {
             case WRONG_TAGS -> "標籤不精確";
             case WRONG_MEANING -> "描述不貼切";
+            case NOT_A_MEME -> "這不是梗圖";
             case INAPPROPRIATE -> "不適合放在圖庫";
             case OTHER -> "其他問題";
         };

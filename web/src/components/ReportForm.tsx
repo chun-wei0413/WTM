@@ -51,7 +51,7 @@ export function ReportForm({ templateId, onSent, onCancel }: Props) {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={2}
-          placeholder="例如:這張其實是在諷刺加班,不是在慶祝"
+          placeholder="例如:這只是一張生活照,不是梗圖"
         />
         <span className={tooLong ? 'hint counter field-error' : 'hint counter'}>
           {Array.from(comment).length} / {MAX_COMMENT_LENGTH}

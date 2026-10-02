@@ -390,6 +390,10 @@ administrator the same effort as finding the mistake alone.
   The administrator sees the complaints and the proposal side by side and chooses: adopt, dismiss, ask again, or
   withdraw the meme. The line is a table claimed with `FOR UPDATE SKIP LOCKED`, like tagging, with one row per
   meme: several reports about the same meme share one analysis, and a later report starts it over.
+- **"This is not a meme" is a reason of its own.** The first collection from a PTT board filled the library with
+  photos of funny things. The model had called most of them memes, so its own judgement could not be trusted to catch
+  them, and a report about whether a picture belongs (this reason, or "should not be in the library") is never
+  closed or adopted by the rules, whatever the model answers. A person decides.
 - **The model proposes, a person decides.** Nothing about a meme changes until the administrator adopts the proposal,
   because the complaint may be wrong, the model may agree with a wrong complaint, and either may be an attempt to
   steer the library. The complaint is placed in the prompt as quoted opinion to weigh against the picture, with its

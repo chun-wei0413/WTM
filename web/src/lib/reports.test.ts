@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ReportCase, ReviewStatus } from '../api/types';
-import { commentTooLong, diffList, isReviewing, sameText } from './reports';
+import { REASON_LABELS, REASON_ORDER, commentTooLong, diffList, isReviewing, sameText } from './reports';
 
 const caseWith = (status: ReviewStatus | null): ReportCase => ({
   templateId: 't',
@@ -41,6 +41,14 @@ describe('waiting for the model', () => {
   it('stops asking once everything is answered, failed or never asked', () => {
     expect(isReviewing([caseWith('DONE'), caseWith('FAILED'), caseWith(null)])).toBe(false);
     expect(isReviewing([])).toBe(false);
+  });
+});
+
+describe('report reasons', () => {
+  it('has a label for every reason, and offers every one of them', () => {
+    expect(REASON_ORDER).toHaveLength(Object.keys(REASON_LABELS).length);
+    expect(REASON_LABELS.NOT_A_MEME).toBe('這不是梗圖');
+    expect(new Set(REASON_ORDER).size).toBe(REASON_ORDER.length);
   });
 });
 

@@ -283,6 +283,10 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **The web UI was checked by hand in a browser, with no automated browser (end-to-end) tests.** The
   template editor in particular has only been tried at desktop width; the other pages were also checked on
   a phone-sized screen and in dark mode.
+- **PTT's 笨板 is a poor source of memes.** Most of its pictures are photos of funny real-life things, news and
+  screenshots, not pictures people send to answer someone. Of the 50 that were published, 41 were withdrawn by hand
+  after review, and the board is no longer worth collecting. Users can report a picture as "not a meme", which is
+  always left to the administrator.
 - **The vision model decides whether a picture is a meme, and it is cautious.** Of 201 collected pictures it
   withdrew 35, including six well-known Imgflip templates. Withdrawn pictures can be looked at and brought back by
   an administrator.

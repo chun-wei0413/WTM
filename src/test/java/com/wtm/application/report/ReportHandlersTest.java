@@ -271,6 +271,17 @@ class ReportHandlersTest {
     }
 
     @Test
+    void theModelIsToldWhenPeopleSayItIsNotAMeme() {
+        theModelAnswers(suggestion(), List.of(report(ReportReason.NOT_A_MEME, "只是一張生活照")));
+
+        runner().handle(memeId);
+
+        ArgumentCaptor<ReviewRequest> asked = ArgumentCaptor.forClass(ReviewRequest.class);
+        verify(tagger).reassess(any(), eq("image/png"), asked.capture());
+        assertThat(asked.getValue().complaints()).containsExactly("這不是梗圖:只是一張生活照");
+    }
+
+    @Test
     void whenThereIsNothingLeftToLookAtTheReviewIsDropped() {
         when(reads.findById(memeId)).thenReturn(Optional.of(view("APPROVED")));
         when(reports.openAbout(memeId)).thenReturn(List.of());
