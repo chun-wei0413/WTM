@@ -11,6 +11,9 @@ export function saveBlob(blob: Blob, filename: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
-export function fileNameFor(memeId: string, blob: Blob): string {
-  return `meme-${memeId.slice(0, 8)}.${blob.type === 'image/jpeg' ? 'jpg' : 'png'}`;
+const EXTENSIONS: Record<string, string> = { 'image/jpeg': 'jpg', 'image/gif': 'gif', 'image/png': 'png' };
+
+/** A file name for a downloaded picture: the given base name with the extension its type calls for. */
+export function fileNameFor(base: string, blob: Blob): string {
+  return `${base}.${EXTENSIONS[blob.type] ?? 'png'}`;
 }

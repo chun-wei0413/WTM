@@ -94,6 +94,43 @@ describe('requests', () => {
     expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ url: 'https://example.com/m.jpg', title: null });
   });
 
+  it('adds and removes a favorite with the meme id in the path', async () => {
+    respond(undefined, { status: 204 });
+
+    await api.favorites.add('t/1');
+    await api.favorites.remove('t/1');
+
+    expect(calls.map((c) => [c.init.method, c.url])).toEqual([
+      ['PUT', '/api/favorites/t%2F1'],
+      ['DELETE', '/api/favorites/t%2F1'],
+    ]);
+  });
+
+  it('asks for random memes and the hot searches with a count', async () => {
+    respond([]);
+
+    await api.library.random(6);
+    await api.library.hotSearches(5);
+
+    expect(calls.map((c) => c.url)).toEqual(['/api/library/random?limit=6', '/api/library/hot-searches?limit=5']);
+  });
+
+  it('fetches a library picture as a blob, with the token', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string, init: RequestInit) => {
+        calls.push({ url, init });
+        return new Response(new Blob(['png-bytes'], { type: 'image/png' }));
+      }),
+    );
+
+    const blob = await api.library.image('t1');
+
+    expect(blob.type).toBe('image/png');
+    expect(calls[0]?.url).toBe('/api/library/t1/image');
+    expect(calls[0]?.init.headers).toMatchObject({ Authorization: 'Bearer the-token' });
+  });
+
   it('returns nothing for a 204', async () => {
     respond(undefined, { status: 204 });
 

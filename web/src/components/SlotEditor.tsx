@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import type { Slot } from '../api/types';
 import {
   isBigEnough,
@@ -19,6 +19,10 @@ interface Props {
   selected: number | null;
   /** True for a retired template: slots can be looked at but not changed. */
   disabled?: boolean;
+  /** Drawn on top of the picture and under the slot outlines, in image pixels (for example a text preview). */
+  overlay?: ReactNode;
+  /** Whether each slot shows its number. Turn off when the overlay already shows what is in the slot. */
+  showLabels?: boolean;
   onSelect: (slotNo: number | null) => void;
   onChange: (slots: Slot[]) => void;
 }
@@ -48,7 +52,17 @@ const rectOf = (s: Slot): Rect => ({ x: s.x, y: s.y, width: s.width, height: s.h
  * slot, drag a slot to move it, drag a handle to resize it. All positions are in image pixels, so they
  * are exactly what gets saved.
  */
-export function SlotEditor({ imageUrl, imageSize, slots, selected, disabled = false, onSelect, onChange }: Props) {
+export function SlotEditor({
+  imageUrl,
+  imageSize,
+  slots,
+  selected,
+  disabled = false,
+  overlay,
+  showLabels = true,
+  onSelect,
+  onChange,
+}: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const drag = useRef<Drag | null>(null);
   const [preview, setPreview] = useState<Rect | null>(null);
@@ -171,6 +185,7 @@ export function SlotEditor({ imageUrl, imageSize, slots, selected, disabled = fa
         onPointerCancel={onUp}
       >
         <image href={imageUrl} width={imageSize.width} height={imageSize.height} preserveAspectRatio="none" />
+        {overlay}
         {slots.map((slot) => {
           const isSelected = slot.slotNo === selected;
           return (
@@ -183,16 +198,18 @@ export function SlotEditor({ imageUrl, imageSize, slots, selected, disabled = fa
                 height={slot.height}
                 onPointerDown={(e) => onSlotDown(e, slot)}
               />
-              <text
-                className="slot-label"
-                x={slot.x + slot.width / 2}
-                y={slot.y + slot.height / 2}
-                fontSize={Math.min(18 * scale, slot.height * 0.6)}
-                textAnchor="middle"
-                dominantBaseline="central"
-              >
-                {slot.slotNo}
-              </text>
+              {showLabels && (
+                <text
+                  className="slot-label"
+                  x={slot.x + slot.width / 2}
+                  y={slot.y + slot.height / 2}
+                  fontSize={Math.min(18 * scale, slot.height * 0.6)}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                >
+                  {slot.slotNo}
+                </text>
+              )}
             </g>
           );
         })}

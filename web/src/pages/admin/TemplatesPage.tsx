@@ -90,7 +90,7 @@ export function TemplatesPage() {
     <div className="page">
       <div className="page-header">
         <div>
-          <h1>模板管理</h1>
+          <h1>圖庫管理</h1>
           <p className="lead">上傳梗圖模板、標出文字要放的位置,並描述這個梗的意思。核准之後,使用者才找得到它。</p>
         </div>
         <div className="actions">

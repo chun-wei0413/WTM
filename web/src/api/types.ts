@@ -81,12 +81,11 @@ export interface MemeSummary {
   createdAt: string;
 }
 
-export interface SearchResult {
+/** One meme of the library, as the browsing pages show it. */
+export interface LibraryItem {
   templateId: string;
   name: string;
-  score: number;
   imageUrl: string;
-  slots: Slot[];
   /** What the picture means, as written by the vision model or an administrator. */
   meaning: string | null;
   tags: string[];
@@ -96,6 +95,16 @@ export interface SearchResult {
   sourceType: string | null;
   sourceUrl: string | null;
   attribution: string | null;
+}
+
+export interface SearchResult extends LibraryItem {
+  score: number;
+  slots: Slot[];
+}
+
+export interface HotSearch {
+  term: string;
+  searches: number;
 }
 
 export interface IndexSyncResult {

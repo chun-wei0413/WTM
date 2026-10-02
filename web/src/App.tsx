@@ -1,9 +1,10 @@
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
+import { FavoritesProvider } from './favorites/FavoritesContext';
 import { Layout } from './components/Layout';
-import { CreatePage } from './pages/CreatePage';
 import { LoginPage } from './pages/LoginPage';
-import { MyMemesPage } from './pages/MyMemesPage';
+import { EditorPage } from './pages/EditorPage';
+import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './pages/SearchPage';
 import { CollectionPage } from './pages/admin/CollectionPage';
 import { TemplateEditorPage } from './pages/admin/TemplateEditorPage';
@@ -13,7 +14,11 @@ function RequireAuth() {
   const { user } = useAuth();
   const location = useLocation();
   if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  return <Outlet />;
+  return (
+    <FavoritesProvider>
+      <Outlet />
+    </FavoritesProvider>
+  );
 }
 
 /** Hides the admin pages from everyone else. The server enforces this too; this only keeps the screens tidy. */
@@ -30,8 +35,8 @@ export function App() {
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
           <Route index element={<SearchPage />} />
-          <Route path="generate" element={<CreatePage />} />
-          <Route path="memes" element={<MyMemesPage />} />
+          <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="create" element={<EditorPage />} />
           <Route element={<RequireAdmin />}>
             <Route path="admin/collection" element={<CollectionPage />} />
             <Route path="admin/templates" element={<TemplatesPage />} />

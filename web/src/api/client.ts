@@ -2,8 +2,10 @@ import type {
   CollectionRun,
   CollectionSource,
   GenerationView,
+  HotSearch,
   IngestResult,
   IndexSyncResult,
+  LibraryItem,
   LibraryStats,
   LoginResponse,
   MemeProfile,
@@ -128,6 +130,27 @@ export const api = {
   async downloadMeme(memeId: string): Promise<Blob> {
     const response = await send('GET', `/api/memes/${enc(memeId)}/image`, {});
     return response.blob();
+  },
+
+  library: {
+    /** Memes picked at random from the published library. */
+    random: (limit = 12) => request<LibraryItem[]>('GET', `/api/library/random?limit=${limit}`),
+
+    hotSearches: (limit = 8) => request<HotSearch[]>('GET', `/api/library/hot-searches?limit=${limit}`),
+
+    /** The picture as a file, fetched through the application so a canvas may draw it and a download works. */
+    async image(templateId: string): Promise<Blob> {
+      const response = await send('GET', `/api/library/${enc(templateId)}/image`, {});
+      return response.blob();
+    },
+  },
+
+  favorites: {
+    list: () => request<LibraryItem[]>('GET', '/api/favorites'),
+
+    add: (templateId: string) => request<void>('PUT', `/api/favorites/${enc(templateId)}`),
+
+    remove: (templateId: string) => request<void>('DELETE', `/api/favorites/${enc(templateId)}`),
   },
 
   admin: {

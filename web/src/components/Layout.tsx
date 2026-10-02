@@ -14,10 +14,10 @@ export function Layout() {
           <NavLink to="/" end>
             找梗圖
           </NavLink>
-          <NavLink to="/generate">產生梗圖</NavLink>
-          <NavLink to="/memes">我的梗圖</NavLink>
+          <NavLink to="/favorites">梗圖收藏</NavLink>
+          <NavLink to="/create">梗圖模板</NavLink>
           {user?.isAdmin && <NavLink to="/admin/collection">圖庫收集</NavLink>}
-          {user?.isAdmin && <NavLink to="/admin/templates">模板管理</NavLink>}
+          {user?.isAdmin && <NavLink to="/admin/templates">圖庫管理</NavLink>}
         </nav>
         <div className="topbar-user">
           <span className="username" title={user?.isAdmin ? '管理員' : undefined}>
