@@ -7,6 +7,11 @@
 # or leave WTM_*_PROVIDER at "mock" to try the application with fake models.
 #
 # IMAGE_NAMESPACE and WTM_VERSION choose which images to run (defaults below).
+#
+# The project has its own name, so these containers are never mixed up with the ones of docker-compose.yml
+# (the development database and storage), which would otherwise share the default name "wtm".
+name: wtm-app
+
 services:
   web:
     image: ${IMAGE_NAMESPACE:-russellli}/wtm-web:${WTM_VERSION:-latest}
