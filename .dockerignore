@@ -1,0 +1,14 @@
+# What the backend image must never contain: secrets, build output, the web client, local data.
+.git
+.github
+.env
+.env.*
+!.env.example
+target
+web
+docs
+eval
+scripts
+*.log
+.idea
+.vscode

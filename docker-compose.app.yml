@@ -1,0 +1,70 @@
+# The whole application from published images:  docker compose -f docker-compose.app.yml up -d
+# Then open http://localhost:8080
+#
+# Secrets and the data folder come from .env (create it with scripts/init-env.ps1, or by hand from .env.example).
+# The models are not in a container: run Ollama on this machine (https://ollama.com) with
+#   ollama pull bge-m3 && ollama pull qwen2.5vl:7b
+# or leave WTM_*_PROVIDER at "mock" to try the application with fake models.
+#
+# IMAGE_NAMESPACE and WTM_VERSION choose which images to run (defaults below).
+services:
+  web:
+    image: ${IMAGE_NAMESPACE:-ressellli}/wtm-web:${WTM_VERSION:-latest}
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+  backend:
+    image: ${IMAGE_NAMESPACE:-ressellli}/wtm-backend:${WTM_VERSION:-latest}
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/wtm
+      DB_USERNAME: ${DB_USERNAME:-wtm}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is not set - run scripts/init-env.ps1}
+      WTM_JWT_SECRET: ${WTM_JWT_SECRET:?WTM_JWT_SECRET is not set - run scripts/init-env.ps1}
+      WTM_ADMIN_USERNAME: ${WTM_ADMIN_USERNAME:-admin}
+      WTM_ADMIN_PASSWORD: ${WTM_ADMIN_PASSWORD:?WTM_ADMIN_PASSWORD is not set - run scripts/init-env.ps1}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:?S3_ACCESS_KEY is not set - run scripts/init-env.ps1}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:?S3_SECRET_KEY is not set - run scripts/init-env.ps1}
+      # The backend reaches the store by its container name; a browser is given the published address.
+      WTM_STORAGE_ENDPOINT: http://object-storage:9000
+      WTM_STORAGE_PUBLIC_ENDPOINT: ${WTM_STORAGE_PUBLIC_ENDPOINT:-http://localhost:9000}
+      WTM_VISION_PROVIDER: ${WTM_VISION_PROVIDER:-mock}
+      WTM_EMBEDDING_PROVIDER: ${WTM_EMBEDDING_PROVIDER:-mock}
+      WTM_VISION_OLLAMA_BASE_URL: http://host.docker.internal:11434
+      WTM_EMBEDDING_OLLAMA_BASE_URL: http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      object-storage:
+        condition: service_started
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: wtm
+      POSTGRES_USER: ${DB_USERNAME:-wtm}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is not set - run scripts/init-env.ps1}
+    volumes:
+      - wtm-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-wtm} -d wtm"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  object-storage:
+    image: rustfs/rustfs:1.0.0
+    environment:
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:?S3_ACCESS_KEY is not set - run scripts/init-env.ps1}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:?S3_SECRET_KEY is not set - run scripts/init-env.ps1}
+    ports:
+      - "9000:9000"   # pictures are shown straight from here (see WTM_STORAGE_PUBLIC_ENDPOINT)
+    volumes:
+      - wtm-images:/data
+
+volumes:
+  wtm-postgres:
+  wtm-images:
