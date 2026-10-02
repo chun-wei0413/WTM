@@ -140,38 +140,26 @@ npm run dev        # http://localhost:5173
 BASE=http://localhost:8080
 
 # 以管理員登入(密碼是 .env 裡的 MEMEHUB_ADMIN_PASSWORD)
-ADMIN=$(curl -s -H 'Content-Type: application/json' \
-  -d '{"username":"admin","password":"<MEMEHUB_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
+ADMIN=$(curl -s -H 'Content-Type: application/json'   -d '{"username":"admin","password":"<MEMEHUB_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
 
-# 上傳模板圖片、填寫描述、新增一個文字格、核准
-ID=$(curl -s -H "Authorization: Bearer $ADMIN" -F name="Drake" -F file=@drake.png \
-  $BASE/api/admin/templates | jq -r .id)
-curl -X PUT -H "Authorization: Bearer $ADMIN" -H 'Content-Type: application/json' \
-  --data-binary @- $BASE/api/admin/templates/$ID/profile <<'EOF'
-{"meaning":"拒絕一件事,偏好另一件事","usageExamples":["不想寫文件,只想直接寫程式"]}
-EOF
-curl -X POST -H "Authorization: Bearer $ADMIN" -H 'Content-Type: application/json' \
-  --data-binary @- $BASE/api/admin/templates/$ID/slots <<'EOF'
-{"slotNo":1,"role":"被拒絕的事物","maxChars":14,"x":300,"y":0,"width":300,"height":300}
-EOF
-curl -X POST -H "Authorization: Bearer $ADMIN" $BASE/api/admin/templates/$ID/approve
+# 加入一張你在網路上找到的梗圖:Nick Young 一臉困惑、周圍飄著「???」
+# ([docs/images/confused-nick-young.jpeg](docs/images/confused-nick-young.jpeg))。
+# 圖片只會存一份(同一張圖再加一次會被認出來並略過),並排進標籤佇列
+curl -s -H "Authorization: Bearer $ADMIN"   -F "files=@docs/images/confused-nick-young.jpeg" $BASE/api/admin/collection/files | jq
+
+# 過一會兒,視覺模型就寫好標籤了:這張圖的意思、什麼時候用、情緒,以及圖上的字(「???」)
+curl -s -H "Authorization: Bearer $ADMIN" $BASE/api/admin/collection/status | jq
 curl -X POST -H "Authorization: Bearer $ADMIN" $BASE/api/admin/index/sync   # 或等約 15 秒
 
-# 建立一般使用者帳號,然後要求產生梗圖
-curl -X POST -H 'Content-Type: application/json' \
-  -d '{"username":"alice","password":"a-long-password"}' $BASE/api/auth/register
-USER=$(curl -s -H 'Content-Type: application/json' \
-  -d '{"username":"alice","password":"a-long-password"}' $BASE/api/auth/login | jq -r .token)
-JOB=$(curl -s -H "Authorization: Bearer $USER" -H 'Content-Type: application/json' \
-  --data-binary @- $BASE/api/generations <<'EOF' | jq -r .jobId
-{"situation":"比起寫文件我寧可直接動手寫程式"}
+# 用描述情境的方式把它找回來
+curl -s -H "Authorization: Bearer $ADMIN" -G $BASE/api/templates/search   --data-urlencode "q@-" <<'EOF' | jq '.[0]'
+聽不懂對方剛剛在說什麼
 EOF
-)
-
-curl -s -H "Authorization: Bearer $USER" $BASE/api/generations/$JOB | jq   # 輪詢直到 COMPLETED
 ```
 
-結果會列出每個候選的圖片網址(有時效)與寫出的文案。`POST /api/memes/{id}/keep` 可以留下其中一張。
+第一筆就是上面那張圖,附有它的意思、標籤、情緒與來源。你也可以把圖片丟進資料夾的 `inbox`、貼網址
+(`POST /api/admin/collection/url`),或讓 Imgflip、Wikimedia Commons 這類來源自動填滿圖庫
+(`POST /api/admin/collection/runs`)。
 
 > **在 Windows 上要注意:** 範例用到 `curl` 與 `jq`,並在 Git Bash 這類 bash 環境執行。如果把中文直接寫在
 > `curl` 的 `-d '...'` 參數裡,Windows 會用舊的系統編碼把參數交給 `curl.exe`,送出的 JSON 不是合法的 UTF-8,

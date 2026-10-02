@@ -145,34 +145,26 @@ them itself).
 BASE=http://localhost:8080
 
 # Sign in as the administrator (password is MEMEHUB_ADMIN_PASSWORD in .env)
-ADMIN=$(curl -s -H 'Content-Type: application/json' \
-  -d '{"username":"admin","password":"<MEMEHUB_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
+ADMIN=$(curl -s -H 'Content-Type: application/json'   -d '{"username":"admin","password":"<MEMEHUB_ADMIN_PASSWORD>"}' $BASE/api/auth/login | jq -r .token)
 
-# Upload a template image, describe it, add a slot, approve it
-ID=$(curl -s -H "Authorization: Bearer $ADMIN" -F name="Drake" -F file=@drake.png \
-  $BASE/api/admin/templates | jq -r .id)
-curl -X PUT -H "Authorization: Bearer $ADMIN" -H 'Content-Type: application/json' \
-  -d '{"meaning":"Rejecting one thing in favor of another","usageExamples":["skip the docs, just write code"]}' \
-  $BASE/api/admin/templates/$ID/profile
-curl -X POST -H "Authorization: Bearer $ADMIN" -H 'Content-Type: application/json' \
-  -d '{"slotNo":1,"role":"rejected","maxChars":14,"x":300,"y":0,"width":300,"height":300}' \
-  $BASE/api/admin/templates/$ID/slots
-curl -X POST -H "Authorization: Bearer $ADMIN" $BASE/api/admin/templates/$ID/approve
+# Add a meme you found on the web: a picture of Nick Young looking confused, with "???" around him
+# ([docs/images/confused-nick-young.jpeg](docs/images/confused-nick-young.jpeg)). It is stored once
+# (a copy of the same picture is recognised and skipped) and queued for tagging.
+curl -s -H "Authorization: Bearer $ADMIN"   -F "files=@docs/images/confused-nick-young.jpeg" $BASE/api/admin/collection/files | jq
+
+# A moment later the vision model has written its tags: what the picture means, when to use it,
+# the feeling, and the text in it ("???")
+curl -s -H "Authorization: Bearer $ADMIN" $BASE/api/admin/collection/status | jq
 curl -X POST -H "Authorization: Bearer $ADMIN" $BASE/api/admin/index/sync   # or wait ~15 s
 
-# Create a user account and ask for memes
-curl -X POST -H 'Content-Type: application/json' \
-  -d '{"username":"alice","password":"a-long-password"}' $BASE/api/auth/register
-USER=$(curl -s -H 'Content-Type: application/json' \
-  -d '{"username":"alice","password":"a-long-password"}' $BASE/api/auth/login | jq -r .token)
-JOB=$(curl -s -H "Authorization: Bearer $USER" -H 'Content-Type: application/json' \
-  -d '{"situation":"I would rather write code than documentation"}' $BASE/api/generations | jq -r .jobId)
-
-curl -s -H "Authorization: Bearer $USER" $BASE/api/generations/$JOB | jq   # poll until COMPLETED
+# Find it again by describing the situation
+curl -s -H "Authorization: Bearer $ADMIN" -G $BASE/api/templates/search   --data-urlencode "q=when I do not understand what someone just said" | jq '.[0]'
 ```
 
-The result lists candidates with a time-limited `imageUrl` for each, plus the captions that were
-written. `POST /api/memes/{id}/keep` keeps one.
+The first hit is the picture above, with its meaning, tags, emotions and where it came from.
+You can also drop pictures into the `inbox` folder of the data folder, paste an address
+(`POST /api/admin/collection/url`), or let a source such as Imgflip or Wikimedia Commons
+fill the library (`POST /api/admin/collection/runs`).
 
 > The examples use `curl` and `jq` in a bash shell. On Windows, putting non-ASCII text (such as Chinese)
 > directly inside a `curl -d '...'` argument hands it to `curl.exe` in the legacy system encoding, so the
