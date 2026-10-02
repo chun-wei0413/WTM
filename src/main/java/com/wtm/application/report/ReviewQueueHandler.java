@@ -11,13 +11,15 @@ import java.util.UUID;
 public class ReviewQueueHandler {
 
     private final ReviewPort reviews;
+    private final ReportPolicy policy;
 
-    public ReviewQueueHandler(ReviewPort reviews) {
+    public ReviewQueueHandler(ReviewPort reviews, ReportPolicy policy) {
         this.reviews = reviews;
+        this.policy = policy;
     }
 
     public List<UUID> claim(int limit) {
-        return reviews.claim(limit);
+        return reviews.claim(limit, policy.dailyAnalyses());
     }
 
     public int recoverStale(Duration runningLongerThan, int maxAttempts) {

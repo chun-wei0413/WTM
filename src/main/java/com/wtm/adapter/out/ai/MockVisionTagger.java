@@ -27,9 +27,12 @@ class MockVisionTagger implements VisionTaggerPort {
     @Override
     public Suggestion reassess(byte[] image, String contentType, ReviewRequest request) {
         pretendToWork();
+        // A complaint containing "[keep]" makes the mock find nothing wrong, so both outcomes can be tested.
+        boolean keep = request.complaints().stream().anyMatch(c -> c.contains("[keep]"));
         return new Suggestion(true, "模擬重新分析:" + request.current().meaning(),
                 List.of("模擬情境一", "模擬情境二"), List.of("測試"), List.of("mock", "重新分析"), "",
-                "這是模擬的修改建議,依據 " + request.complaints().size() + " 則回報:" + String.join(" / ", request.complaints()));
+                "這是模擬的修改建議,依據 " + request.complaints().size() + " 則回報:" + String.join(" / ", request.complaints()),
+                keep);
     }
 
     @Override

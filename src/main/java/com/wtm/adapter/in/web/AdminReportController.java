@@ -1,6 +1,7 @@
 package com.wtm.adapter.in.web;
 
 import com.wtm.application.report.ListReportCasesHandler;
+import com.wtm.application.report.ListReportCasesHandler.AutomaticEntry;
 import com.wtm.application.report.ListReportCasesHandler.ReportCase;
 import com.wtm.application.report.ResolveReportsHandler;
 import java.util.List;
@@ -28,9 +29,16 @@ class AdminReportController {
         this.resolve = resolve;
     }
 
+    /** The reported memes that still need a decision. */
     @GetMapping
     List<ReportCase> cases() {
         return list.handle();
+    }
+
+    /** What the rules decided on their own in the last week, so it can be checked and taken back. */
+    @GetMapping("/automatic")
+    List<AutomaticEntry> automatic() {
+        return list.automatic();
     }
 
     /** Adopts the model's proposal as the meme's description and closes its reports. */
@@ -47,10 +55,17 @@ class AdminReportController {
         resolve.dismiss(templateId);
     }
 
-    /** Has the model look at the meme again. */
+    /** Has the model look at the meme again, whatever the daily budget says. */
     @PostMapping("/{templateId}/reanalyze")
     @ResponseStatus(HttpStatus.ACCEPTED)
     void reanalyze(@PathVariable UUID templateId) {
         resolve.reanalyze(templateId);
+    }
+
+    /** Takes back what the rules did to the meme: the earlier description, or the closed reports. */
+    @PostMapping("/{templateId}/undo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void undo(@PathVariable UUID templateId) {
+        resolve.undoAutomatic(templateId);
     }
 }

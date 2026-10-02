@@ -2,6 +2,7 @@ package com.wtm.application.port.out;
 
 import com.wtm.application.report.Suggestion;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,11 +16,20 @@ public interface ReviewPort {
     /**
      * Puts the meme in line. Does nothing when it already is; a finished or failed review is started over
      * (the earlier proposal stays visible until the new one replaces it).
+     *
+     * @param forced true when an administrator asked: such a review ignores the daily budget
      */
-    void request(UUID templateId);
+    void request(UUID templateId, boolean forced);
 
-    /** Atomically moves up to {@code limit} waiting memes to "being looked at" and returns them. */
-    List<UUID> claim(int limit);
+    /** When the vision model last looked at the meme because of a report, if it ever did. */
+    Optional<Instant> lastRunAt(UUID templateId);
+
+    /**
+     * Atomically moves up to {@code limit} waiting memes to "being looked at" and returns them. Memes that were
+     * not asked for by an administrator are only taken while fewer than {@code dailyBudget} looks have happened
+     * in the last 24 hours, whatever the number of reports.
+     */
+    List<UUID> claim(int limit, int dailyBudget);
 
     void complete(UUID templateId, Suggestion suggestion);
 
@@ -37,7 +47,8 @@ public interface ReviewPort {
      * @param status PENDING, RUNNING, DONE or FAILED
      * @param suggestion the latest proposal, if there has been one
      * @param error why the last attempt failed, if it did
+     * @param forced true when an administrator asked for this look; its result is theirs to act on
      */
-    record ReviewState(String status, Suggestion suggestion, String error) {
+    record ReviewState(String status, Suggestion suggestion, String error, boolean forced) {
     }
 }

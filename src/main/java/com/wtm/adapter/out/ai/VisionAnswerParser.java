@@ -43,7 +43,7 @@ final class VisionAnswerParser {
         boolean isMeme = readBoolean(root.get("isMeme"));
         Suggestion suggestion = new Suggestion(isMeme, text(root.get("meaning")), list(root.get("usageExamples")),
                 list(root.get("emotions")), list(root.get("tags")), text(root.get("imageText")),
-                text(root.get("reasoning")));
+                text(root.get("reasoning")), text(root.get("verdict")).toUpperCase().startsWith("KEEP"));
         if (isMeme && suggestion.meaning().isBlank()) {
             throw new LlmUnavailableException("The vision model proposed no meaning");
         }

@@ -15,7 +15,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Has the vision model look at one reported meme again, with the complaints in hand, and keeps its
- * proposal for the administrator. A failure puts the meme back in line, up to a limit.
+ * proposal. When the reports clearly call for it, the proposal is acted on without an administrator.
+ * A failure puts the meme back in line, up to a limit.
  */
 public class RunReviewHandler {
 
@@ -26,15 +27,20 @@ public class RunReviewHandler {
     private final VisionTaggerPort tagger;
     private final ReportPort reports;
     private final ReviewPort reviews;
+    private final ReportJudge judge;
+    private final ResolveReportsHandler resolver;
     private final int maxAttempts;
 
     public RunReviewHandler(TemplateReadPort templates, ObjectStoragePort storage, VisionTaggerPort tagger,
-                            ReportPort reports, ReviewPort reviews, int maxAttempts) {
+                            ReportPort reports, ReviewPort reviews, ReportJudge judge,
+                            ResolveReportsHandler resolver, int maxAttempts) {
         this.templates = templates;
         this.storage = storage;
         this.tagger = tagger;
         this.reports = reports;
         this.reviews = reviews;
+        this.judge = judge;
+        this.resolver = resolver;
         this.maxAttempts = maxAttempts;
     }
 
@@ -46,13 +52,40 @@ public class RunReviewHandler {
                 reviews.delete(templateId);   // gone, withdrawn or already dealt with: nothing left to look at
                 return;
             }
+            boolean askedByAdministrator = reviews.find(templateId).map(state -> state.forced()).orElse(false);
             byte[] image = storage.get(template.imageKey());
             Suggestion suggestion = tagger.reassess(image, TagTemplateHandler.contentTypeOf(template.imageKey()),
                     new ReviewRequest(template.profile(), open.stream().map(RunReviewHandler::describe).toList()));
             reviews.complete(templateId, suggestion);
+            if (!askedByAdministrator) {
+                actOn(templateId, suggestion);   // what an administrator asked for is theirs to decide
+            }
+        } catch (AutomaticActionFailed e) {
+            // The proposal is kept and the administrator decides; the failed shortcut is no reason to look again.
+            log.warn("Could not act on the proposal for {} by itself: {}", templateId, e.getMessage());
         } catch (RuntimeException e) {
             log.warn("Looking again at {} failed: {}", templateId, e.getMessage());
             reviews.fail(templateId, truncate(e.getMessage()), maxAttempts);
+        }
+    }
+
+    private void actOn(UUID templateId, Suggestion suggestion) {
+        try {
+            // Judge by who has reported by now, not by who had when the model started: it takes a while.
+            List<OpenReport> open = reports.openAbout(templateId);
+            switch (judge.decide(open, suggestion)) {
+                case AUTO_APPLY -> resolver.applyAutomatically(templateId);
+                case AUTO_DISMISS -> resolver.dismissAutomatically(templateId, suggestion.reasoning());
+                case NEEDS_ADMINISTRATOR -> { }
+            }
+        } catch (RuntimeException e) {
+            throw new AutomaticActionFailed(e);
+        }
+    }
+
+    private static final class AutomaticActionFailed extends RuntimeException {
+        AutomaticActionFailed(Throwable cause) {
+            super(cause.getMessage(), cause);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.wtm.config;
 
 import com.wtm.adapter.scheduling.GenerationProperties;
+import com.wtm.adapter.scheduling.ReportProperties;
 import com.wtm.adapter.scheduling.TaggingProperties;
 import com.wtm.adapter.security.SecurityProperties;
 import com.wtm.application.auth.BootstrapAdminHandler;
@@ -11,6 +12,8 @@ import com.wtm.application.library.GetLibraryImageHandler;
 import com.wtm.application.library.RandomMemesHandler;
 import com.wtm.application.library.SearchHistoryHandler;
 import com.wtm.application.report.ListReportCasesHandler;
+import com.wtm.application.report.ReportJudge;
+import com.wtm.application.report.ReportPolicy;
 import com.wtm.application.report.ResolveReportsHandler;
 import com.wtm.application.report.ReviewQueueHandler;
 import com.wtm.application.report.RunReviewHandler;
@@ -37,6 +40,7 @@ import com.wtm.application.generation.SubmitGenerationHandler;
 import com.wtm.application.port.out.EmbeddingPort;
 import com.wtm.application.port.out.FavoritePort;
 import com.wtm.application.port.out.LibraryBrowsePort;
+import com.wtm.application.port.out.ProfileHistoryPort;
 import com.wtm.application.port.out.ReportPort;
 import com.wtm.application.port.out.ReviewPort;
 import com.wtm.application.port.out.SearchLogPort;
@@ -258,32 +262,46 @@ class UseCaseConfig {
     }
 
     @Bean
-    SubmitReportHandler submitReportHandler(ReportPort reports, ReviewPort reviews) {
-        return new SubmitReportHandler(reports, reviews);
+    ReportPolicy reportPolicy(ReportProperties properties) {
+        return properties.toPolicy();
+    }
+
+    @Bean
+    ReportJudge reportJudge(ReportPort reports, ReportPolicy policy) {
+        return new ReportJudge(reports, policy);
+    }
+
+    @Bean
+    SubmitReportHandler submitReportHandler(ReportPort reports, ReviewPort reviews, ReportJudge judge,
+                                            ResolveReportsHandler resolver) {
+        return new SubmitReportHandler(reports, reviews, judge, resolver, Clock.systemUTC());
     }
 
     @Bean
     RunReviewHandler runReviewHandler(TemplateReadPort templates, ObjectStoragePort storage,
                                       VisionTaggerPort tagger, ReportPort reports, ReviewPort reviews,
+                                      ReportJudge judge, ResolveReportsHandler resolver,
                                       TaggingProperties properties) {
-        return new RunReviewHandler(templates, storage, tagger, reports, reviews, properties.maxAttempts());
+        return new RunReviewHandler(templates, storage, tagger, reports, reviews, judge, resolver,
+                properties.maxAttempts());
     }
 
     @Bean
-    ReviewQueueHandler reviewQueueHandler(ReviewPort reviews) {
-        return new ReviewQueueHandler(reviews);
+    ReviewQueueHandler reviewQueueHandler(ReviewPort reviews, ReportPolicy policy) {
+        return new ReviewQueueHandler(reviews, policy);
     }
 
     @Bean
     ListReportCasesHandler listReportCasesHandler(ReportPort reports, ReviewPort reviews, TemplateReadPort templates,
-                                                  ObjectStoragePort storage) {
-        return new ListReportCasesHandler(reports, reviews, templates, storage);
+                                                  ObjectStoragePort storage, ProfileHistoryPort history,
+                                                  ReportJudge judge) {
+        return new ListReportCasesHandler(reports, reviews, templates, storage, history, judge, Clock.systemUTC());
     }
 
     @Bean
     ResolveReportsHandler resolveReportsHandler(ReportPort reports, ReviewPort reviews,
-                                                TemplateRepository templates) {
-        return new ResolveReportsHandler(reports, reviews, templates);
+                                                TemplateRepository templates, ProfileHistoryPort history) {
+        return new ResolveReportsHandler(reports, reviews, templates, history, Clock.systemUTC());
     }
 
     @Bean

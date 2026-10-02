@@ -110,7 +110,8 @@ class OllamaVisionTagger implements VisionTaggerPort {
                   "emotions": 1 到 4 個情緒詞,
                   "tags": 3 到 8 個關鍵字:圖中有什麼人事物、主題、梗的類型,
                   "imageText": 圖片裡出現的文字,照原樣抄下來;沒有文字就給空字串,
-                  "reasoning": 用一到兩句話說明你和原本的描述有哪裡不同、為什麼這樣改
+                  "reasoning": 用一到兩句話說明你和原本的描述有哪裡不同、為什麼這樣改,
+                  "verdict": 原本的描述是否正確?完全正確、不需要修改就填 "KEEP",需要修改才填 "CHANGE"
                 }
                 """);
         return sb.toString();
