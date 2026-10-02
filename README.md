@@ -24,4 +24,11 @@ and the meme that fits comes back:
 
 <p align="center"><img src="docs/images/confused-nick-young.jpeg" alt="A smiling man looking confused, with question marks around him" width="300"></p>
 
+You can also describe **the picture itself**, the way you would to a friend who cannot remember
+its name: what it looks like, or the nickname people give it. Either of these finds the same meme:
+
+> **a smiling guy with question marks around his head**
+>
+> **confused Nick Young**
+
 *(Illustration of the intended behaviour; the picture is a meme collected from the web.)*
