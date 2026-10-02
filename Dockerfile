@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # The backend: a Spring Boot application. Build:  docker build -t wtm-backend .
 
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM maven:3-eclipse-temurin-24 AS build
 WORKDIR /build
 # Dependencies first, so a change to the code does not download them again.
 COPY pom.xml .
