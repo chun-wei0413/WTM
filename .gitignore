@@ -45,3 +45,7 @@ wtm-data/
 *.dump
 *.sql.gz
 *.bak
+
+# Results of the library search evaluation; baseline.json is the committed reference
+eval/results/*
+!eval/results/baseline.json

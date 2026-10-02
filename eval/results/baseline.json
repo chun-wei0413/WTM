@@ -1,0 +1,660 @@
+{
+  "at": "2026-10-02T12:18:33.465Z",
+  "limit": 10,
+  "summary": {
+    "n": 46,
+    "top1": 0.8260869565217391,
+    "top3": 0.9130434782608695,
+    "top10": 0.9782608695652174,
+    "mrr": 0.8732746721877156
+  },
+  "results": [
+    {
+      "q": "男朋友看到別的女生眼睛都直了",
+      "kind": "situation",
+      "expect": [
+        "Distracted Boyfriend"
+      ],
+      "rank": 1,
+      "top": [
+        "Distracted Boyfriend",
+        "I Bet He's Thinking About Other Women",
+        "未命名梗圖"
+      ],
+      "milliseconds": 4393.925499999999
+    },
+    {
+      "q": "兩個選項都想選,手懸在按鈕上滿頭大汗",
+      "kind": "situation",
+      "expect": [
+        "Two Buttons"
+      ],
+      "rank": 1,
+      "top": [
+        "Two Buttons",
+        "Blank Nut Button",
+        "Two Paths"
+      ],
+      "milliseconds": 235.91080000000056
+    },
+    {
+      "q": "一切都在燃燒,但我還是假裝沒事",
+      "kind": "situation",
+      "expect": [
+        "This Is Fine"
+      ],
+      "rank": 1,
+      "top": [
+        "This Is Fine",
+        "Hide the Pain Harold",
+        "Panik Kalm Panik"
+      ],
+      "milliseconds": 130.19450000000052
+    },
+    {
+      "q": "想法一格比一格更高端,腦袋越來越大",
+      "kind": "situation",
+      "expect": [
+        "Expanding Brain"
+      ],
+      "rank": 1,
+      "top": [
+        "Expanding Brain",
+        "Roll Safe Think About It",
+        "Commonsjak as CIA agent"
+      ],
+      "milliseconds": 126.88500000000022
+    },
+    {
+      "q": "老闆又改需求,我只能微笑硬撐",
+      "kind": "situation",
+      "expect": [
+        "Hide the Pain Harold"
+      ],
+      "rank": 9,
+      "top": [
+        "未命名梗圖",
+        "X, X Everywhere",
+        "One Does Not Simply"
+      ],
+      "milliseconds": 129.39570000000003
+    },
+    {
+      "q": "等了好久好久,等到變成骷髏",
+      "kind": "situation",
+      "expect": [
+        "Waiting Skeleton"
+      ],
+      "rank": 1,
+      "top": [
+        "Waiting Skeleton",
+        "未命名梗圖",
+        "Tuxedo Winnie The Pooh"
+      ],
+      "milliseconds": 110.02239999999983
+    },
+    {
+      "q": "我就爛 做什麼都倒楣",
+      "kind": "situation",
+      "expect": [
+        "Bad Luck Brian"
+      ],
+      "rank": null,
+      "top": [
+        "c'mon do something",
+        "Charlie Conspiracy (Always Sunny in Philidelphia)",
+        "X, X Everywhere"
+      ],
+      "milliseconds": 108.2510999999995
+    },
+    {
+      "q": "別人都在恐慌,只有我很淡定",
+      "kind": "situation",
+      "expect": [
+        "Panik Kalm Panik"
+      ],
+      "rank": 3,
+      "top": [
+        "Hide the Pain Harold",
+        "Commonsjak as Nate Higgers",
+        "Panik Kalm Panik"
+      ],
+      "milliseconds": 132.6871000000001
+    },
+    {
+      "q": "這個價錢已經是我能給的極限了",
+      "kind": "situation",
+      "expect": [
+        "Pawn Stars Best I Can Do"
+      ],
+      "rank": 1,
+      "top": [
+        "Pawn Stars Best I Can Do",
+        "未命名梗圖",
+        "UrubuPix4K"
+      ],
+      "milliseconds": 96.27040000000034
+    },
+    {
+      "q": "又來求大家支持我一次",
+      "kind": "situation",
+      "expect": [
+        "Bernie Sanders Once Again Asking",
+        "Bernie I Am Once Again Asking For Your Support"
+      ],
+      "rank": 1,
+      "top": [
+        "Bernie I Am Once Again Asking For Your Support",
+        "Epic Handshake",
+        "All My Homies Hate"
+      ],
+      "milliseconds": 124.45359999999982
+    },
+    {
+      "q": "你們兩個都是假的,互相指著對方",
+      "kind": "situation",
+      "expect": [
+        "spiderman pointing at spiderman",
+        "Spider Man Triple"
+      ],
+      "rank": 1,
+      "top": [
+        "spiderman pointing at spiderman",
+        "Spider Man Triple",
+        "The Scroll Of Truth"
+      ],
+      "milliseconds": 101.82049999999981
+    },
+    {
+      "q": "我跟你們不一樣",
+      "kind": "situation",
+      "expect": [
+        "Gus Fring we are not the same"
+      ],
+      "rank": 1,
+      "top": [
+        "Gus Fring we are not the same",
+        "Change My Mind",
+        "未命名梗圖"
+      ],
+      "milliseconds": 122.21290000000045
+    },
+    {
+      "q": "誰都不知道我其實是個科學家",
+      "kind": "situation",
+      "expect": [
+        "You know, I'm something of a scientist myself"
+      ],
+      "rank": 1,
+      "top": [
+        "You know, I'm something of a scientist myself",
+        "未命名梗圖",
+        "Hide the Pain Harold"
+      ],
+      "milliseconds": 137.28330000000005
+    },
+    {
+      "q": "三個人吵得面紅耳赤,誰都不讓誰",
+      "kind": "situation",
+      "expect": [
+        "American Chopper Argument"
+      ],
+      "rank": 4,
+      "top": [
+        "Spider Man Triple",
+        "where monkey",
+        "未命名梗圖"
+      ],
+      "milliseconds": 131.38850000000002
+    },
+    {
+      "q": "在偷看鄰居的窗戶",
+      "kind": "situation",
+      "expect": [
+        "Squidward window"
+      ],
+      "rank": 1,
+      "top": [
+        "Squidward window",
+        "未命名梗圖",
+        "未命名梗圖"
+      ],
+      "milliseconds": 132.83750000000055
+    },
+    {
+      "q": "怎麼離開 Vim",
+      "kind": "situation",
+      "expect": [
+        "How do I exit Vim Stack Overflow"
+      ],
+      "rank": 1,
+      "top": [
+        "How do I exit Vim Stack Overflow",
+        "Xzibit Vimy meme",
+        "Tuxedo Winnie The Pooh"
+      ],
+      "milliseconds": 123.8703000000005
+    },
+    {
+      "q": "選擇太多,車子在最後一刻猛然轉向另一條路",
+      "kind": "situation",
+      "expect": [
+        "Left Exit 12 Off Ramp"
+      ],
+      "rank": 1,
+      "top": [
+        "Left Exit 12 Off Ramp",
+        "未命名梗圖",
+        "The Rock Driving"
+      ],
+      "milliseconds": 108.86819999999989
+    },
+    {
+      "q": "背後房子燒起來了她還在笑",
+      "kind": "look",
+      "expect": [
+        "Disaster Girl"
+      ],
+      "rank": 2,
+      "top": [
+        "This Is Fine",
+        "Disaster Girl",
+        "Anime Girl Hiding from Terminator"
+      ],
+      "milliseconds": 116.85220000000027
+    },
+    {
+      "q": "女人對著貓大吼,貓一臉無辜坐在餐桌前",
+      "kind": "look",
+      "expect": [
+        "Woman Yelling At Cat"
+      ],
+      "rank": 1,
+      "top": [
+        "Woman Yelling At Cat",
+        "where monkey",
+        "Commonsjak as Troonjak"
+      ],
+      "milliseconds": 115.16890000000058
+    },
+    {
+      "q": "坐在桌子後面的人,桌上放著一個牌子",
+      "kind": "look",
+      "expect": [
+        "Change My Mind"
+      ],
+      "rank": 1,
+      "top": [
+        "Change My Mind",
+        "Domino Effect",
+        "Hide the Pain Harold"
+      ],
+      "milliseconds": 96.44260000000031
+    },
+    {
+      "q": "一個人指著蝴蝶問這是不是鴿子",
+      "kind": "look",
+      "expect": [
+        "Is This A Pigeon"
+      ],
+      "rank": 1,
+      "top": [
+        "Is This A Pigeon",
+        "BirdGame3AI",
+        "未命名梗圖"
+      ],
+      "milliseconds": 119.26900000000023
+    },
+    {
+      "q": "穿燕尾服的小熊維尼,看起來比較高級",
+      "kind": "look",
+      "expect": [
+        "Tuxedo Winnie The Pooh"
+      ],
+      "rank": 1,
+      "top": [
+        "Tuxedo Winnie The Pooh",
+        "Pawn Stars Best I Can Do",
+        "未命名梗圖"
+      ],
+      "milliseconds": 113.17579999999998
+    },
+    {
+      "q": "海鷗從平靜變成大叫再變成發光",
+      "kind": "look",
+      "expect": [
+        "Inhaling Seagull"
+      ],
+      "rank": 1,
+      "top": [
+        "Inhaling Seagull",
+        "Squidward window",
+        "Expanding Brain"
+      ],
+      "milliseconds": 108.10589999999956
+    },
+    {
+      "q": "小丑在化妝,越畫越誇張",
+      "kind": "look",
+      "expect": [
+        "Clown Applying Makeup"
+      ],
+      "rank": 1,
+      "top": [
+        "Clown Applying Makeup",
+        "Commonsjak as CIA agent",
+        "Scooby doo mask reveal"
+      ],
+      "milliseconds": 102.24379999999928
+    },
+    {
+      "q": "指著太陽穴的人,一臉我想到了很聰明的事",
+      "kind": "look",
+      "expect": [
+        "Roll Safe Think About It"
+      ],
+      "rank": 3,
+      "top": [
+        "Expanding Brain",
+        "Star Wars Yoda",
+        "Roll Safe Think About It"
+      ],
+      "milliseconds": 125.48369999999977
+    },
+    {
+      "q": "肌肉發達的柴犬跟哭哭的柴犬對比",
+      "kind": "look",
+      "expect": [
+        "Buff Doge vs. Cheems"
+      ],
+      "rank": 1,
+      "top": [
+        "Buff Doge vs. Cheems",
+        "This Is Fine",
+        "Inhaling Seagull"
+      ],
+      "milliseconds": 123.96180000000004
+    },
+    {
+      "q": "兩隻手用力握在一起的史詩級畫面",
+      "kind": "look",
+      "expect": [
+        "Epic Handshake"
+      ],
+      "rank": 1,
+      "top": [
+        "Epic Handshake",
+        "Pawn Stars Best I Can Do",
+        "Wolverine Remember"
+      ],
+      "milliseconds": 124.3737000000001
+    },
+    {
+      "q": "一個人手上拿著一堆UNO牌",
+      "kind": "look",
+      "expect": [
+        "UNO Draw 25 Cards"
+      ],
+      "rank": 1,
+      "top": [
+        "UNO Draw 25 Cards",
+        "Pawn Stars Best I Can Do",
+        "未命名梗圖"
+      ],
+      "milliseconds": 107.74659999999949
+    },
+    {
+      "q": "死神在敲門",
+      "kind": "look",
+      "expect": [
+        "Grim Reaper Knocking Door"
+      ],
+      "rank": 1,
+      "top": [
+        "Grim Reaper Knocking Door",
+        "未命名梗圖",
+        "Waiting Skeleton"
+      ],
+      "milliseconds": 122.69740000000002
+    },
+    {
+      "q": "智商鐘形曲線,最左邊跟最右邊的人一樣",
+      "kind": "look",
+      "expect": [
+        "Bell Curve"
+      ],
+      "rank": 1,
+      "top": [
+        "Bell Curve",
+        "Domino Effect",
+        "Blobslop"
+      ],
+      "milliseconds": 126.5040999999992
+    },
+    {
+      "q": "格魯拿著白板講他的計畫,四格",
+      "kind": "look",
+      "expect": [
+        "Gru's Plan"
+      ],
+      "rank": 1,
+      "top": [
+        "Gru's Plan",
+        "Charlie Conspiracy (Always Sunny in Philidelphia)",
+        "Boardroom Meeting Suggestion"
+      ],
+      "milliseconds": 108.27739999999994
+    },
+    {
+      "q": "Drake 一個嫌棄的手勢,一個喜歡的手勢",
+      "kind": "look",
+      "expect": [
+        "Drake Hotline Bling",
+        "Drake Blank"
+      ],
+      "rank": 1,
+      "top": [
+        "Drake Hotline Bling",
+        "No Yes",
+        "Drake Blank"
+      ],
+      "milliseconds": 100.18479999999909
+    },
+    {
+      "q": "到處都是巴斯光年指著遠方",
+      "kind": "look",
+      "expect": [
+        "X, X Everywhere"
+      ],
+      "rank": 1,
+      "top": [
+        "X, X Everywhere",
+        "Waiting Skeleton",
+        "Charlie Conspiracy (Always Sunny in Philidelphia)"
+      ],
+      "milliseconds": 112.56910000000062
+    },
+    {
+      "q": "三個頭的龍,每個頭表情不同",
+      "kind": "look",
+      "expect": [
+        "Three headed Dragon"
+      ],
+      "rank": 1,
+      "top": [
+        "Three headed Dragon",
+        "where monkey",
+        "未命名梗圖"
+      ],
+      "milliseconds": 102.80689999999959
+    },
+    {
+      "q": "一個人坐著睡覺,另一個人睜眼看著",
+      "kind": "look",
+      "expect": [
+        "Sleeping Shaq"
+      ],
+      "rank": 1,
+      "top": [
+        "Sleeping Shaq",
+        "I Bet He's Thinking About Other Women",
+        "Distracted Boyfriend"
+      ],
+      "milliseconds": 122.82990000000063
+    },
+    {
+      "q": "皮卡丘驚訝",
+      "kind": "nickname",
+      "expect": [
+        "Surprised Pikachu"
+      ],
+      "rank": 1,
+      "top": [
+        "Surprised Pikachu",
+        "Is This A Pigeon",
+        "You Guys are Getting Paid"
+      ],
+      "milliseconds": 117.32470000000103
+    },
+    {
+      "q": "痛苦面具老爺爺",
+      "kind": "nickname",
+      "expect": [
+        "Hide the Pain Harold"
+      ],
+      "rank": 1,
+      "top": [
+        "Hide the Pain Harold",
+        "Commonsjak as neutral",
+        "Pawn Stars Best I Can Do"
+      ],
+      "milliseconds": 122.5525000000016
+    },
+    {
+      "q": "嘲諷海綿寶寶",
+      "kind": "nickname",
+      "expect": [
+        "Mocking Spongebob"
+      ],
+      "rank": 7,
+      "top": [
+        "Imagination Spongebob",
+        "Evil Kermit",
+        "Apollo with dodgeball"
+      ],
+      "milliseconds": 102.20620000000054
+    },
+    {
+      "q": "憤怒的女人和貓",
+      "kind": "nickname",
+      "expect": [
+        "Woman Yelling At Cat"
+      ],
+      "rank": 1,
+      "top": [
+        "Woman Yelling At Cat",
+        "Commonsjak as Troonjak",
+        "未命名梗圖"
+      ],
+      "milliseconds": 124.52710000000116
+    },
+    {
+      "q": "我現在是船長了",
+      "kind": "nickname",
+      "expect": [
+        "I'm The Captain Now"
+      ],
+      "rank": 2,
+      "top": [
+        "未命名梗圖",
+        "I'm The Captain Now",
+        "未命名梗圖"
+      ],
+      "milliseconds": 99.34230000000025
+    },
+    {
+      "q": "絕對電影",
+      "kind": "nickname",
+      "expect": [
+        "Absolute Cinema"
+      ],
+      "rank": 1,
+      "top": [
+        "Absolute Cinema",
+        "Charlie Conspiracy (Always Sunny in Philidelphia)",
+        "Pawn Stars Best I Can Do"
+      ],
+      "milliseconds": 117.34829999999965
+    },
+    {
+      "q": "分心男友",
+      "kind": "name",
+      "expect": [
+        "Distracted Boyfriend"
+      ],
+      "rank": 1,
+      "top": [
+        "Distracted Boyfriend",
+        "I Bet He's Thinking About Other Women",
+        "Two Paths"
+      ],
+      "milliseconds": 123.51499999999942
+    },
+    {
+      "q": "Expanding Brain",
+      "kind": "name",
+      "expect": [
+        "Expanding Brain"
+      ],
+      "rank": 1,
+      "top": [
+        "Expanding Brain",
+        "Bell Curve",
+        "Roll Safe Think About It"
+      ],
+      "milliseconds": 99.93399999999929
+    },
+    {
+      "q": "Surprised Pikachu",
+      "kind": "name",
+      "expect": [
+        "Surprised Pikachu"
+      ],
+      "rank": 1,
+      "top": [
+        "Surprised Pikachu",
+        "Is This A Pigeon",
+        "Wolverine Remember"
+      ],
+      "milliseconds": 113.53139999999985
+    },
+    {
+      "q": "this is fine",
+      "kind": "name",
+      "expect": [
+        "This Is Fine"
+      ],
+      "rank": 1,
+      "top": [
+        "This Is Fine",
+        "Is This A Pigeon",
+        "Blobslop"
+      ],
+      "milliseconds": 102.1283999999996
+    },
+    {
+      "q": "Two Buttons",
+      "kind": "name",
+      "expect": [
+        "Two Buttons"
+      ],
+      "rank": 1,
+      "top": [
+        "Two Buttons",
+        "Blank Nut Button",
+        "Two Paths"
+      ],
+      "milliseconds": 107.76780000000144
+    }
+  ]
+}

@@ -253,6 +253,28 @@ absolute numbers as optimistic and use them to compare changes):
 - Looking at one picture takes the vision model **about 30 seconds** on one RTX 4060 (`qwen2.5vl:7b`), so
   collecting 200 pictures takes about an hour and a half to describe.
 
+### On the real library
+
+`eval/library-queries.json` holds 46 searches (situations, looks, nicknames, names) and the memes that answer them;
+`node scripts/eval-search.mjs` runs them against the running application and prints the hit rates and what was found
+instead for every miss. First measurement, on 171 searchable memes, with `bge-m3`:
+
+| Kind of search | n | first result | in top 3 | in top 10 |
+|---|---|---|---|---|
+| situation | 17 | 76% | 82% | 94% |
+| look | 18 | 89% | 100% | 100% |
+| nickname | 6 | 67% | 83% | 100% |
+| name | 5 | 100% | 100% | 100% |
+| **all** | 46 | **83%** | **91%** | **98%** |
+
+Median search time 117 ms; the first search after a quiet period took 4.4 s while the embedding model loaded.
+
+How far to trust it: the queries were written by the same person who built the library, and they only ask for
+well-known memes that have a proper name (the 50 PTT pictures are all called 「未命名梗圖」 and cannot be asked for by
+name, so none is in the set). Treat the numbers as an upper bound and as a way to compare changes. The misses are
+mostly bad descriptions, not bad search: *Bad Luck Brian* was described as "a surprised face", so no query about bad
+luck finds it.
+
 More detail, including an experiment that was **not** adopted and why, is in
 [docs/DECISIONS.md](docs/DECISIONS.md#5-hybrid-search-and-what-the-numbers-say-about-it).
 
