@@ -1,6 +1,10 @@
 import type {
+  CollectionRun,
+  CollectionSource,
   GenerationView,
+  IngestResult,
   IndexSyncResult,
+  LibraryStats,
   LoginResponse,
   MemeProfile,
   MemeSummary,
@@ -156,5 +160,25 @@ export const api = {
     retire: (id: string) => request<void>('POST', `/api/admin/templates/${enc(id)}/retire`),
 
     syncIndex: () => request<IndexSyncResult>('POST', '/api/admin/index/sync'),
+
+    collection: {
+      stats: () => request<LibraryStats>('GET', '/api/admin/collection/status'),
+
+      addFiles(files: File[]) {
+        const form = new FormData();
+        for (const file of files) form.append('files', file);
+        return request<IngestResult[]>('POST', '/api/admin/collection/files', { form });
+      },
+
+      addUrl: (url: string, title?: string) =>
+        request<IngestResult>('POST', '/api/admin/collection/url', { json: { url, title: title || null } }),
+
+      sources: () => request<CollectionSource[]>('GET', '/api/admin/collection/sources'),
+
+      startRun: (source: string, limit: number, options: Record<string, string>) =>
+        request<{ runId: string }>('POST', '/api/admin/collection/runs', { json: { source, limit, options } }),
+
+      runs: () => request<CollectionRun[]>('GET', '/api/admin/collection/runs'),
+    },
   },
 };

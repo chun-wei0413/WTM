@@ -87,10 +87,72 @@ export interface SearchResult {
   score: number;
   imageUrl: string;
   slots: Slot[];
+  /** What the picture means, as written by the vision model or an administrator. */
+  meaning: string | null;
+  tags: string[];
+  /** Text that appears in the picture itself. */
+  imageText: string | null;
+  /** IMGFLIP, WIKIMEDIA, PTT, UPLOAD, URL, INBOX … ; null for hand-made templates. */
+  sourceType: string | null;
+  sourceUrl: string | null;
+  attribution: string | null;
 }
 
 export interface IndexSyncResult {
   indexed: number;
   removed: number;
   failed: number;
+}
+
+export interface LibraryStats {
+  total: number;
+  approved: number;
+  retired: number;
+  waitingForTags: number;
+  beingTagged: number;
+  tagFailures: number;
+}
+
+export type IngestStatus = 'IMPORTED' | 'DUPLICATE' | 'REJECTED';
+
+/** What happened to one picture offered to the library. */
+export interface IngestResult {
+  fileName: string;
+  status: IngestStatus;
+  templateId: string | null;
+  reason: string | null;
+}
+
+export interface SourceOption {
+  key: string;
+  label: string;
+  defaultValue: string;
+}
+
+export interface CollectionSource {
+  id: string;
+  name: string;
+  description: string;
+  options: SourceOption[];
+}
+
+export interface RunCounts {
+  found: number;
+  imported: number;
+  duplicates: number;
+  rejected: number;
+  failed: number;
+}
+
+export type RunStatus = 'RUNNING' | 'COMPLETED' | 'FAILED';
+
+export interface CollectionRun {
+  id: string;
+  source: string;
+  options: string | null;
+  status: RunStatus;
+  counts: RunCounts;
+  message: string | null;
+  startedAt: string;
+  finishedAt: string | null;
 }

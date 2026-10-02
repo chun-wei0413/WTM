@@ -67,6 +67,33 @@ describe('requests', () => {
     expect(init?.headers).not.toHaveProperty('Content-Type');
   });
 
+  it('sends every picture of a batch under the same form field', async () => {
+    respond([]);
+
+    await api.admin.collection.addFiles([new File(['x'], 'a.png'), new File(['y'], 'b.png')]);
+
+    expect(calls[0]?.url).toBe('/api/admin/collection/files');
+    const files = (calls[0]?.init.body as FormData).getAll('files');
+    expect(files.map((f) => (f as File).name)).toEqual(['a.png', 'b.png']);
+  });
+
+  it('starts a collection run with the source, the limit and the changed options', async () => {
+    respond({ runId: 'r1' }, { status: 202 });
+
+    await api.admin.collection.startRun('IMGFLIP', 20, { query: '困惑' });
+
+    expect(calls[0]?.url).toBe('/api/admin/collection/runs');
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ source: 'IMGFLIP', limit: 20, options: { query: '困惑' } });
+  });
+
+  it('adds a picture by address, sending no title when there is none', async () => {
+    respond({ fileName: 'u', status: 'IMPORTED', templateId: 't', reason: null });
+
+    await api.admin.collection.addUrl('https://example.com/m.jpg');
+
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ url: 'https://example.com/m.jpg', title: null });
+  });
+
   it('returns nothing for a 204', async () => {
     respond(undefined, { status: 204 });
 
