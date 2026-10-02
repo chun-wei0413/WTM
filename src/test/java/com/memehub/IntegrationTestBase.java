@@ -58,6 +58,7 @@ public abstract class IntegrationTestBase {
         registry.add("memehub.llm.mock.min-latency-ms", () -> "0");
         registry.add("memehub.llm.mock.max-latency-ms", () -> "20");
         registry.add("memehub.generation.poll-interval", () -> "PT0.1S");
+        registry.add("memehub.tagging.poll-interval", () -> "PT0.1S");
         // Tests trigger the index sync themselves so results are deterministic.
         registry.add("memehub.index.scheduler-enabled", () -> "false");
     }

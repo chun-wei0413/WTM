@@ -35,8 +35,15 @@ class JdkImageInspectorTest {
     }
 
     @Test
-    void rejectsGif() throws Exception {
-        assertThatThrownBy(() -> inspector.inspect(encode("gif", 10, 10)))
+    void readsGifSize() throws Exception {
+        ImageInfo info = inspector.inspect(encode("gif", 160, 90));
+
+        assertThat(info).isEqualTo(new ImageInfo(160, 90, "gif", "image/gif"));
+    }
+
+    @Test
+    void rejectsFormatsItCannotReadOrKeep() throws Exception {
+        assertThatThrownBy(() -> inspector.inspect(encode("bmp", 10, 10)))
                 .isInstanceOf(UnsupportedImageException.class);
     }
 

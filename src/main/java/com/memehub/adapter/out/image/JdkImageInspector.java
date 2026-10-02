@@ -42,7 +42,9 @@ class JdkImageInspector implements ImageInspectorPort {
                 return switch (format) {
                     case "png" -> new ImageInfo(width, height, "png", "image/png");
                     case "jpeg", "jpg" -> new ImageInfo(width, height, "jpg", "image/jpeg");
-                    default -> throw new UnsupportedImageException("Only PNG and JPEG images are supported");
+                    case "gif" -> new ImageInfo(width, height, "gif", "image/gif");
+                    default -> throw new UnsupportedImageException(
+                            "Only PNG, JPEG and GIF images are supported (found " + format + ")");
                 };
             } finally {
                 reader.dispose();

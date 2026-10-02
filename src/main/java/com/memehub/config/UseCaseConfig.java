@@ -1,9 +1,16 @@
 package com.memehub.config;
 
 import com.memehub.adapter.scheduling.GenerationProperties;
+import com.memehub.adapter.scheduling.TaggingProperties;
 import com.memehub.adapter.security.SecurityProperties;
 import com.memehub.application.auth.BootstrapAdminHandler;
 import com.memehub.application.auth.LoginHandler;
+import com.memehub.application.collection.ApplyTagsHandler;
+import com.memehub.application.collection.GetLibraryStatsHandler;
+import com.memehub.application.collection.ImportUploadsHandler;
+import com.memehub.application.collection.IngestMemeHandler;
+import com.memehub.application.collection.TagTemplateHandler;
+import com.memehub.application.collection.TaggingQueueHandler;
 import com.memehub.application.auth.LoginPolicy;
 import com.memehub.application.auth.RegisterUserHandler;
 import com.memehub.application.auth.RegistrationPolicy;
@@ -22,7 +29,11 @@ import com.memehub.application.port.out.MemeAssistantPort;
 import com.memehub.application.port.out.MemeReadPort;
 import com.memehub.application.port.out.MemeRendererPort;
 import com.memehub.application.port.out.MemeRepository;
+import com.memehub.application.port.out.ImageFingerprintPort;
 import com.memehub.application.port.out.ImageInspectorPort;
+import com.memehub.application.port.out.LibraryPort;
+import com.memehub.application.port.out.TaggingQueuePort;
+import com.memehub.application.port.out.VisionTaggerPort;
 import com.memehub.application.port.out.ObjectStoragePort;
 import com.memehub.application.port.out.PasswordHasher;
 import com.memehub.application.port.out.RateLimiterPort;
@@ -168,5 +179,38 @@ class UseCaseConfig {
                                               GenerationJobStore jobs, GenerationProperties properties) {
         return new RunGenerationHandler(search, templates, assistant, renderer, storage, memes, jobs,
                 properties.candidates());
+    }
+
+    @Bean
+    IngestMemeHandler ingestMemeHandler(ImageInspectorPort inspector, ImageFingerprintPort fingerprints,
+                                        LibraryPort library, ObjectStoragePort storage) {
+        return new IngestMemeHandler(inspector, fingerprints, library, storage);
+    }
+
+    @Bean
+    ImportUploadsHandler importUploadsHandler(IngestMemeHandler ingest) {
+        return new ImportUploadsHandler(ingest);
+    }
+
+    @Bean
+    GetLibraryStatsHandler getLibraryStatsHandler(LibraryPort library) {
+        return new GetLibraryStatsHandler(library);
+    }
+
+    @Bean
+    ApplyTagsHandler applyTagsHandler(TemplateRepository templates) {
+        return new ApplyTagsHandler(templates);
+    }
+
+    @Bean
+    TagTemplateHandler tagTemplateHandler(TemplateReadPort reads, ObjectStoragePort storage,
+                                          VisionTaggerPort tagger, ApplyTagsHandler apply,
+                                          TaggingQueuePort queue, TaggingProperties properties) {
+        return new TagTemplateHandler(reads, storage, tagger, apply, queue, properties.maxAttempts());
+    }
+
+    @Bean
+    TaggingQueueHandler taggingQueueHandler(TaggingQueuePort queue) {
+        return new TaggingQueueHandler(queue);
     }
 }
