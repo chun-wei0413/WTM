@@ -1189,3 +1189,34 @@ textarea:disabled {
     display: none;
   }
 }
+
+/* ---- the administrator's list ---- */
+.list-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.list-tools .tabs {
+  margin-bottom: 0;
+}
+.list-search {
+  max-width: 20rem;
+}
+.tab-count {
+  margin-left: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.template-card.retired {
+  opacity: 0.6;
+}
+.template-card .tile-meaning {
+  -webkit-line-clamp: 2;
+}
+
+/* Room for the scrollbar from the start, so the page does not jump sideways when a long list appears. */
+html {
+  scrollbar-gutter: stable;
+}

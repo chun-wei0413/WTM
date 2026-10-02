@@ -53,7 +53,13 @@ export function MemeTile({ item, children }: Props) {
 
   return (
     <article className="card meme-tile">
-      <img src={item.imageUrl} alt={item.meaning ?? item.name} loading="lazy" />
+      <img
+        src={item.imageUrl}
+        alt={item.meaning ?? item.name}
+        width={item.imageWidth}
+        height={item.imageHeight}
+        loading="lazy"
+      />
       <div className="tile-bar">
         <button type="button" className="button" onClick={download} disabled={downloading}>
           {downloading ? '下載中…' : '下載'}

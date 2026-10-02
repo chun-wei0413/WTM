@@ -1,22 +1,29 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../../api/client';
-import type { IndexSyncResult, TemplateStatus, TemplateSummary } from '../../api/types';
+import type { IndexSyncResult, TemplateSummary } from '../../api/types';
 import { ErrorNotice } from '../../components/ErrorNotice';
 import { StatusBadge } from '../../components/StatusBadge';
+import { attributionNote, sourceTypeLabel } from '../../lib/collection';
+import { countByStatus, filterTemplates, type StatusFilter } from '../../lib/templateList';
 
 type Load = { state: 'loading' } | { state: 'error'; error: unknown } | { state: 'ready'; templates: TemplateSummary[] };
 
-const FILTERS: Array<{ value: TemplateStatus | ''; label: string }> = [
-  { value: '', label: '全部' },
-  { value: 'DRAFT', label: '草稿' },
+const TABS: Array<{ value: StatusFilter; label: string }> = [
   { value: 'APPROVED', label: '已核准' },
+  { value: 'DRAFT', label: '草稿' },
   { value: 'RETIRED', label: '已下架' },
+  { value: 'ALL', label: '全部' },
 ];
+
+/** How many entries are drawn at first, and added each time "show more" is pressed. */
+const PAGE = 48;
 
 export function TemplatesPage() {
   const navigate = useNavigate();
-  const [filter, setFilter] = useState<TemplateStatus | ''>('');
+  const [status, setStatus] = useState<StatusFilter>('APPROVED');
+  const [query, setQuery] = useState('');
+  const [shown, setShown] = useState(PAGE);
   const [load, setLoad] = useState<Load>({ state: 'loading' });
 
   const [adding, setAdding] = useState(false);
@@ -30,17 +37,21 @@ export function TemplatesPage() {
   const [synced, setSynced] = useState<IndexSyncResult | null>(null);
   const [syncError, setSyncError] = useState<unknown>(null);
 
+  // The whole list is fetched once; choosing a tab or typing a search then answers at once.
   useEffect(() => {
     let cancelled = false;
-    setLoad({ state: 'loading' });
     api.admin
-      .listTemplates(filter || undefined)
+      .listTemplates()
       .then((templates) => !cancelled && setLoad({ state: 'ready', templates }))
       .catch((error: unknown) => !cancelled && setLoad({ state: 'error', error }));
     return () => {
       cancelled = true;
     };
-  }, [filter]);
+  }, []);
+
+  const all = load.state === 'ready' ? load.templates : [];
+  const counts = useMemo(() => countByStatus(all), [all]);
+  const matching = useMemo(() => filterTemplates(all, status, query), [all, status, query]);
 
   // Release the preview image when it is replaced or the page closes.
   useEffect(() => {
@@ -52,6 +63,16 @@ export function TemplatesPage() {
     setPreview(url);
     return () => URL.revokeObjectURL(url);
   }, [file]);
+
+  function choose(next: StatusFilter) {
+    setStatus(next);
+    setShown(PAGE);
+  }
+
+  function search(text: string) {
+    setQuery(text);
+    setShown(PAGE);
+  }
 
   function onFile(event: ChangeEvent<HTMLInputElement>) {
     const chosen = event.target.files?.[0] ?? null;
@@ -91,7 +112,7 @@ export function TemplatesPage() {
       <div className="page-header">
         <div>
           <h1>圖庫管理</h1>
-          <p className="lead">上傳梗圖模板、標出文字要放的位置,並描述這個梗的意思。核准之後,使用者才找得到它。</p>
+          <p className="lead">看每一張圖是什麼、改它的描述與標籤、核准或下架。核准之後,使用者才找得到它。</p>
         </div>
         <div className="actions">
           <button type="button" className="button" onClick={syncIndex} disabled={syncing}>
@@ -132,36 +153,74 @@ export function TemplatesPage() {
         </form>
       )}
 
-      <div className="tabs" role="tablist" aria-label="狀態篩選">
-        {FILTERS.map((f) => (
-          <button key={f.value} type="button" role="tab" aria-selected={filter === f.value} onClick={() => setFilter(f.value)}>
-            {f.label}
-          </button>
-        ))}
+      <div className="list-tools">
+        <div className="tabs" role="tablist" aria-label="狀態篩選">
+          {TABS.map((tab) => (
+            <button
+              key={tab.value}
+              type="button"
+              role="tab"
+              aria-selected={status === tab.value}
+              onClick={() => choose(tab.value)}
+            >
+              {tab.label}
+              {load.state === 'ready' && <span className="tab-count">{counts[tab.value]}</span>}
+            </button>
+          ))}
+        </div>
+        <input
+          type="search"
+          className="list-search"
+          value={query}
+          onChange={(e) => search(e.target.value)}
+          placeholder="搜尋名稱、意思、標籤、來源"
+          aria-label="搜尋圖庫"
+        />
       </div>
 
       {load.state === 'loading' && <p className="status">載入中…</p>}
       {load.state === 'error' && <ErrorNotice error={load.error} />}
-      {load.state === 'ready' && load.templates.length === 0 && (
+      {load.state === 'ready' && matching.length === 0 && (
         <div className="empty">
-          <p>這裡還沒有模板。</p>
+          <p>{query.trim() ? '沒有符合的圖。' : '這裡還沒有圖。'}</p>
         </div>
       )}
-      {load.state === 'ready' && load.templates.length > 0 && (
-        <div className="grid grid-small">
-          {load.templates.map((t) => (
-            <Link key={t.id} to={`/admin/templates/${t.id}`} className="card template-card">
-              <img src={t.imageUrl} alt="" loading="lazy" />
-              <div className="card-body">
-                <div className="card-title">
-                  <span>{t.name}</span>
-                  <StatusBadge status={t.status} />
+      {load.state === 'ready' && matching.length > 0 && (
+        <>
+          <p className="muted">
+            {matching.length} 張{matching.length > shown && `,先顯示 ${shown} 張`}
+          </p>
+          <div className="grid grid-small">
+            {matching.slice(0, shown).map((t) => (
+              <Link
+                key={t.id}
+                to={`/admin/templates/${t.id}`}
+                className={t.status === 'RETIRED' ? 'card template-card picker-card retired' : 'card template-card picker-card'}
+              >
+                <img src={t.imageUrl} alt="" loading="lazy" />
+                <div className="card-body">
+                  <div className="card-title">
+                    <span>{t.name}</span>
+                    <StatusBadge status={t.status} />
+                  </div>
+                  {t.meaning && <p className="tile-meaning">{t.meaning}</p>}
+                  <span className="muted">
+                    {sourceTypeLabel(t.sourceType) ?? '手動建立'}
+                    {attributionNote(sourceTypeLabel(t.sourceType), t.attribution) &&
+                      ` · ${attributionNote(sourceTypeLabel(t.sourceType), t.attribution)}`}
+                  </span>
                 </div>
-                <span className="muted">版本 {t.version}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+          {matching.length > shown && (
+            <div className="actions">
+              <button type="button" className="button" onClick={() => setShown((n) => n + PAGE)}>
+                顯示更多(還有 {matching.length - shown} 張)
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

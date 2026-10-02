@@ -6,6 +6,8 @@ const item = (id: string): LibraryItem => ({
   templateId: id,
   name: id,
   imageUrl: `/img/${id}`,
+  imageWidth: 640,
+  imageHeight: 480,
   meaning: null,
   tags: [],
   imageText: null,

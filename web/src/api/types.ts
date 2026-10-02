@@ -36,6 +36,10 @@ export interface TemplateSummary {
   version: number;
   imageUrl: string;
   updatedAt: string;
+  meaning: string | null;
+  tags: string[];
+  sourceType: string | null;
+  attribution: string | null;
 }
 
 export interface TemplateView {
@@ -57,6 +61,9 @@ export interface LibraryItem {
   templateId: string;
   name: string;
   imageUrl: string;
+  /** The picture's size in pixels, so a page can leave room for it before it has loaded. */
+  imageWidth: number;
+  imageHeight: number;
   /** What the picture means, as written by the vision model or an administrator. */
   meaning: string | null;
   tags: string[];
