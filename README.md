@@ -1,10 +1,17 @@
 # memehub
 
-Describe a situation in your own words, get meme candidates that fit it.
+A personal meme library: collect memes from the web, let a vision model tag them, and find the
+one you want later by describing the situation in your own words.
 
-> *"Boss changed the requirements again and I'm pretending everything is fine"* → finds the
-> right meme templates, writes captions that fit each one, draws them, and hands back three
-> candidates to choose from.
+> *"When I do not understand what someone just said"* → the confused-face meme comes back,
+> even though you never knew its name.
+
+## Why
+
+While chatting, you sometimes want to answer with a meme. You remember the **situation** it fits,
+not its name, so you cannot find it. And a phone camera roll full of saved memes is hard to search
+and takes up space. memehub keeps the pictures in one place, tagged with what they mean and when to
+use them, so the situation you remember is enough to find them.
 
 **English** · [繁體中文](README.zh-TW.md)
 
@@ -24,6 +31,11 @@ app). Rendered on a plain placeholder background because no licensed template im
 ---
 
 ## What it does
+
+The main feature is the **library**: pictures come in (a folder, a pasted address, or a source such
+as Imgflip or Wikimedia Commons), are de-duplicated, tagged automatically, and searched by meaning
+and keywords. The rest of this section describes the secondary feature, **adding text to a library
+meme**.
 
 1. An administrator uploads a template image, marks where captions go (the *slots*), and describes
    what the meme **means** and when people use it. This description is what makes a template findable.
