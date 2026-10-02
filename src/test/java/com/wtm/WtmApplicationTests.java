@@ -17,8 +17,9 @@ class WtmApplicationTests extends IntegrationTestBase {
         List<String> tables = jdbc.queryForList(
                 "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'",
                 String.class);
-        assertThat(tables).contains("meme_template", "template_slot", "meme", "meme_caption",
-                "template_search", "app_user");
+        assertThat(tables).contains("meme_template", "template_slot", "template_search", "app_user", "favorite",
+                "meme_report");
+        assertThat(tables).as("making memes on the server is gone").doesNotContain("meme", "generation_job");
 
         Integer vectorExt = jdbc.queryForObject(
                 "SELECT count(*) FROM pg_extension WHERE extname = 'vector'", Integer.class);

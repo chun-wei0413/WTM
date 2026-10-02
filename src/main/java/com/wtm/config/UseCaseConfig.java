@@ -1,6 +1,5 @@
 package com.wtm.config;
 
-import com.wtm.adapter.scheduling.GenerationProperties;
 import com.wtm.adapter.scheduling.ReportProperties;
 import com.wtm.adapter.scheduling.TaggingProperties;
 import com.wtm.adapter.security.SecurityProperties;
@@ -30,13 +29,6 @@ import com.wtm.application.collection.TaggingQueueHandler;
 import com.wtm.application.auth.LoginPolicy;
 import com.wtm.application.auth.RegisterUserHandler;
 import com.wtm.application.auth.RegistrationPolicy;
-import com.wtm.application.generation.GenerationQueueHandler;
-import com.wtm.application.generation.GetGenerationHandler;
-import com.wtm.application.generation.GetMemeImageHandler;
-import com.wtm.application.generation.KeepMemeHandler;
-import com.wtm.application.generation.ListMyMemesHandler;
-import com.wtm.application.generation.RunGenerationHandler;
-import com.wtm.application.generation.SubmitGenerationHandler;
 import com.wtm.application.port.out.EmbeddingPort;
 import com.wtm.application.port.out.FavoritePort;
 import com.wtm.application.port.out.LibraryBrowsePort;
@@ -44,13 +36,6 @@ import com.wtm.application.port.out.ProfileHistoryPort;
 import com.wtm.application.port.out.ReportPort;
 import com.wtm.application.port.out.ReviewPort;
 import com.wtm.application.port.out.SearchLogPort;
-import com.wtm.application.port.out.GenerationJobStore;
-import com.wtm.application.port.out.GenerationJobStore.QuotaLimits;
-import com.wtm.application.port.out.GenerationReadPort;
-import com.wtm.application.port.out.MemeAssistantPort;
-import com.wtm.application.port.out.MemeReadPort;
-import com.wtm.application.port.out.MemeRendererPort;
-import com.wtm.application.port.out.MemeRepository;
 import com.wtm.application.port.out.CollectionRunPort;
 import com.wtm.application.port.out.ImageFingerprintPort;
 import com.wtm.application.port.out.ImageInspectorPort;
@@ -186,46 +171,6 @@ class UseCaseConfig {
     @Bean
     SearchHistoryHandler searchHistoryHandler(SearchLogPort log) {
         return new SearchHistoryHandler(log, Clock.systemUTC());
-    }
-
-    @Bean
-    SubmitGenerationHandler submitGenerationHandler(GenerationJobStore jobs, GenerationProperties properties) {
-        return new SubmitGenerationHandler(jobs,
-                new QuotaLimits(properties.maxActivePerUser(), properties.maxPerDayPerUser()));
-    }
-
-    @Bean
-    GetGenerationHandler getGenerationHandler(GenerationReadPort reads, ObjectStoragePort storage) {
-        return new GetGenerationHandler(reads, storage);
-    }
-
-    @Bean
-    KeepMemeHandler keepMemeHandler(MemeRepository memes) {
-        return new KeepMemeHandler(memes);
-    }
-
-    @Bean
-    GetMemeImageHandler getMemeImageHandler(MemeRepository memes, ObjectStoragePort storage) {
-        return new GetMemeImageHandler(memes, storage);
-    }
-
-    @Bean
-    ListMyMemesHandler listMyMemesHandler(MemeReadPort reads, ObjectStoragePort storage) {
-        return new ListMyMemesHandler(reads, storage);
-    }
-
-    @Bean
-    GenerationQueueHandler generationQueueHandler(GenerationJobStore jobs) {
-        return new GenerationQueueHandler(jobs);
-    }
-
-    @Bean
-    RunGenerationHandler runGenerationHandler(SearchTemplatesHandler search, TemplateReadPort templates,
-                                              MemeAssistantPort assistant, MemeRendererPort renderer,
-                                              ObjectStoragePort storage, MemeRepository memes,
-                                              GenerationJobStore jobs, GenerationProperties properties) {
-        return new RunGenerationHandler(search, templates, assistant, renderer, storage, memes, jobs,
-                properties.candidates());
     }
 
     @Bean

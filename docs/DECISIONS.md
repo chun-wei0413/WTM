@@ -24,6 +24,7 @@ Contents
 16. [Favorites, hot searches and a meme maker that stays in the browser](#16-favorites-hot-searches-and-a-meme-maker-that-stays-in-the-browser)
 17. [Reports: a complaint plus a second look by the vision model](#17-reports-a-complaint-plus-a-second-look-by-the-vision-model)
 18. [Keeping reports from keeping the model busy, and closing the clear-cut ones without an administrator](#18-keeping-reports-from-keeping-the-model-busy-and-closing-the-clear-cut-ones-without-an-administrator)
+19. [Removing caption generation](#19-removing-caption-generation)
 
 ---
 
@@ -62,6 +63,8 @@ framework dependency allowed there and the rule says so explicitly.
 because the ports are what make the model swap (Ollama ↔ mock) and the load test possible.
 
 ## 2. Generation jobs are an application concern, not an aggregate
+
+> **Superseded by decision 19: the generation feature this describes was removed. The reasoning about what is and is not a domain concept still stands.**
 
 **Context.** An early event-storming pass produced a `GenerationJob` aggregate with a state machine
 (`REWRITTEN → RETRIEVED → RANKED → …`). Two tests showed it was not domain:
@@ -156,6 +159,8 @@ by someone else.
 
 ## 6. A meme snapshots its template's slots
 
+> **Superseded by decision 19: `Meme` no longer exists.**
+
 **Context.** Templates change. If a meme only stored a template id, revising a template from three
 slots to two would leave old memes with captions for a slot that no longer exists.
 
@@ -178,6 +183,8 @@ no captions and is the original image.
 **Also:** each slot has a `required` flag, so a four-panel template can be filled partially.
 
 ## 8. No query rewriting and no re-ranking (yet)
+
+> **Superseded by decision 19: the generation pipeline this was part of was removed. Search itself still has no rewriting or re-ranking.**
 
 **Context.** The first design had an LLM rewrite the query and another LLM re-rank the candidates.
 
@@ -243,6 +250,8 @@ checksums are requested only when required. Browsers fetch images through time-l
 
 ## 12. Jobs run on virtual threads from a database queue
 
+> **Still how tagging and report review run (decisions 17 and 18). The generation job it was first written for was removed in decision 19.**
+
 **Decision.** Request handling only enqueues a row and returns `202`. A worker polls, claims jobs
 with `SKIP LOCKED`, and runs each on a virtual thread, never more than a configured number at once.
 A job that stays `RUNNING` too long (a crashed worker) is requeued, or failed after its last attempt.
@@ -275,6 +284,8 @@ MinIO image (decision 11), the unresolved-placeholder trap (decision 10), and tw
 problems caused by several application contexts sharing one database.
 
 ## 14. Rendering captions with Java2D
+
+> **Superseded by decision 19: the server no longer draws captions. The meme maker draws in the browser (decision 16).**
 
 **Decision.** Draw captions in code (white text, black outline) instead of asking an image model to
 paint text, because image models spell Chinese badly. Text is shrunk and wrapped until it fits its
@@ -427,3 +438,25 @@ limits have to hold against a person who means harm, and the administrator shoul
 
 **A bug this work exposed.** The administrator's description form never sent the tags or the picture text, so
 saving any description wiped them on the server. The form now carries both, and they can be edited there.
+
+## 19. Removing caption generation
+
+**Context.** The first version of the product described a situation and got back memes with captions written by a
+language model and drawn by the server. The product narrowed to finding memes, keeping favorites and captioning a
+favorite by hand (decision 16), and the web client stopped using the generation endpoints. Keeping them would have
+meant maintaining a second language model, a job queue, a server-side renderer and a CJK font requirement for a
+feature nobody could reach.
+
+**Decision.** Delete it: the `Meme` aggregate, generation jobs and their quota, the caption assistant and the
+language-model adapters (Ollama and mock), the Java2D renderer, the generation worker, the `/api/generations` and
+`/api/memes` endpoints, the evaluation of the whole pipeline, and (migration V9) the tables `meme`,
+`meme_caption`, `generation_job` and `generation_job_result`. The tables were empty. The `qwen2.5:7b` model is no
+longer needed; the vision model and the embedding model are the only two the application talks to.
+
+**Kept on purpose.** `LlmUnavailableException`, which the vision and embedding adapters still use, and the search
+pipeline, which the generation pipeline used to share.
+
+**Left over, to be decided.** Caption slots on `MemeTemplate` (and the slot editor in the administrator's
+description page, the `template_slot` table and `slot_layout` in the search index) existed only to tell the renderer
+where to draw. Nothing uses them now. They were not removed together with the generation feature because they run
+through the template aggregate, the persistence adapters, the search index and the administrator's page.

@@ -8,24 +8,6 @@ import org.junit.jupiter.api.Test;
 
 class MockAdaptersTest {
 
-    private static LlmProperties llm(double failureRate) {
-        return new LlmProperties("mock", new LlmProperties.Ollama("http://x", "m"),
-                new LlmProperties.Mock(0, 0, failureRate));
-    }
-
-    @Test
-    void mockLlmEchoesPrompt() {
-        var adapter = new MockLlmAdapter(llm(0.0));
-        assertThat(adapter.complete("sys", "hello")).contains("hello");
-    }
-
-    @Test
-    void mockLlmCanBeConfiguredToFail() {
-        var adapter = new MockLlmAdapter(llm(1.0));
-        assertThatThrownBy(() -> adapter.complete("sys", "hello"))
-                .isInstanceOf(LlmUnavailableException.class);
-    }
-
     @Test
     void mockEmbeddingIsDeterministicAndNormalized() {
         var adapter = new MockEmbeddingAdapter(

@@ -15,13 +15,6 @@ use them, so the situation you remember is enough to find them.
 
 **English** · [繁體中文](README.zh-TW.md)
 
-| | |
-|---|---|
-| ![Expanding brain: four captions fitted into four slots](docs/images/sample-expanding-brain.png) | ![Two buttons: captions fitted into three slots](docs/images/sample-two-buttons.png) |
-
-*Real output of the pipeline (retrieval by `bge-m3`, captions by `qwen2.5:7b`, text drawn by the
-app). Rendered on a plain placeholder background because no licensed template images are shipped.*
-
 **Status:** the backend and a web UI (in Traditional Chinese) are complete and tested.
 
 ![The template editor: a slot drawn on the image with resize handles, and its settings on the right](docs/images/ui-template-editor.jpg)
@@ -30,37 +23,26 @@ app). Rendered on a plain placeholder background because no licensed template im
 
 ## What it does
 
-The main feature is the **library**: pictures come in (a folder, a pasted address, or a source such
-as Imgflip or Wikimedia Commons), are de-duplicated, tagged automatically, and searched by meaning
-and keywords. The rest of this section describes the secondary feature, **adding text to a library
-meme**.
-
-1. An administrator uploads a template image, marks where captions go (the *slots*), and describes
-   what the meme **means** and when people use it. This description is what makes a template findable.
-2. A user describes a situation. The system searches templates by meaning (embeddings) and by
-   keywords, asks a language model to write a caption for every slot of the best three, draws the
-   text onto the images, and returns three candidates.
-3. The user keeps the one they like.
-
-Generation is asynchronous: the request returns immediately with a job id, and the result is
-fetched by polling.
+The **library**: pictures come in (a folder, a pasted address, or a source such as Imgflip, Wikimedia Commons or a
+PTT board), are de-duplicated, described by a vision model, and found again by meaning and keywords. On top of it,
+users find memes, keep favorites, caption a favorite in their own browser, and report descriptions that do not fit.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-    C[Client] -->|POST /api/generations| API[REST API]
-    API -->|enqueue, within the user's quota| Q[(generation_job<br/>PostgreSQL)]
-    W[Worker<br/>virtual threads] -->|claim, SKIP LOCKED| Q
-    W --> S[Hybrid search<br/>pgvector + pg_trgm]
-    S --> A[Caption assistant<br/>language model]
-    A --> R[Java2D renderer]
-    R --> O[(Object storage<br/>S3 API)]
-    W -->|complete| Q
-    C -->|GET /api/generations/id| API
+    A[Administrator<br/>files, address, source] -->|collect, de-duplicate| L[(meme_template<br/>PostgreSQL)]
+    L -->|tagging queue, SKIP LOCKED| V[Vision model<br/>describes the picture]
+    V -->|meaning, tags, text| L
+    L -->|index sync by state| S[Search index<br/>pgvector + pg_trgm]
+    U[User] -->|search| S
+    U -->|report| R[(report_review<br/>queue)]
+    R --> V2[Vision model<br/>looks again]
+    V2 -->|proposal| AD[Administrator<br/>or clear-cut rules]
+    AD -->|adopt| L
 ```
 
-The code follows Clean Architecture, and only the two parts that have real rules use DDD:
+The code follows Clean Architecture, and only the part that has real rules uses DDD:
 
 ```mermaid
 flowchart TB
@@ -70,7 +52,6 @@ flowchart TB
         db[JDBC repositories]
         ai[Ollama and mock models]
         s3[S3 storage]
-        img[Java2D renderer]
         sec[JWT security]
     end
     subgraph application
@@ -81,7 +62,7 @@ flowchart TB
     subgraph domain
         direction LR
         t[MemeTemplate]
-        m[Meme]
+        u[User]
     end
     adapter --> application --> domain
 ```
@@ -98,9 +79,9 @@ trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
 | Web client | React 19, TypeScript, Vite, React Router (no UI library) |
 | Database | PostgreSQL 16 with `pgvector` (semantic search) and `pg_trgm` (keyword search), Flyway migrations |
 | Object storage | Any S3-compatible store through the AWS SDK v2 (RustFS in Docker Compose) |
-| Models | [Ollama](https://ollama.com): `bge-m3` for embeddings, `qwen2.5:7b` for captions; a deterministic mock is the default |
+| Models | [Ollama](https://ollama.com): `bge-m3` for embeddings, `qwen2.5vl:7b` for looking at pictures; a deterministic mock is the default |
 | Security | Spring Security resource server, HS256 JWT, BCrypt |
-| Concurrency | PostgreSQL job queue (`FOR UPDATE SKIP LOCKED`), workers on virtual threads |
+| Concurrency | PostgreSQL queues for tagging and report review (`FOR UPDATE SKIP LOCKED`), workers on virtual threads |
 | Tests | JUnit 5, Mockito, Testcontainers, ArchUnit, Awaitility |
 
 ## Quick start
@@ -126,9 +107,9 @@ By default the models are **mocks**: fast, deterministic and fake. To use the re
 
 ```powershell
 ollama pull bge-m3
-ollama pull qwen2.5:7b
+ollama pull qwen2.5vl:7b
 $env:WTM_EMBEDDING_PROVIDER = "ollama"
-$env:WTM_LLM_PROVIDER = "ollama"
+$env:WTM_VISION_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
@@ -204,15 +185,10 @@ fill the library (`POST /api/admin/collection/runs`).
 | `GET /api/library/{id}/image` | signed in | The original picture of a published meme (download, or drawing on a canvas) |
 | `GET /api/favorites` · `PUT` · `DELETE /api/favorites/{id}` | signed in | Your own favorites |
 | `POST /api/reports` | signed in | Report a meme (`templateId`, `reason`, `comment`); asks the vision model to look again |
-| `POST /api/generations` | signed in | Request memes for a situation (`202`, returns `jobId`) |
-| `GET /api/generations/{id}` | owner | Job status and candidate memes |
-| `POST /api/memes/{id}/keep` | owner | Keep a candidate |
-| `GET /api/memes[?status=&limit=]` | signed in | Your own memes (the kept ones by default) |
-| `GET /api/memes/{id}/image` | owner | Download the finished image |
 | `POST /api/admin/templates` | admin | Upload a template image (multipart `name`, `file`) |
 | `GET /api/admin/templates[?status=]`, `GET /api/admin/templates/{id}` | admin | List / read templates |
 | `PUT /api/admin/templates/{id}/profile` | admin | Meaning, usage examples, emotions, aliases |
-| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | admin | Define, change, remove a caption slot |
+| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | admin | Define, change, remove a text slot (kept from the earlier caption feature; the web client does not use it) |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | admin | Publish / withdraw a template |
 | `GET /api/admin/reports` | admin | Reported memes: complaints, current description, the model's proposal |
 | `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` · `/undo`, `GET /api/admin/reports/automatic` | admin | Adopt the proposal, set the reports aside, ask the model again, take an automatic decision back, list what the rules did |
@@ -228,16 +204,13 @@ Errors are returned as problem-details JSON. `429` responses carry `Retry-After`
 | Failed sign-ins per account from one address | 5 per 15 min, then locked |
 | Failed sign-ins from one address | 30 per 15 min |
 | Registrations from one address | 5 per hour |
-| Meme requests in progress per user | 2 |
-| Meme requests per user per day | 50 |
-| Concurrent generation jobs per instance | 4 |
 | Different memes one person may report per day | 10 (and 30 open reports at most) |
 | Reporters' combined weight before the vision model looks on its own | 2 (newcomer 1, proven reporter 2, repeat false reporter 0, administrator 2) |
 | Time before the vision model looks at the same meme again | 24 hours |
 | Looks by the vision model for reports, whole site, per day | 50 (an administrator's request is exempt) |
 | Combined weight at which a proposal is adopted without an administrator | 3 |
 
-All are configurable under `wtm.security.throttling.*`, `wtm.generation.*` and `wtm.reports.*`;
+All are configurable under `wtm.security.throttling.*` and `wtm.reports.*`;
 registration can be switched off with `wtm.security.registration-enabled=false`.
 
 ## Tests
@@ -246,7 +219,7 @@ registration can be switched off with `wtm.security.registration-enabled=false`.
 mvn test
 ```
 
-The backend has 333 tests that run by default (plus the two on-demand evaluations below). The integration
+The backend has 277 tests that run by default (plus the on-demand evaluation below). The integration
 tests start real PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped
 automatically when Docker is not running.
 
@@ -258,11 +231,10 @@ npm test
 npm run typecheck
 ```
 
-Two evaluations use the **real** models and are excluded from the normal build:
+One evaluation uses the **real** embedding model and is excluded from the normal build:
 
 ```bash
 mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # retrieval quality → target/search-eval.txt
-mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # full pipeline → target/eval-memes/
 ```
 
 ## What was measured
@@ -278,8 +250,8 @@ absolute numbers as optimistic and use them to compare changes):
 
 - The keyword ranking adds nothing for situation queries; it is a fallback for when the embedding
   service is down. By *name* it works (90%).
-- A job takes **about 3–8 seconds** for three candidates (one RTX 4060, `qwen2.5:7b`).
-- 12 threads competing for 60 queued jobs claim each exactly once (a test).
+- Looking at one picture takes the vision model **about 30 seconds** on one RTX 4060 (`qwen2.5vl:7b`), so
+  collecting 200 pictures takes about an hour and a half to describe.
 
 More detail, including an experiment that was **not** adopted and why, is in
 [docs/DECISIONS.md](docs/DECISIONS.md#5-hybrid-search-and-what-the-numbers-say-about-it).
@@ -289,8 +261,9 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **The web UI was checked by hand in a browser, with no automated browser (end-to-end) tests.** The
   template editor in particular has only been tried at desktop width; the other pages were also checked on
   a phone-sized screen and in dark mode.
-- **Caption quality is what a 7B model gives:** sometimes awkward, occasionally Simplified Chinese
-  characters slip in, and an over-long caption is cut at the slot's limit, which can land mid-word.
+- **The vision model decides whether a picture is a meme, and it is cautious.** Of 201 collected pictures it
+  withdrew 35, including six well-known Imgflip templates. Withdrawn pictures can be looked at and brought back by
+  an administrator.
 - **Search always returns the nearest templates**, even for an unrelated description; relevant and
   irrelevant distances overlap, so no cut-off is applied.
 - **Sign-in and registration throttling is per instance** (in memory), and the client address is
@@ -311,23 +284,22 @@ More detail, including an experiment that was **not** adopted and why, is in
   is listed for 7 days and can be taken back. It is only as good as a 7B model plus the people reporting.
 - **The meme maker keeps nothing.** What you make exists only until you download it or close the tab, and an
   animated GIF becomes a still picture once text is added.
-- The generation endpoints (`/api/generations`, `/api/memes`) still exist, but the web client no longer uses them.
 - No password reset, e-mail verification or logout.
-- Rendering needs a CJK font. A Linux container needs one installed (for example Noto Sans CJK).
-- No template images are included (licensing). The evaluation uses plain placeholder images.
+- No template images are included (licensing). The evaluation uses hand-written descriptions only.
 
 ## Project layout
 
 ```
 src/main/java/com/wtm
-├── domain          MemeTemplate and Meme aggregates, users (no framework code)
+├── domain          MemeTemplate aggregate, users (no framework code)
 ├── application     handlers (commands and queries) and the ports they depend on
 ├── adapter
 │   ├── in/web          REST controllers, error mapping
 │   ├── out/persistence JDBC repositories and read models
-│   ├── out/ai          Ollama and mock model adapters, caption assistant
-│   ├── out/storage     S3 adapter    out/render  Java2D renderer    out/image  image checks
-│   ├── scheduling      index sync and generation workers
+│   ├── out/ai          Ollama and mock model adapters (embeddings, vision)
+│   ├── out/source      collectors: Imgflip, Wikimedia Commons, PTT
+│   ├── out/storage     S3 adapter    out/image  image checks
+│   ├── scheduling      index sync, tagging and review workers
 │   └── security        JWT, BCrypt, rate limiter
 └── config          wiring and the startup check for required secrets
 src/main/resources/db/migration    Flyway migrations
@@ -345,6 +317,6 @@ Secrets come from `.env` or real environment variables. None has a default.
 | `S3_ACCESS_KEY`, `S3_SECRET_KEY` | Object storage |
 | `WTM_JWT_SECRET` | Signs tokens (at least 32 characters). Anyone who knows it can forge admin tokens |
 | `WTM_ADMIN_USERNAME`, `WTM_ADMIN_PASSWORD` | The first administrator |
-| `WTM_LLM_PROVIDER`, `WTM_EMBEDDING_PROVIDER` | `mock` (default) or `ollama` |
+| `WTM_VISION_PROVIDER`, `WTM_EMBEDDING_PROVIDER` | `mock` (default) or `ollama` |
 
 Everything else is in [`application.yml`](src/main/resources/application.yml).

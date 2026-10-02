@@ -42,15 +42,6 @@ wtm:
     ollama:
       base-url: http://localhost:11434
       model: qwen2.5vl:7b
-  llm:
-    provider: mock            # mock | ollama
-    ollama:
-      base-url: http://localhost:11434
-      model: qwen2.5:7b
-    mock:
-      min-latency-ms: 200
-      max-latency-ms: 1500
-      failure-rate: 0.0
   embedding:
     provider: mock            # mock | ollama
     dimension: 1024           # bge-m3

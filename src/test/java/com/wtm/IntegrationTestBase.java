@@ -54,10 +54,6 @@ public abstract class IntegrationTestBase {
         // Throwaway secrets for this test run; the real ones live in the git-ignored .env.
         registry.add("wtm.security.jwt.secret", () -> JWT_SECRET);
         registry.add("wtm.security.bootstrap-admin.password", () -> ADMIN_PASSWORD);
-        // Fast, failure-free mock model so jobs finish quickly and deterministically.
-        registry.add("wtm.llm.mock.min-latency-ms", () -> "0");
-        registry.add("wtm.llm.mock.max-latency-ms", () -> "20");
-        registry.add("wtm.generation.poll-interval", () -> "PT0.1S");
         registry.add("wtm.tagging.poll-interval", () -> "PT0.1S");
         // Tests trigger the index sync themselves so results are deterministic.
         registry.add("wtm.index.scheduler-enabled", () -> "false");

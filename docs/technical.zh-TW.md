@@ -13,13 +13,6 @@
 
 [English](README.md) · **繁體中文**
 
-| | |
-|---|---|
-| ![Expanding Brain:四句文案放進四個文字格](docs/images/sample-expanding-brain.png) | ![Two Buttons:文案放進三個文字格](docs/images/sample-two-buttons.png) |
-
-*這是整條流程的真實輸出(`bge-m3` 負責檢索、`qwen2.5:7b` 負責寫文案、文字由程式畫上去)。
-因為沒有附上有授權的模板圖片,所以這裡是畫在純色的佔位背景上。*
-
 **目前狀態:** 後端與網頁介面(繁體中文)都已完成並有測試涵蓋。
 
 ![模板編輯頁:圖片上拖曳出的文字格與縮放把手,右側是它的設定](docs/images/ui-template-editor.jpg)
@@ -30,33 +23,26 @@
 
 ## 它做什麼
 
-主要功能是**圖庫**:圖片從資料夾、貼上的網址,或 Imgflip、Wikimedia Commons 這類來源進來,經過去重、
-自動標註,再用語意與關鍵字搜尋。本節以下描述的是次要功能:**在圖庫的梗圖上加文字**。
-
-1. 管理員上傳模板圖片、標出文字要放的位置(**文字格**),並描述這個梗的**意思**與使用時機。
-   這段描述就是讓模板「找得到」的關鍵。
-2. 使用者描述一個情境。系統用語意(embedding)與關鍵字搜尋模板,請語言模型為最適合的前三個模板
-   的每個文字格寫文案,把文字畫到圖上,回傳三張候選。
-3. 使用者留下喜歡的那一張。
-
-生成是**非同步**的:送出請求後立刻拿到一個任務編號,再用輪詢取得結果。
+**圖庫**:圖片從資料夾、貼上的網址,或 Imgflip、Wikimedia Commons、PTT 看板這類來源進來,經過去重、
+由視覺模型描述,再用語意與關鍵字搜尋。在它之上,使用者可以找梗圖、收藏、在自己的瀏覽器裡替收藏的梗圖加文字,
+以及回報描述不貼切的梗圖。
 
 ## 運作方式
 
 ```mermaid
 flowchart LR
-    C[用戶端] -->|POST /api/generations| API[REST API]
-    API -->|在額度內才加入佇列| Q[(generation_job<br/>PostgreSQL)]
-    W[背景工作程序<br/>虛擬執行緒] -->|領取任務,SKIP LOCKED| Q
-    W --> S[混合搜尋<br/>pgvector + pg_trgm]
-    S --> A[文案助手<br/>語言模型]
-    A --> R[Java2D 疊字]
-    R --> O[(物件儲存<br/>S3 API)]
-    W -->|完成| Q
-    C -->|GET /api/generations/id| API
+    A[管理員<br/>檔案、網址、來源] -->|收集、去重| L[(meme_template<br/>PostgreSQL)]
+    L -->|標記佇列,SKIP LOCKED| V[視覺模型<br/>描述圖片]
+    V -->|意思、標籤、文字| L
+    L -->|依狀態同步索引| S[搜尋索引<br/>pgvector + pg_trgm]
+    U[使用者] -->|搜尋| S
+    U -->|回報| R[(report_review<br/>佇列)]
+    R --> V2[視覺模型<br/>重新看一遍]
+    V2 -->|提案| AD[管理員<br/>或明確的規則]
+    AD -->|採用| L
 ```
 
-程式碼採用 Clean Architecture,只有真正有業務規則的兩個部分使用 DDD:
+程式碼採用 Clean Architecture,只有真正有業務規則的部分使用 DDD:
 
 ```mermaid
 flowchart TB
@@ -66,7 +52,6 @@ flowchart TB
         db[JDBC 資料存取]
         ai[Ollama 與模擬模型]
         s3[S3 儲存]
-        img[Java2D 疊字]
         sec[JWT 安全]
     end
     subgraph application
@@ -77,7 +62,7 @@ flowchart TB
     subgraph domain
         direction LR
         t[MemeTemplate]
-        m[Meme]
+        u[User]
     end
     adapter --> application --> domain
 ```
@@ -92,9 +77,9 @@ flowchart TB
 | 網頁前端 | React 19、TypeScript、Vite、React Router(不使用 UI 套件) |
 | 資料庫 | PostgreSQL 16,搭配 `pgvector`(語意搜尋)與 `pg_trgm`(關鍵字搜尋),以 Flyway 管理遷移 |
 | 物件儲存 | 任何相容 S3 的服務,透過 AWS SDK v2(Docker Compose 使用 RustFS) |
-| 模型 | [Ollama](https://ollama.com):`bge-m3` 做 embedding、`qwen2.5:7b` 寫文案;預設使用可重現的模擬模型 |
+| 模型 | [Ollama](https://ollama.com):`bge-m3` 做 embedding、`qwen2.5vl:7b` 看圖;預設使用可重現的模擬模型 |
 | 安全 | Spring Security Resource Server、HS256 JWT、BCrypt |
-| 併發 | PostgreSQL 任務佇列(`FOR UPDATE SKIP LOCKED`)、以虛擬執行緒執行的背景工作 |
+| 併發 | 標記與回報審查用的 PostgreSQL 佇列(`FOR UPDATE SKIP LOCKED`)、以虛擬執行緒執行的背景工作 |
 | 測試 | JUnit 5、Mockito、Testcontainers、ArchUnit、Awaitility |
 
 ## 快速開始
@@ -120,9 +105,9 @@ mvn spring-boot:run
 
 ```powershell
 ollama pull bge-m3
-ollama pull qwen2.5:7b
+ollama pull qwen2.5vl:7b
 $env:WTM_EMBEDDING_PROVIDER = "ollama"
-$env:WTM_LLM_PROVIDER = "ollama"
+$env:WTM_VISION_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
@@ -193,15 +178,10 @@ EOF
 | `GET /api/library/{id}/image` | 已登入 | 已發佈梗圖的原圖(下載,或拿來畫在 canvas 上) |
 | `GET /api/favorites` · `PUT` · `DELETE /api/favorites/{id}` | 已登入 | 自己的收藏 |
 | `POST /api/reports` | 已登入 | 回報一張梗圖(`templateId`、`reason`、`comment`),並請影像模型重新看一遍 |
-| `POST /api/generations` | 已登入 | 為一個情境要求產生梗圖(`202`,回傳 `jobId`) |
-| `GET /api/generations/{id}` | 擁有者 | 任務狀態與候選梗圖 |
-| `POST /api/memes/{id}/keep` | 擁有者 | 留下一張候選 |
-| `GET /api/memes[?status=&limit=]` | 已登入 | 自己的梗圖(預設是留下的那些) |
-| `GET /api/memes/{id}/image` | 擁有者 | 下載完成的圖片 |
 | `POST /api/admin/templates` | 管理員 | 上傳模板圖片(multipart:`name`、`file`) |
 | `GET /api/admin/templates[?status=]`、`GET /api/admin/templates/{id}` | 管理員 | 列出 / 讀取模板 |
 | `PUT /api/admin/templates/{id}/profile` | 管理員 | 含意、使用範例、情緒、別名 |
-| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | 管理員 | 新增、修改、刪除文字格 |
+| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | 管理員 | 新增、修改、刪除文字格(早期加文案功能留下的,網頁前端沒有使用) |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | 管理員 | 發佈 / 下架模板 |
 | `GET /api/admin/reports` | 管理員 | 被回報的梗圖:用戶意見、目前的描述、模型的新建議 |
 | `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` | 管理員 | 採用建議、忽略回報、請模型重新分析 |
@@ -217,16 +197,13 @@ EOF
 | 同一個來源位址對同一個帳號登入失敗 | 15 分鐘內 5 次,之後鎖定 |
 | 同一個來源位址登入失敗(所有帳號合計) | 15 分鐘內 30 次 |
 | 同一個來源位址註冊 | 每小時 5 次 |
-| 每位使用者同時進行中的生成請求 | 2 個 |
-| 每位使用者每天的生成請求 | 50 個 |
-| 每個應用程式實例同時執行的生成任務 | 4 個 |
 | 每位使用者每天可以回報的不同梗圖 | 10 張(同時未處理最多 30 則) |
 | 影像模型自動重新分析前,回報者的權重合計 | 2(新帳號 1、可信的回報者 2、一再亂報的 0、管理員 2) |
 | 同一張梗圖再次被模型重新分析前的間隔 | 24 小時 |
 | 全站每天為回報而啟動模型的次數 | 50 次(管理員手動要求的不受限) |
 | 不經管理員、直接採用模型提案所需的權重合計 | 3 |
 
-都可以透過 `wtm.security.throttling.*`、`wtm.generation.*` 與 `wtm.reports.*` 調整;
+都可以透過 `wtm.security.throttling.*` 與 `wtm.reports.*` 調整;
 也可以用 `wtm.security.registration-enabled=false` 關閉註冊。
 
 ## 測試
@@ -235,7 +212,7 @@ EOF
 mvn test
 ```
 
-後端預設會執行 333 個測試(另有下面兩個需要手動啟用的評測)。整合測試會用 Testcontainers 啟動真正的
+後端預設會執行 277 個測試(另有下面一個需要手動啟用的評測)。整合測試會用 Testcontainers 啟動真正的
 PostgreSQL(含 pgvector)與相容 S3 的儲存服務,沒有開啟 Docker 時會自動跳過。
 
 網頁前端有 95 個測試(涵蓋文字框編輯與文字縮放的運算、API 客戶端、收藏、登入狀態):
@@ -246,11 +223,10 @@ npm test
 npm run typecheck
 ```
 
-兩個評測使用**真正**的模型,不包含在一般建置裡:
+一個評測使用**真正**的向量模型,不包含在一般建置裡:
 
 ```bash
 mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # 檢索品質 → target/search-eval.txt
-mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # 完整流程 → target/eval-memes/
 ```
 
 ## 實測結果
@@ -265,8 +241,7 @@ mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # 完整流程 → t
 | 混合(應用程式採用) | 75% | 90% |
 
 - 對「情境描述」,關鍵字搜尋沒有貢獻,它是 embedding 服務失效時的備援。用**名稱**搜尋時有效(90%)。
-- 產生三張候選**約需 3 到 8 秒**(一張 RTX 4060、`qwen2.5:7b`)。
-- 測試證明:12 個執行緒同時搶 60 個排隊中的任務,每個任務恰好只被領取一次。
+- 視覺模型看一張圖**約需 30 秒**(一張 RTX 4060、`qwen2.5vl:7b`),所以收集 200 張圖大約要花一個半小時才描述完。
 
 更詳細的內容,包括一個**沒有採用**的實驗與原因,請看
 [docs/DECISIONS.md](docs/DECISIONS.md#5-hybrid-search-and-what-the-numbers-say-about-it)(英文)。
@@ -275,8 +250,8 @@ mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # 完整流程 → t
 
 - **網頁介面是用人工在瀏覽器裡檢查的,沒有自動化的瀏覽器(端對端)測試。** 模板編輯頁只在桌面寬度試過;
   其他頁面另外檢查過手機寬度與深色模式。
-- **文案品質就是 7B 模型的程度:** 有時不太通順,偶爾會混入簡體字;太長的文案會被硬切在字數上限,
-  可能切在詞的中間。
+- **「是不是梗圖」由視覺模型判斷,而且它偏保守。** 201 張收集到的圖裡,它下架了 35 張,
+  其中包含六張知名的 Imgflip 模板。被下架的圖管理員可以查看並救回來。
 - **搜尋永遠回傳最接近的模板**,即使描述和梗圖毫無關係也一樣;相關與不相關的距離範圍重疊,
   所以沒有設定門檻。
 - **登入與註冊的限流是各實例各自計算**(存在記憶體),來源位址取自 `getRemoteAddr()`。
@@ -292,23 +267,22 @@ mvn test -Dtest=GenerationQualityEvalTest -Dwtm.eval=true   # 完整流程 → t
   以及管理員手動要求的分析,一律交給管理員。每個自動決定都會列出 7 天,可以還原。
   它的準確度取決於 7B 模型,加上回報的人。
 - **梗圖模板不留任何東西。** 做好的圖只存在到你下載它或關掉分頁為止;GIF 動圖加上文字後會變成靜態圖片。
-- 生成相關的端點(`/api/generations`、`/api/memes`)仍然存在,但網頁前端已經不使用。
 - 沒有忘記密碼、信箱驗證與登出功能。
-- 疊字需要支援中文的字型。Linux 容器需要自行安裝(例如 Noto Sans CJK)。
-- 沒有附上模板圖片(授權考量),評測使用純色的佔位圖片。
+- 沒有附上模板圖片(授權考量),評測只使用手寫的描述。
 
 ## 專案結構
 
 ```
 src/main/java/com/wtm
-├── domain          MemeTemplate、Meme 聚合與使用者(不含框架程式碼)
+├── domain          MemeTemplate 聚合與使用者(不含框架程式碼)
 ├── application     指令與查詢處理器,以及它們依賴的 Port
 ├── adapter
 │   ├── in/web          REST 控制器、錯誤對應
 │   ├── out/persistence JDBC 資料存取與讀取模型
-│   ├── out/ai          Ollama 與模擬模型、文案助手
-│   ├── out/storage     S3    out/render  Java2D 疊字    out/image  圖片檢查
-│   ├── scheduling      索引同步與生成任務的背景工作
+│   ├── out/ai          Ollama 與模擬模型(embedding、看圖)
+│   ├── out/source      收集器:Imgflip、Wikimedia Commons、PTT
+│   ├── out/storage     S3    out/image  圖片檢查
+│   ├── scheduling      索引同步、標記與回報審查的背景工作
 │   └── security        JWT、BCrypt、限流器
 └── config          元件組裝與必要密碼的啟動檢查
 src/main/resources/db/migration    Flyway 遷移
@@ -326,6 +300,6 @@ docs/DECISIONS.md                  為什麼這樣設計(英文)
 | `S3_ACCESS_KEY`、`S3_SECRET_KEY` | 物件儲存 |
 | `WTM_JWT_SECRET` | 簽發 token 的密鑰(至少 32 個字元)。知道它的人可以偽造管理員 token |
 | `WTM_ADMIN_USERNAME`、`WTM_ADMIN_PASSWORD` | 第一位管理員 |
-| `WTM_LLM_PROVIDER`、`WTM_EMBEDDING_PROVIDER` | `mock`(預設)或 `ollama` |
+| `WTM_VISION_PROVIDER`、`WTM_EMBEDDING_PROVIDER` | `mock`(預設)或 `ollama` |
 
 其他設定都在 [`application.yml`](src/main/resources/application.yml)。

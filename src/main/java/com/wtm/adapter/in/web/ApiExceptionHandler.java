@@ -8,8 +8,6 @@ import com.wtm.application.collection.CollectionBusyException;
 import com.wtm.application.collection.FetchRefusedException;
 import com.wtm.application.auth.RegistrationClosedException;
 import com.wtm.application.auth.UsernameTakenException;
-import com.wtm.application.generation.GenerationNotFoundException;
-import com.wtm.application.generation.MemeNotFoundException;
 import com.wtm.application.port.out.ObjectStorageException;
 import com.wtm.domain.DomainRuleViolation;
 import org.slf4j.Logger;
@@ -34,11 +32,6 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(TemplateNotFoundException.class)
     ProblemDetail notFound(TemplateNotFoundException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-    }
-
-    @ExceptionHandler({GenerationNotFoundException.class, MemeNotFoundException.class})
-    ProblemDetail generationNotFound(RuntimeException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     }
 

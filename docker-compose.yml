@@ -1,5 +1,5 @@
 # Passwords and the data folder come from .env (git-ignored). Create it with: scripts/init-env.ps1
-# Everything the site stores (database files, collected and generated images) lives under
+# Everything the site stores (database files, collected pictures) lives under
 # WTM_DATA_DIR, so it can sit on a big drive and be backed up as plain folders.
 services:
   postgres:
