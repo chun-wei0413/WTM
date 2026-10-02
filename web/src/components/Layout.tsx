@@ -7,13 +7,15 @@ export function Layout() {
     <div className="app">
       <header className="topbar">
         <NavLink to="/" className="brand">
-          meme<span>hub</span>
+          WTM
         </NavLink>
         <nav aria-label="主選單">
           <NavLink to="/" end>
-            產生梗圖
+            找梗圖
           </NavLink>
+          <NavLink to="/generate">產生梗圖</NavLink>
           <NavLink to="/memes">我的梗圖</NavLink>
+          {user?.isAdmin && <NavLink to="/admin/collection">圖庫收集</NavLink>}
           {user?.isAdmin && <NavLink to="/admin/templates">模板管理</NavLink>}
         </nav>
         <div className="topbar-user">

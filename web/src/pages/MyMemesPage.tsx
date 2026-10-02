@@ -31,7 +31,7 @@ export function MyMemesPage() {
       {load.state === 'ready' && load.memes.length === 0 && (
         <div className="empty">
           <p>還沒有留下任何梗圖。</p>
-          <Link to="/" className="button button-primary">
+          <Link to="/generate" className="button button-primary">
             去產生一張
           </Link>
         </div>

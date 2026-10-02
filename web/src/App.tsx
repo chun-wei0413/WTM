@@ -4,6 +4,8 @@ import { Layout } from './components/Layout';
 import { CreatePage } from './pages/CreatePage';
 import { LoginPage } from './pages/LoginPage';
 import { MyMemesPage } from './pages/MyMemesPage';
+import { SearchPage } from './pages/SearchPage';
+import { CollectionPage } from './pages/admin/CollectionPage';
 import { TemplateEditorPage } from './pages/admin/TemplateEditorPage';
 import { TemplatesPage } from './pages/admin/TemplatesPage';
 
@@ -27,9 +29,11 @@ export function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route element={<RequireAuth />}>
         <Route element={<Layout />}>
-          <Route index element={<CreatePage />} />
+          <Route index element={<SearchPage />} />
+          <Route path="generate" element={<CreatePage />} />
           <Route path="memes" element={<MyMemesPage />} />
           <Route element={<RequireAdmin />}>
+            <Route path="admin/collection" element={<CollectionPage />} />
             <Route path="admin/templates" element={<TemplatesPage />} />
             <Route path="admin/templates/:id" element={<TemplateEditorPage />} />
           </Route>
