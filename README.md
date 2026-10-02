@@ -153,6 +153,12 @@ curl -s -H "Authorization: Bearer $USER" $BASE/api/generations/$JOB | jq   # pol
 The result lists candidates with a time-limited `imageUrl` for each, plus the captions that were
 written. `POST /api/memes/{id}/keep` keeps one.
 
+> The examples use `curl` and `jq` in a bash shell. On Windows, putting non-ASCII text (such as Chinese)
+> directly inside a `curl -d '...'` argument hands it to `curl.exe` in the legacy system encoding, so the
+> JSON is not valid UTF-8 and the server answers `400`. Pass such JSON on standard input instead
+> (`--data-binary @-` with a here-document) or from a UTF-8 file. [README.zh-TW.md](README.zh-TW.md)
+> shows this form.
+
 ## API
 
 | Method and path | Who | Purpose |

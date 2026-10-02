@@ -127,11 +127,13 @@ ADMIN=$(curl -s -H 'Content-Type: application/json' \
 ID=$(curl -s -H "Authorization: Bearer $ADMIN" -F name="Drake" -F file=@drake.png \
   $BASE/api/admin/templates | jq -r .id)
 curl -X PUT -H "Authorization: Bearer $ADMIN" -H 'Content-Type: application/json' \
-  -d '{"meaning":"拒絕一件事,偏好另一件事","usageExamples":["不想寫文件,只想直接寫程式"]}' \
-  $BASE/api/admin/templates/$ID/profile
+  --data-binary @- $BASE/api/admin/templates/$ID/profile <<'EOF'
+{"meaning":"拒絕一件事,偏好另一件事","usageExamples":["不想寫文件,只想直接寫程式"]}
+EOF
 curl -X POST -H "Authorization: Bearer $ADMIN" -H 'Content-Type: application/json' \
-  -d '{"slotNo":1,"role":"被拒絕的事物","maxChars":14,"x":300,"y":0,"width":300,"height":300}' \
-  $BASE/api/admin/templates/$ID/slots
+  --data-binary @- $BASE/api/admin/templates/$ID/slots <<'EOF'
+{"slotNo":1,"role":"被拒絕的事物","maxChars":14,"x":300,"y":0,"width":300,"height":300}
+EOF
 curl -X POST -H "Authorization: Bearer $ADMIN" $BASE/api/admin/templates/$ID/approve
 curl -X POST -H "Authorization: Bearer $ADMIN" $BASE/api/admin/index/sync   # 或等約 15 秒
 
@@ -141,12 +143,20 @@ curl -X POST -H 'Content-Type: application/json' \
 USER=$(curl -s -H 'Content-Type: application/json' \
   -d '{"username":"alice","password":"a-long-password"}' $BASE/api/auth/login | jq -r .token)
 JOB=$(curl -s -H "Authorization: Bearer $USER" -H 'Content-Type: application/json' \
-  -d '{"situation":"比起寫文件我寧可直接動手寫程式"}' $BASE/api/generations | jq -r .jobId)
+  --data-binary @- $BASE/api/generations <<'EOF' | jq -r .jobId
+{"situation":"比起寫文件我寧可直接動手寫程式"}
+EOF
+)
 
 curl -s -H "Authorization: Bearer $USER" $BASE/api/generations/$JOB | jq   # 輪詢直到 COMPLETED
 ```
 
 結果會列出每個候選的圖片網址(有時效)與寫出的文案。`POST /api/memes/{id}/keep` 可以留下其中一張。
+
+> **在 Windows 上要注意:** 範例用到 `curl` 與 `jq`,並在 Git Bash 這類 bash 環境執行。如果把中文直接寫在
+> `curl` 的 `-d '...'` 參數裡,Windows 會用舊的系統編碼把參數交給 `curl.exe`,送出的 JSON 不是合法的 UTF-8,
+> 伺服器會回 `400`。所以含中文的內容請像上面這樣用 `--data-binary @-` 從標準輸入傳入(或存成 UTF-8 檔案後用
+> `--data-binary @檔名`)。
 
 ## API
 
