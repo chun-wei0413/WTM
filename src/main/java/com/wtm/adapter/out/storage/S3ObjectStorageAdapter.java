@@ -34,6 +34,9 @@ class S3ObjectStorageAdapter implements ObjectStoragePort {
                 AwsBasicCredentials.create(properties.accessKey(), properties.secretKey()));
         var region = Region.of(properties.region());
         var endpoint = URI.create(properties.endpoint());
+        var publicEndpoint = properties.publicEndpoint() == null || properties.publicEndpoint().isBlank()
+                ? endpoint
+                : URI.create(properties.publicEndpoint());
 
         this.client = S3Client.builder()
                 .endpointOverride(endpoint)
@@ -45,8 +48,9 @@ class S3ObjectStorageAdapter implements ObjectStoragePort {
                 .responseChecksumValidation(ResponseChecksumValidation.WHEN_REQUIRED)
                 .httpClientBuilder(UrlConnectionHttpClient.builder())
                 .build();
+        // The signature covers the host, so the address given out is the one the browser will really use.
         this.presigner = S3Presigner.builder()
-                .endpointOverride(endpoint)
+                .endpointOverride(publicEndpoint)
                 .region(region)
                 .credentialsProvider(credentials)
                 .serviceConfiguration(S3Configuration.builder().pathStyleAccessEnabled(true).build())

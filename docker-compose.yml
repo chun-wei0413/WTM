@@ -20,7 +20,7 @@ services:
   # published, so this uses RustFS; the app only speaks the S3 API, so any
   # S3-compatible store can be swapped in here.
   object-storage:
-    image: rustfs/rustfs:latest
+    image: rustfs/rustfs:1.0.0
     container_name: wtm-object-storage
     environment:
       RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:?S3_ACCESS_KEY is not set - run scripts/init-env.ps1}

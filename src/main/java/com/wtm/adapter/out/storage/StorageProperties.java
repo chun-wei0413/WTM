@@ -12,5 +12,11 @@ public record StorageProperties(
         @DefaultValue("us-east-1") String region,
         String accessKey,
         String secretKey,
-        @DefaultValue("wtm") String bucket) {
+        @DefaultValue("wtm") String bucket,
+        /**
+         * The address a browser can reach the store at, used only in the temporary picture addresses handed to it.
+         * Empty means the same as {@code endpoint}. Needed when the application reaches the store under a name that
+         * only exists inside its own network (a container called {@code object-storage}).
+         */
+        @DefaultValue("") String publicEndpoint) {
 }

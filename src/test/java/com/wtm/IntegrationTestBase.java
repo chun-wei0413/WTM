@@ -31,7 +31,7 @@ public abstract class IntegrationTestBase {
     static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>(
             DockerImageName.parse("pgvector/pgvector:pg16").asCompatibleSubstituteFor("postgres"));
 
-    static final GenericContainer<?> OBJECT_STORAGE = new GenericContainer<>("rustfs/rustfs:latest")
+    static final GenericContainer<?> OBJECT_STORAGE = new GenericContainer<>("rustfs/rustfs:1.0.0")
             .withExposedPorts(S3_PORT)
             .withEnv("RUSTFS_ACCESS_KEY", S3_ACCESS_KEY)
             .withEnv("RUSTFS_SECRET_KEY", S3_SECRET_KEY)
