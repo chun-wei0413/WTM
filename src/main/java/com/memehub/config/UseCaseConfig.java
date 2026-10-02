@@ -10,6 +10,7 @@ import com.memehub.application.auth.RegistrationPolicy;
 import com.memehub.application.generation.GenerationQueueHandler;
 import com.memehub.application.generation.GetGenerationHandler;
 import com.memehub.application.generation.KeepMemeHandler;
+import com.memehub.application.generation.ListMyMemesHandler;
 import com.memehub.application.generation.RunGenerationHandler;
 import com.memehub.application.generation.SubmitGenerationHandler;
 import com.memehub.application.port.out.EmbeddingPort;
@@ -17,6 +18,7 @@ import com.memehub.application.port.out.GenerationJobStore;
 import com.memehub.application.port.out.GenerationJobStore.QuotaLimits;
 import com.memehub.application.port.out.GenerationReadPort;
 import com.memehub.application.port.out.MemeAssistantPort;
+import com.memehub.application.port.out.MemeReadPort;
 import com.memehub.application.port.out.MemeRendererPort;
 import com.memehub.application.port.out.MemeRepository;
 import com.memehub.application.port.out.ImageInspectorPort;
@@ -141,6 +143,11 @@ class UseCaseConfig {
     @Bean
     KeepMemeHandler keepMemeHandler(MemeRepository memes) {
         return new KeepMemeHandler(memes);
+    }
+
+    @Bean
+    ListMyMemesHandler listMyMemesHandler(MemeReadPort reads, ObjectStoragePort storage) {
+        return new ListMyMemesHandler(reads, storage);
     }
 
     @Bean

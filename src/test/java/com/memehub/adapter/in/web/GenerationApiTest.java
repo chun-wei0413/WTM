@@ -105,6 +105,38 @@ class GenerationApiTest extends IntegrationTestBase {
         mvc.perform(post("/api/memes/" + memeId + "/keep").header("Authorization", bearer(user.token)))
                 .andExpect(status().isNoContent());
         assertThat(getGeneration(jobId, user.token).get("candidates").get(0).get("status").asText()).isEqualTo("KEPT");
+
+        JsonNode kept = listMemes(user.token, "");
+        assertThat(kept).hasSize(1);
+        assertThat(kept.get(0).get("id").asText()).isEqualTo(memeId);
+        assertThat(kept.get(0).get("status").asText()).isEqualTo("KEPT");
+        assertThat(kept.get(0).get("templateName").asText()).isEqualTo(candidates.get(0).get("templateName").asText());
+        assertThat(kept.get(0).get("captions")).isEqualTo(candidates.get(0).get("captions"));
+        assertThat(download(kept.get(0).get("imageUrl").asText())).isNotEmpty();
+        // The candidates that were not kept are still there, under the other status.
+        assertThat(listMemes(user.token, "?status=COMPOSED")).hasSize(candidates.size() - 1);
+    }
+
+    @Test
+    void aUserOnlySeesTheirOwnMemesAndBadParametersAreRefused() throws Exception {
+        Account owner = newUser();
+        Account other = newUser();
+        String jobId = submit(owner, "週一又要上班");
+        JsonNode done = await().atMost(Duration.ofSeconds(30)).pollInterval(Duration.ofMillis(200))
+                .until(() -> getGeneration(jobId, owner.token), GenerationApiTest::isFinished);
+        if (done.get("candidates").size() > 0) {
+            mvc.perform(post("/api/memes/" + done.get("candidates").get(0).get("memeId").asText() + "/keep")
+                    .header("Authorization", "Bearer " + owner.token)).andExpect(status().isNoContent());
+            assertThat(listMemes(owner.token, "")).hasSize(1);
+        }
+
+        assertThat(listMemes(other.token, "")).isEmpty();
+        assertThat(listMemes(other.token, "?status=COMPOSED")).isEmpty();
+        mvc.perform(get("/api/memes").param("status", "bogus").header("Authorization", "Bearer " + owner.token))
+                .andExpect(status().isBadRequest());
+        mvc.perform(get("/api/memes").param("limit", "0").header("Authorization", "Bearer " + owner.token))
+                .andExpect(status().isBadRequest());
+        mvc.perform(get("/api/memes")).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -182,6 +214,13 @@ class GenerationApiTest extends IntegrationTestBase {
                         .content(json.writeValueAsString(Map.of("situation", situation))))
                 .andExpect(status().isAccepted()).andReturn();
         return json.readTree(result.getResponse().getContentAsString()).get("jobId").asText();
+    }
+
+    /** @param query empty, or a query string such as {@code ?status=COMPOSED} */
+    private JsonNode listMemes(String token, String query) throws Exception {
+        MvcResult result = mvc.perform(get("/api/memes" + query).header("Authorization", bearer(token)))
+                .andExpect(status().isOk()).andReturn();
+        return json.readTree(result.getResponse().getContentAsString());
     }
 
     private JsonNode getGeneration(String jobId, String token) throws Exception {
