@@ -1,35 +1,60 @@
 version: 2
 
 # Weekly pull requests that bring dependencies up to date. CI runs on each of them, so a breaking update shows
-# up as a failed check instead of a surprise. Minor and patch updates are grouped to keep the number of PRs low.
+# up as a failed check instead of a surprise.
+#
+# Only minor and patch updates are proposed for the project's own dependencies and for the base images. A new
+# major version (Spring Boot 4, Java 24, Node 26, Vite 8, ...) is a piece of work of its own, to be done when it
+# is wanted, not something a bot should open every week; the first run proposed a dozen and four of them broke the build.
+# GitHub Actions are the exception: their major versions are routine and CI checks them.
 updates:
   - package-ecosystem: maven
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 3
     groups:
       maven-minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: npm
     directory: /web
     schedule:
       interval: weekly
+    open-pull-requests-limit: 3
     groups:
       npm-minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns: ["*"]
 
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: docker
     directory: /web
     schedule:
       interval: weekly
+    open-pull-requests-limit: 2
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
