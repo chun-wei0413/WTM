@@ -21,6 +21,7 @@ Contents
 13. [Testing strategy](#13-testing-strategy)
 14. [Rendering captions with Java2D](#14-rendering-captions-with-java2d)
 15. [The web client](#15-the-web-client)
+16. [Favorites, hot searches and a meme maker that stays in the browser](#16-favorites-hot-searches-and-a-meme-maker-that-stays-in-the-browser)
 
 ---
 
@@ -331,3 +332,31 @@ development-mode double effects can hide ordering bugs, so a production build ha
 
 **What is not covered.** There are no automated browser (end-to-end) tests; the interface was
 exercised by hand. The template editor has only been tried at desktop width.
+
+## 16. Favorites, hot searches and a meme maker that stays in the browser
+
+**Context.** The product narrowed to three things: find a meme, keep the ones you like, and add text to a
+kept one to make your own. The earlier flow (describe a situation, let a language model pick a template and
+write captions) was dropped from the web client, because the person usually already knows what they want
+to say and the problem is finding the picture.
+
+**Decisions.**
+
+- **Favorites are a join table** of user and library entry, listed through the same card shape as search
+  results, so one component shows a meme wherever it appears. Only a published entry can be favorited, and a
+  favorite disappears from the list when its entry is retired.
+- **Hot searches are counted at the API, not in the browser**, and only for searches that found something and
+  are 2 to 30 characters long. A whole sentence describing someone's day is not a shortcut, and showing it to
+  other users would leak more than they expected. What remains is still visible to every user, without a name.
+  That is a deliberate trade for a shared shortcut list, and it is stated in the known limitations.
+- **The picture is served through the application** (`/api/library/{id}/image`) instead of the storage's
+  temporary address, because a canvas that has drawn a cross-origin picture cannot be read back, and the
+  storage sends no CORS headers. The same endpoint serves the plain download.
+- **The meme maker draws in the browser.** The text boxes reuse the slot editor (move, resize, draw a new one),
+  wrap and shrink text with one pure function shared by the on-page preview and the exported canvas, and the
+  result is a PNG saved by the person who made it. Nothing is uploaded, so there is nothing to moderate,
+  store or share. That also satisfies "what you make is only for you" by construction, not by a rule.
+
+**Cost.** Server-side rendering (decision 14) is unused by the web client now; it stays for the generation
+endpoints. The browser's text metrics differ slightly from Java2D, which is fine because both the preview and
+the export use the browser's. An animated GIF loses its animation once text is added.

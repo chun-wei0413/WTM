@@ -145,10 +145,17 @@ npm run dev        # http://localhost:5173
 ```
 
 Sign in with the administrator from `.env`, or create an ordinary account from the sign-in page.
-Everyone can search the library on the home page (**找梗圖**) by situation, looks or nickname. As administrator,
-**圖庫收集** is where pictures are added (choose files or a folder, paste an address, or start a collection
-run from a source) and where tagging progress is shown, and **模板管理** is where you upload a template, drag out its caption slots on the image,
-describe the meme and approve it. The dev server forwards `/api` to `localhost:8080`, so the browser sees
+The web client has three pages for everyone:
+
+- **找梗圖** (find memes): a search bar, the most common recent searches as shortcuts, and below them random memes.
+  Every meme has a download button and a favorite button.
+- **梗圖收藏** (favorites): your own shortlist, so a meme you will need again is one click away.
+- **梗圖模板** (meme maker): pick a favorite, draw text boxes on it, type the text and download the result. The
+  picture is drawn in the browser and never sent to the server, so what you make is for your own use.
+
+Administrators also get **圖庫收集** (add pictures: choose files or a folder, paste an address, or start a collection
+run from a source; shows tagging progress) and **圖庫管理** (describe, edit and approve library entries and templates).
+The dev server forwards `/api` to `localhost:8080`, so the browser sees
 a single origin and no CORS setup is needed. `npm run build` produces static files in `web/dist` that
 any static host can serve, as long as `/api` is forwarded to the backend (the application does not serve
 them itself).
@@ -192,7 +199,11 @@ fill the library (`POST /api/admin/collection/runs`).
 |---|---|---|
 | `POST /api/auth/register` | anyone | Create a user account |
 | `POST /api/auth/login` | anyone | Get a bearer token (2 h) |
-| `GET /api/templates/search?q=&limit=` | signed in | Search templates by meaning and keywords |
+| `GET /api/templates/search?q=&limit=` | signed in | Search the library by meaning and keywords (short searches that find something are counted) |
+| `GET /api/library/random?limit=` | signed in | Published memes in random order |
+| `GET /api/library/hot-searches?limit=` | signed in | The most common searches of the last 7 days |
+| `GET /api/library/{id}/image` | signed in | The original picture of a published meme (download, or drawing on a canvas) |
+| `GET /api/favorites` · `PUT` · `DELETE /api/favorites/{id}` | signed in | Your own favorites |
 | `POST /api/generations` | signed in | Request memes for a situation (`202`, returns `jobId`) |
 | `GET /api/generations/{id}` | owner | Job status and candidate memes |
 | `POST /api/memes/{id}/keep` | owner | Keep a candidate |
@@ -228,11 +239,11 @@ registration can be switched off with `wtm.security.registration-enabled=false`.
 mvn test
 ```
 
-The backend has 148 tests that run by default (plus the two on-demand evaluations below). The integration
+The backend has 267 tests that run by default (plus the two on-demand evaluations below). The integration
 tests start real PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped
 automatically when Docker is not running.
 
-The web client has 74 tests (the logic behind the slot editor, the API client, sign-in state):
+The web client has 95 tests (the logic behind the box editor and text fitting, the API client, favorites, sign-in state):
 
 ```bash
 cd web
@@ -278,6 +289,12 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **Sign-in and registration throttling is per instance** (in memory), and the client address is
   `getRemoteAddr()`. Behind a reverse proxy, forwarded headers must be configured first. See
   [decision 9](docs/DECISIONS.md#9-stateless-jwt-and-throttling-that-is-honest-about-its-limits).
+- **Hot searches are shared.** A short phrase (2 to 30 characters) that found something is counted, and the most
+  common ones are shown to every signed-in user, without saying who typed them. Longer sentences are never
+  recorded. Rows are kept forever; only the last 7 days are read.
+- **The meme maker keeps nothing.** What you make exists only until you download it or close the tab, and an
+  animated GIF becomes a still picture once text is added.
+- The generation endpoints (`/api/generations`, `/api/memes`) still exist, but the web client no longer uses them.
 - No password reset, e-mail verification or logout.
 - Rendering needs a CJK font. A Linux container needs one installed (for example Noto Sans CJK).
 - No template images are included (licensing). The evaluation uses plain placeholder images.
