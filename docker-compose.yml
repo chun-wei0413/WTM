@@ -1,4 +1,6 @@
-# Passwords come from .env (git-ignored). Create it with: scripts/init-env.ps1
+# Passwords and the data folder come from .env (git-ignored). Create it with: scripts/init-env.ps1
+# Everything the site stores (database files, collected and generated images) lives under
+# MEMEHUB_DATA_DIR, so it can sit on a big drive and be backed up as plain folders.
 services:
   postgres:
     image: pgvector/pgvector:pg16
@@ -10,7 +12,9 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - type: bind
+        source: ${MEMEHUB_DATA_DIR:?MEMEHUB_DATA_DIR is not set - run scripts/init-env.ps1}/postgres
+        target: /var/lib/postgresql/data
 
   # S3-compatible object storage. The official minio/minio image is no longer
   # published, so this uses RustFS; the app only speaks the S3 API, so any
@@ -25,8 +29,6 @@ services:
       - "9000:9000"
       - "9001:9001"
     volumes:
-      - object-storage-data:/data
-
-volumes:
-  postgres-data:
-  object-storage-data:
+      - type: bind
+        source: ${MEMEHUB_DATA_DIR:?MEMEHUB_DATA_DIR is not set - run scripts/init-env.ps1}/images
+        target: /data
