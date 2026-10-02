@@ -18,10 +18,36 @@ class JdbcGenerationJobStore implements GenerationJobStore {
     }
 
     @Override
-    public void enqueue(UUID jobId, UUID requesterId, String situation) {
+    @Transactional
+    public EnqueueResult enqueue(UUID jobId, UUID requesterId, String situation, QuotaLimits limits) {
+        // Serialize submissions of the same user until this transaction ends, so the counts
+        // below cannot change between checking them and inserting the job.
+        jdbc.sql("SELECT pg_advisory_xact_lock(hashtextextended(?, 0))")
+                .param("generation:" + requesterId)
+                .query((rs, n) -> null)
+                .list();
+
+        long active = jdbc.sql("""
+                        SELECT count(*) FROM generation_job
+                        WHERE requester_id = ? AND status IN ('PENDING', 'RUNNING')""")
+                .param(requesterId)
+                .query(Long.class).single();
+        if (active >= limits.maxActive()) {
+            return EnqueueResult.TOO_MANY_ACTIVE;
+        }
+        long today = jdbc.sql("""
+                        SELECT count(*) FROM generation_job
+                        WHERE requester_id = ? AND created_at > now() - interval '1 day'""")
+                .param(requesterId)
+                .query(Long.class).single();
+        if (today >= limits.maxPerDay()) {
+            return EnqueueResult.DAILY_LIMIT_REACHED;
+        }
+
         jdbc.sql("INSERT INTO generation_job (id, requester_id, situation, status) VALUES (?, ?, ?, 'PENDING')")
                 .params(List.of(jobId, requesterId, situation))
                 .update();
+        return EnqueueResult.ACCEPTED;
     }
 
     @Override

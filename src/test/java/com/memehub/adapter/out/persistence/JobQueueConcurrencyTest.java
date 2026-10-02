@@ -47,7 +47,7 @@ class JobQueueConcurrencyTest extends IntegrationTestBase {
         for (int i = 0; i < JOBS; i++) {
             UUID id = UUID.randomUUID();
             expected.add(id);
-            store.enqueue(id, user.id(), "job " + i);
+            store.enqueue(id, user.id(), "job " + i, GenerationJobStore.QuotaLimits.unlimited());
         }
 
         List<ClaimedJob> claimed = Collections.synchronizedList(new ArrayList<>());

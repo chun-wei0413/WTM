@@ -10,6 +10,7 @@ import com.memehub.application.generation.RunGenerationHandler;
 import com.memehub.application.generation.SubmitGenerationHandler;
 import com.memehub.application.port.out.EmbeddingPort;
 import com.memehub.application.port.out.GenerationJobStore;
+import com.memehub.application.port.out.GenerationJobStore.QuotaLimits;
 import com.memehub.application.port.out.GenerationReadPort;
 import com.memehub.application.port.out.MemeAssistantPort;
 import com.memehub.application.port.out.MemeRendererPort;
@@ -111,8 +112,9 @@ class UseCaseConfig {
     }
 
     @Bean
-    SubmitGenerationHandler submitGenerationHandler(GenerationJobStore jobs) {
-        return new SubmitGenerationHandler(jobs);
+    SubmitGenerationHandler submitGenerationHandler(GenerationJobStore jobs, GenerationProperties properties) {
+        return new SubmitGenerationHandler(jobs,
+                new QuotaLimits(properties.maxActivePerUser(), properties.maxPerDayPerUser()));
     }
 
     @Bean
