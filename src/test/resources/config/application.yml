@@ -1,7 +1,7 @@
 # Merged over src/main/resources/application.yml for every test.
 # All tests talk from the same address, so the per-address limits are kept out of the way;
 # tests that exercise a limit override it with @TestPropertySource.
-memehub:
+usethatmeme:
   collection:
     inbox-enabled: false     # a developer's real inbox must never be read by a test
   security:

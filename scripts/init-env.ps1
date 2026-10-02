@@ -2,7 +2,7 @@
 # It never overwrites an existing .env and never prints the secrets.
 param(
     # Where the database files, collected memes and backups live. Needs plenty of free space.
-    [string]$DataDir = 'D:/memehub-data'
+    [string]$DataDir = 'D:/usethatmeme-data'
 )
 $ErrorActionPreference = 'Stop'
 
@@ -18,10 +18,10 @@ function New-DataFolders([string]$root) {
 if (Test-Path $envFile) {
     Write-Host ".env already exists; leaving its secrets untouched."
     $existing = Get-Content $envFile
-    if (-not ($existing | Where-Object { $_ -like 'MEMEHUB_DATA_DIR=*' })) {
+    if (-not ($existing | Where-Object { $_ -like 'USETHATMEME_DATA_DIR=*' })) {
         # An .env from before the data folder existed: add just that one setting.
-        Add-Content -Path $envFile -Value "MEMEHUB_DATA_DIR=$DataDir" -Encoding ascii
-        Write-Host "Added MEMEHUB_DATA_DIR=$DataDir to .env."
+        Add-Content -Path $envFile -Value "USETHATMEME_DATA_DIR=$DataDir" -Encoding ascii
+        Write-Host "Added USETHATMEME_DATA_DIR=$DataDir to .env."
         New-DataFolders $DataDir
     }
     exit 0
@@ -36,14 +36,14 @@ function New-Secret([int]$byteCount) {
 }
 
 $lines = @(
-    "MEMEHUB_DATA_DIR=$DataDir",
-    'DB_USERNAME=memehub',
+    "USETHATMEME_DATA_DIR=$DataDir",
+    'DB_USERNAME=usethatmeme',
     "DB_PASSWORD=$(New-Secret 24)",
     "S3_ACCESS_KEY=$(New-Secret 12)",
     "S3_SECRET_KEY=$(New-Secret 24)",
-    "MEMEHUB_JWT_SECRET=$(New-Secret 48)",
-    'MEMEHUB_ADMIN_USERNAME=admin',
-    "MEMEHUB_ADMIN_PASSWORD=$(New-Secret 18)"
+    "USETHATMEME_JWT_SECRET=$(New-Secret 48)",
+    'USETHATMEME_ADMIN_USERNAME=admin',
+    "USETHATMEME_ADMIN_PASSWORD=$(New-Secret 18)"
 )
 # ASCII without BOM: a BOM would corrupt the first key for docker-compose and Spring.
 Set-Content -Path $envFile -Value $lines -Encoding ascii

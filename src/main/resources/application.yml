@@ -1,13 +1,13 @@
 spring:
   application:
-    name: memehub
+    name: usethatmeme
   config:
     # Secrets live in .env (git-ignored, created by scripts/init-env.ps1) and are shared
     # with docker-compose. Real environment variables take precedence over the file.
     import: optional:file:.env[.properties]
   datasource:
-    url: jdbc:postgresql://localhost:5433/memehub
-    username: ${DB_USERNAME:memehub}
+    url: jdbc:postgresql://localhost:5433/usethatmeme
+    username: ${DB_USERNAME:usethatmeme}
     password: ${DB_PASSWORD}
   flyway:
     enabled: true
@@ -22,21 +22,21 @@ management:
       exposure:
         include: health,info,metrics
 
-memehub:
-  data-dir: ${MEMEHUB_DATA_DIR:}   # holds the inbox folder; empty means no inbox is watched
+usethatmeme:
+  data-dir: ${USETHATMEME_DATA_DIR:}   # holds the inbox folder; empty means no inbox is watched
   security:
     jwt:
-      secret: ${MEMEHUB_JWT_SECRET}
+      secret: ${USETHATMEME_JWT_SECRET}
       ttl: PT2H
     bootstrap-admin:
-      username: ${MEMEHUB_ADMIN_USERNAME:admin}
-      password: ${MEMEHUB_ADMIN_PASSWORD}
+      username: ${USETHATMEME_ADMIN_USERNAME:admin}
+      password: ${USETHATMEME_ADMIN_PASSWORD}
   storage:
     endpoint: http://localhost:9000
     region: us-east-1
     access-key: ${S3_ACCESS_KEY}
     secret-key: ${S3_SECRET_KEY}
-    bucket: memehub
+    bucket: usethatmeme
   vision:                     # looks at collected pictures and describes them
     provider: mock            # mock | ollama
     ollama:
