@@ -30,10 +30,10 @@ export function FavoritesPage() {
       )}
 
       {items.length > 0 && (
-        <div className="grid">
+        <div className="masonry">
           {items.map((item) => (
             <MemeTile key={item.templateId} item={item}>
-              <Link to={`/create?from=${item.templateId}`} className="button">
+              <Link to={`/create?from=${item.templateId}`} className="button button-primary">
                 加文字
               </Link>
             </MemeTile>

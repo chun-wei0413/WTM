@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { CollectionRun, IngestResult } from '../api/types';
 import {
+  attributionNote,
   changedOptions,
   describeUploads,
   hasActiveRun,
@@ -100,5 +101,22 @@ describe('source labels', () => {
     expect(sourceTypeLabel('UPLOAD')).toBe('手動上傳');
     expect(sourceTypeLabel('SOMETHING_NEW')).toBe('SOMETHING_NEW');
     expect(sourceTypeLabel(null)).toBeNull();
+  });
+});
+
+describe('attribution', () => {
+  it('leaves out a credit that only repeats the source', () => {
+    expect(attributionNote('Imgflip', 'Imgflip')).toBeNull();
+    expect(attributionNote('Imgflip', 'imgflip ')).toBeNull();
+  });
+
+  it('keeps a credit that says more', () => {
+    expect(attributionNote('維基共享資源', 'Db5man · Wikimedia Commons')).toBe('Db5man · Wikimedia Commons');
+    expect(attributionNote(null, 'someone')).toBe('someone');
+  });
+
+  it('has nothing to show without a credit', () => {
+    expect(attributionNote('Imgflip', null)).toBeNull();
+    expect(attributionNote('Imgflip', '  ')).toBeNull();
   });
 });

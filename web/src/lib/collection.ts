@@ -80,3 +80,10 @@ export function isHttpUrl(text: string): boolean {
 export function onlyImages(files: readonly File[]): File[] {
   return files.filter((file) => /^image\/(png|jpe?g|gif)$/.test(file.type) || /\.(png|jpe?g|gif)$/i.test(file.name));
 }
+
+/** Who made it, unless that only repeats the name of the source ("Imgflip" credited to "Imgflip"). */
+export function attributionNote(sourceLabel: string | null, attribution: string | null): string | null {
+  const text = attribution?.trim();
+  if (!text) return null;
+  return sourceLabel && text.toLowerCase() === sourceLabel.toLowerCase() ? null : text;
+}

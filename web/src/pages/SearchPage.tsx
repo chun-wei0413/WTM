@@ -77,7 +77,7 @@ export function SearchPage() {
   return (
     <div className="page">
       <h1>找梗圖</h1>
-      <p className="lead">描述你遇到的情境,或是這張圖長什麼樣子、大家怎麼叫它,不用記得它的名字。</p>
+      <p className="lead search-lead">描述你遇到的情境,或是這張圖長什麼樣子、大家怎麼叫它,不用記得它的名字。</p>
 
       <form onSubmit={onSubmit} className="form search-form" role="search">
         <label className="visually-hidden" htmlFor="search-box">
@@ -142,7 +142,7 @@ export function SearchPage() {
 
       {load.state === 'ready' && load.items.length > 0 && (
         <section aria-live="polite">
-          <div className="grid">
+          <div className="masonry">
             {load.items.map((item) => (
               <MemeTile key={item.templateId} item={item} />
             ))}

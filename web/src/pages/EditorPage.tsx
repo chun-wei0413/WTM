@@ -92,7 +92,7 @@ function Picker() {
           <h2>選一張收藏的梗圖</h2>
           <div className="grid grid-small">
             {items.map((item) => (
-              <Link key={item.templateId} to={`/create?from=${item.templateId}`} className="card template-card">
+              <Link key={item.templateId} to={`/create?from=${item.templateId}`} className="card template-card picker-card">
                 <img src={item.imageUrl} alt={item.meaning ?? item.name} loading="lazy" />
                 <div className="card-body">
                   <span className="muted">{item.meaning ?? item.name}</span>
@@ -207,7 +207,7 @@ function Editor({ templateId }: { templateId: string }) {
 
       {picture.state === 'ready' && (
         <div className="editor-layout">
-          <div>
+          <div className="editor-stage" style={{ ['--ratio' as string]: picture.size.width / picture.size.height }}>
             <SlotEditor
               imageUrl={picture.url}
               imageSize={picture.size}
