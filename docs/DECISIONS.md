@@ -1,6 +1,6 @@
 # Design decisions
 
-This is a log of the choices that shaped memehub, why they were made, and what they cost.
+This is a log of the choices that shaped usethatmeme, why they were made, and what they cost.
 Each entry says what was **measured** and what was only **reasoned**, because the two deserve
 different amounts of trust.
 
@@ -126,7 +126,7 @@ reciprocal rank fusion (RRF), which needs no comparison between distance and sim
 If the embedding service fails, keyword search alone still answers.
 
 **What was measured** (real `bge-m3` through Ollama; 12 hand-written templates, 20 situation
-queries; run with `mvn test -Dtest=SearchQualityEvalTest -Dmemehub.eval=true`):
+queries; run with `mvn test -Dtest=SearchQualityEvalTest -Dusethatmeme.eval=true`):
 
 | | first result correct | in top 3 | MRR |
 |---|---|---|---|
@@ -220,7 +220,7 @@ variables; `scripts/init-env.ps1` generates random ones and never overwrites an 
 
 **A trap worth recording.** Removing the defaults was not enough. When a bound property contains an
 unresolved `${NAME}`, Spring Boot keeps it as **literal text** instead of failing, so a forgotten
-admin password would have become the string `${MEMEHUB_ADMIN_PASSWORD}`: a known password and no
+admin password would have become the string `${USETHATMEME_ADMIN_PASSWORD}`: a known password and no
 warning. `RequiredSettingsCheck` therefore runs before any bean is created and stops the
 application, naming each missing setting. It also rejects the `change-me` value from `.env.example`.
 
