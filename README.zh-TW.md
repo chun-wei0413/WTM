@@ -14,7 +14,11 @@
 *這是整條流程的真實輸出(`bge-m3` 負責檢索、`qwen2.5:7b` 負責寫文案、文字由程式畫上去)。
 因為沒有附上有授權的模板圖片,所以這裡是畫在純色的佔位背景上。*
 
-**目前狀態:** 後端已完成並有測試涵蓋。下一步是網頁介面,在那之前請透過 REST API 使用(範例見下方)。
+**目前狀態:** 後端與網頁介面(繁體中文)都已完成並有測試涵蓋。
+
+| 產生梗圖 | 在模板上標出文字格 |
+|---|---|
+| ![產生梗圖頁:候選梗圖,文案已畫在文字格裡](docs/images/ui-generate.jpg) | ![模板編輯頁:圖片上拖曳出的文字格與縮放把手,右側是它的設定](docs/images/ui-template-editor.jpg) |
 
 > 設計取捨的完整說明(英文)在 **[docs/DECISIONS.md](docs/DECISIONS.md)**。
 
@@ -78,6 +82,7 @@ flowchart TB
 | | |
 |---|---|
 | 語言與框架 | Java 21、Spring Boot 3.5 |
+| 網頁前端 | React 19、TypeScript、Vite、React Router(不使用 UI 套件) |
 | 資料庫 | PostgreSQL 16,搭配 `pgvector`(語意搜尋)與 `pg_trgm`(關鍵字搜尋),以 Flyway 管理遷移 |
 | 物件儲存 | 任何相容 S3 的服務,透過 AWS SDK v2(Docker Compose 使用 RustFS) |
 | 模型 | [Ollama](https://ollama.com):`bge-m3` 做 embedding、`qwen2.5:7b` 寫文案;預設使用可重現的模擬模型 |
@@ -113,6 +118,21 @@ $env:MEMEHUB_EMBEDDING_PROVIDER = "ollama"
 $env:MEMEHUB_LLM_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
+
+### 網頁介面
+
+需要 **Node.js 20 或更新版本**。後端啟動後:
+
+```bash
+cd web
+npm install
+npm run dev        # http://localhost:5173
+```
+
+用 `.env` 裡的管理員登入,或在登入頁建立一般帳號。以管理員身分進入「模板管理」,可以上傳模板、
+在圖上拖曳出文字格、描述這個梗並核准。開發伺服器會把 `/api` 轉送到 `localhost:8080`,所以瀏覽器只看到
+一個來源,不需要設定 CORS。`npm run build` 會在 `web/dist` 產生靜態檔案,可以用任何靜態網站服務提供,
+只要把 `/api` 轉送到後端即可(應用程式本身不提供這些檔案)。
 
 ### 用 `curl` 試試看
 
@@ -168,6 +188,8 @@ curl -s -H "Authorization: Bearer $USER" $BASE/api/generations/$JOB | jq   # 輪
 | `POST /api/generations` | 已登入 | 為一個情境要求產生梗圖(`202`,回傳 `jobId`) |
 | `GET /api/generations/{id}` | 擁有者 | 任務狀態與候選梗圖 |
 | `POST /api/memes/{id}/keep` | 擁有者 | 留下一張候選 |
+| `GET /api/memes[?status=&limit=]` | 已登入 | 自己的梗圖(預設是留下的那些) |
+| `GET /api/memes/{id}/image` | 擁有者 | 下載完成的圖片 |
 | `POST /api/admin/templates` | 管理員 | 上傳模板圖片(multipart:`name`、`file`) |
 | `GET /api/admin/templates[?status=]`、`GET /api/admin/templates/{id}` | 管理員 | 列出 / 讀取模板 |
 | `PUT /api/admin/templates/{id}/profile` | 管理員 | 含意、使用範例、情緒、別名 |
@@ -198,8 +220,16 @@ curl -s -H "Authorization: Bearer $USER" $BASE/api/generations/$JOB | jq   # 輪
 mvn test
 ```
 
-預設會執行 141 個測試(另有下面兩個需要手動啟用的評測)。整合測試會用 Testcontainers 啟動真正的
+後端預設會執行 148 個測試(另有下面兩個需要手動啟用的評測)。整合測試會用 Testcontainers 啟動真正的
 PostgreSQL(含 pgvector)與相容 S3 的儲存服務,沒有開啟 Docker 時會自動跳過。
+
+網頁前端有 63 個測試(涵蓋文字格編輯器背後的運算、API 客戶端、登入狀態):
+
+```bash
+cd web
+npm test
+npm run typecheck
+```
 
 兩個評測使用**真正**的模型,不包含在一般建置裡:
 
@@ -228,7 +258,8 @@ mvn test -Dtest=GenerationQualityEvalTest -Dmemehub.eval=true   # 完整流程 �
 
 ## 已知限制
 
-- **還沒有網頁介面。**
+- **網頁介面是用人工在瀏覽器裡檢查的,沒有自動化的瀏覽器(端對端)測試。** 模板編輯頁只在桌面寬度試過;
+  其他頁面另外檢查過手機寬度與深色模式。
 - **文案品質就是 7B 模型的程度:** 有時不太通順,偶爾會混入簡體字;太長的文案會被硬切在字數上限,
   可能切在詞的中間。
 - **搜尋永遠回傳最接近的模板**,即使描述和梗圖毫無關係也一樣;相關與不相關的距離範圍重疊,
@@ -255,6 +286,7 @@ src/main/java/com/memehub
 │   └── security        JWT、BCrypt、限流器
 └── config          元件組裝與必要密碼的啟動檢查
 src/main/resources/db/migration    Flyway 遷移
+web/                               React + TypeScript 網頁前端(Vite)
 docs/DECISIONS.md                  為什麼這樣設計(英文)
 ```
 

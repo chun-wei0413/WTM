@@ -15,8 +15,11 @@ Describe a situation in your own words, get meme candidates that fit it.
 *Real output of the pipeline (retrieval by `bge-m3`, captions by `qwen2.5:7b`, text drawn by the
 app). Rendered on a plain placeholder background because no licensed template images are shipped.*
 
-**Status:** the backend is complete and tested. A web UI is the next step; until then the system is
-used through its REST API (examples below).
+**Status:** the backend and a web UI (in Traditional Chinese) are complete and tested.
+
+| Generating memes | Marking caption slots on a template |
+|---|---|
+| ![The generate page showing a candidate meme with its caption drawn in the slot](docs/images/ui-generate.jpg) | ![The template editor: a slot drawn on the image with resize handles, and its settings on the right](docs/images/ui-template-editor.jpg) |
 
 ---
 
@@ -82,6 +85,7 @@ trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
 | | |
 |---|---|
 | Language / framework | Java 21, Spring Boot 3.5 |
+| Web client | React 19, TypeScript, Vite, React Router (no UI library) |
 | Database | PostgreSQL 16 with `pgvector` (semantic search) and `pg_trgm` (keyword search), Flyway migrations |
 | Object storage | Any S3-compatible store through the AWS SDK v2 (RustFS in Docker Compose) |
 | Models | [Ollama](https://ollama.com): `bge-m3` for embeddings, `qwen2.5:7b` for captions; a deterministic mock is the default |
@@ -117,6 +121,23 @@ $env:MEMEHUB_EMBEDDING_PROVIDER = "ollama"
 $env:MEMEHUB_LLM_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
+
+### The web UI
+
+You need **Node.js 20 or newer**. With the backend running:
+
+```bash
+cd web
+npm install
+npm run dev        # http://localhost:5173
+```
+
+Sign in with the administrator from `.env`, or create an ordinary account from the sign-in page.
+As administrator, **模板管理** is where you upload a template, drag out its caption slots on the image,
+describe the meme and approve it. The dev server forwards `/api` to `localhost:8080`, so the browser sees
+a single origin and no CORS setup is needed. `npm run build` produces static files in `web/dist` that
+any static host can serve, as long as `/api` is forwarded to the backend (the application does not serve
+them itself).
 
 ### Try it with `curl`
 
@@ -169,6 +190,8 @@ written. `POST /api/memes/{id}/keep` keeps one.
 | `POST /api/generations` | signed in | Request memes for a situation (`202`, returns `jobId`) |
 | `GET /api/generations/{id}` | owner | Job status and candidate memes |
 | `POST /api/memes/{id}/keep` | owner | Keep a candidate |
+| `GET /api/memes[?status=&limit=]` | signed in | Your own memes (the kept ones by default) |
+| `GET /api/memes/{id}/image` | owner | Download the finished image |
 | `POST /api/admin/templates` | admin | Upload a template image (multipart `name`, `file`) |
 | `GET /api/admin/templates[?status=]`, `GET /api/admin/templates/{id}` | admin | List / read templates |
 | `PUT /api/admin/templates/{id}/profile` | admin | Meaning, usage examples, emotions, aliases |
@@ -199,9 +222,17 @@ registration can be switched off with `memehub.security.registration-enabled=fal
 mvn test
 ```
 
-141 tests run by default (plus the two on-demand evaluations below). The integration tests start real
-PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped automatically
-when Docker is not running.
+The backend has 148 tests that run by default (plus the two on-demand evaluations below). The integration
+tests start real PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped
+automatically when Docker is not running.
+
+The web client has 63 tests (the logic behind the slot editor, the API client, sign-in state):
+
+```bash
+cd web
+npm test
+npm run typecheck
+```
 
 Two evaluations use the **real** models and are excluded from the normal build:
 
@@ -231,7 +262,9 @@ More detail, including an experiment that was **not** adopted and why, is in
 
 ## Known limitations
 
-- **No web UI yet.**
+- **The web UI was checked by hand in a browser, with no automated browser (end-to-end) tests.** The
+  template editor in particular has only been tried at desktop width; the other pages were also checked on
+  a phone-sized screen and in dark mode.
 - **Caption quality is what a 7B model gives:** sometimes awkward, occasionally Simplified Chinese
   characters slip in, and an over-long caption is cut at the slot's limit, which can land mid-word.
 - **Search always returns the nearest templates**, even for an unrelated description; relevant and
@@ -258,6 +291,7 @@ src/main/java/com/memehub
 │   └── security        JWT, BCrypt, rate limiter
 └── config          wiring and the startup check for required secrets
 src/main/resources/db/migration    Flyway migrations
+web/                               React + TypeScript web client (Vite)
 docs/DECISIONS.md                  why it is built this way
 ```
 

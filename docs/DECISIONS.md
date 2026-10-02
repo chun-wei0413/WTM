@@ -20,6 +20,7 @@ Contents
 12. [Jobs run on virtual threads from a database queue](#12-jobs-run-on-virtual-threads-from-a-database-queue)
 13. [Testing strategy](#13-testing-strategy)
 14. [Rendering captions with Java2D](#14-rendering-captions-with-java2d)
+15. [The web client](#15-the-web-client)
 
 ---
 
@@ -284,3 +285,49 @@ spaces.
 - Wrapping can leave a single orphan character on the last line.
 - Over-long captions are cut to the slot's limit; the cut is by character count and can land
   mid-word. Asking the model to retry with a shorter caption would be better.
+
+## 15. The web client
+
+**Decision.** React, TypeScript and Vite, with no UI library and no state library: the app is small,
+and plain CSS with variables gives light and dark themes (`prefers-color-scheme`) for free. The
+interface is in Traditional Chinese because that is who it is for; the code is not.
+
+**Same origin in development.** The Vite server forwards `/api` to the backend, so the browser sees
+one origin and the server needs no CORS configuration. In production, `npm run build` yields static
+files that any host can serve provided `/api` is forwarded; the Spring Boot application does not
+serve them. That keeps the backend a pure API.
+
+**Where the token lives.** In `sessionStorage`: it survives reloading the tab and disappears when the
+tab closes. It is still readable by any script running on the page, so a cross-site-scripting hole
+would expose it. An `HttpOnly` cookie would resist that but needs CSRF protection and server changes.
+No Content-Security-Policy is configured yet. This is a known soft spot, not a solved problem.
+
+**Two ways to get an image.** Showing an image uses the time-limited storage URL, so the bytes never
+pass through the application. *Downloading* goes through `GET /api/memes/{id}/image`: a browser
+cannot fetch a cross-origin storage URL as a file without CORS on the storage, and that URL carries
+no check that the caller owns the meme.
+
+**The slot editor.** An SVG laid over the image whose coordinates are image pixels, so what is drawn
+is exactly what is saved and no screen-to-image conversion leaks into the data. The geometry (move,
+resize with eight handles, stay inside the image, minimum size) is pure functions with tests, and
+applies the same inside-the-image rule the server enforces.
+
+**Polling, not push.** The page asks for the job again after 0.8 s, backing off to 3 s. That matches
+a stateless API and a database queue; server-sent events or WebSockets would feel faster but need
+connection state that survives more than one instance. The cost is up to about a second of extra
+latency.
+
+**Admin screens are convenience, not security.** Hiding the admin menu from ordinary users only keeps
+the screens tidy; every admin endpoint is protected on the server.
+
+**A bug only a real browser found.** Exercising the UI in a production build showed that reloading a
+page which fetches data on load sent its first request *without* the sign-in token and got a 401.
+React runs a child's effects before its parent's, and the token was installed in the parent's
+effect. In development it never showed, because React's StrictMode runs every effect twice and the
+second run happened to succeed. The fix is to install the token in a layout effect, which runs
+before any ordinary effect in the tree, and a regression test now renders the provider without
+StrictMode and asserts the first request carries the token (it failed before the fix). The lesson:
+development-mode double effects can hide ordering bugs, so a production build has to be tried too.
+
+**What is not covered.** There are no automated browser (end-to-end) tests; the interface was
+exercised by hand. The template editor has only been tried at desktop width.
