@@ -4,6 +4,8 @@ import com.memehub.application.TemplateNotFoundException;
 import com.memehub.application.TooManyRequestsException;
 import com.memehub.application.UnsupportedImageException;
 import com.memehub.application.auth.InvalidCredentialsException;
+import com.memehub.application.collection.CollectionBusyException;
+import com.memehub.application.collection.FetchRefusedException;
 import com.memehub.application.auth.RegistrationClosedException;
 import com.memehub.application.auth.UsernameTakenException;
 import com.memehub.application.generation.GenerationNotFoundException;
@@ -67,6 +69,16 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             response = response.header(HttpHeaders.RETRY_AFTER, String.valueOf(e.retryAfter().toSeconds()));
         }
         return response.body(ProblemDetail.forStatusAndDetail(HttpStatus.TOO_MANY_REQUESTS, e.getMessage()));
+    }
+
+    @ExceptionHandler(CollectionBusyException.class)
+    ProblemDetail collectionBusy(CollectionBusyException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    @ExceptionHandler(FetchRefusedException.class)
+    ProblemDetail fetchRefused(FetchRefusedException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

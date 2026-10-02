@@ -23,6 +23,7 @@ management:
         include: health,info,metrics
 
 memehub:
+  data-dir: ${MEMEHUB_DATA_DIR:}   # holds the inbox folder; empty means no inbox is watched
   security:
     jwt:
       secret: ${MEMEHUB_JWT_SECRET}

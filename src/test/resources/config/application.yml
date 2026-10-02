@@ -2,6 +2,8 @@
 # All tests talk from the same address, so the per-address limits are kept out of the way;
 # tests that exercise a limit override it with @TestPropertySource.
 memehub:
+  collection:
+    inbox-enabled: false     # a developer's real inbox must never be read by a test
   security:
     throttling:
       registrations-per-address: 1000

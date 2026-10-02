@@ -7,6 +7,10 @@ import com.memehub.application.auth.BootstrapAdminHandler;
 import com.memehub.application.auth.LoginHandler;
 import com.memehub.application.collection.ApplyTagsHandler;
 import com.memehub.application.collection.GetLibraryStatsHandler;
+import com.memehub.application.collection.ImportFromUrlHandler;
+import com.memehub.application.collection.ListCollectionRunsHandler;
+import com.memehub.application.collection.RunCollectionHandler;
+import com.memehub.application.collection.StartCollectionHandler;
 import com.memehub.application.collection.ImportUploadsHandler;
 import com.memehub.application.collection.IngestMemeHandler;
 import com.memehub.application.collection.TagTemplateHandler;
@@ -29,9 +33,12 @@ import com.memehub.application.port.out.MemeAssistantPort;
 import com.memehub.application.port.out.MemeReadPort;
 import com.memehub.application.port.out.MemeRendererPort;
 import com.memehub.application.port.out.MemeRepository;
+import com.memehub.application.port.out.CollectionRunPort;
 import com.memehub.application.port.out.ImageFingerprintPort;
 import com.memehub.application.port.out.ImageInspectorPort;
 import com.memehub.application.port.out.LibraryPort;
+import com.memehub.application.port.out.MemeSourcePort;
+import com.memehub.application.port.out.RemoteFetchPort;
 import com.memehub.application.port.out.TaggingQueuePort;
 import com.memehub.application.port.out.VisionTaggerPort;
 import com.memehub.application.port.out.ObjectStoragePort;
@@ -54,6 +61,7 @@ import com.memehub.application.template.index.SyncSearchIndexHandler;
 import com.memehub.application.template.query.GetTemplateHandler;
 import com.memehub.application.template.query.ListTemplatesHandler;
 import com.memehub.application.template.search.SearchTemplatesHandler;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -212,5 +220,26 @@ class UseCaseConfig {
     @Bean
     TaggingQueueHandler taggingQueueHandler(TaggingQueuePort queue) {
         return new TaggingQueueHandler(queue);
+    }
+
+    @Bean
+    StartCollectionHandler startCollectionHandler(List<MemeSourcePort> sources, CollectionRunPort runs) {
+        return new StartCollectionHandler(sources, runs);
+    }
+
+    @Bean
+    RunCollectionHandler runCollectionHandler(RemoteFetchPort fetcher, IngestMemeHandler ingest,
+                                              CollectionRunPort runs) {
+        return new RunCollectionHandler(fetcher, ingest, runs);
+    }
+
+    @Bean
+    ImportFromUrlHandler importFromUrlHandler(RemoteFetchPort fetcher, IngestMemeHandler ingest) {
+        return new ImportFromUrlHandler(fetcher, ingest);
+    }
+
+    @Bean
+    ListCollectionRunsHandler listCollectionRunsHandler(CollectionRunPort runs) {
+        return new ListCollectionRunsHandler(runs);
     }
 }
