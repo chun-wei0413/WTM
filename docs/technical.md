@@ -145,7 +145,9 @@ npm run dev        # http://localhost:5173
 ```
 
 Sign in with the administrator from `.env`, or create an ordinary account from the sign-in page.
-As administrator, **模板管理** is where you upload a template, drag out its caption slots on the image,
+Everyone can search the library on the home page (**找梗圖**) by situation, looks or nickname. As administrator,
+**圖庫收集** is where pictures are added (choose files or a folder, paste an address, or start a collection
+run from a source) and where tagging progress is shown, and **模板管理** is where you upload a template, drag out its caption slots on the image,
 describe the meme and approve it. The dev server forwards `/api` to `localhost:8080`, so the browser sees
 a single origin and no CORS setup is needed. `npm run build` produces static files in `web/dist` that
 any static host can serve, as long as `/api` is forwarded to the backend (the application does not serve
@@ -230,7 +232,7 @@ The backend has 148 tests that run by default (plus the two on-demand evaluation
 tests start real PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped
 automatically when Docker is not running.
 
-The web client has 63 tests (the logic behind the slot editor, the API client, sign-in state):
+The web client has 74 tests (the logic behind the slot editor, the API client, sign-in state):
 
 ```bash
 cd web
