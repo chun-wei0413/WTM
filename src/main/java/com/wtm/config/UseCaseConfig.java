@@ -6,6 +6,10 @@ import com.wtm.adapter.security.SecurityProperties;
 import com.wtm.application.auth.BootstrapAdminHandler;
 import com.wtm.application.auth.LoginHandler;
 import com.wtm.application.collection.ApplyTagsHandler;
+import com.wtm.application.library.FavoritesHandler;
+import com.wtm.application.library.GetLibraryImageHandler;
+import com.wtm.application.library.RandomMemesHandler;
+import com.wtm.application.library.SearchHistoryHandler;
 import com.wtm.application.collection.GetLibraryStatsHandler;
 import com.wtm.application.collection.ImportFromUrlHandler;
 import com.wtm.application.collection.ListCollectionRunsHandler;
@@ -26,6 +30,9 @@ import com.wtm.application.generation.ListMyMemesHandler;
 import com.wtm.application.generation.RunGenerationHandler;
 import com.wtm.application.generation.SubmitGenerationHandler;
 import com.wtm.application.port.out.EmbeddingPort;
+import com.wtm.application.port.out.FavoritePort;
+import com.wtm.application.port.out.LibraryBrowsePort;
+import com.wtm.application.port.out.SearchLogPort;
 import com.wtm.application.port.out.GenerationJobStore;
 import com.wtm.application.port.out.GenerationJobStore.QuotaLimits;
 import com.wtm.application.port.out.GenerationReadPort;
@@ -61,6 +68,7 @@ import com.wtm.application.template.index.SyncSearchIndexHandler;
 import com.wtm.application.template.query.GetTemplateHandler;
 import com.wtm.application.template.query.ListTemplatesHandler;
 import com.wtm.application.template.search.SearchTemplatesHandler;
+import java.time.Clock;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -147,6 +155,26 @@ class UseCaseConfig {
     SearchTemplatesHandler searchTemplatesHandler(TemplateSearchPort search, EmbeddingPort embeddings,
                                                   ObjectStoragePort storage) {
         return new SearchTemplatesHandler(search, embeddings, storage);
+    }
+
+    @Bean
+    RandomMemesHandler randomMemesHandler(LibraryBrowsePort library, ObjectStoragePort storage) {
+        return new RandomMemesHandler(library, storage);
+    }
+
+    @Bean
+    FavoritesHandler favoritesHandler(FavoritePort favorites, ObjectStoragePort storage) {
+        return new FavoritesHandler(favorites, storage);
+    }
+
+    @Bean
+    GetLibraryImageHandler getLibraryImageHandler(LibraryBrowsePort library, ObjectStoragePort storage) {
+        return new GetLibraryImageHandler(library, storage);
+    }
+
+    @Bean
+    SearchHistoryHandler searchHistoryHandler(SearchLogPort log) {
+        return new SearchHistoryHandler(log, Clock.systemUTC());
     }
 
     @Bean
