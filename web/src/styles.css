@@ -1005,3 +1005,32 @@ textarea:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+.automatic-list summary {
+  cursor: pointer;
+}
+.auto-entries {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.auto-entry {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.auto-entry img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.auto-entry p {
+  margin: 0.2rem 0 0;
+}

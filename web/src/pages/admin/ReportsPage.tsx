@@ -1,18 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../api/client';
-import type { ReportCase } from '../../api/types';
+import type { AutomaticEntry, ReportCase } from '../../api/types';
 import { ErrorNotice } from '../../components/ErrorNotice';
 import { REASON_LABELS, REPORT_POLL_MS, REVIEW_LABELS, diffList, isReviewing, sameText } from '../../lib/reports';
 
-type Load = { state: 'loading' } | { state: 'error'; error: unknown } | { state: 'ready'; cases: ReportCase[] };
+type Load =
+  | { state: 'loading' }
+  | { state: 'error'; error: unknown }
+  | { state: 'ready'; cases: ReportCase[]; automatic: AutomaticEntry[] };
 
 export function ReportsPage() {
   const [load, setLoad] = useState<Load>({ state: 'loading' });
 
   const refresh = useCallback(async () => {
     try {
-      setLoad({ state: 'ready', cases: await api.admin.reports.list() });
+      const [cases, automatic] = await Promise.all([api.admin.reports.list(), api.admin.reports.automatic()]);
+      setLoad({ state: 'ready', cases, automatic });
     } catch (error) {
       setLoad((previous) => (previous.state === 'ready' ? previous : { state: 'error', error }));
     }
@@ -54,7 +58,59 @@ export function ReportsPage() {
       )}
       {load.state === 'ready' &&
         load.cases.map((c) => <CaseCard key={c.templateId} item={c} onChanged={() => void refresh()} />)}
+      {load.state === 'ready' && load.automatic.length > 0 && (
+        <AutomaticList entries={load.automatic} onChanged={() => void refresh()} />
+      )}
     </div>
+  );
+}
+
+/** What the rules decided without an administrator, so it can be checked and taken back. */
+function AutomaticList({ entries, onChanged }: { entries: AutomaticEntry[]; onChanged: () => void }) {
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
+
+  async function undo(templateId: string) {
+    setBusy(templateId);
+    setError(null);
+    try {
+      await api.admin.reports.undo(templateId);
+      onChanged();
+    } catch (e) {
+      setError(e);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <details className="section automatic-list">
+      <summary>
+        <strong>最近自動處理({entries.length})</strong>
+        <span className="muted"> 不需要你決定,但可以檢查、也可以還原(7 天內)</span>
+      </summary>
+      {error != null && <ErrorNotice error={error} />}
+      <ul className="auto-entries">
+        {entries.map((e) => (
+          <li key={`${e.templateId}-${e.action}`} className="auto-entry">
+            <img src={e.imageUrl} alt="" loading="lazy" />
+            <div>
+              <strong>{e.name}</strong>{' '}
+              <span className={e.action === 'APPLIED' ? 'badge badge-success' : 'badge'}>
+                {e.action === 'APPLIED' ? '已自動採用 AI 建議' : '已自動忽略(模型認為沒問題)'}
+              </span>
+              <p className="muted">
+                {e.reports} 則回報 · {new Date(e.at).toLocaleString('zh-TW')}
+              </p>
+              {e.note && <p>模型的說明:{e.note}</p>}
+            </div>
+            <button type="button" className="button" disabled={!e.canUndo || busy !== null} onClick={() => void undo(e.templateId)}>
+              {busy === e.templateId ? '處理中…' : e.action === 'APPLIED' ? '還原成原本的描述' : '重新打開回報'}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </details>
   );
 }
 
@@ -120,7 +176,12 @@ function CaseCard({ item, onChanged }: { item: ReportCase; onChanged: () => void
 
         <section>
           <h3>影像模型重新分析</h3>
-          {review === null && <p className="muted">還沒有分析。</p>}
+          {review === null && (
+            <p className="muted">
+              還沒有分析。目前回報的可信度合計 {item.weight} / {item.neededWeight},人數還不夠,系統不會自動花模型時間;
+              你可以按「重新分析」手動分析。
+            </p>
+          )}
           {working && (
             <p className="status status-working" role="status">
               <span className="spinner" aria-hidden="true" />

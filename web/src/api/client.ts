@@ -1,4 +1,5 @@
 import type {
+  AutomaticEntry,
   CollectionRun,
   CollectionSource,
   GenerationView,
@@ -194,6 +195,12 @@ export const api = {
 
     reports: {
       list: () => request<ReportCase[]>('GET', '/api/admin/reports'),
+
+      /** What the rules closed or adopted on their own in the last week. */
+      automatic: () => request<AutomaticEntry[]>('GET', '/api/admin/reports/automatic'),
+
+      /** Takes back an automatic decision: the earlier description, or the closed reports. */
+      undo: (templateId: string) => request<void>('POST', `/api/admin/reports/${enc(templateId)}/undo`),
 
       /** Adopts the model's proposal as the meme's description and closes its reports. */
       apply: (templateId: string) => request<void>('POST', `/api/admin/reports/${enc(templateId)}/apply`),

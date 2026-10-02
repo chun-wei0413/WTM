@@ -9,6 +9,8 @@ const caseWith = (status: ReviewStatus | null): ReportCase => ({
   imageUrl: '/i',
   current: { meaning: '', usageExamples: [], emotions: [], aliases: [], imageText: '', tags: [] },
   reports: [],
+  weight: 1,
+  neededWeight: 2,
   review: status ? { status, suggestion: null, error: null } : null,
 });
 

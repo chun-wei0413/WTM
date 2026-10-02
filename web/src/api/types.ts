@@ -210,4 +210,21 @@ export interface ReportCase {
   current: MemeProfile;
   reports: OpenReport[];
   review: ReportReview | null;
+  /** How much the reporters count for together (newcomers 1, proven reporters more, repeat false reporters 0). */
+  weight: number;
+  /** What they need to count for before the model is asked to look on its own. */
+  neededWeight: number;
+}
+
+/** Something the rules decided on their own in the last week. */
+export interface AutomaticEntry {
+  templateId: string;
+  name: string;
+  imageUrl: string;
+  /** APPLIED: the model's proposal was adopted. DISMISSED: nothing was changed. */
+  action: 'APPLIED' | 'DISMISSED';
+  reports: number;
+  note: string | null;
+  at: string;
+  canUndo: boolean;
 }
