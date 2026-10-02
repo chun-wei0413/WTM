@@ -24,9 +24,7 @@ app). Rendered on a plain placeholder background because no licensed template im
 
 **Status:** the backend and a web UI (in Traditional Chinese) are complete and tested.
 
-| Generating memes | Marking caption slots on a template |
-|---|---|
-| ![The generate page showing a candidate meme with its caption drawn in the slot](docs/images/ui-generate.jpg) | ![The template editor: a slot drawn on the image with resize handles, and its settings on the right](docs/images/ui-template-editor.jpg) |
+![The template editor: a slot drawn on the image with resize handles, and its settings on the right](docs/images/ui-template-editor.jpg)
 
 ---
 

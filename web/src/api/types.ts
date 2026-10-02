@@ -52,39 +52,6 @@ export interface TemplateView {
   updatedAt: string;
 }
 
-export type GenerationStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED';
-
-/** Caption text by slot number. JSON object keys are always text, so the numbers arrive as "1", "2", … */
-export type Captions = Record<string, string>;
-
-export interface Candidate {
-  memeId: string;
-  templateId: string;
-  templateName: string;
-  status: 'COMPOSED' | 'KEPT';
-  imageUrl: string | null;
-  captions: Captions;
-}
-
-export interface GenerationView {
-  id: string;
-  status: GenerationStatus;
-  situation: string;
-  failureReason: string | null;
-  createdAt: string;
-  candidates: Candidate[];
-}
-
-export interface MemeSummary {
-  id: string;
-  templateId: string;
-  templateName: string;
-  status: 'COMPOSED' | 'KEPT';
-  imageUrl: string;
-  captions: Captions;
-  createdAt: string;
-}
-
 /** One meme of the library, as the browsing pages show it. */
 export interface LibraryItem {
   templateId: string;

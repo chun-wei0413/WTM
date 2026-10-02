@@ -456,7 +456,6 @@ textarea:disabled {
 .grid-small {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
-.meme-card img,
 .template-card img {
   width: 100%;
   background: var(--surface-2);
@@ -471,19 +470,6 @@ textarea:disabled {
 .template-card img {
   aspect-ratio: 4 / 3;
   object-fit: cover;
-}
-.image-missing {
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  color: var(--muted);
-  background: var(--surface-2);
-}
-.captions {
-  margin: 0;
-  padding-left: 1.3rem;
-  color: var(--muted);
-  font-size: 0.93rem;
 }
 .new-template {
   padding: 1rem 1.25rem 1.25rem;

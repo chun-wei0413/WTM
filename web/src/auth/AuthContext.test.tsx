@@ -17,7 +17,7 @@ function tokenExpiringIn(seconds: number): string {
 /** A page that asks the server for something the moment it appears, as every page here does. */
 function PageThatFetchesOnLoad() {
   useEffect(() => {
-    void api.listMemes().catch(() => undefined);
+    void api.favorites.list().catch(() => undefined);
   }, []);
   return null;
 }

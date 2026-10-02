@@ -29,15 +29,14 @@ afterEach(() => {
 
 describe('requests', () => {
   it('sends the bearer token and a JSON body', async () => {
-    respond({ jobId: 'j1' }, { status: 202 });
+    respond(undefined, { status: 204 });
 
-    const result = await api.submitGeneration('週一又要上班');
+    await api.reports.submit('t1', 'OTHER', '週一又要上班');
 
-    expect(result).toEqual({ jobId: 'j1' });
-    expect(calls[0]?.url).toBe('/api/generations');
+    expect(calls[0]?.url).toBe('/api/reports');
     expect(calls[0]?.init.method).toBe('POST');
     expect(calls[0]?.init.headers).toMatchObject({ Authorization: 'Bearer the-token', 'Content-Type': 'application/json' });
-    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ situation: '週一又要上班' });
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ templateId: 't1', reason: 'OTHER', comment: '週一又要上班' });
   });
 
   it('does not send a token when signing in', async () => {
@@ -158,7 +157,7 @@ describe('requests', () => {
   it('returns nothing for a 204', async () => {
     respond(undefined, { status: 204 });
 
-    await expect(api.keepMeme('m1')).resolves.toBeUndefined();
+    await expect(api.favorites.add('m1')).resolves.toBeUndefined();
   });
 });
 
@@ -175,7 +174,7 @@ describe('errors', () => {
   it('reads Retry-After from a 429', async () => {
     respond({ detail: 'slow down' }, { status: 429, headers: { 'Retry-After': '30' } });
 
-    const error = (await api.submitGeneration('x').catch((e: unknown) => e)) as ApiError;
+    const error = (await api.reports.submit('t1', 'OTHER', 'x').catch((e: unknown) => e)) as ApiError;
 
     expect(error.status).toBe(429);
     expect(error.retryAfterSeconds).toBe(30);
@@ -184,7 +183,7 @@ describe('errors', () => {
   it('copes with an error body that is not JSON', async () => {
     respond('<html>Bad gateway</html>', { status: 502 });
 
-    const error = (await api.listMemes().catch((e: unknown) => e)) as ApiError;
+    const error = (await api.favorites.list().catch((e: unknown) => e)) as ApiError;
 
     expect(error.status).toBe(502);
     expect(error.retryAfterSeconds).toBeNull();
@@ -193,7 +192,7 @@ describe('errors', () => {
   it('reports status 0 when the server cannot be reached', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => Promise.reject(new TypeError('Failed to fetch'))));
 
-    const error = (await api.listMemes().catch((e: unknown) => e)) as ApiError;
+    const error = (await api.favorites.list().catch((e: unknown) => e)) as ApiError;
 
     expect(error.status).toBe(0);
   });
@@ -201,7 +200,7 @@ describe('errors', () => {
   it('tells the app when the session has been rejected', async () => {
     respond({ detail: 'expired' }, { status: 401 });
 
-    await api.listMemes().catch(() => undefined);
+    await api.favorites.list().catch(() => undefined);
 
     expect(unauthorized).toBe(1);
   });

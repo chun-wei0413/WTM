@@ -2,7 +2,6 @@ import type {
   AutomaticEntry,
   CollectionRun,
   CollectionSource,
-  GenerationView,
   HotSearch,
   IngestResult,
   IndexSyncResult,
@@ -10,7 +9,6 @@ import type {
   LibraryStats,
   LoginResponse,
   MemeProfile,
-  MemeSummary,
   SearchResult,
   ReportCase,
   ReportReason,
@@ -118,22 +116,6 @@ export const api = {
 
   search: (query: string, limit = 10) =>
     request<SearchResult[]>('GET', `/api/templates/search?q=${enc(query)}&limit=${limit}`),
-
-  submitGeneration: (situation: string) =>
-    request<{ jobId: string }>('POST', '/api/generations', { json: { situation } }),
-
-  getGeneration: (jobId: string) => request<GenerationView>('GET', `/api/generations/${enc(jobId)}`),
-
-  keepMeme: (memeId: string) => request<void>('POST', `/api/memes/${enc(memeId)}/keep`),
-
-  listMemes: (status?: 'KEPT' | 'COMPOSED', limit = 50) =>
-    request<MemeSummary[]>('GET', `/api/memes?limit=${limit}${status ? `&status=${status}` : ''}`),
-
-  /** The finished image as a file, fetched through the application so the caller's permission is checked. */
-  async downloadMeme(memeId: string): Promise<Blob> {
-    const response = await send('GET', `/api/memes/${enc(memeId)}/image`, {});
-    return response.blob();
-  },
 
   library: {
     /** Memes picked at random from the published library. */

@@ -37,3 +37,11 @@ secrets/
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# The site's own data (database files, collected pictures, backups) must never be committed
+wtm-data/
+/data/
+/inbox/
+*.dump
+*.sql.gz
+*.bak

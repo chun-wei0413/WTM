@@ -22,9 +22,7 @@
 
 **目前狀態:** 後端與網頁介面(繁體中文)都已完成並有測試涵蓋。
 
-| 產生梗圖 | 在模板上標出文字格 |
-|---|---|
-| ![產生梗圖頁:候選梗圖,文案已畫在文字格裡](docs/images/ui-generate.jpg) | ![模板編輯頁:圖片上拖曳出的文字格與縮放把手,右側是它的設定](docs/images/ui-template-editor.jpg) |
+![模板編輯頁:圖片上拖曳出的文字格與縮放把手,右側是它的設定](docs/images/ui-template-editor.jpg)
 
 > 設計取捨的完整說明(英文)在 **[docs/DECISIONS.md](docs/DECISIONS.md)**。
 
