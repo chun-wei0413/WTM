@@ -217,7 +217,7 @@ fill the library (`POST /api/admin/collection/runs`).
 | `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | admin | Define, change, remove a caption slot |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | admin | Publish / withdraw a template |
 | `GET /api/admin/reports` | admin | Reported memes: complaints, current description, the model's proposal |
-| `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` | admin | Adopt the proposal, set the reports aside, or ask the model again |
+| `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` · `/undo`, `GET /api/admin/reports/automatic` | admin | Adopt the proposal, set the reports aside, ask the model again, take an automatic decision back, list what the rules did |
 | `POST /api/admin/index/sync` | admin | Bring the search index up to date now |
 | `GET /actuator/health` | anyone | Health check |
 
@@ -233,8 +233,13 @@ Errors are returned as problem-details JSON. `429` responses carry `Retry-After`
 | Meme requests in progress per user | 2 |
 | Meme requests per user per day | 50 |
 | Concurrent generation jobs per instance | 4 |
+| Different memes one person may report per day | 10 (and 30 open reports at most) |
+| Reporters' combined weight before the vision model looks on its own | 2 (newcomer 1, proven reporter 2, repeat false reporter 0, administrator 2) |
+| Time before the vision model looks at the same meme again | 24 hours |
+| Looks by the vision model for reports, whole site, per day | 50 (an administrator's request is exempt) |
+| Combined weight at which a proposal is adopted without an administrator | 3 |
 
-All are configurable under `wtm.security.throttling.*` and `wtm.generation.*`;
+All are configurable under `wtm.security.throttling.*`, `wtm.generation.*` and `wtm.reports.*`;
 registration can be switched off with `wtm.security.registration-enabled=false`.
 
 ## Tests
@@ -243,7 +248,7 @@ registration can be switched off with `wtm.security.registration-enabled=false`.
 mvn test
 ```
 
-The backend has 267 tests that run by default (plus the two on-demand evaluations below). The integration
+The backend has 333 tests that run by default (plus the two on-demand evaluations below). The integration
 tests start real PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped
 automatically when Docker is not running.
 
@@ -296,10 +301,16 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **Hot searches are shared.** A short phrase (2 to 30 characters) that found something is counted, and the most
   common ones are shown to every signed-in user, without saying who typed them. Longer sentences are never
   recorded. Rows are kept forever; only the last 7 days are read.
-- **Each report costs the vision model about a minute.** Reports about one meme share a single re-analysis, a person
-  can have 30 open reports at most and a second report on the same meme replaces the first. With the mock model the
-  proposal is fixed text. A user's words are put in the prompt as opinions to weigh against the picture, and the model's
-  answer is only a proposal: nothing changes until an administrator adopts it.
+- **Each look by the vision model costs about a minute**, so what reports can cost is capped (see the limits above):
+  trust weights, a cooldown per meme, a daily budget for the whole site. The budget is the real ceiling: however many
+  accounts there are, the model is not kept busy for more than 50 looks a day. Reports above the limits are still
+  recorded for the administrator. With the mock model the proposal is fixed text (a complaint containing `[keep]`
+  makes it find nothing wrong, for testing).
+- **Reports can change a description on their own**, but only when the evidence is clear: the model finds nothing wrong
+  and few people insist (reports closed), or at least three trusted-weight reporters agree and the model proposes a
+  usable new description (adopted). Anything about whether a picture belongs, a "not a meme" answer, many people
+  against the model, and any look an administrator asked for are left to the administrator. Every automatic decision
+  is listed for 7 days and can be taken back. It is only as good as a 7B model plus the people reporting.
 - **The meme maker keeps nothing.** What you make exists only until you download it or close the tab, and an
   animated GIF becomes a still picture once text is added.
 - The generation endpoints (`/api/generations`, `/api/memes`) still exist, but the web client no longer uses them.

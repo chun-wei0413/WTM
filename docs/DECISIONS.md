@@ -23,6 +23,7 @@ Contents
 15. [The web client](#15-the-web-client)
 16. [Favorites, hot searches and a meme maker that stays in the browser](#16-favorites-hot-searches-and-a-meme-maker-that-stays-in-the-browser)
 17. [Reports: a complaint plus a second look by the vision model](#17-reports-a-complaint-plus-a-second-look-by-the-vision-model)
+18. [Keeping reports from keeping the model busy, and closing the clear-cut ones without an administrator](#18-keeping-reports-from-keeping-the-model-busy-and-closing-the-clear-cut-ones-without-an-administrator)
 
 ---
 
@@ -386,7 +387,43 @@ administrator the same effort as finding the mistake alone.
   and picture text. The search index follows by itself (decision 3).
 
 **Cost.** Each report costs the vision model about a minute, on the same graphics card that does tagging, so a flood
-of reports delays tagging. The per-person limit and the shared analysis keep that bounded, not eliminated.
+of reports could delay tagging. The first version only limited each person to 30 open reports, which left holes:
+editing a report made the model run again, dismissing and reporting again did too, and many accounts multiplied
+everything. Decision 18 closes them.
+
+## 18. Keeping reports from keeping the model busy, and closing the clear-cut ones without an administrator
+
+**Context.** Reports are cheap to send and expensive to answer, and anyone with an account can send them. The
+limits have to hold against a person who means harm, and the administrator should only see what needs a person.
+
+**Decisions.**
+
+- **The model's time is the scarce thing, so the ceiling is on the model, not on people.** Every look is written
+  down. Non-administrator looks are only started while fewer than 50 have happened in 24 hours, in the same SQL
+  statement that claims the work, so two workers cannot overshoot. However many accounts exist, the day's cost is bounded.
+- **A look has to be earned.** Reporters carry a weight: 1 for a newcomer, 2 once their reports were adopted
+  more often than set aside, 0 once they were set aside five times and never adopted, 2 for an administrator. The model is
+  only asked when the weights add up to 2, so one stranger alone cannot spend it; the report is still kept for the
+  administrator, who can ask by hand. Each person counts once per meme.
+- **A meme is looked at once per day at most**, remembered in a table that outlives the review row, so
+  dismissing, adopting or editing a report does not reset it. A new person joining after the look can still
+  tip the balance: the earlier proposal is judged again (no new look) and adopted if the weights now reach 3.
+- **A person may report ten different memes a day.** Changing what they already said about one meme is never refused.
+- **The rules act only when the evidence is clear.** Model says nothing is wrong and fewer than 3 weight insist: reports
+  closed. Model proposes a usable change and 3 or more weight agree: adopted. Everything about whether a picture
+  belongs, "not a meme", many people against the model, and any look an administrator asked for is left to a person
+  (otherwise "undo" on a closed report would just close it again).
+- **Every automatic decision can be taken back for 7 days.** Adopting records the earlier description and refuses to
+  put it back over a later edit; closing records who and why, and undoing it opens the reports again.
+
+**Honest limits.**
+
+- A group of accounts that each earn trust, then report together, can still push a wrong description through; the
+  undo list and the "adopted" counts are how that would be noticed, not a way to prevent it.
+- The model reads the complaints, so a complaint can try to steer it. The prompt quotes them as opinion, and nothing
+  changes without agreement from several people, but this is not a guarantee.
+- A report that arrives while the model is still looking is judged when the look ends, so it counts; one that arrives in
+  the instant between the model finishing and the judgement being read is judged at the next report.
 
 **A bug this work exposed.** The administrator's description form never sent the tags or the picture text, so
 saving any description wiped them on the server. The form now carries both, and they can be edited there.
