@@ -25,8 +25,12 @@ public record SourceProperties(
         @DefaultValue Ptt ptt) {
 
     public record Ptt(
-            /** Boards offered by default. Boards that ask for an age confirmation are never collected. */
-            @DefaultValue({"StupidClown", "C_Chat"}) List<String> boards) {
+            /**
+             * Boards suggested in the form. None by default: the boards tried (笨板, C_Chat) are mostly photos of funny
+             * things and discussion, not pictures people send to answer someone, so the administrator has to choose
+             * one on purpose. Boards that ask for an age confirmation are never collected.
+             */
+            @DefaultValue({}) List<String> boards) {
     }
 
     /** The product name robots.txt groups are matched against. */

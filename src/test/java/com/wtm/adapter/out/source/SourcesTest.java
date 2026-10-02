@@ -266,4 +266,17 @@ class SourcesTest {
         assertThat(PttSource.postLinks(page)).containsExactly(PttSource.BASE + "/bbs/X/M.1.A.AB.html");
         assertThat(PttSource.previousPage(page)).contains(PttSource.BASE + "/bbs/X/index5.html");
     }
+
+    @Test
+    void noBoardIsCollectedUnlessTheAdministratorNamesOne() {
+        var properties = new SourceProperties.Ptt(List.of());
+        var source = new PttSource(new FakeFetcher(), new SourceProperties("wtm-test/1.0", "", java.time.Duration.ZERO,
+                java.time.Duration.ofSeconds(5), DataSize.ofMegabytes(1), DataSize.ofMegabytes(1), false, properties));
+
+        assertThat(source.options()).singleElement().satisfies(option -> assertThat(option.defaultValue()).isEmpty());
+        assertThatThrownBy(() -> source.discover(Map.of())).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("no default");
+        assertThat(new SourceProperties("x", "", java.time.Duration.ZERO, java.time.Duration.ZERO, DataSize.ofBytes(1),
+                DataSize.ofBytes(1), false, new SourceProperties.Ptt(List.of())).ptt().boards()).isEmpty();
+    }
 }

@@ -63,19 +63,25 @@ class PttSource implements MemeSourcePort {
 
     @Override
     public String description() {
-        return "批踢踢看板,最貼近台灣的用語與梗。會一篇一篇讀文章、取出裡面的圖片連結,速度很慢(每次請求間隔 2 秒以上)。需要年齡確認的看板不會收集。";
+        return "批踢踢看板,最貼近台灣的用語。會一篇一篇讀文章、取出裡面的圖片連結,速度很慢(每次請求間隔 2 秒以上)。"
+                + "注意:多數看板的圖是生活照、新聞與截圖,不是可以拿來回訊息的梗圖(笨板試過,50 張裡只有約 9 張可用),請自己選看板並事後檢查。"
+                + "需要年齡確認的看板不會收集。";
     }
 
     @Override
     public List<SourceOption> options() {
         List<String> boards = properties.ptt().boards();
-        return List.of(new SourceOption("board", "看板名稱(例如 " + String.join("、", boards) + ")",
+        return List.of(new SourceOption("board",
+                boards.isEmpty() ? "看板名稱(必填,沒有預設)" : "看板名稱(例如 " + String.join("、", boards) + ")",
                 boards.isEmpty() ? "" : boards.get(0)));
     }
 
     @Override
     public Iterator<RemoteMeme> discover(Map<String, String> options) {
         String board = options.getOrDefault("board", properties.ptt().boards().isEmpty() ? "" : properties.ptt().boards().get(0)).strip();
+        if (board.isEmpty()) {
+            throw new IllegalArgumentException("Please give the name of the board to collect from; there is no default");
+        }
         if (!BOARD_NAME.matcher(board).matches()) {
             throw new IllegalArgumentException("Please give a board name (letters, digits, '_' or '-')");
         }
