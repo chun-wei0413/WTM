@@ -80,7 +80,8 @@ class RunGenerationHandlerTest {
     private void searchReturns(UUID... ids) {
         when(search.handle(eq(job.situation()), anyInt())).thenReturn(
                 java.util.Arrays.stream(ids)
-                        .map(id -> new SearchResult(id, "name", 1.0, "url", List.of())).toList());
+                        .map(id -> new SearchResult(id, "name", 1.0, "url", List.of(), "", List.of(), "",
+                                null, null, null)).toList());
     }
 
     @Test

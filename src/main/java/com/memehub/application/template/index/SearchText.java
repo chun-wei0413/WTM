@@ -21,6 +21,8 @@ public final class SearchText {
         parts.add(profile.meaning());
         parts.addAll(profile.usageExamples());
         parts.addAll(profile.emotions());
+        parts.addAll(profile.tags());
+        parts.add(profile.imageText());
         return String.join("\n", parts.stream().filter(p -> p != null && !p.isBlank()).toList());
     }
 }

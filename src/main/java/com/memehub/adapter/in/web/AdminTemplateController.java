@@ -93,7 +93,8 @@ class AdminTemplateController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void reviseProfile(@PathVariable UUID id, @RequestBody ProfileRequest request) {
         reviseProfile.handle(new TemplateId(id), new MemeProfile(request.meaning(),
-                request.usageExamples(), request.emotions(), request.aliases()));
+                request.usageExamples(), request.emotions(), request.aliases(),
+                request.imageText(), request.tags()));
     }
 
     @PostMapping("/{id}/slots")
@@ -130,8 +131,8 @@ class AdminTemplateController {
     record CreatedResponse(UUID id) {
     }
 
-    record ProfileRequest(String meaning, List<String> usageExamples,
-                          List<String> emotions, List<String> aliases) {
+    record ProfileRequest(String meaning, List<String> usageExamples, List<String> emotions,
+                          List<String> aliases, String imageText, List<String> tags) {
     }
 
     record SlotRequest(@Min(1) int slotNo, @NotBlank String role, @Min(1) int maxChars,

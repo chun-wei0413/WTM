@@ -25,7 +25,7 @@ import java.util.TreeMap;
 public class MemeTemplate {
 
     private final TemplateId id;
-    private final String name;
+    private String name;
     private final String imageKey;
     private final int imageWidth;
     private final int imageHeight;
@@ -96,6 +96,15 @@ public class MemeTemplate {
             throw new DomainRuleViolation("Slot " + slotNo + " does not exist");
         }
         layoutChanged();
+    }
+
+    /** Gives the template a better name, for example once the picture has been looked at. */
+    public void rename(String newName) {
+        requireNotRetired();
+        if (newName == null || newName.isBlank()) {
+            throw new DomainRuleViolation("Template name must not be blank");
+        }
+        this.name = newName.strip();
     }
 
     public void reviseProfile(MemeProfile newProfile) {

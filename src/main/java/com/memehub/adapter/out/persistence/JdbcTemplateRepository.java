@@ -55,8 +55,8 @@ class JdbcTemplateRepository implements TemplateRepository {
         jdbc.sql("""
                         INSERT INTO meme_template
                             (id, name, image_key, image_width, image_height, status, version,
-                             meaning, usage_examples, emotions, aliases)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::text[], ?::text[], ?::text[])
+                             meaning, usage_examples, emotions, aliases, image_text, tags)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::text[], ?::text[], ?::text[], ?, ?::text[])
                         ON CONFLICT (id) DO UPDATE SET
                             status = EXCLUDED.status,
                             version = EXCLUDED.version,
@@ -64,6 +64,8 @@ class JdbcTemplateRepository implements TemplateRepository {
                             usage_examples = EXCLUDED.usage_examples,
                             emotions = EXCLUDED.emotions,
                             aliases = EXCLUDED.aliases,
+                            image_text = EXCLUDED.image_text,
+                            tags = EXCLUDED.tags,
                             updated_at = now()""")
                 .params(List.of(
                         template.id().value(), template.name(), template.imageKey(),
@@ -71,7 +73,9 @@ class JdbcTemplateRepository implements TemplateRepository {
                         template.status().name(), template.version(), profile.meaning(),
                         profile.usageExamples().toArray(String[]::new),
                         profile.emotions().toArray(String[]::new),
-                        profile.aliases().toArray(String[]::new)))
+                        profile.aliases().toArray(String[]::new),
+                        profile.imageText(),
+                        profile.tags().toArray(String[]::new)))
                 .update();
 
         jdbc.sql("DELETE FROM template_slot WHERE template_id = ?")

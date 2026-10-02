@@ -16,7 +16,7 @@ final class TemplateRows {
 
     static final String PROFILE_AND_META_COLUMNS = """
             id, name, image_key, image_width, image_height, status, version,
-            meaning, usage_examples, emotions, aliases, created_at, updated_at""";
+            meaning, usage_examples, emotions, aliases, image_text, tags, created_at, updated_at""";
 
     private TemplateRows() {
     }
@@ -28,7 +28,7 @@ final class TemplateRows {
 
     static MemeProfile profile(ResultSet rs) throws SQLException {
         return new MemeProfile(rs.getString("meaning"), strings(rs, "usage_examples"),
-                strings(rs, "emotions"), strings(rs, "aliases"));
+                strings(rs, "emotions"), strings(rs, "aliases"), rs.getString("image_text"), strings(rs, "tags"));
     }
 
     static Slot slot(ResultSet rs) throws SQLException {
