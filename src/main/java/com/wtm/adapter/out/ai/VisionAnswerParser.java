@@ -30,7 +30,7 @@ final class VisionAnswerParser {
         boolean isMeme = readBoolean(root.get("isMeme"));
         ImageTags tags = new ImageTags(isMeme, text(root.get("title")), text(root.get("meaning")),
                 list(root.get("usageExamples")), list(root.get("emotions")), list(root.get("tags")),
-                text(root.get("imageText")));
+                pictureText(root.get("imageText")));
         if (isMeme && tags.meaning().isBlank()) {
             throw new LlmUnavailableException("The vision model called it a meme but gave no meaning");
         }
@@ -42,7 +42,7 @@ final class VisionAnswerParser {
         JsonNode root = readObject(answer);
         boolean isMeme = readBoolean(root.get("isMeme"));
         Suggestion suggestion = new Suggestion(isMeme, text(root.get("meaning")), list(root.get("usageExamples")),
-                list(root.get("emotions")), list(root.get("tags")), text(root.get("imageText")),
+                list(root.get("emotions")), list(root.get("tags")), pictureText(root.get("imageText")),
                 text(root.get("reasoning")), text(root.get("verdict")).toUpperCase().startsWith("KEEP"));
         if (isMeme && suggestion.meaning().isBlank()) {
             throw new LlmUnavailableException("The vision model proposed no meaning");
@@ -72,6 +72,23 @@ final class VisionAnswerParser {
         }
         String text = node.asText().strip().toLowerCase();
         return !(text.equals("false") || text.equals("no") || text.equals("否") || text.equals("不是"));
+    }
+
+    /** Text copied from a picture, with lines that repeat the one before left out. */
+    static String pictureText(JsonNode node) {
+        StringBuilder out = new StringBuilder();
+        String previous = null;
+        for (String line : text(node).split("\\R")) {
+            String stripped = line.strip();
+            if (!stripped.isEmpty() && !stripped.equals(previous)) {
+                if (out.length() > 0) {
+                    out.append('\n');
+                }
+                out.append(stripped);
+            }
+            previous = stripped;
+        }
+        return out.toString();
     }
 
     private static String text(JsonNode node) {

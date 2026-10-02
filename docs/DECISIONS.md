@@ -25,6 +25,7 @@ Contents
 17. [Reports: a complaint plus a second look by the vision model](#17-reports-a-complaint-plus-a-second-look-by-the-vision-model)
 18. [Keeping reports from keeping the model busy, and closing the clear-cut ones without an administrator](#18-keeping-reports-from-keeping-the-model-busy-and-closing-the-clear-cut-ones-without-an-administrator)
 19. [Removing caption generation](#19-removing-caption-generation)
+20. [The vision model answers in a bounded JSON Schema](#20-the-vision-model-answers-in-a-bounded-json-schema)
 
 ---
 
@@ -460,3 +461,28 @@ pipeline, which the generation pipeline used to share.
 description page, the `template_slot` table and `slot_layout` in the search index) existed only to tell the renderer
 where to draw. Nothing uses them now. They were not removed together with the generation feature because they run
 through the template aggregate, the persistence adapters, the search index and the administrator's page.
+
+## 20. The vision model answers in a bounded JSON Schema
+
+**Context.** The vision model was asked for "JSON" (`format: json`) and the shape was described in the prompt, with a
+tolerant parser to absorb the model's slips. One picture of 201 failed with "did not answer with JSON".
+
+**What was found.** The failure was not a slip of shape. The picture was covered in the words "Don't eat 不可食用",
+and the model copied them into `imageText` until it was cut off in the middle of the string, a minute later, with the
+JSON never closed. Asking for a JSON Schema alone (`format: {...}`) failed the same way: it fixes the *shape*, not the
+*length*. Adding `maxLength` and `maxItems` to every text and list forced the strings to end, and the same picture
+came back as valid JSON in 8 seconds.
+
+**Decision.**
+
+- Both questions to the model (describe a picture, look again after a report) send a JSON Schema in which every
+  field is required, every text and list has a length limit, and the verdict can only be `KEEP` or `CHANGE`.
+- `num_predict` is capped at 1500 tokens as a second line of defence; nothing the schema allows comes near it.
+- Text copied from a picture drops lines that repeat the line before, so a sheet of identical labels does not
+  fill the search text with one phrase.
+- The tolerant parser stays. A schema guarantees shape, not truth, and an older Ollama or a different model may
+  not honour it.
+
+**Cost / limits.** The limits are guesses (200 characters of meaning, 8 tags). A picture with a lot of text now has
+its picture-text cut at 200 characters. The schema does nothing for the quality of the descriptions, which is
+what search depends on.

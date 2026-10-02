@@ -31,6 +31,9 @@ import org.springframework.web.client.RestClientException;
 @ConditionalOnProperty(name = "wtm.vision.provider", havingValue = "ollama")
 class OllamaVisionTagger implements VisionTaggerPort {
 
+    /** Far more than the longest answer the schema allows, so reaching it means something went wrong. */
+    static final int MAX_ANSWER_TOKENS = 1500;
+
     static final String SYSTEM_PROMPT = """
             你是梗圖(迷因)資料庫的編目員,熟悉台灣與全球的網路梗、反應圖與貼圖。
             看完圖片後,只輸出一個 JSON 物件,不要輸出任何其他文字。""";
@@ -53,22 +56,26 @@ class OllamaVisionTagger implements VisionTaggerPort {
 
     @Override
     public ImageTags describe(byte[] image, String contentType, String hint) {
-        return parser.parse(ask(image, userPrompt(hint)));
+        return parser.parse(ask(image, userPrompt(hint), describeSchema()));
     }
 
     @Override
     public Suggestion reassess(byte[] image, String contentType, ReviewRequest request) {
-        return parser.parseSuggestion(ask(image, reassessPrompt(request)));
+        return parser.parseSuggestion(ask(image, reassessPrompt(request), reassessSchema()));
     }
 
-    /** Sends the picture and a question to the model and returns its raw answer. */
-    private String ask(byte[] image, String prompt) {
+    /**
+     * Sends the picture and a question to the model and returns its raw answer. The answer is held to the given
+     * JSON Schema while it is being written, so it cannot have the wrong shape or run on without end.
+     */
+    private String ask(byte[] image, String prompt, Map<String, Object> schema) {
         String encoded = Base64.getEncoder().encodeToString(shrink(image, maxSide));
         Map<String, Object> body = Map.of(
                 "model", model,
                 "stream", false,
-                "format", "json",
-                "options", Map.of("temperature", 0.2),
+                "format", schema,
+                // A second line of defence: nothing the schema allows is anywhere near this long.
+                "options", Map.of("temperature", 0.2, "num_predict", MAX_ANSWER_TOKENS),
                 "messages", List.of(
                         Map.of("role", "system", "content", SYSTEM_PROMPT),
                         Map.of("role", "user", "content", prompt, "images", List.of(encoded))));
@@ -81,6 +88,47 @@ class OllamaVisionTagger implements VisionTaggerPort {
         } catch (RestClientException e) {
             throw new LlmUnavailableException("Ollama request failed: " + e.getMessage(), e);
         }
+    }
+
+    private static Map<String, Object> text(int maxLength) {
+        return Map.of("type", "string", "maxLength", maxLength);
+    }
+
+    private static Map<String, Object> list(int maxItems, int maxLength) {
+        return Map.of("type", "array", "items", text(maxLength), "maxItems", maxItems);
+    }
+
+    private static Map<String, Object> schema(Map<String, Object> properties) {
+        return Map.of("type", "object", "properties", properties, "required", List.copyOf(properties.keySet()));
+    }
+
+    /**
+     * The shape of the answer to "describe this picture". Every text has a length limit: without one, a picture
+     * covered in repeated words made the model copy them until it was cut off in the middle of the JSON, which
+     * took a minute and then failed. The limits force the text to end, so the answer always closes properly.
+     */
+    static Map<String, Object> describeSchema() {
+        return schema(new java.util.LinkedHashMap<>(Map.of(
+                "isMeme", Map.of("type", "boolean"),
+                "title", text(40),
+                "meaning", text(200),
+                "usageExamples", list(5, 60),
+                "emotions", list(4, 10),
+                "tags", list(8, 20),
+                "imageText", text(200))));
+    }
+
+    /** The shape of the answer to "look again": the same, plus the model's reasoning and a verdict. */
+    static Map<String, Object> reassessSchema() {
+        return schema(new java.util.LinkedHashMap<>(Map.of(
+                "isMeme", Map.of("type", "boolean"),
+                "meaning", text(200),
+                "usageExamples", list(5, 60),
+                "emotions", list(4, 10),
+                "tags", list(8, 20),
+                "imageText", text(200),
+                "reasoning", text(300),
+                "verdict", Map.of("type", "string", "enum", List.of("KEEP", "CHANGE")))));
     }
 
     /**
