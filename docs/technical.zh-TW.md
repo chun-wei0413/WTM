@@ -177,7 +177,7 @@ EOF
 建置前端(Vite 編譯,再放進 nginx,由 nginx 把 `/api` 轉給後端)。映像檔裡沒有任何秘密:資料庫、儲存、密碼與模型設定
 都用環境變數傳入。
 
-**發布。** 推上像 `v0.1.0` 這樣的 tag,會先再跑一次 CI,通過後把 `ressellli/wtm-backend` 與 `ressellli/wtm-web`
+**發布。** 推上像 `v0.1.0` 這樣的 tag,會先再跑一次 CI,通過後把 `russellli/wtm-backend` 與 `russellli/wtm-web`
 以 `0.1.0`、`0.1`、`latest` 三個標籤發布到 Docker Hub。需要在倉庫設定兩個 secret:`DOCKERHUB_USERNAME` 與
 `DOCKERHUB_TOKEN`(存取權杖,不是密碼)。
 

@@ -40,7 +40,7 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ressellli/${{ matrix.image }}
+          images: russellli/${{ matrix.image }}
           # v1.2.3 becomes 1.2.3 and 1.2, and the newest release is also "latest".
           tags: |
             type=semver,pattern={{version}}

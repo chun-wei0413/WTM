@@ -72,7 +72,7 @@ WTM 有三個功能,各有一個頁面。
 
 ## 用 Docker 執行
 
-映像檔放在 Docker Hub(`ressellli/wtm-backend`、`ressellli/wtm-web`)。準備好專案的 `.env` 之後:
+映像檔放在 Docker Hub(`russellli/wtm-backend`、`russellli/wtm-web`)。準備好專案的 `.env` 之後:
 
 ```bash
 docker compose -f docker-compose.app.yml up -d   # 然後開 http://localhost:8080

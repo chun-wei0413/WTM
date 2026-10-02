@@ -9,14 +9,14 @@
 # IMAGE_NAMESPACE and WTM_VERSION choose which images to run (defaults below).
 services:
   web:
-    image: ${IMAGE_NAMESPACE:-ressellli}/wtm-web:${WTM_VERSION:-latest}
+    image: ${IMAGE_NAMESPACE:-russellli}/wtm-web:${WTM_VERSION:-latest}
     ports:
       - "8080:80"
     depends_on:
       - backend
 
   backend:
-    image: ${IMAGE_NAMESPACE:-ressellli}/wtm-backend:${WTM_VERSION:-latest}
+    image: ${IMAGE_NAMESPACE:-russellli}/wtm-backend:${WTM_VERSION:-latest}
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/wtm
       DB_USERNAME: ${DB_USERNAME:-wtm}

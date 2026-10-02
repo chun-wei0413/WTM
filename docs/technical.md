@@ -185,8 +185,8 @@ checks (type check, tests, build) and a check that both Docker images build. The
 `web/Dockerfile` builds the web client (Vite, then nginx, which also passes `/api` on to the backend). Nothing secret
 is inside an image: the database, storage, secrets and model settings are environment variables.
 
-**Release.** Pushing a tag such as `v0.1.0` runs CI again and then publishes `ressellli/wtm-backend` and
-`ressellli/wtm-web` to Docker Hub as `0.1.0`, `0.1` and `latest`. It needs two repository secrets,
+**Release.** Pushing a tag such as `v0.1.0` runs CI again and then publishes `russellli/wtm-backend` and
+`russellli/wtm-web` to Docker Hub as `0.1.0`, `0.1` and `latest`. It needs two repository secrets,
 `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` (an access token, not the password).
 
 **Run it from the images.** [`docker-compose.app.yml`](docker-compose.app.yml) starts the web client, the backend,

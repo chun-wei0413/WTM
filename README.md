@@ -78,7 +78,7 @@ picture in `docs/images/confused-nick-young.jpeg` is a meme collected from the w
 
 ## Run it from Docker
 
-The images are on Docker Hub (`ressellli/wtm-backend`, `ressellli/wtm-web`). With the project's `.env` in place:
+The images are on Docker Hub (`russellli/wtm-backend`, `russellli/wtm-web`). With the project's `.env` in place:
 
 ```bash
 docker compose -f docker-compose.app.yml up -d   # then open http://localhost:8080
