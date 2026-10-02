@@ -40,7 +40,8 @@ export function LoginPage() {
     <div className="auth-page">
       <div className="auth-card">
         <h1 className="auth-brand">
-          meme<span>hub</span>
+          <img src="/logo-mark.svg" alt="" className="brand-mark brand-mark-large" />
+          WTM
         </h1>
         <p className="auth-tagline">描述一個情境,得到合適的梗圖</p>
 

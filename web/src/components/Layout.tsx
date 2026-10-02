@@ -7,7 +7,8 @@ export function Layout() {
     <div className="app">
       <header className="topbar">
         <NavLink to="/" className="brand">
-          WTM
+          <img src="/logo-mark.svg" alt="" className="brand-mark" />
+          <span className="brand-name">WTM</span>
         </NavLink>
         <nav aria-label="主選單">
           <NavLink to="/" end>
