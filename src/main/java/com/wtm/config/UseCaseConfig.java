@@ -10,6 +10,11 @@ import com.wtm.application.library.FavoritesHandler;
 import com.wtm.application.library.GetLibraryImageHandler;
 import com.wtm.application.library.RandomMemesHandler;
 import com.wtm.application.library.SearchHistoryHandler;
+import com.wtm.application.report.ListReportCasesHandler;
+import com.wtm.application.report.ResolveReportsHandler;
+import com.wtm.application.report.ReviewQueueHandler;
+import com.wtm.application.report.RunReviewHandler;
+import com.wtm.application.report.SubmitReportHandler;
 import com.wtm.application.collection.GetLibraryStatsHandler;
 import com.wtm.application.collection.ImportFromUrlHandler;
 import com.wtm.application.collection.ListCollectionRunsHandler;
@@ -32,6 +37,8 @@ import com.wtm.application.generation.SubmitGenerationHandler;
 import com.wtm.application.port.out.EmbeddingPort;
 import com.wtm.application.port.out.FavoritePort;
 import com.wtm.application.port.out.LibraryBrowsePort;
+import com.wtm.application.port.out.ReportPort;
+import com.wtm.application.port.out.ReviewPort;
 import com.wtm.application.port.out.SearchLogPort;
 import com.wtm.application.port.out.GenerationJobStore;
 import com.wtm.application.port.out.GenerationJobStore.QuotaLimits;
@@ -248,6 +255,35 @@ class UseCaseConfig {
     @Bean
     TaggingQueueHandler taggingQueueHandler(TaggingQueuePort queue) {
         return new TaggingQueueHandler(queue);
+    }
+
+    @Bean
+    SubmitReportHandler submitReportHandler(ReportPort reports, ReviewPort reviews) {
+        return new SubmitReportHandler(reports, reviews);
+    }
+
+    @Bean
+    RunReviewHandler runReviewHandler(TemplateReadPort templates, ObjectStoragePort storage,
+                                      VisionTaggerPort tagger, ReportPort reports, ReviewPort reviews,
+                                      TaggingProperties properties) {
+        return new RunReviewHandler(templates, storage, tagger, reports, reviews, properties.maxAttempts());
+    }
+
+    @Bean
+    ReviewQueueHandler reviewQueueHandler(ReviewPort reviews) {
+        return new ReviewQueueHandler(reviews);
+    }
+
+    @Bean
+    ListReportCasesHandler listReportCasesHandler(ReportPort reports, ReviewPort reviews, TemplateReadPort templates,
+                                                  ObjectStoragePort storage) {
+        return new ListReportCasesHandler(reports, reviews, templates, storage);
+    }
+
+    @Bean
+    ResolveReportsHandler resolveReportsHandler(ReportPort reports, ReviewPort reviews,
+                                                TemplateRepository templates) {
+        return new ResolveReportsHandler(reports, reviews, templates);
     }
 
     @Bean

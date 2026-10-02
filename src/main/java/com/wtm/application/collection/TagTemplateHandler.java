@@ -52,7 +52,7 @@ public class TagTemplateHandler {
         }
     }
 
-    static String contentTypeOf(String imageKey) {
+    public static String contentTypeOf(String imageKey) {
         String key = imageKey.toLowerCase();
         if (key.endsWith(".png")) {
             return "image/png";

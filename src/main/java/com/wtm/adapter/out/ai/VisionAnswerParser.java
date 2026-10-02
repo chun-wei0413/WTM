@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wtm.application.collection.ImageTags;
 import com.wtm.application.port.out.LlmUnavailableException;
+import com.wtm.application.report.Suggestion;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,18 +26,7 @@ final class VisionAnswerParser {
     }
 
     ImageTags parse(String answer) {
-        int start = answer == null ? -1 : answer.indexOf('{');
-        int end = answer == null ? -1 : answer.lastIndexOf('}');
-        if (start < 0 || end <= start) {
-            throw new LlmUnavailableException("The vision model did not answer with JSON");
-        }
-        JsonNode root;
-        try {
-            root = json.readTree(answer.substring(start, end + 1));
-        } catch (JsonProcessingException e) {
-            throw new LlmUnavailableException("The vision model's JSON answer could not be read", e);
-        }
-
+        JsonNode root = readObject(answer);
         boolean isMeme = readBoolean(root.get("isMeme"));
         ImageTags tags = new ImageTags(isMeme, text(root.get("title")), text(root.get("meaning")),
                 list(root.get("usageExamples")), list(root.get("emotions")), list(root.get("tags")),
@@ -45,6 +35,32 @@ final class VisionAnswerParser {
             throw new LlmUnavailableException("The vision model called it a meme but gave no meaning");
         }
         return tags;
+    }
+
+    /** Like {@link #parse}, for the answer to "look again": the same fields plus the model's own reasoning. */
+    Suggestion parseSuggestion(String answer) {
+        JsonNode root = readObject(answer);
+        boolean isMeme = readBoolean(root.get("isMeme"));
+        Suggestion suggestion = new Suggestion(isMeme, text(root.get("meaning")), list(root.get("usageExamples")),
+                list(root.get("emotions")), list(root.get("tags")), text(root.get("imageText")),
+                text(root.get("reasoning")));
+        if (isMeme && suggestion.meaning().isBlank()) {
+            throw new LlmUnavailableException("The vision model proposed no meaning");
+        }
+        return suggestion;
+    }
+
+    private JsonNode readObject(String answer) {
+        int start = answer == null ? -1 : answer.indexOf('{');
+        int end = answer == null ? -1 : answer.lastIndexOf('}');
+        if (start < 0 || end <= start) {
+            throw new LlmUnavailableException("The vision model did not answer with JSON");
+        }
+        try {
+            return json.readTree(answer.substring(start, end + 1));
+        } catch (JsonProcessingException e) {
+            throw new LlmUnavailableException("The vision model's JSON answer could not be read", e);
+        }
     }
 
     private static boolean readBoolean(JsonNode node) {
