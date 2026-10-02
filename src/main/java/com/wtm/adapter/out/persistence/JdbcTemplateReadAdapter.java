@@ -49,7 +49,7 @@ class JdbcTemplateReadAdapter implements TemplateReadPort {
     @Override
     public List<TemplateSummary> list(String status) {
         return jdbc.sql("""
-                        SELECT id, name, status, version, image_key, updated_at
+                        SELECT id, name, status, version, image_key, updated_at, meaning, tags, source_type, attribution
                         FROM meme_template
                         WHERE (?::text IS NULL OR status = ?)
                         ORDER BY updated_at DESC""")
@@ -57,7 +57,8 @@ class JdbcTemplateReadAdapter implements TemplateReadPort {
                 .query((rs, n) -> new TemplateSummary(
                         rs.getObject("id", UUID.class), rs.getString("name"), rs.getString("status"),
                         rs.getInt("version"), rs.getString("image_key"), null,
-                        TemplateRows.instant(rs, "updated_at")))
+                        TemplateRows.instant(rs, "updated_at"), rs.getString("meaning"),
+                        TemplateRows.strings(rs, "tags"), rs.getString("source_type"), rs.getString("attribution")))
                 .list();
     }
 }

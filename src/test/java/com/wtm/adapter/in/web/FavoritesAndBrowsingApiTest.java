@@ -60,6 +60,8 @@ class FavoritesAndBrowsingApiTest extends IntegrationTestBase {
                 .andReturn().getResponse().getContentAsString()).get(0);
         assertThat(item.get("imageUrl").asText()).startsWith("http");
         assertThat(item.get("meaning").asText()).isNotBlank();
+        assertThat(item.get("imageWidth").asInt()).as("room can be left for the picture").isEqualTo(640);
+        assertThat(item.get("imageHeight").asInt()).isEqualTo(480);
 
         mvc.perform(delete("/api/favorites/" + memeId).header("Authorization", bearer(alice)))
                 .andExpect(status().isNoContent());
@@ -157,6 +159,26 @@ class FavoritesAndBrowsingApiTest extends IntegrationTestBase {
         JsonNode hot = json.readTree(mvc.perform(get("/api/library/hot-searches").header("Authorization", bearer(user)))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
         hot.forEach(h -> assertThat(h.get("term").asText()).isNotEqualTo(name.toLowerCase()));
+    }
+
+    @Test
+    void theAdministratorsListTellsWhatEachEntryIsWithoutOpeningIt() throws Exception {
+        String admin = adminToken();
+        String memeId = publishedMeme();
+
+        JsonNode list = json.readTree(mvc.perform(get("/api/admin/templates").param("status", "APPROVED")
+                .header("Authorization", bearer(admin))).andExpect(status().isOk()).andReturn()
+                .getResponse().getContentAsString());
+        JsonNode entry = null;
+        for (JsonNode e : list) {
+            if (e.get("id").asText().equals(memeId)) {
+                entry = e;
+            }
+        }
+        assertThat(entry).isNotNull();
+        assertThat(entry.get("meaning").asText()).isNotBlank();
+        assertThat(entry.get("tags")).isNotEmpty();
+        assertThat(entry.get("sourceType").asText()).isEqualTo("UPLOAD");
     }
 
     // -- helpers ------------------------------------------------------------

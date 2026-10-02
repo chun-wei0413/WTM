@@ -15,7 +15,7 @@ public interface LibraryBrowsePort {
     /** The stored picture of a published entry; empty for a draft, a retired entry or an unknown id. */
     Optional<LibraryImage> findPublishedImage(UUID templateId);
 
-    record LibraryCard(UUID id, String name, String imageKey, String meaning, List<String> tags, String imageText,
+    record LibraryCard(UUID id, String name, String imageKey, int imageWidth, int imageHeight, String meaning, List<String> tags, String imageText,
                        String sourceType, String sourceUrl, String attribution) {
     }
 

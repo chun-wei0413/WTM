@@ -39,7 +39,7 @@ class LibraryHandlersTest {
     private final UUID user = UUID.randomUUID();
 
     private LibraryCard card(String key) {
-        return new LibraryCard(UUID.randomUUID(), "name", key, "meaning", List.of("tag"), "???", "UPLOAD", null, null);
+        return new LibraryCard(UUID.randomUUID(), "name", key, 640, 480, "meaning", List.of("tag"), "???", "UPLOAD", null, null);
     }
 
     @Test
@@ -52,6 +52,8 @@ class LibraryHandlersTest {
         assertThat(items).singleElement().satisfies(item -> {
             assertThat(item.imageUrl()).isEqualTo("https://storage/a");
             assertThat(item.meaning()).isEqualTo("meaning");
+            assertThat(item.imageWidth()).isEqualTo(640);
+            assertThat(item.imageHeight()).isEqualTo(480);
         });
     }
 

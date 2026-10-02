@@ -14,7 +14,7 @@ class JdbcLibraryBrowseAdapter implements LibraryBrowsePort {
 
     /** The columns of a card; shared with the favorites query so both read an entry the same way. */
     static final String CARD_COLUMNS = """
-            t.id, t.name, t.image_key, t.meaning, t.tags, t.image_text, t.source_type, t.source_url, t.attribution""";
+            t.id, t.name, t.image_key, t.image_width, t.image_height, t.meaning, t.tags, t.image_text, t.source_type, t.source_url, t.attribution""";
 
     private final JdbcClient jdbc;
 
@@ -42,7 +42,7 @@ class JdbcLibraryBrowseAdapter implements LibraryBrowsePort {
 
     static LibraryCard card(ResultSet rs) throws SQLException {
         return new LibraryCard(rs.getObject("id", UUID.class), rs.getString("name"), rs.getString("image_key"),
-                rs.getString("meaning"), TemplateRows.strings(rs, "tags"), rs.getString("image_text"),
+                rs.getInt("image_width"), rs.getInt("image_height"), rs.getString("meaning"), TemplateRows.strings(rs, "tags"), rs.getString("image_text"),
                 rs.getString("source_type"), rs.getString("source_url"), rs.getString("attribution"));
     }
 }

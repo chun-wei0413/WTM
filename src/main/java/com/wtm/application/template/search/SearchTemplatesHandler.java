@@ -55,7 +55,8 @@ public class SearchTemplatesHandler {
                 .map(s -> {
                     SearchCard card = cards.get(s.id());
                     return new SearchResult(card.id(), card.name(), s.score(),
-                            storage.presignedGetUrl(card.imageKey(), IMAGE_URL_TTL), card.slots(),
+                            storage.presignedGetUrl(card.imageKey(), IMAGE_URL_TTL), card.imageWidth(),
+                            card.imageHeight(), card.slots(),
                             card.meaning(), card.tags(), card.imageText(), card.sourceType(),
                             card.sourceUrl(), card.attribution());
                 })

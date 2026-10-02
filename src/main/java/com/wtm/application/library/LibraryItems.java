@@ -14,7 +14,7 @@ final class LibraryItems {
 
     static LibraryItem of(LibraryCard card, ObjectStoragePort storage) {
         return new LibraryItem(card.id(), card.name(), storage.presignedGetUrl(card.imageKey(), IMAGE_URL_TTL),
-                card.meaning(), card.tags(), card.imageText(), card.sourceType(), card.sourceUrl(),
+                card.imageWidth(), card.imageHeight(), card.meaning(), card.tags(), card.imageText(), card.sourceType(), card.sourceUrl(),
                 card.attribution());
     }
 }
