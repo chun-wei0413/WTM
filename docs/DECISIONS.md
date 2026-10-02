@@ -32,8 +32,9 @@ very little protection.
 **Decision.**
 
 - Clean Architecture for the whole code base: `domain` ← `application` ← `adapter`, with
-  `config` wiring them together. Every external system (models, storage, database, clock-like
-  concerns) sits behind a port in `application.port.out`.
+  `config` wiring them together. Every external system (language and embedding models, object
+  storage, the database, password hashing, token signing) sits behind a port in
+  `application.port.out`.
 - Tactical DDD only for the two places that really have invariants:
   - `MemeTemplate`: slots must lie inside the image, only a complete profile can be approved,
     a retired template is frozen, and the version moves when an approved template's layout changes.
@@ -113,8 +114,9 @@ combine with vector search in a single query.
 
 **Cost / exit.** This is right for hundreds to tens of thousands of templates and a modest request
 rate. Beyond that, the ports (`TemplateSearchPort`, `GenerationJobStore`) are where a dedicated
-vector database or a message broker would plug in. `byVector` uses the HNSW index; the multi-vector
-experiment in decision 5 would need a new access path.
+vector database or a message broker would plug in. Query plans were not studied: at this size a
+sequential scan is fine, and whether the HNSW index is used for the vector query (which also joins
+the templates table to filter by status) has not been checked.
 
 ## 5. Hybrid search, and what the numbers say about it
 
