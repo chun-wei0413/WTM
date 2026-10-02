@@ -1,0 +1,8 @@
+# Merged over src/main/resources/application.yml for every test.
+# All tests talk from the same address, so the per-address limits are kept out of the way;
+# tests that exercise a limit override it with @TestPropertySource.
+memehub:
+  security:
+    throttling:
+      registrations-per-address: 1000
+      login-failures-per-address: 1000

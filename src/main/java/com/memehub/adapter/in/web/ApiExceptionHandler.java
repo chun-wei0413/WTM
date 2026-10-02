@@ -4,6 +4,8 @@ import com.memehub.application.TemplateNotFoundException;
 import com.memehub.application.TooManyRequestsException;
 import com.memehub.application.UnsupportedImageException;
 import com.memehub.application.auth.InvalidCredentialsException;
+import com.memehub.application.auth.RegistrationClosedException;
+import com.memehub.application.auth.UsernameTakenException;
 import com.memehub.application.generation.GenerationNotFoundException;
 import com.memehub.application.generation.MemeNotFoundException;
 import com.memehub.application.port.out.ObjectStorageException;
@@ -46,6 +48,16 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     ProblemDetail invalidCredentials(InvalidCredentialsException e) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getMessage());
+    }
+
+    @ExceptionHandler(UsernameTakenException.class)
+    ProblemDetail usernameTaken(UsernameTakenException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    }
+
+    @ExceptionHandler(RegistrationClosedException.class)
+    ProblemDetail registrationClosed(RegistrationClosedException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
     }
 
     @ExceptionHandler(TooManyRequestsException.class)

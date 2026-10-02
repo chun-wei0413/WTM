@@ -1,8 +1,12 @@
 package com.memehub.config;
 
 import com.memehub.adapter.scheduling.GenerationProperties;
+import com.memehub.adapter.security.SecurityProperties;
 import com.memehub.application.auth.BootstrapAdminHandler;
 import com.memehub.application.auth.LoginHandler;
+import com.memehub.application.auth.LoginPolicy;
+import com.memehub.application.auth.RegisterUserHandler;
+import com.memehub.application.auth.RegistrationPolicy;
 import com.memehub.application.generation.GenerationQueueHandler;
 import com.memehub.application.generation.GetGenerationHandler;
 import com.memehub.application.generation.KeepMemeHandler;
@@ -18,6 +22,7 @@ import com.memehub.application.port.out.MemeRepository;
 import com.memehub.application.port.out.ImageInspectorPort;
 import com.memehub.application.port.out.ObjectStoragePort;
 import com.memehub.application.port.out.PasswordHasher;
+import com.memehub.application.port.out.RateLimiterPort;
 import com.memehub.application.port.out.SearchIndexPort;
 import com.memehub.application.port.out.TemplateReadPort;
 import com.memehub.application.port.out.TemplateRepository;
@@ -45,8 +50,19 @@ import org.springframework.context.annotation.Configuration;
 class UseCaseConfig {
 
     @Bean
-    LoginHandler loginHandler(UserRepository users, PasswordHasher hasher, TokenIssuer tokens) {
-        return new LoginHandler(users, hasher, tokens);
+    LoginHandler loginHandler(UserRepository users, PasswordHasher hasher, TokenIssuer tokens,
+                              RateLimiterPort limiter, SecurityProperties security) {
+        var throttling = security.throttling();
+        return new LoginHandler(users, hasher, tokens, limiter, new LoginPolicy(
+                throttling.loginFailuresPerAccount(), throttling.loginFailuresPerAddress(), throttling.loginWindow()));
+    }
+
+    @Bean
+    RegisterUserHandler registerUserHandler(UserRepository users, PasswordHasher hasher,
+                                            RateLimiterPort limiter, SecurityProperties security) {
+        var throttling = security.throttling();
+        return new RegisterUserHandler(users, hasher, limiter, new RegistrationPolicy(
+                security.registrationEnabled(), throttling.registrationsPerAddress(), throttling.registrationWindow()));
     }
 
     @Bean

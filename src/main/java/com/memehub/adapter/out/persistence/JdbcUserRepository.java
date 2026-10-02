@@ -1,11 +1,13 @@
 package com.memehub.adapter.out.persistence;
 
+import com.memehub.application.auth.UsernameTakenException;
 import com.memehub.application.port.out.UserRepository;
 import com.memehub.domain.user.Role;
 import com.memehub.domain.user.User;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -37,8 +39,13 @@ class JdbcUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        jdbc.sql("INSERT INTO app_user (id, username, password_hash, role) VALUES (?, ?, ?, ?)")
-                .params(List.of(user.id(), user.username(), user.passwordHash(), user.role().name()))
-                .update();
+        try {
+            jdbc.sql("INSERT INTO app_user (id, username, password_hash, role) VALUES (?, ?, ?, ?)")
+                    .params(List.of(user.id(), user.username(), user.passwordHash(), user.role().name()))
+                    .update();
+        } catch (DuplicateKeyException e) {
+            // Two people registering the same name at the same moment: the unique index decides.
+            throw new UsernameTakenException();
+        }
     }
 }

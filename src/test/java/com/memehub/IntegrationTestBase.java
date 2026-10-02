@@ -23,6 +23,10 @@ public abstract class IntegrationTestBase {
     private static final String S3_ACCESS_KEY = "memehub-test";
     private static final String S3_SECRET_KEY = "memehub-test-secret";
     private static final int S3_PORT = 9000;
+    // Fixed for the whole run: every application started by a test shares one database, and the
+    // administrator is only created by whichever starts first.
+    private static final String JWT_SECRET = "test-" + UUID.randomUUID() + UUID.randomUUID();
+    private static final String ADMIN_PASSWORD = "test-" + UUID.randomUUID();
 
     static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>(
             DockerImageName.parse("pgvector/pgvector:pg16").asCompatibleSubstituteFor("postgres"));
@@ -48,8 +52,8 @@ public abstract class IntegrationTestBase {
         registry.add("memehub.storage.access-key", () -> S3_ACCESS_KEY);
         registry.add("memehub.storage.secret-key", () -> S3_SECRET_KEY);
         // Throwaway secrets for this test run; the real ones live in the git-ignored .env.
-        registry.add("memehub.security.jwt.secret", () -> "test-" + UUID.randomUUID() + UUID.randomUUID());
-        registry.add("memehub.security.bootstrap-admin.password", () -> "test-" + UUID.randomUUID());
+        registry.add("memehub.security.jwt.secret", () -> JWT_SECRET);
+        registry.add("memehub.security.bootstrap-admin.password", () -> ADMIN_PASSWORD);
         // Fast, failure-free mock model so jobs finish quickly and deterministically.
         registry.add("memehub.llm.mock.min-latency-ms", () -> "0");
         registry.add("memehub.llm.mock.max-latency-ms", () -> "20");
