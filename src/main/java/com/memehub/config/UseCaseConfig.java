@@ -9,6 +9,7 @@ import com.memehub.application.auth.RegisterUserHandler;
 import com.memehub.application.auth.RegistrationPolicy;
 import com.memehub.application.generation.GenerationQueueHandler;
 import com.memehub.application.generation.GetGenerationHandler;
+import com.memehub.application.generation.GetMemeImageHandler;
 import com.memehub.application.generation.KeepMemeHandler;
 import com.memehub.application.generation.ListMyMemesHandler;
 import com.memehub.application.generation.RunGenerationHandler;
@@ -143,6 +144,11 @@ class UseCaseConfig {
     @Bean
     KeepMemeHandler keepMemeHandler(MemeRepository memes) {
         return new KeepMemeHandler(memes);
+    }
+
+    @Bean
+    GetMemeImageHandler getMemeImageHandler(MemeRepository memes, ObjectStoragePort storage) {
+        return new GetMemeImageHandler(memes, storage);
     }
 
     @Bean

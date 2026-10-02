@@ -113,6 +113,17 @@ class GenerationApiTest extends IntegrationTestBase {
         assertThat(kept.get(0).get("templateName").asText()).isEqualTo(candidates.get(0).get("templateName").asText());
         assertThat(kept.get(0).get("captions")).isEqualTo(candidates.get(0).get("captions"));
         assertThat(download(kept.get(0).get("imageUrl").asText())).isNotEmpty();
+        // The owner can download the finished image through the application.
+        MvcResult downloaded = mvc.perform(get("/api/memes/" + memeId + "/image")
+                        .header("Authorization", bearer(user.token)))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", "image/png"))
+                .andExpect(header().string("Content-Disposition", org.hamcrest.Matchers.containsString("attachment")))
+                .andReturn();
+        assertThat(ImageIO.read(new ByteArrayInputStream(downloaded.getResponse().getContentAsByteArray()))).isNotNull();
+        // Someone else cannot, and the answer does not reveal that the meme exists.
+        mvc.perform(get("/api/memes/" + memeId + "/image").header("Authorization", bearer(newUser().token)))
+                .andExpect(status().isNotFound());
         // The candidates that were not kept are still there, under the other status.
         assertThat(listMemes(user.token, "?status=COMPOSED")).hasSize(candidates.size() - 1);
     }
