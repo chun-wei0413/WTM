@@ -20,7 +20,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * Wikimedia Commons: meme pictures with an openly stated licence, whose author and licence are
- * recorded with each one.
+ * recorded with each one. The listing goes through Wikimedia's API, which has its own etiquette
+ * (an identifying user agent, requests one after another, {@code maxlag}); robots.txt, which
+ * forbids crawlers from /w/, is about crawling pages, not about this API. The pictures themselves
+ * are downloaded from upload.wikimedia.org under robots.txt as usual.
  */
 @Component
 class WikimediaSource implements MemeSourcePort {
@@ -97,10 +100,11 @@ class WikimediaSource implements MemeSourcePort {
         private void loadPage() {
             String url = API + "?action=query&format=json&formatversion=2&generator=categorymembers"
                     + "&gcmtitle=" + encode("Category:" + category) + "&gcmtype=file&gcmlimit=50"
-                    + "&prop=imageinfo&iiprop=" + encode("url|extmetadata|mime") + "&iiurlwidth=1280" + continuation;
+                    + "&prop=imageinfo&iiprop=" + encode("url|extmetadata|mime") + "&iiurlwidth=1280"
+                    + "&maxlag=5" + continuation;   // maxlag: a polite bot steps back when the servers are busy
             JsonNode root;
             try {
-                root = json.readTree(fetcher.fetchText(url));
+                root = json.readTree(fetcher.fetchApi(url));
             } catch (JsonProcessingException e) {
                 throw new FetchRefusedException("Wikimedia's answer could not be read", e);
             }

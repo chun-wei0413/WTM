@@ -39,6 +39,11 @@ class SourcesTest {
         }
 
         @Override
+        public String fetchApi(String url) {
+            return fetchText(url);
+        }
+
+        @Override
         public FetchedImage fetchImage(String url) {
             throw new UnsupportedOperationException();
         }
@@ -98,7 +103,7 @@ class SourcesTest {
     void wikimediaReadsPictureLicenceAndAuthorAndSkipsOtherFileTypes() {
         WikimediaSource source = new WikimediaSource(fetcher, json);
         String url = WikimediaSource.API + "?action=query&format=json&formatversion=2&generator=categorymembers"
-                + "&gcmtitle=Category%3AInternet_memes&gcmtype=file&gcmlimit=50&prop=imageinfo&iiprop=url%7Cextmetadata%7Cmime&iiurlwidth=1280";
+                + "&gcmtitle=Category%3AInternet_memes&gcmtype=file&gcmlimit=50&prop=imageinfo&iiprop=url%7Cextmetadata%7Cmime&iiurlwidth=1280&maxlag=5";
         fetcher.pages.put(url, """
                 {"query": {"pages": [%s, %s, %s]}}""".formatted(
                 wikimediaPage("Cat staring.jpg", "image/jpeg", "https://upload.example/cat.jpg",
@@ -121,7 +126,7 @@ class SourcesTest {
     void wikimediaAsksForTheNextPageOnlyWhenTheFirstIsUsedUp() {
         WikimediaSource source = new WikimediaSource(fetcher, json);
         String first = WikimediaSource.API + "?action=query&format=json&formatversion=2&generator=categorymembers"
-                + "&gcmtitle=Category%3AMemes_of_cats&gcmtype=file&gcmlimit=50&prop=imageinfo&iiprop=url%7Cextmetadata%7Cmime&iiurlwidth=1280";
+                + "&gcmtitle=Category%3AMemes_of_cats&gcmtype=file&gcmlimit=50&prop=imageinfo&iiprop=url%7Cextmetadata%7Cmime&iiurlwidth=1280&maxlag=5";
         fetcher.pages.put(first, """
                 {"continue": {"gcmcontinue": "file|ABC|1", "continue": "gcmcontinue||"},
                  "query": {"pages": [%s]}}""".formatted(
@@ -143,7 +148,7 @@ class SourcesTest {
     void wikimediaReportsAnErrorFromTheApi() {
         FakeFetcher failing = new FakeFetcher() {
             @Override
-            public String fetchText(String url) {
+            public String fetchApi(String url) {
                 return "{\"error\": {\"info\": \"bad category\"}}";
             }
         };

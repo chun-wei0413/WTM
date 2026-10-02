@@ -141,6 +141,20 @@ class PoliteHttpFetcherTest {
     }
 
     @Test
+    void aSitesOwnApiIsNotGovernedByRobotsTxtButIsStillHeldToEveryOtherLimit() {
+        PoliteHttpFetcher fetcher = fetcher(true, Duration.ofMillis(10));
+
+        // robots.txt forbids /private/ to crawlers, yet the API path reads it...
+        assertThat(fetcher.fetchApi(base + "/private/secret")).isEqualTo("secret");
+        // ...while the same address as a page is still refused
+        assertThatThrownBy(() -> fetcher.fetchText(base + "/private/secret")).isInstanceOf(FetchRefusedException.class);
+        // and the other protections still apply
+        assertThatThrownBy(() -> fetcher(false, Duration.ofMillis(10)).fetchApi(base + "/page"))
+                .isInstanceOf(FetchRefusedException.class);
+        assertThatThrownBy(() -> fetcher.fetchApi(base + "/big.png")).isInstanceOf(FetchRefusedException.class);
+    }
+
+    @Test
     void readsRobotsTxtOnlyOncePerSite() {
         PoliteHttpFetcher fetcher = fetcher(true, Duration.ofMillis(10));
 

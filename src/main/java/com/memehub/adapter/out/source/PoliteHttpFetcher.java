@@ -50,13 +50,19 @@ class PoliteHttpFetcher implements RemoteFetchPort {
 
     @Override
     public String fetchText(String url) {
-        Response response = get(url, properties.maxTextSize().toBytes());
+        Response response = get(url, properties.maxTextSize().toBytes(), true);
+        return new String(response.body(), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public String fetchApi(String url) {
+        Response response = get(url, properties.maxTextSize().toBytes(), false);
         return new String(response.body(), StandardCharsets.UTF_8);
     }
 
     @Override
     public FetchedImage fetchImage(String url) {
-        Response response = get(url, properties.maxImageSize().toBytes());
+        Response response = get(url, properties.maxImageSize().toBytes(), true);
         String type = response.contentType() == null ? "" : response.contentType().toLowerCase(Locale.ROOT);
         if (!type.startsWith("image/")) {
             throw new FetchRefusedException("Not a picture (the site said it is '" + type + "')");
@@ -64,14 +70,14 @@ class PoliteHttpFetcher implements RemoteFetchPort {
         return new FetchedImage(response.body(), type);
     }
 
-    private Response get(String url, long maxBytes) {
+    private Response get(String url, long maxBytes, boolean obeyRobots) {
         URI uri;
         try {
             uri = URI.create(url.strip());
         } catch (IllegalArgumentException e) {
             throw new FetchRefusedException("Not a valid address: " + url, e);
         }
-        Response response = request(uri, maxBytes, true);
+        Response response = request(uri, maxBytes, obeyRobots);
         if (response.status() != 200) {
             throw new FetchRefusedException("The site answered with HTTP " + response.status());
         }

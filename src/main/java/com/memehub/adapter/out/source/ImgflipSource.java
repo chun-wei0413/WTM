@@ -53,7 +53,7 @@ class ImgflipSource implements MemeSourcePort {
     public Iterator<RemoteMeme> discover(Map<String, String> options) {
         JsonNode root;
         try {
-            root = json.readTree(fetcher.fetchText(LIST_URL));
+            root = json.readTree(fetcher.fetchApi(LIST_URL));
         } catch (JsonProcessingException e) {
             throw new FetchRefusedException("Imgflip's answer could not be read", e);
         }
