@@ -41,8 +41,9 @@ kubeconfig*
 k8s/*secret*.yaml
 k8s/*secret*.yml
 
-# Claude Code personal settings
-.claude/settings.local.json
+# Claude Code's local folder: personal settings and skills. Some of the skills (docx, pdf, pptx) are under
+# Anthropic's own license, which does not allow copies to be redistributed, so none of it is committed.
+.claude/
 
 # The site's own data (database files, collected pictures, backups) must never be committed
 wtm-data/
