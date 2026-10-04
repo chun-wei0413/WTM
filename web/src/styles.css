@@ -184,7 +184,6 @@ main {
   cursor: not-allowed;
 }
 .button:focus-visible,
-.chip:focus-visible,
 .slot-item:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
@@ -296,29 +295,6 @@ textarea:disabled {
 .tabs button[aria-selected='true'] {
   color: var(--accent);
   border-bottom-color: var(--accent);
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.chip {
-  font: inherit;
-  font-size: 0.85rem;
-  padding: 0.3rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--muted);
-  cursor: pointer;
-}
-.chip:hover:not(:disabled) {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.chip:disabled {
-  opacity: 0.5;
 }
 
 /* ---- feedback ---- */
