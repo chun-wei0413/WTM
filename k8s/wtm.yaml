@@ -1,0 +1,214 @@
+# The same stack as docker-compose.app.yml, written for Kubernetes (learning exercise, not tested in CI).
+#
+#   kubectl create namespace wtm
+#   kubectl -n wtm create secret generic wtm-secrets --from-env-file=.env
+#   kubectl apply -f k8s/wtm.yaml
+#
+# The secret is created from .env on purpose: no password is ever written in this file.
+# Models stay on "mock" so no GPU or Ollama is needed.
+---
+# A PersistentVolumeClaim is a request for disk space. Docker Desktop fills it with a folder on its VM.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: images
+  namespace: wtm
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Postgres is the one piece with identity and data, so it is a StatefulSet instead of a Deployment.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: wtm
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels: { app: postgres }
+  template:
+    metadata:
+      labels: { app: postgres }
+    spec:
+      containers:
+        - name: postgres
+          image: pgvector/pgvector:pg16
+          ports:
+            - containerPort: 5432
+          env:
+            - { name: POSTGRES_DB, value: wtm }
+            - { name: POSTGRES_USER, value: wtm }
+            - name: POSTGRES_PASSWORD
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: DB_PASSWORD } }
+            # A volume's root can hold a lost+found folder, which Postgres refuses to initialise into.
+            - { name: PGDATA, value: /var/lib/postgresql/data/pgdata }
+          volumeMounts:
+            - { name: data, mountPath: /var/lib/postgresql/data }
+          # Readiness: "may traffic be sent to me yet?" (the compose healthcheck)
+          readinessProbe:
+            exec:
+              command: [pg_isready, -U, wtm, -d, wtm]
+            periodSeconds: 5
+  # One claim per replica, created from this template.
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 5Gi
+---
+# A Service gives pods a stable name. The backend's SPRING_DATASOURCE_URL says "postgres", and this is that name.
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: wtm
+spec:
+  selector: { app: postgres }
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: object-storage
+  namespace: wtm
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # the volume can be used by one pod at a time, so stop the old pod before starting the new
+  selector:
+    matchLabels: { app: object-storage }
+  template:
+    metadata:
+      labels: { app: object-storage }
+    spec:
+      containers:
+        - name: rustfs
+          image: rustfs/rustfs:1.0.0
+          ports:
+            - containerPort: 9000
+          env:
+            - name: RUSTFS_ACCESS_KEY
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: S3_ACCESS_KEY } }
+            - name: RUSTFS_SECRET_KEY
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: S3_SECRET_KEY } }
+          volumeMounts:
+            - { name: images, mountPath: /data }
+      volumes:
+        - name: images
+          persistentVolumeClaim: { claimName: images }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: object-storage
+  namespace: wtm
+spec:
+  selector: { app: object-storage }
+  ports:
+    - port: 9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: wtm
+spec:
+  replicas: 1   # try 2 later: queues are safe (SKIP LOCKED), login throttling is counted per replica
+  selector:
+    matchLabels: { app: backend }
+  template:
+    metadata:
+      labels: { app: backend }
+    spec:
+      containers:
+        - name: backend
+          image: russellli/wtm-backend:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - { name: SPRING_DATASOURCE_URL, value: "jdbc:postgresql://postgres:5432/wtm" }
+            - { name: DB_USERNAME, value: wtm }
+            - { name: WTM_ADMIN_USERNAME, value: admin }
+            - { name: WTM_STORAGE_ENDPOINT, value: "http://object-storage:9000" }
+            # Browsers open picture addresses signed with this one, so it must be reachable from the browser.
+            # With "kubectl port-forward" for the storage it is localhost:9000.
+            - { name: WTM_STORAGE_PUBLIC_ENDPOINT, value: "http://localhost:9000" }
+            - { name: WTM_VISION_PROVIDER, value: mock }
+            - { name: WTM_EMBEDDING_PROVIDER, value: mock }
+            - name: DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: DB_PASSWORD } }
+            - name: WTM_JWT_SECRET
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: WTM_JWT_SECRET } }
+            - name: WTM_ADMIN_PASSWORD
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: WTM_ADMIN_PASSWORD } }
+            - name: S3_ACCESS_KEY
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: S3_ACCESS_KEY } }
+            - name: S3_SECRET_KEY
+              valueFrom: { secretKeyRef: { name: wtm-secrets, key: S3_SECRET_KEY } }
+          # Startup: Flyway and Spring take a while; do not judge the pod until it has had up to 3 minutes.
+          startupProbe:
+            httpGet: { path: /actuator/health, port: 8080 }
+            periodSeconds: 5
+            failureThreshold: 36
+          # Readiness: receive traffic only while healthy.
+          readinessProbe:
+            httpGet: { path: /actuator/health, port: 8080 }
+            periodSeconds: 10
+          # Liveness: restart the container if it stops answering.
+          livenessProbe:
+            httpGet: { path: /actuator/health, port: 8080 }
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            requests: { memory: 512Mi, cpu: 250m }
+            limits: { memory: 1Gi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: wtm
+spec:
+  selector: { app: backend }
+  ports:
+    - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: wtm
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: web }
+  template:
+    metadata:
+      labels: { app: web }
+    spec:
+      containers:
+        - name: web
+          image: russellli/wtm-web:latest
+          ports:
+            - containerPort: 80
+          # nginx passes /api to BACKEND_URL, whose default is http://backend:8080: the Service above.
+          readinessProbe:
+            httpGet: { path: /, port: 80 }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: wtm
+spec:
+  selector: { app: web }
+  ports:
+    - port: 80
