@@ -35,6 +35,12 @@ application-*-local.yml
 *.keystore
 secrets/
 
+# Kubernetes: cluster credentials, and any Secret manifest written out with real values
+kubeconfig*
+*.kubeconfig
+k8s/*secret*.yaml
+k8s/*secret*.yml
+
 # Claude Code personal settings
 .claude/settings.local.json
 
