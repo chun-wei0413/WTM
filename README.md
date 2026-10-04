@@ -62,6 +62,19 @@ only once, and each picture keeps a note of where it came from.
 When someone reports a meme, the vision model looks at the picture again, with their complaint in hand, and the
 administrator sees both side by side ("user report: ...; suggested change: ...") to adopt or dismiss.
 
+## Architecture
+
+A search runs two lookups in PostgreSQL, a vector search (`bge-m3` embeddings with pgvector) and a keyword search
+(`pg_trgm`), and merges the two rankings with reciprocal rank fusion. In the background, a vision model
+(`qwen2.5vl`) describes every new picture and a sync job keeps the search index in line with the library.
+The picture files themselves are stored in S3-compatible object storage (RustFS), not fetched from their original sites.
+
+[![WTM search architecture: the query flow and the indexing flow](docs/images/search-architecture.drawio.png)](docs/images/search-architecture.drawio.png)
+
+*Click the diagram to see it at full size. Its labels are in Traditional Chinese; the editable source is
+[search-architecture.drawio](docs/images/search-architecture.drawio) (open it with draw.io). The reasons behind each
+choice are in [docs/DECISIONS.md](docs/DECISIONS.md).*
+
 ## Before you run it for real
 
 - **It is a personal tool, not a service.** There is no logout or password reset, the sign-in token is kept in the
