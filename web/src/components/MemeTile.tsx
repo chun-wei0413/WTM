@@ -11,10 +11,15 @@ interface Props {
   item: LibraryItem;
   /** Extra buttons next to download and favorite. */
   children?: ReactNode;
+  /** Playful layout: the meaning and tags sit under the picture, numbered from 1. */
+  index?: number;
+  /** With `index`: the first result, set larger beside its caption. */
+  lead?: boolean;
 }
 
 /** One meme: the picture, the two things people do with it (download, favorite), and the rest behind "詳情". */
-export function MemeTile({ item, children }: Props) {
+export function MemeTile({ item, children, index, lead }: Props) {
+  const pop = index !== undefined;
   const { isFavorite, add, remove } = useFavorites();
   const favorite = isFavorite(item.templateId);
   const [downloading, setDownloading] = useState(false);
@@ -52,14 +57,29 @@ export function MemeTile({ item, children }: Props) {
   }
 
   return (
-    <article className="card meme-tile">
+    <article className={pop ? `meme-tile tile-pop${lead ? ' tile-lead' : ''}` : 'card meme-tile'}>
       <img
         src={item.imageUrl}
         alt={item.meaning ?? item.name}
         width={item.imageWidth}
         height={item.imageHeight}
-        loading="lazy"
+        loading={lead ? 'eager' : 'lazy'}
       />
+      {pop && (
+        <div className="tile-caption">
+          <span className="tile-no" aria-hidden="true">
+            {String(index).padStart(2, '0')}
+          </span>
+          {item.meaning && <p className="tile-meaning">{item.meaning}</p>}
+          {item.tags.length > 0 && (
+            <ul className="tag-list" aria-label="標籤">
+              {item.tags.slice(0, lead ? 8 : 4).map((tag) => (
+                <li key={tag}>{tag}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       <div className="tile-bar">
         <button type="button" className="button" onClick={download} disabled={downloading}>
           {downloading ? '下載中…' : '下載'}
@@ -80,7 +100,7 @@ export function MemeTile({ item, children }: Props) {
           onClick={() => setDetailsOpen((open) => !open)}
           aria-expanded={detailsOpen}
         >
-          {detailsOpen ? '收起' : '詳情'}
+          {detailsOpen ? '收起' : pop ? '來源・回報' : '詳情'}
         </button>
       </div>
       {error != null && (
@@ -90,8 +110,8 @@ export function MemeTile({ item, children }: Props) {
       )}
       {detailsOpen && (
         <div className="tile-details">
-          {item.meaning && <p className="tile-meaning">{item.meaning}</p>}
-          {item.tags.length > 0 && (
+          {!pop && item.meaning && <p className="tile-meaning">{item.meaning}</p>}
+          {!pop && item.tags.length > 0 && (
             <ul className="tag-list" aria-label="標籤">
               {item.tags.slice(0, 8).map((tag) => (
                 <li key={tag}>{tag}</li>

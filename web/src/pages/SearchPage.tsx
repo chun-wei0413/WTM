@@ -74,12 +74,18 @@ export function SearchPage() {
   const busy = load.state === 'loading';
   const shortcuts = hot.length > 0 ? hot : EXAMPLES;
 
-  return (
-    <div className="page">
-      <h1>找梗圖</h1>
-      <p className="lead search-lead">描述你遇到的情境,或是這張圖長什麼樣子、大家怎麼叫它,不用記得它的名字。</p>
+  const items = load.state === 'ready' ? load.items : [];
+  const [lead, ...rest] = items;
 
-      <form onSubmit={onSubmit} className="form search-form" role="search">
+  return (
+    <div className="page search-page">
+      <header className="masthead">
+        <p className="eyebrow">WTM · 梗圖檢索</p>
+        <h1>找梗圖</h1>
+        <p className="lead search-lead">描述你遇到的情境,或是這張圖長什麼樣子、大家怎麼叫它,不用記得它的名字。</p>
+      </header>
+
+      <form onSubmit={onSubmit} className="search-form" role="search">
         <label className="visually-hidden" htmlFor="search-box">
           你想找的梗圖
         </label>
@@ -90,38 +96,42 @@ export function SearchPage() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             maxLength={MAX_LENGTH}
-            placeholder="例如:聽不懂對方剛剛在說什麼"
+            placeholder="聽不懂對方剛剛在說什麼"
             autoFocus
           />
-          <button type="submit" className="button button-primary" disabled={busy || !text.trim()}>
-            搜尋
+          <button type="submit" className="search-submit" disabled={busy || !text.trim()}>
+            搜尋 <span aria-hidden="true">→</span>
           </button>
         </div>
         <div className="shortcuts">
-          <span className="muted">{hot.length > 0 ? '最近熱門搜尋' : '試試看'}</span>
-          <div className="chips" aria-label={hot.length > 0 ? '熱門搜尋' : '範例'}>
+          <span className="shortcuts-label">{hot.length > 0 ? '最近熱門' : '試試看'}</span>
+          <ul className="shortcut-list" aria-label={hot.length > 0 ? '熱門搜尋' : '範例'}>
             {shortcuts.map((term) => (
-              <button key={term} type="button" className="chip" onClick={() => pick(term)} disabled={busy}>
-                {term}
-              </button>
+              <li key={term}>
+                <button type="button" className="shortcut" onClick={() => pick(term)} disabled={busy}>
+                  {term}
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </form>
 
-      <div className="section-header">
-        <h2>{searched === null ? '隨機看看' : `「${searched}」最接近的結果`}</h2>
+      <div className="section-header results-head">
+        <h2>
+          {searched === null ? (
+            '隨機看看'
+          ) : (
+            <>
+              <span className="results-label">最接近「{searched}」的</span>
+              {load.state === 'ready' && <span className="results-count">{items.length} 張</span>}
+            </>
+          )}
+        </h2>
         <div className="actions">
-          {searched !== null && (
-            <button type="button" className="button button-quiet" onClick={() => void showRandom()} disabled={busy}>
-              清除搜尋
-            </button>
-          )}
-          {searched === null && (
-            <button type="button" className="button" onClick={() => void showRandom()} disabled={busy}>
-              換一批
-            </button>
-          )}
+          <button type="button" className="text-action" onClick={() => void showRandom()} disabled={busy}>
+            {searched !== null ? '清除搜尋 ✕' : '換一批 ↻'}
+          </button>
         </div>
       </div>
 
@@ -133,22 +143,25 @@ export function SearchPage() {
       )}
       {load.state === 'error' && <ErrorNotice error={load.error} />}
 
-      {load.state === 'ready' && load.items.length === 0 && (
+      {load.state === 'ready' && items.length === 0 && (
         <div className="empty">
           <p>{searched === null ? '圖庫裡還沒有梗圖。' : '沒有找到合適的梗圖,換個說法試試。'}</p>
           {searched === null && <p className="muted">圖片要先收進圖庫、標記完成之後才看得到。</p>}
         </div>
       )}
 
-      {load.state === 'ready' && load.items.length > 0 && (
+      {lead && (
         <section aria-live="polite">
-          <div className="masonry">
-            {load.items.map((item) => (
-              <MemeTile key={item.templateId} item={item} />
-            ))}
-          </div>
+          <MemeTile item={lead} index={1} lead />
+          {rest.length > 0 && (
+            <div className="masonry masonry-pop">
+              {rest.map((item, i) => (
+                <MemeTile key={item.templateId} item={item} index={i + 2} />
+              ))}
+            </div>
+          )}
           {searched !== null && (
-            <p className="muted">搜尋一定會列出最接近的幾張,即使圖庫裡沒有真正合適的。</p>
+            <p className="results-note">搜尋一定會列出最接近的幾張,即使圖庫裡沒有真正合適的。</p>
           )}
         </section>
       )}
