@@ -17,8 +17,6 @@ use them, so the situation you remember is enough to find them.
 
 **Status:** the backend and a web UI (in Traditional Chinese) are complete and tested.
 
-![The template editor: a slot drawn on the image with resize handles, and its settings on the right](docs/images/ui-template-editor.jpg)
-
 ---
 
 ## What it does
@@ -216,7 +214,7 @@ another machine, set it to an address that machine can reach.
 | `POST /api/admin/templates` | admin | Upload a template image (multipart `name`, `file`) |
 | `GET /api/admin/templates[?status=]`, `GET /api/admin/templates/{id}` | admin | List / read templates |
 | `PUT /api/admin/templates/{id}/profile` | admin | Meaning, usage examples, emotions, aliases |
-| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | admin | Define, change, remove a text slot (kept from the earlier caption feature; the web client does not use it) |
+| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | admin | Define, change, remove a text slot (used by the admin template editor) |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | admin | Publish / withdraw a template |
 | `GET /api/admin/reports` | admin | Reported memes: complaints, current description, the model's proposal |
 | `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` · `/undo`, `GET /api/admin/reports/automatic` | admin | Adopt the proposal, set the reports aside, ask the model again, take an automatic decision back, list what the rules did |

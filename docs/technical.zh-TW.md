@@ -15,8 +15,6 @@
 
 **目前狀態:** 後端與網頁介面(繁體中文)都已完成並有測試涵蓋。
 
-![模板編輯頁:圖片上拖曳出的文字格與縮放把手,右側是它的設定](docs/images/ui-template-editor.jpg)
-
 > 設計取捨的完整說明(英文)在 **[docs/DECISIONS.md](docs/DECISIONS.md)**。
 
 ---
@@ -206,7 +204,7 @@ docker compose -f docker-compose.app.yml up -d
 | `POST /api/admin/templates` | 管理員 | 上傳模板圖片(multipart:`name`、`file`) |
 | `GET /api/admin/templates[?status=]`、`GET /api/admin/templates/{id}` | 管理員 | 列出 / 讀取模板 |
 | `PUT /api/admin/templates/{id}/profile` | 管理員 | 含意、使用範例、情緒、別名 |
-| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | 管理員 | 新增、修改、刪除文字格(早期加文案功能留下的,網頁前端沒有使用) |
+| `POST` · `PUT` · `DELETE /api/admin/templates/{id}/slots[/{n}]` | 管理員 | 新增、修改、刪除文字格(管理員的模板編輯頁使用) |
 | `POST /api/admin/templates/{id}/approve` · `/retire` | 管理員 | 發佈 / 下架模板 |
 | `GET /api/admin/reports` | 管理員 | 被回報的梗圖:用戶意見、目前的描述、模型的新建議 |
 | `POST /api/admin/reports/{id}/apply` · `/dismiss` · `/reanalyze` | 管理員 | 採用建議、忽略回報、請模型重新分析 |
