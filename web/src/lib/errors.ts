@@ -1,6 +1,6 @@
 import { ApiError } from '../api/client';
 
-export interface FriendlyError {
+interface FriendlyError {
   /** What went wrong, in plain Traditional Chinese. */
   title: string;
   /** The server's own (English) explanation, shown smaller; absent when there is nothing useful to add. */

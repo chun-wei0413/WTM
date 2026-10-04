@@ -6,14 +6,14 @@
 /** Width in pixels of `text` drawn at `fontSize`. */
 export type Measure = (text: string, fontSize: number) => number;
 
-export interface TextLayout {
+interface TextLayout {
   fontSize: number;
   lines: string[];
   /** Height of one line, in pixels. */
   lineHeight: number;
 }
 
-export interface FitOptions {
+interface FitOptions {
   maxFontSize?: number;
   minFontSize?: number;
   /** Line height as a multiple of the font size. */

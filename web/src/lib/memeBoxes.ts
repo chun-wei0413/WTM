@@ -24,14 +24,14 @@ export interface TextBox extends Rect {
   style: TextStyleId;
 }
 
-export interface PlacedLine {
+interface PlacedLine {
   text: string;
   /** Horizontal centre and vertical centre of the line, in image pixels. */
   x: number;
   y: number;
 }
 
-export interface PlacedText {
+interface PlacedText {
   fontSize: number;
   lines: PlacedLine[];
 }

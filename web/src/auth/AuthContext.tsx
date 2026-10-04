@@ -14,7 +14,7 @@ import { decodeToken, isExpired, type TokenInfo } from '../lib/jwt';
 
 const STORAGE_KEY = 'wtm.token';
 
-export interface CurrentUser {
+interface CurrentUser {
   id: string;
   username: string;
   isAdmin: boolean;

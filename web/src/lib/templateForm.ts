@@ -52,7 +52,7 @@ export function profileIsComplete(profile: MemeProfile): boolean {
   return profile.meaning.trim().length > 0 && profile.usageExamples.length > 0;
 }
 
-export interface SlotChanges {
+interface SlotChanges {
   /** Slot numbers that exist on the server but are gone from the working copy. */
   remove: number[];
   /** Slots on both sides whose content differs. */

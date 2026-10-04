@@ -100,7 +100,7 @@ export interface LibraryStats {
   tagFailures: number;
 }
 
-export type IngestStatus = 'IMPORTED' | 'DUPLICATE' | 'REJECTED';
+type IngestStatus = 'IMPORTED' | 'DUPLICATE' | 'REJECTED';
 
 /** What happened to one picture offered to the library. */
 export interface IngestResult {
@@ -110,7 +110,7 @@ export interface IngestResult {
   reason: string | null;
 }
 
-export interface SourceOption {
+interface SourceOption {
   key: string;
   label: string;
   defaultValue: string;
@@ -123,7 +123,7 @@ export interface CollectionSource {
   options: SourceOption[];
 }
 
-export interface RunCounts {
+interface RunCounts {
   found: number;
   imported: number;
   duplicates: number;
@@ -147,7 +147,7 @@ export interface CollectionRun {
 export type ReportReason = 'WRONG_TAGS' | 'WRONG_MEANING' | 'NOT_A_MEME' | 'INAPPROPRIATE' | 'OTHER';
 
 /** What the vision model proposes after looking at a reported meme again. */
-export interface ReportSuggestion {
+interface ReportSuggestion {
   isMeme: boolean;
   meaning: string;
   usageExamples: string[];
@@ -158,7 +158,7 @@ export interface ReportSuggestion {
   reasoning: string;
 }
 
-export interface OpenReport {
+interface OpenReport {
   id: string;
   templateId: string;
   username: string;
@@ -169,7 +169,7 @@ export interface OpenReport {
 
 export type ReviewStatus = 'PENDING' | 'RUNNING' | 'DONE' | 'FAILED';
 
-export interface ReportReview {
+interface ReportReview {
   status: ReviewStatus;
   suggestion: ReportSuggestion | null;
   error: string | null;

@@ -20,7 +20,7 @@ export const REVIEW_LABELS: Record<ReviewStatus, string> = {
 export const MAX_COMMENT_LENGTH = 300;
 
 /** How a list of words changed: what is new, what is gone, what stayed. */
-export interface ListDiff {
+interface ListDiff {
   added: string[];
   removed: string[];
   kept: string[];
