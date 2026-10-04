@@ -149,12 +149,6 @@ main {
   font-size: 0.9rem;
   text-decoration: none;
 }
-.stack {
-  display: grid;
-  gap: 0.75rem;
-  justify-items: start;
-  margin: 1rem 0;
-}
 .actions {
   display: flex;
   gap: 0.5rem;
@@ -642,19 +636,6 @@ textarea:disabled {
 }
 .search-form {
   margin-bottom: 1rem;
-}
-.result-card .result-image {
-  display: block;
-}
-.result-card img {
-  width: 100%;
-  max-height: 340px;
-  object-fit: contain;
-  background: var(--surface-2);
-  display: block;
-}
-.result-meaning {
-  margin: 0;
 }
 .tag-list {
   display: flex;
