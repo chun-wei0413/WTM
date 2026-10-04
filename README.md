@@ -69,10 +69,11 @@ A search runs two lookups in PostgreSQL, a vector search (`bge-m3` embeddings wi
 (`qwen2.5vl`) describes every new picture and a sync job keeps the search index in line with the library.
 The picture files themselves are stored in S3-compatible object storage (RustFS), not fetched from their original sites.
 
-[![WTM search architecture: the query flow and the indexing flow](docs/images/search-architecture.drawio.png)](docs/images/search-architecture.drawio.png)
+[![WTM search architecture: the query flow and the indexing flow](docs/images/search-architecture.en.drawio.png)](docs/images/search-architecture.en.drawio.png)
 
-*Click the diagram to see it at full size. Its labels are in Traditional Chinese; the editable source is
-[search-architecture.drawio](docs/images/search-architecture.drawio) (open it with draw.io). The reasons behind each
+*Click the diagram to see it at full size. The editable source is
+[search-architecture.en.drawio](docs/images/search-architecture.en.drawio) (open it with draw.io); the
+[Traditional Chinese version](docs/images/search-architecture.drawio.png) is kept next to it. The reasons behind each
 choice are in [docs/DECISIONS.md](docs/DECISIONS.md).*
 
 ## Before you run it for real

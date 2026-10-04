@@ -57,6 +57,17 @@ WTM 有三個功能,各有一個頁面。
 有人回報某張梗圖時,影像模型會帶著他的意見把圖重新看一遍,管理員可以並排看到兩邊
 (「用戶報告:…;修改建議:…」),再決定採用或忽略。
 
+## 架構
+
+一次搜尋會在 PostgreSQL 裡做兩種查詢:向量檢索(`bge-m3` 嵌入加 pgvector)與關鍵字檢索(`pg_trgm`),
+再用倒數排名融合(RRF)把兩份排名合併。在背景裡,視覺模型(`qwen2.5vl`)會為每張新圖寫下描述,
+同步程式則讓搜尋索引跟上圖庫的內容。圖片檔案本身存放在 S3 相容的物件儲存(RustFS),不是每次都去原網站載入。
+
+[![WTM 檢索架構:查詢流程與建索引流程](docs/images/search-architecture.drawio.png)](docs/images/search-architecture.drawio.png)
+
+*點圖可看原始大小。可編輯的原始檔是 [search-architecture.drawio](docs/images/search-architecture.drawio)(用 draw.io 開啟)。
+每個選擇背後的理由寫在 [docs/DECISIONS.md](docs/DECISIONS.md)(英文)。*
+
 ## 真的要用之前
 
 - **這是個人工具,不是對外的服務。** 沒有登出與重設密碼,登入 token 存在瀏覽器的 `sessionStorage`,也沒有設定
