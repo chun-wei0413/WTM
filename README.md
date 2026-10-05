@@ -42,8 +42,9 @@ its name: what it looks like, or the nickname people give it. Either of these fi
 *(Illustration of the intended behaviour; the picture is a meme collected from the web.)*
 
 If you would rather not choose yourself, switch the search bar to **Pick one for me** and describe the situation
-("my friend keeps saying I over-react, pick a meme to answer him"). WTM finds the eight closest memes, a language model
-chooses one and says why, and the others stay below as alternatives. It only ever chooses from the library.
+("my friend keeps saying I over-react, pick a meme to answer him"). WTM finds the eight closest memes, offers the closest one
+with a language model's note on whether and why it fits (written by AI, so it can be wrong), and keeps the others below as
+alternatives. It only ever offers memes from the library.
 
 ### 2. Favorites
 

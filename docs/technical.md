@@ -109,7 +109,7 @@ ollama pull bge-m3
 ollama pull qwen2.5vl:7b
 $env:WTM_EMBEDDING_PROVIDER = "ollama"
 $env:WTM_VISION_PROVIDER = "ollama"
-$env:WTM_PICKER_PROVIDER = "ollama"
+$env:WTM_EXPLAINER_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
@@ -207,7 +207,7 @@ another machine, set it to an address that machine can reach.
 | `POST /api/auth/register` | anyone | Create a user account |
 | `POST /api/auth/login` | anyone | Get a bearer token (2 h) |
 | `GET /api/templates/search?q=&limit=` | signed in | Search the library by meaning and keywords (short searches that find something are counted, unless `record=false`) |
-| `POST /api/templates/pick` | signed in | Describe a situation (`{"situation": "..."}`, at most 300 characters): the eight closest memes come back as `chosen`, `reason` and `others`, with `chosen` picked by a language model. Without a reason when the model cannot be reached; ten a minute per person |
+| `POST /api/templates/pick` | signed in | Describe a situation (`{"situation": "..."}`, at most 300 characters): the eight closest memes come back as `chosen` (the closest one), `reason` (a language model's note on why it fits or does not; missing when the model cannot be reached) and `others`. Ten a minute per person |
 | `GET /api/library/random?limit=` | signed in | Published memes in random order |
 | `GET /api/library/hot-searches?limit=` | signed in | The most common searches of the last 7 days |
 | `GET /api/library/{id}/image` | signed in | The original picture of a published meme (download, or drawing on a canvas) |
@@ -371,6 +371,6 @@ Secrets come from `.env` or real environment variables. None has a default.
 | `S3_ACCESS_KEY`, `S3_SECRET_KEY` | Object storage |
 | `WTM_JWT_SECRET` | Signs tokens (at least 32 characters). Anyone who knows it can forge admin tokens |
 | `WTM_ADMIN_USERNAME`, `WTM_ADMIN_PASSWORD` | The first administrator |
-| `WTM_VISION_PROVIDER`, `WTM_EMBEDDING_PROVIDER`, `WTM_PICKER_PROVIDER` | `mock` (default) or `ollama` |
+| `WTM_VISION_PROVIDER`, `WTM_EMBEDDING_PROVIDER`, `WTM_EXPLAINER_PROVIDER` | `mock` (default) or `ollama` |
 
 Everything else is in [`application.yml`](src/main/resources/application.yml).

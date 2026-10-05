@@ -107,7 +107,7 @@ ollama pull bge-m3
 ollama pull qwen2.5vl:7b
 $env:WTM_EMBEDDING_PROVIDER = "ollama"
 $env:WTM_VISION_PROVIDER = "ollama"
-$env:WTM_PICKER_PROVIDER = "ollama"
+$env:WTM_EXPLAINER_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
@@ -197,7 +197,7 @@ docker compose -f docker-compose.app.yml up -d
 | `POST /api/auth/register` | 任何人 | 建立使用者帳號 |
 | `POST /api/auth/login` | 任何人 | 取得 Bearer token(2 小時) |
 | `GET /api/templates/search?q=&limit=` | 已登入 | 以語意與關鍵字搜尋圖庫(找得到結果的短搜尋會被計數) |
-| `POST /api/templates/pick` | 已登入 | 描述一個處境(`{"situation": "..."}`,最多 300 字):回傳最接近的八張,由語言模型挑出 `chosen` 並附上 `reason`,其餘放在 `others`。模型連不上時沒有理由;每人每分鐘 10 次 |
+| `POST /api/templates/pick` | 已登入 | 描述一個處境(`{"situation": "..."}`,最多 300 字):回傳最接近的八張,`chosen` 是最接近的一張,`reason` 是語言模型說明它適不適合(模型連不上時沒有),其餘放在 `others`。每人每分鐘 10 次 |
 | `GET /api/library/random?limit=` | 已登入 | 隨機取得已發佈的梗圖 |
 | `GET /api/library/hot-searches?limit=` | 已登入 | 最近 7 天最常被搜尋的詞 |
 | `GET /api/library/{id}/image` | 已登入 | 已發佈梗圖的原圖(下載,或拿來畫在 canvas 上) |
@@ -348,6 +348,6 @@ docs/DECISIONS.md                  為什麼這樣設計(英文)
 | `S3_ACCESS_KEY`、`S3_SECRET_KEY` | 物件儲存 |
 | `WTM_JWT_SECRET` | 簽發 token 的密鑰(至少 32 個字元)。知道它的人可以偽造管理員 token |
 | `WTM_ADMIN_USERNAME`、`WTM_ADMIN_PASSWORD` | 第一位管理員 |
-| `WTM_VISION_PROVIDER`、`WTM_EMBEDDING_PROVIDER`、`WTM_PICKER_PROVIDER` | `mock`(預設)或 `ollama` |
+| `WTM_VISION_PROVIDER`、`WTM_EMBEDDING_PROVIDER`、`WTM_EXPLAINER_PROVIDER` | `mock`(預設)或 `ollama` |
 
 其他設定都在 [`application.yml`](src/main/resources/application.yml)。

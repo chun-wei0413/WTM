@@ -1,9 +1,11 @@
 // Measures whether the model's pick beats the closest search result, on the queries of eval/library-queries.json.
+// This measured the first version of the pick endpoint, where the model chose among the eight (decision 22). The model
+// no longer chooses, so against the current endpoint the "pick" is the closest result and nothing can be fixed or broken;
+// the script is kept to repeat the measurement if the model is ever given the choice again.
 //
 //   node scripts/eval-pick.mjs [--only situation] [--out eval/results/pick-baseline.json]
 //
-// Needs the application running with the real models (WTM_EMBEDDING_PROVIDER=ollama and WTM_PICKER_PROVIDER=ollama,
-// otherwise the "model" is a mock that always takes the first candidate), and the administrator from .env
+// Needs the application running with the real models (WTM_EMBEDDING_PROVIDER=ollama and WTM_EXPLAINER_PROVIDER=ollama), and the administrator from .env
 // (WTM_ADMIN_USERNAME / WTM_ADMIN_PASSWORD), like scripts/eval-search.mjs. Its searches are sent with record=false.
 //
 // For every query it asks search for the eight closest memes (the list the model is given), then asks the model to pick,
