@@ -48,7 +48,7 @@ wtm:
     ollama:
       base-url: http://localhost:11434
       model: bge-m3
-  picker:                     # reads a situation and the closest memes, chooses one and says why
+  explainer:                  # reads a situation and the closest meme and says why it fits
     provider: mock            # mock | ollama
     ollama:
       base-url: http://localhost:11434

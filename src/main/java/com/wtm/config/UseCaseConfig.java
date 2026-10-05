@@ -40,7 +40,7 @@ import com.wtm.application.port.out.CollectionRunPort;
 import com.wtm.application.port.out.ImageFingerprintPort;
 import com.wtm.application.port.out.ImageInspectorPort;
 import com.wtm.application.port.out.LibraryPort;
-import com.wtm.application.port.out.MemePickerPort;
+import com.wtm.application.port.out.MemeExplainerPort;
 import com.wtm.application.port.out.MemeSourcePort;
 import com.wtm.application.port.out.RemoteFetchPort;
 import com.wtm.application.port.out.TaggingQueuePort;
@@ -156,8 +156,8 @@ class UseCaseConfig {
     }
 
     @Bean
-    PickMemeHandler pickMemeHandler(SearchTemplatesHandler search, MemePickerPort picker, RateLimiterPort limiter) {
-        return new PickMemeHandler(search, picker, limiter);
+    PickMemeHandler pickMemeHandler(SearchTemplatesHandler search, MemeExplainerPort explainer, RateLimiterPort limiter) {
+        return new PickMemeHandler(search, explainer, limiter);
     }
 
     @Bean

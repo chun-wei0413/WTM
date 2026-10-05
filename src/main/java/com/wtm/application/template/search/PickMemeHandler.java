@@ -2,26 +2,25 @@ package com.wtm.application.template.search;
 
 import com.wtm.application.TooManyRequestsException;
 import com.wtm.application.port.out.LlmUnavailableException;
-import com.wtm.application.port.out.MemePickerPort;
-import com.wtm.application.port.out.MemePickerPort.Candidate;
-import com.wtm.application.port.out.MemePickerPort.Pick;
+import com.wtm.application.port.out.MemeExplainerPort;
+import com.wtm.application.port.out.MemeExplainerPort.Meme;
 import com.wtm.application.port.out.RateLimiterPort;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * "Pick a meme for me": search finds the closest candidates, then a language model reads their descriptions and
- * chooses one and says why. The model only chooses among what the search found, so it cannot invent a meme, and if
- * it cannot be reached the closest search result is offered without a reason.
+ * "Pick a meme for me": search finds the closest memes and the closest one is offered, with a language model's
+ * note on why it fits (or does not). The model explains; it does not choose, because on the evaluation of the real
+ * library its choices were worse than the search order (decision 22). If the model cannot be reached the meme is
+ * offered without a note.
  */
 public class PickMemeHandler {
 
     private static final Logger log = LoggerFactory.getLogger(PickMemeHandler.class);
 
-    /** How many search results the model gets to choose from. */
+    /** How many search results are returned: the closest one is the pick, the rest are alternatives. */
     static final int CANDIDATES = 8;
     static final int MAX_SITUATION_LENGTH = 300;
     /** The model shares one graphics card with tagging, so each person may ask only so often. */
@@ -29,12 +28,12 @@ public class PickMemeHandler {
     static final Duration WINDOW = Duration.ofMinutes(1);
 
     private final SearchTemplatesHandler search;
-    private final MemePickerPort picker;
+    private final MemeExplainerPort explainer;
     private final RateLimiterPort limiter;
 
-    public PickMemeHandler(SearchTemplatesHandler search, MemePickerPort picker, RateLimiterPort limiter) {
+    public PickMemeHandler(SearchTemplatesHandler search, MemeExplainerPort explainer, RateLimiterPort limiter) {
         this.search = search;
-        this.picker = picker;
+        this.explainer = explainer;
         this.limiter = limiter;
     }
 
@@ -60,25 +59,18 @@ public class PickMemeHandler {
             return PickResult.nothing();
         }
 
-        int index = 0;
+        SearchResult closest = found.get(0);
         String reason = null;
         try {
-            Pick pick = picker.pick(text, found.stream().map(PickMemeHandler::candidate).toList());
-            if (pick.index() < 0 || pick.index() >= found.size()) {
-                throw new LlmUnavailableException("The model chose candidate " + pick.index() + " of " + found.size());
-            }
-            index = pick.index();
-            reason = pick.reason() == null || pick.reason().isBlank() ? null : pick.reason().strip();
+            String said = explainer.explain(text, meme(closest));
+            reason = said == null || said.isBlank() ? null : said.strip();
         } catch (LlmUnavailableException e) {
-            log.warn("Could not ask the model to pick, offering the closest result: {}", e.getMessage());
+            log.warn("Could not ask the model for a reason, offering the closest result without one: {}", e.getMessage());
         }
-
-        List<SearchResult> others = new ArrayList<>(found);
-        SearchResult chosen = others.remove(index);
-        return new PickResult(chosen, reason, List.copyOf(others));
+        return new PickResult(closest, reason, List.copyOf(found.subList(1, found.size())));
     }
 
-    private static Candidate candidate(SearchResult r) {
-        return new Candidate(r.name(), r.meaning(), r.usageExamples(), r.emotions(), r.tags(), r.imageText());
+    private static Meme meme(SearchResult r) {
+        return new Meme(r.name(), r.meaning(), r.usageExamples(), r.emotions(), r.tags(), r.imageText());
     }
 }

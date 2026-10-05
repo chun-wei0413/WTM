@@ -161,7 +161,7 @@ class TemplateSearchApiTest extends IntegrationTestBase {
                 .andExpect(status().isOk()).andReturn();
         JsonNode body = json.readTree(result.getResponse().getContentAsString());
 
-        // The stand-in model always chooses the first candidate, which is the closest search result.
+        // The closest search result is the pick, and the stand-in model writes the reason.
         assertThat(body.get("chosen").get("templateId").asText()).isEqualTo(id);
         assertThat(body.get("reason").asText()).contains("模擬推薦");
         assertThat(body.get("others").isArray()).isTrue();

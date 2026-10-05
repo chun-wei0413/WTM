@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -15,9 +14,8 @@ import static org.mockito.Mockito.when;
 import com.wtm.application.TooManyRequestsException;
 import com.wtm.application.port.out.EmbeddingPort;
 import com.wtm.application.port.out.LlmUnavailableException;
-import com.wtm.application.port.out.MemePickerPort;
-import com.wtm.application.port.out.MemePickerPort.Candidate;
-import com.wtm.application.port.out.MemePickerPort.Pick;
+import com.wtm.application.port.out.MemeExplainerPort;
+import com.wtm.application.port.out.MemeExplainerPort.Meme;
 import com.wtm.application.port.out.ObjectStoragePort;
 import com.wtm.application.port.out.RateLimiterPort;
 import com.wtm.application.port.out.TemplateSearchPort;
@@ -26,17 +24,16 @@ import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 
 class PickMemeHandlerTest {
 
     private final TemplateSearchPort searchPort = mock(TemplateSearchPort.class);
     private final EmbeddingPort embeddings = mock(EmbeddingPort.class);
     private final ObjectStoragePort storage = mock(ObjectStoragePort.class);
-    private final MemePickerPort picker = mock(MemePickerPort.class);
+    private final MemeExplainerPort explainer = mock(MemeExplainerPort.class);
     private final RateLimiterPort limiter = mock(RateLimiterPort.class);
     private final PickMemeHandler handler =
-            new PickMemeHandler(new SearchTemplatesHandler(searchPort, embeddings, storage), picker, limiter);
+            new PickMemeHandler(new SearchTemplatesHandler(searchPort, embeddings, storage), explainer, limiter);
 
     private final UUID first = UUID.randomUUID();
     private final UUID second = UUID.randomUUID();
@@ -60,36 +57,32 @@ class PickMemeHandlerTest {
     }
 
     @Test
-    void chosenMemeComesFirstAndTheRestKeepTheirOrder() {
+    void theClosestResultIsThePickAndTheRestKeepTheirOrder() {
         libraryFinds(first, second, third);
-        when(picker.pick(anyString(), anyList())).thenReturn(new Pick(1, "  because it fits  "));
+        when(explainer.explain(anyString(), any())).thenReturn("  because it fits  ");
 
         PickResult result = handler.handle("user-1", "my friend says I overreact");
 
-        assertThat(result.chosen().templateId()).isEqualTo(second);
+        assertThat(result.chosen().templateId()).isEqualTo(first);
         assertThat(result.reason()).isEqualTo("because it fits");
-        assertThat(result.others()).extracting(SearchResult::templateId).containsExactly(first, third);
+        assertThat(result.others()).extracting(SearchResult::templateId).containsExactly(second, third);
     }
 
     @Test
-    void theModelIsShownTheDescriptionsOfTheSearchResults() {
+    void theModelIsOnlyShownTheClosestMemesDescription() {
         libraryFinds(first, second);
-        when(picker.pick(anyString(), anyList())).thenReturn(new Pick(0, "ok"));
+        when(explainer.explain(anyString(), any())).thenReturn("ok");
 
         handler.handle("user-1", "a situation");
 
-        @SuppressWarnings("unchecked")
-        ArgumentCaptor<List<Candidate>> shown = ArgumentCaptor.forClass(List.class);
-        verify(picker).pick(eq("a situation"), shown.capture());
-        assertThat(shown.getValue()).hasSize(2);
-        assertThat(shown.getValue().get(0)).isEqualTo(new Candidate("name-" + first, "meaning-" + first,
+        verify(explainer).explain("a situation", new Meme("name-" + first, "meaning-" + first,
                 List.of("usage-" + first), List.of("emotion"), List.of("tag"), "text"));
     }
 
     @Test
     void offersTheClosestResultWithoutAReasonWhenTheModelCannotBeReached() {
         libraryFinds(first, second);
-        when(picker.pick(anyString(), anyList())).thenThrow(new LlmUnavailableException("down"));
+        when(explainer.explain(anyString(), any())).thenThrow(new LlmUnavailableException("down"));
 
         PickResult result = handler.handle("user-1", "a situation");
 
@@ -99,20 +92,9 @@ class PickMemeHandlerTest {
     }
 
     @Test
-    void aChoiceOutsideTheListIsTreatedAsNoAnswer() {
-        libraryFinds(first, second);
-        when(picker.pick(anyString(), anyList())).thenReturn(new Pick(7, "made up"));
-
-        PickResult result = handler.handle("user-1", "a situation");
-
-        assertThat(result.chosen().templateId()).isEqualTo(first);
-        assertThat(result.reason()).isNull();
-    }
-
-    @Test
     void aBlankReasonBecomesNoReason() {
         libraryFinds(first);
-        when(picker.pick(anyString(), anyList())).thenReturn(new Pick(0, "   "));
+        when(explainer.explain(anyString(), any())).thenReturn("   ");
 
         assertThat(handler.handle("user-1", "a situation").reason()).isNull();
     }
@@ -125,7 +107,7 @@ class PickMemeHandlerTest {
 
         assertThat(result.chosen()).isNull();
         assertThat(result.others()).isEmpty();
-        verify(picker, never()).pick(anyString(), anyList());
+        verify(explainer, never()).explain(anyString(), any());
     }
 
     @Test
@@ -136,7 +118,7 @@ class PickMemeHandlerTest {
         assertThatThrownBy(() -> handler.handle("user-1", null)).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> handler.handle("user-1", "x".repeat(PickMemeHandler.MAX_SITUATION_LENGTH + 1)))
                 .isInstanceOf(IllegalArgumentException.class);
-        verify(picker, never()).pick(anyString(), anyList());
+        verify(explainer, never()).explain(anyString(), any());
     }
 
     @Test
@@ -148,6 +130,6 @@ class PickMemeHandlerTest {
                 .isInstanceOfSatisfying(TooManyRequestsException.class,
                         e -> assertThat(e.retryAfter()).isEqualTo(PickMemeHandler.WINDOW));
         verify(embeddings, never()).embed(anyString());
-        verify(picker, never()).pick(anyString(), anyList());
+        verify(explainer, never()).explain(anyString(), any());
     }
 }

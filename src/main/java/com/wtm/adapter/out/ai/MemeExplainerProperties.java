@@ -4,8 +4,8 @@ import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
-@ConfigurationProperties("wtm.picker")
-public record MemePickerProperties(
+@ConfigurationProperties("wtm.explainer")
+public record MemeExplainerProperties(
         @DefaultValue("mock") String provider,
         @DefaultValue Ollama ollama,
         @DefaultValue Mock mock) {
