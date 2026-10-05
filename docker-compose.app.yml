@@ -36,8 +36,10 @@ services:
       WTM_STORAGE_PUBLIC_ENDPOINT: ${WTM_STORAGE_PUBLIC_ENDPOINT:-http://localhost:9000}
       WTM_VISION_PROVIDER: ${WTM_VISION_PROVIDER:-mock}
       WTM_EMBEDDING_PROVIDER: ${WTM_EMBEDDING_PROVIDER:-mock}
+      WTM_PICKER_PROVIDER: ${WTM_PICKER_PROVIDER:-mock}
       WTM_VISION_OLLAMA_BASE_URL: http://host.docker.internal:11434
       WTM_EMBEDDING_OLLAMA_BASE_URL: http://host.docker.internal:11434
+      WTM_PICKER_OLLAMA_BASE_URL: http://host.docker.internal:11434
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:

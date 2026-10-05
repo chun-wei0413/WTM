@@ -143,6 +143,7 @@ spec:
             - { name: WTM_STORAGE_PUBLIC_ENDPOINT, value: "http://localhost:9000" }
             - { name: WTM_VISION_PROVIDER, value: mock }
             - { name: WTM_EMBEDDING_PROVIDER, value: mock }
+            - { name: WTM_PICKER_PROVIDER, value: mock }
             - name: DB_PASSWORD
               valueFrom: { secretKeyRef: { name: wtm-secrets, key: DB_PASSWORD } }
             - name: WTM_JWT_SECRET

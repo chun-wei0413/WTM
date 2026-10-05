@@ -41,6 +41,10 @@ its name: what it looks like, or the nickname people give it. Either of these fi
 
 *(Illustration of the intended behaviour; the picture is a meme collected from the web.)*
 
+If you would rather not choose yourself, switch the search bar to **Pick one for me** and describe the situation
+("my friend keeps saying I over-react, pick a meme to answer him"). WTM finds the eight closest memes, a language model
+chooses one and says why, and the others stay below as alternatives. It only ever chooses from the library.
+
 ### 2. Favorites
 
 Star the memes you will want again. They are listed on their own page, so next time you do not need to
