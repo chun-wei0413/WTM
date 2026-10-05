@@ -135,7 +135,7 @@ export function SearchPage() {
         <h1>找梗圖</h1>
         <p className="lead search-lead">
           {picking
-            ? '把你遇到的處境講出來,例如對方說了什麼、你想表達什麼。我會從圖庫挑一張最適合的,並說明理由。'
+            ? '把你遇到的處境講出來,例如對方說了什麼、你想表達什麼。我會從圖庫找出最接近的一張,並說說它適不適合。'
             : '描述你遇到的情境,或是這張圖長什麼樣子、大家怎麼叫它,不用記得它的名字。'}
         </p>
       </header>
@@ -319,13 +319,13 @@ function PickPanel({ picked, onClear }: { picked: Picked; onClear: () => void })
       {result?.chosen && (
         <section aria-live="polite">
           {result.reason === null && (
-            <p className="pick-note">目前無法產生推薦理由,先給你最接近的一張。</p>
+            <p className="pick-note">目前無法產生說明,先給你最接近的一張。</p>
           )}
           <MemeTile
             item={result.chosen}
             index={1}
             lead
-            badge="就這張!"
+            badge="最接近!"
             reason={result.reason ?? undefined}
           />
           {result.others.length > 0 && (

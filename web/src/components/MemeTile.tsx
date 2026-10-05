@@ -76,8 +76,9 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
           </span>
           {reason && (
             <div className="tile-reason">
-              <span className="tile-reason-label">為什麼是這張</span>
+              <span className="tile-reason-label">我的看法</span>
               <p>{reason}</p>
+              <p className="tile-reason-hint">AI 寫的,不一定準</p>
             </div>
           )}
           {item.meaning && <p className="tile-meaning">{item.meaning}</p>}

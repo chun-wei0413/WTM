@@ -1967,3 +1967,20 @@ html {
   font-size: 0.95rem;
   line-height: 1.6;
 }
+
+/* a reminder that the note is written by a model, which defends whatever meme it is given */
+.tile-pop .tile-reason p.tile-reason-hint {
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.4;
+  opacity: 0.65;
+}
+
+@media (max-width: 700px) {
+  /* the situation box must show its whole placeholder (three lines) without a scrollbar */
+  .search-page .search-row textarea {
+    font-size: 1.02rem;
+    min-height: 6.6rem;
+  }
+}
