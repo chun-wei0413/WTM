@@ -40,6 +40,7 @@ import com.wtm.application.port.out.CollectionRunPort;
 import com.wtm.application.port.out.ImageFingerprintPort;
 import com.wtm.application.port.out.ImageInspectorPort;
 import com.wtm.application.port.out.LibraryPort;
+import com.wtm.application.port.out.MemePickerPort;
 import com.wtm.application.port.out.MemeSourcePort;
 import com.wtm.application.port.out.RemoteFetchPort;
 import com.wtm.application.port.out.TaggingQueuePort;
@@ -63,6 +64,7 @@ import com.wtm.application.template.command.ReviseProfileHandler;
 import com.wtm.application.template.index.SyncSearchIndexHandler;
 import com.wtm.application.template.query.GetTemplateHandler;
 import com.wtm.application.template.query.ListTemplatesHandler;
+import com.wtm.application.template.search.PickMemeHandler;
 import com.wtm.application.template.search.SearchTemplatesHandler;
 import java.time.Clock;
 import java.util.List;
@@ -151,6 +153,11 @@ class UseCaseConfig {
     SearchTemplatesHandler searchTemplatesHandler(TemplateSearchPort search, EmbeddingPort embeddings,
                                                   ObjectStoragePort storage) {
         return new SearchTemplatesHandler(search, embeddings, storage);
+    }
+
+    @Bean
+    PickMemeHandler pickMemeHandler(SearchTemplatesHandler search, MemePickerPort picker, RateLimiterPort limiter) {
+        return new PickMemeHandler(search, picker, limiter);
     }
 
     @Bean

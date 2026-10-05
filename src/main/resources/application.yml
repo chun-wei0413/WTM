@@ -48,3 +48,8 @@ wtm:
     ollama:
       base-url: http://localhost:11434
       model: bge-m3
+  picker:                     # reads a situation and the closest memes, chooses one and says why
+    provider: mock            # mock | ollama
+    ollama:
+      base-url: http://localhost:11434
+      model: qwen2.5vl:7b     # only reads words here, so it shares the model already on the graphics card

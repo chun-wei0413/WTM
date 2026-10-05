@@ -1,6 +1,8 @@
 package com.wtm.adapter.in.web;
 
 import com.wtm.application.library.SearchHistoryHandler;
+import com.wtm.application.template.search.PickMemeHandler;
+import com.wtm.application.template.search.PickResult;
 import com.wtm.application.template.search.SearchResult;
 import com.wtm.application.template.search.SearchTemplatesHandler;
 import jakarta.validation.constraints.Max;
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +28,21 @@ class SearchController {
 
     private final SearchTemplatesHandler search;
     private final SearchHistoryHandler history;
+    private final PickMemeHandler pick;
 
-    SearchController(SearchTemplatesHandler search, SearchHistoryHandler history) {
+    SearchController(SearchTemplatesHandler search, SearchHistoryHandler history, PickMemeHandler pick) {
         this.search = search;
         this.history = history;
+        this.pick = pick;
+    }
+
+    /** "Pick one for me": the closest memes to a situation, one chosen by a language model with its reason. */
+    @PostMapping("/pick")
+    PickResult pick(@RequestBody PickRequest request, @AuthenticationPrincipal Jwt jwt) {
+        return pick.handle(jwt.getSubject(), request.situation());
+    }
+
+    record PickRequest(String situation) {
     }
 
     @GetMapping("/search")

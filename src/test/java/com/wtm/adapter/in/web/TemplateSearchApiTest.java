@@ -126,6 +126,47 @@ class TemplateSearchApiTest extends IntegrationTestBase {
                 .andExpect(status().isForbidden());
     }
 
+    @Test
+    void searchResultsCarryTheUsageExamplesAndEmotions() throws Exception {
+        String marker = "usage" + UUID.randomUUID().toString().replace("-", "");
+        String id = approvedTemplate("Usage " + marker, "meaning", List.of("說明用的情境 " + marker));
+        sync();
+
+        JsonNode first = search(marker).get(0);
+
+        assertThat(first.get("templateId").asText()).isEqualTo(id);
+        assertThat(first.get("usageExamples").get(0).asText()).contains(marker);
+        assertThat(first.get("emotions").isArray()).isTrue();
+    }
+
+    @Test
+    void pickRequiresSignInAndASituation() throws Exception {
+        mvc.perform(post("/api/templates/pick").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"situation\": \"anything\"}"))
+                .andExpect(status().isUnauthorized());
+        mvc.perform(post("/api/templates/pick").header("Authorization", bearer(adminToken))
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"situation\": \"   \"}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void pickChoosesAMemeAndSaysWhy() throws Exception {
+        String marker = "pick" + UUID.randomUUID().toString().replace("-", "");
+        String id = approvedTemplate("Pick " + marker, "表達困惑", List.of("聽不懂的時候 " + marker));
+        sync();
+
+        MvcResult result = mvc.perform(post("/api/templates/pick").header("Authorization", bearer(adminToken))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(Map.of("situation", marker))))
+                .andExpect(status().isOk()).andReturn();
+        JsonNode body = json.readTree(result.getResponse().getContentAsString());
+
+        // The stand-in model always chooses the first candidate, which is the closest search result.
+        assertThat(body.get("chosen").get("templateId").asText()).isEqualTo(id);
+        assertThat(body.get("reason").asText()).contains("模擬推薦");
+        assertThat(body.get("others").isArray()).isTrue();
+    }
+
     // -- helpers ------------------------------------------------------------
 
     private String approvedTemplate(String name, String meaning, List<String> usage) throws Exception {
