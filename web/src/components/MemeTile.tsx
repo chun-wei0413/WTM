@@ -15,10 +15,14 @@ interface Props {
   index?: number;
   /** With `index`: the first result, set larger beside its caption. */
   lead?: boolean;
+  /** With `index`: words in place of the number, for the meme that was picked. */
+  badge?: string;
+  /** With `index`: why this meme fits, shown as a speech bubble above its description. */
+  reason?: string;
 }
 
 /** One meme: the picture, the two things people do with it (download, favorite), and the rest behind "詳情". */
-export function MemeTile({ item, children, index, lead }: Props) {
+export function MemeTile({ item, children, index, lead, badge, reason }: Props) {
   const pop = index !== undefined;
   const { isFavorite, add, remove } = useFavorites();
   const favorite = isFavorite(item.templateId);
@@ -67,9 +71,15 @@ export function MemeTile({ item, children, index, lead }: Props) {
       />
       {pop && (
         <div className="tile-caption">
-          <span className="tile-no" aria-hidden="true">
-            {String(index).padStart(2, '0')}
+          <span className={badge ? 'tile-no tile-no-word' : 'tile-no'} aria-hidden={badge ? undefined : true}>
+            {badge ?? String(index).padStart(2, '0')}
           </span>
+          {reason && (
+            <div className="tile-reason">
+              <span className="tile-reason-label">為什麼是這張</span>
+              <p>{reason}</p>
+            </div>
+          )}
           {item.meaning && <p className="tile-meaning">{item.meaning}</p>}
           {item.tags.length > 0 && (
             <ul className="tag-list" aria-label="標籤">

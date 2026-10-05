@@ -55,6 +55,17 @@ describe('requests', () => {
     expect(calls[0]?.url).toBe(`/api/templates/search?q=${encodeURIComponent('老闆 改需求&more')}&limit=5`);
   });
 
+  it('sends the situation to be picked for in the body, not in the URL', async () => {
+    respond({ chosen: null, reason: null, others: [] });
+
+    const result = await api.pick('朋友一直說我 over react');
+
+    expect(calls[0]?.url).toBe('/api/templates/pick');
+    expect(calls[0]?.init.method).toBe('POST');
+    expect(JSON.parse(String(calls[0]?.init.body))).toEqual({ situation: '朋友一直說我 over react' });
+    expect(result).toEqual({ chosen: null, reason: null, others: [] });
+  });
+
   it('sends an upload as multipart form data and leaves the content type to the browser', async () => {
     respond({ id: 't1' }, { status: 201 });
 

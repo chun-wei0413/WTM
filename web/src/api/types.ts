@@ -78,6 +78,19 @@ export interface LibraryItem {
 export interface SearchResult extends LibraryItem {
   score: number;
   slots: Slot[];
+  /** When people would use it, in their own words. */
+  usageExamples: string[];
+  emotions: string[];
+}
+
+/** The answer to "pick a meme for this situation". */
+export interface PickResult {
+  /** The meme that fits best; null when the library has nothing to offer. */
+  chosen: SearchResult | null;
+  /** Why it fits; null when the model could not be asked and `chosen` is simply the closest search result. */
+  reason: string | null;
+  /** The other candidates, closest first. */
+  others: SearchResult[];
 }
 
 export interface HotSearch {

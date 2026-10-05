@@ -1823,3 +1823,147 @@ html {
 .tile-lead .button-quiet:hover:not(:disabled) {
   background: #fff;
 }
+
+/* ---- "pick one for me" ---- */
+.search-page .mode-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+}
+.search-page .mode-tab {
+  font-family: var(--fat);
+  font-size: 1.05rem;
+  color: #17120d;
+  background: var(--card);
+  border: var(--line);
+  border-radius: 999px;
+  padding: 0.25rem 1.2rem;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+}
+.search-page .mode-tab:hover {
+  transform: translate(-1px, -1px) rotate(-1deg);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.search-page .mode-tab[aria-selected='true'] {
+  background: var(--yellow);
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.search-page .mode-tab:focus-visible {
+  outline: 3px dashed var(--ink);
+  outline-offset: 3px;
+}
+
+.search-page .search-row textarea {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  min-height: 5.4rem;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  line-height: 1.5;
+  padding: 0.8rem 1.1rem;
+  resize: none;
+  appearance: none;
+}
+.search-page .search-row textarea::placeholder {
+  color: var(--ink);
+  opacity: 0.4;
+}
+.search-page .search-row textarea:focus-visible {
+  outline: none;
+}
+
+.search-page .pick-hint {
+  background: var(--card);
+  border: var(--line);
+  border-radius: 20px;
+  box-shadow: var(--lift);
+  padding: 1.2rem 1.4rem;
+  font-family: var(--display);
+  font-size: 1.1rem;
+  transform: rotate(-0.4deg);
+}
+.search-page .pick-hint p {
+  margin: 0 0 0.3rem;
+}
+.search-page .pick-hint .muted {
+  font-family: var(--body);
+  font-size: 0.9rem;
+}
+.search-page .pick-note {
+  display: inline-block;
+  margin: 0 0 1.2rem;
+  padding: 0.2rem 0.85rem;
+  background: var(--yellow);
+  color: #17120d;
+  border: 2px solid #17120d;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.search-page .pick-others-title {
+  display: inline-block;
+  margin: 0 0 1.2rem;
+  padding: 0.1rem 0.9rem;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.3rem;
+  background: var(--mint);
+  color: #17120d;
+  border: var(--line);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(-1deg);
+}
+
+/* the reason is a speech bubble above the meme's own description */
+.tile-pop .tile-no-word {
+  font-size: 1.05rem;
+}
+.tile-lead .tile-no-word {
+  font-size: 1.9rem;
+}
+.tile-pop .tile-reason {
+  position: relative;
+  margin-top: 0.7rem;
+  padding: 1.1rem 1rem 0.85rem;
+  background: #fff;
+  color: #17120d;
+  border: 2px solid #17120d;
+  border-radius: 16px;
+  box-shadow: 3px 3px 0 #17120d;
+}
+.tile-pop .tile-reason-label {
+  position: absolute;
+  top: -0.9rem;
+  left: 0.9rem;
+  padding: 0 0.65rem;
+  font-family: var(--fat);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #17120d;
+  background: var(--mint);
+  border: 2px solid #17120d;
+  border-radius: 999px;
+  transform: rotate(-3deg);
+}
+.tile-pop .tile-reason p {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+/* with a reason, the description under it steps back */
+.tile-lead .tile-reason ~ .tile-meaning {
+  font-family: var(--body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}

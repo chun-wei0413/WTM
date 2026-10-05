@@ -9,6 +9,7 @@ import type {
   LibraryStats,
   LoginResponse,
   MemeProfile,
+  PickResult,
   SearchResult,
   ReportCase,
   ReportReason,
@@ -116,6 +117,9 @@ export const api = {
 
   search: (query: string, limit = 10) =>
     request<SearchResult[]>('GET', `/api/templates/search?q=${enc(query)}&limit=${limit}`),
+
+  /** Describe a situation; the closest memes come back with one chosen and a reason. Takes a few seconds. */
+  pick: (situation: string) => request<PickResult>('POST', '/api/templates/pick', { json: { situation } }),
 
   library: {
     /** Memes picked at random from the published library. */
