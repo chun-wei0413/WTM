@@ -558,4 +558,25 @@ is limited to that person's own recommendation, because all the model can say is
 - A pick is a person waiting on a shared graphics card, behind any picture that is being described. Only the per-person limit
   protects the rest of the system.
 
-**Not done.** Whether the model's choice beats the closest search result has not been measured yet.
+**What was measured** (`node scripts/eval-pick.mjs`: the 46 searches of the real library, eight candidates each, run twice on the
+same day; the first run is `eval/results/pick-baseline.json`):
+
+| | closest search result right | right meme among the eight | the model's pick right |
+|---|---|---|---|
+| all 46 | 85% (39) | 98% (45) | 76% and 78% (35 and 36) |
+| the 17 situations | 76% (13) | 94% (16) | 59% and 65% (10 and 11) |
+
+The pick was **worse** than taking the closest result. Of the 7 queries where the closest result was wrong, the model fixed
+none in either run, and it replaced a right closest result with a wrong pick 4 times and 3 times. 43 of the 46 picks were the
+same in both runs, so this is not the model's randomness. The candidates are not the limit: the right meme was among the
+eight for 45 of 46. The model answered every time (no fallback), in about 2 seconds a pick.
+
+**Limits of that reading.** Each query has one accepted answer, so a reasonable alternative counts as wrong; and 46 queries
+(17 of them situations) is a small sample, so one or two queries either way is not a result. But the gap is not close to
+going the other way. The likely causes, none of them tried: a small model reading Chinese descriptions with nothing in the
+prompt that favours the search order, and descriptions that are sometimes wrong (decision 17). The prompt was not tuned on
+this set, so the numbers are a clean first measurement; anything tuned on it afterwards no longer is.
+
+**Open.** As it stands the page lets the model override the search ranking, and on this evidence that does more harm than
+good, while the reason it writes has not been judged at all. Two ways to change it are open and would be measured against
+the same set: let the model only explain the closest result, or let it override only when it is sure.

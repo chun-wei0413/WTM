@@ -53,6 +53,7 @@ wtm-data/
 *.sql.gz
 *.bak
 
-# Results of the library search evaluation; baseline.json is the committed reference
+# Results of the library evaluations; baseline.json (search) and pick-baseline.json (pick one) are the committed references
 eval/results/*
 !eval/results/baseline.json
+!eval/results/pick-baseline.json

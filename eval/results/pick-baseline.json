@@ -1,0 +1,662 @@
+{
+  "at": "2026-10-05T08:47:00.505Z",
+  "candidates": 8,
+  "summary": {
+    "n": 46,
+    "closestRight": 0.8478260869565217,
+    "rightIsAmongEight": 0.9782608695652174,
+    "pickRight": 0.7608695652173914,
+    "explained": 1,
+    "fixed": 0,
+    "broke": 4
+  },
+  "results": [
+    {
+      "q": "男朋友看到別的女生眼睛都直了",
+      "kind": "situation",
+      "expect": [
+        "Distracted Boyfriend"
+      ],
+      "rank": 1,
+      "closest": "Distracted Boyfriend",
+      "chosen": "Distracted Boyfriend",
+      "explained": true,
+      "reason": "這張圖表達了一個男朋友被另一個女人吸引的情景，通常用來諷刺或搞笑，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 1739.2223000000004
+    },
+    {
+      "q": "兩個選項都想選,手懸在按鈕上滿頭大汗",
+      "kind": "situation",
+      "expect": [
+        "Two Buttons"
+      ],
+      "rank": 1,
+      "closest": "Two Buttons",
+      "chosen": "Two Buttons",
+      "explained": true,
+      "reason": "這張圖表達了在兩難情境下做出抉擇時的壓力與焦慮，符合使用者描述的處境，表現了滿頭大汗的焦慮狀態。",
+      "pickRight": true,
+      "milliseconds": 1963.6491999999998
+    },
+    {
+      "q": "一切都在燃燒,但我還是假裝沒事",
+      "kind": "situation",
+      "expect": [
+        "This Is Fine"
+      ],
+      "rank": 1,
+      "closest": "This Is Fine",
+      "chosen": "This Is Fine",
+      "explained": true,
+      "reason": "這張圖表達了一種面對困境時的無奈和堅韌，即使周圍環境已經非常糟糕，但主角還是保持著平靜，表現出一種超乎常人的豁達，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 2173.0206999999973
+    },
+    {
+      "q": "想法一格比一格更高端,腦袋越來越大",
+      "kind": "situation",
+      "expect": [
+        "Expanding Brain"
+      ],
+      "rank": 1,
+      "closest": "Expanding Brain",
+      "chosen": "Expanding Brain",
+      "explained": true,
+      "reason": "這張圖表現腦子越來越靈活、靈感爆發的情況，符合使用者描述的腦袋越來越大的情境。",
+      "pickRight": true,
+      "milliseconds": 1604.2232000000004
+    },
+    {
+      "q": "老闆又改需求,我只能微笑硬撐",
+      "kind": "situation",
+      "expect": [
+        "Hide the Pain Harold"
+      ],
+      "rank": 7,
+      "closest": "X, X Everywhere",
+      "chosen": "Bernie Sanders Once Again Asking",
+      "explained": true,
+      "reason": "這張圖表達了某人不斷重複提出同樣的問題或要求的情況，符合使用者描述的處境，表現出對老闆不斷改需求感到無奈和厭煩。",
+      "pickRight": false,
+      "milliseconds": 2196.979199999998
+    },
+    {
+      "q": "等了好久好久,等到變成骷髏",
+      "kind": "situation",
+      "expect": [
+        "Waiting Skeleton"
+      ],
+      "rank": 1,
+      "closest": "Waiting Skeleton",
+      "chosen": "Waiting Skeleton",
+      "explained": true,
+      "reason": "這張圖展示了等待的焦慮和無奈，適合描述等了好久終於變成骷髏的情境。",
+      "pickRight": true,
+      "milliseconds": 1705.7543000000005
+    },
+    {
+      "q": "我就爛 做什麼都倒楣",
+      "kind": "situation",
+      "expect": [
+        "Bad Luck Brian"
+      ],
+      "rank": null,
+      "closest": "c'mon do something",
+      "chosen": "c'mon do something",
+      "explained": true,
+      "reason": "這張圖表現了無能為力的無奈情緒，適合描述使用者對自己處境的無力感。",
+      "pickRight": false,
+      "milliseconds": 1763.980399999993
+    },
+    {
+      "q": "別人都在恐慌,只有我很淡定",
+      "kind": "situation",
+      "expect": [
+        "Panik Kalm Panik"
+      ],
+      "rank": 3,
+      "closest": "Hide the Pain Harold",
+      "chosen": "This Is Fine",
+      "explained": true,
+      "reason": "這張圖表達了面對困境時的無奈和堅韌，即使周圍環境已經非常糟糕，但主角還是保持著平靜，表現出一種超乎常人的豁達，符合使用者描述的處境。",
+      "pickRight": false,
+      "milliseconds": 2408.1033000000025
+    },
+    {
+      "q": "這個價錢已經是我能給的極限了",
+      "kind": "situation",
+      "expect": [
+        "Pawn Stars Best I Can Do"
+      ],
+      "rank": 1,
+      "closest": "Pawn Stars Best I Can Do",
+      "chosen": "Pawn Stars Best I Can Do",
+      "explained": true,
+      "reason": "這張圖表達了對某件物品無力感，符合使用者描述的處境，因為價錢已經是極限，無力再付出更多。",
+      "pickRight": true,
+      "milliseconds": 1974.7727000000014
+    },
+    {
+      "q": "又來求大家支持我一次",
+      "kind": "situation",
+      "expect": [
+        "Bernie Sanders Once Again Asking",
+        "Bernie I Am Once Again Asking For Your Support"
+      ],
+      "rank": 1,
+      "closest": "Bernie I Am Once Again Asking For Your Support",
+      "chosen": "Bernie I Am Once Again Asking For Your Support",
+      "explained": true,
+      "reason": "這張圖適合表達再次請求支持，因為圖中伯尼·桑德斯正在請求支持，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 1916.257500000007
+    },
+    {
+      "q": "你們兩個都是假的,互相指著對方",
+      "kind": "situation",
+      "expect": [
+        "spiderman pointing at spiderman",
+        "Spider Man Triple"
+      ],
+      "rank": 1,
+      "closest": "spiderman pointing at spiderman",
+      "chosen": "Spider Man Triple",
+      "explained": true,
+      "reason": "這張圖表達了互相猜疑和不信任的感覺，適合描述兩個人互相指責對方的情境。",
+      "pickRight": true,
+      "milliseconds": 1731.0046999999904
+    },
+    {
+      "q": "我跟你們不一樣",
+      "kind": "situation",
+      "expect": [
+        "Gus Fring we are not the same"
+      ],
+      "rank": 1,
+      "closest": "Gus Fring we are not the same",
+      "chosen": "Change My Mind",
+      "explained": true,
+      "reason": "這張圖表達了挑戰或反對的態度，適合用來表達不同意見，符合使用者描述的處境。",
+      "pickRight": false,
+      "milliseconds": 1851.2842999999993
+    },
+    {
+      "q": "誰都不知道我其實是個科學家",
+      "kind": "situation",
+      "expect": [
+        "You know, I'm something of a scientist myself"
+      ],
+      "rank": 1,
+      "closest": "You know, I'm something of a scientist myself",
+      "chosen": "You know, I'm something of a scientist myself",
+      "explained": true,
+      "reason": "這張圖表達了某人自詡為科學家，但實際上可能並非如此的情況，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 2083.24990000001
+    },
+    {
+      "q": "三個人吵得面紅耳赤,誰都不讓誰",
+      "kind": "situation",
+      "expect": [
+        "American Chopper Argument"
+      ],
+      "rank": 3,
+      "closest": "Spider Man Triple",
+      "chosen": "Spider Man Triple",
+      "explained": true,
+      "reason": "三隻蜘蛛人互相指責，表達了互相猜疑和不信任的感覺，適合用來表達三個人吵得面紅耳赤的情境。",
+      "pickRight": false,
+      "milliseconds": 1975.589100000012
+    },
+    {
+      "q": "在偷看鄰居的窗戶",
+      "kind": "situation",
+      "expect": [
+        "Squidward window"
+      ],
+      "rank": 1,
+      "closest": "Squidward window",
+      "chosen": "Anime Girl Hiding from Terminator",
+      "explained": true,
+      "reason": "這張圖表現了女孩在躲避危險，適合用來表達偷看鄰居窗戶時的驚恐情緒。",
+      "pickRight": false,
+      "milliseconds": 1874.0662000000011
+    },
+    {
+      "q": "怎麼離開 Vim",
+      "kind": "situation",
+      "expect": [
+        "How do I exit Vim Stack Overflow"
+      ],
+      "rank": 1,
+      "closest": "How do I exit Vim Stack Overflow",
+      "chosen": "How do I exit Vim Stack Overflow",
+      "explained": true,
+      "reason": "這張圖展示了在Vim中退出的過程，幽默地解決了使用者在Vim中遇到問題時的困擾，適合用來解決離開Vim的問題。",
+      "pickRight": true,
+      "milliseconds": 2078.0193
+    },
+    {
+      "q": "選擇太多,車子在最後一刻猛然轉向另一條路",
+      "kind": "situation",
+      "expect": [
+        "Left Exit 12 Off Ramp"
+      ],
+      "rank": 1,
+      "closest": "Left Exit 12 Off Ramp",
+      "chosen": "The Rock Driving",
+      "explained": true,
+      "reason": "這張圖表現了駕駛者在開車時的驚恐和困惑，符合使用者描述的車子在最後一刻猛然轉向另一條路的情況。",
+      "pickRight": false,
+      "milliseconds": 2066.863000000012
+    },
+    {
+      "q": "背後房子燒起來了她還在笑",
+      "kind": "look",
+      "expect": [
+        "Disaster Girl"
+      ],
+      "rank": 2,
+      "closest": "This Is Fine",
+      "chosen": "This Is Fine",
+      "explained": true,
+      "reason": "這張圖表達了一種面對困境時的無奈和堅韌，即使周圍環境已經非常糟糕，但主角還是保持著平靜，表現出一種超乎常人的豁達，符合背後房子燒起來她還在笑的情境。",
+      "pickRight": false,
+      "milliseconds": 2436.078699999998
+    },
+    {
+      "q": "女人對著貓大吼,貓一臉無辜坐在餐桌前",
+      "kind": "look",
+      "expect": [
+        "Woman Yelling At Cat"
+      ],
+      "rank": 1,
+      "closest": "Woman Yelling At Cat",
+      "chosen": "Woman Yelling At Cat",
+      "explained": true,
+      "reason": "這張圖表達了女人對貓的憤怒情緒，因為貓咪似乎在吃女人的飯，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 1963.2854999999981
+    },
+    {
+      "q": "坐在桌子後面的人,桌上放著一個牌子",
+      "kind": "look",
+      "expect": [
+        "Change My Mind"
+      ],
+      "rank": 1,
+      "closest": "Change My Mind",
+      "chosen": "Change My Mind",
+      "explained": true,
+      "reason": "圖中人物坐在桌子後，桌子前的標語寫著'Change My Mind'，表達一種挑戰或反對的態度，適合用來表達坐在桌子後的人對桌上的牌子的反對意見。",
+      "pickRight": true,
+      "milliseconds": 2477.6036999999924
+    },
+    {
+      "q": "一個人指著蝴蝶問這是不是鴿子",
+      "kind": "look",
+      "expect": [
+        "Is This A Pigeon"
+      ],
+      "rank": 1,
+      "closest": "Is This A Pigeon",
+      "chosen": "Is This A Pigeon",
+      "explained": true,
+      "reason": "這張圖表現了男孩對蝴蝶的驚訝反應，與使用者描述的處境相符，適合用來表達對蝴蝶的意外反應。",
+      "pickRight": true,
+      "milliseconds": 1930.620900000009
+    },
+    {
+      "q": "穿燕尾服的小熊維尼,看起來比較高級",
+      "kind": "look",
+      "expect": [
+        "Tuxedo Winnie The Pooh"
+      ],
+      "rank": 1,
+      "closest": "Tuxedo Winnie The Pooh",
+      "chosen": "Tuxedo Winnie The Pooh",
+      "explained": true,
+      "reason": "穿燕尾服的小熊維尼從普通到正式的轉變，適合描述穿燕尾服的小熊維尼看起來比較高級的情境。",
+      "pickRight": true,
+      "milliseconds": 1868.3435000000172
+    },
+    {
+      "q": "海鷗從平靜變成大叫再變成發光",
+      "kind": "look",
+      "expect": [
+        "Inhaling Seagull"
+      ],
+      "rank": 1,
+      "closest": "Inhaling Seagull",
+      "chosen": "Inhaling Seagull",
+      "explained": true,
+      "reason": "這張圖表現了海鷗情緒逐漸升級的過程，從正常到大喊再到發光，表現出一種越來越激烈的反應，與描述中的海鷗情緒變化相符。",
+      "pickRight": true,
+      "milliseconds": 2216.668000000005
+    },
+    {
+      "q": "小丑在化妝,越畫越誇張",
+      "kind": "look",
+      "expect": [
+        "Clown Applying Makeup"
+      ],
+      "rank": 1,
+      "closest": "Clown Applying Makeup",
+      "chosen": "Clown Applying Makeup",
+      "explained": true,
+      "reason": "這張圖展示了化妝成小丑的過程，逐漸變得滑稽可笑，適合用來表達小丑在化妝時越畫越誇張的情況。",
+      "pickRight": true,
+      "milliseconds": 2230.2398000000103
+    },
+    {
+      "q": "指著太陽穴的人,一臉我想到了很聰明的事",
+      "kind": "look",
+      "expect": [
+        "Roll Safe Think About It"
+      ],
+      "rank": 3,
+      "closest": "Expanding Brain",
+      "chosen": "Expanding Brain",
+      "explained": true,
+      "reason": "指著太陽穴的人，一臉我想到了很聰明的事，這張圖表現了腦子越來越靈活、靈感爆發的情況，符合使用者描述的情境。",
+      "pickRight": false,
+      "milliseconds": 2130.344299999997
+    },
+    {
+      "q": "肌肉發達的柴犬跟哭哭的柴犬對比",
+      "kind": "look",
+      "expect": [
+        "Buff Doge vs. Cheems"
+      ],
+      "rank": 1,
+      "closest": "Buff Doge vs. Cheems",
+      "chosen": "Buff Doge vs. Cheems",
+      "explained": true,
+      "reason": "這張圖通過對比肌肉柴犬和哭泣柴犬，表達了力量和弱小之間的懸殊，適合用來調侃肌肉發達的柴犬和哭哭的柴犬的對比情境。",
+      "pickRight": true,
+      "milliseconds": 2222.1252000000095
+    },
+    {
+      "q": "兩隻手用力握在一起的史詩級畫面",
+      "kind": "look",
+      "expect": [
+        "Epic Handshake"
+      ],
+      "rank": 1,
+      "closest": "Epic Handshake",
+      "chosen": "Epic Handshake",
+      "explained": true,
+      "reason": "這張圖表達了兩個人之間深厚的友情和相互支持，強調了人與人之間的團結和友愛，適合用來表達兩隻手用力握在一起的史詩級畫面。",
+      "pickRight": true,
+      "milliseconds": 2193.310700000002
+    },
+    {
+      "q": "一個人手上拿著一堆UNO牌",
+      "kind": "look",
+      "expect": [
+        "UNO Draw 25 Cards"
+      ],
+      "rank": 1,
+      "closest": "UNO Draw 25 Cards",
+      "chosen": "UNO Draw 25 Cards",
+      "explained": true,
+      "reason": "這張圖展示了手持UNO牌，上面寫著'抽25張'，表現出一種幽默的遊戲情境，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 2004.0905000000203
+    },
+    {
+      "q": "死神在敲門",
+      "kind": "look",
+      "expect": [
+        "Grim Reaper Knocking Door"
+      ],
+      "rank": 1,
+      "closest": "Grim Reaper Knocking Door",
+      "chosen": "Grim Reaper Knocking Door",
+      "explained": true,
+      "reason": "這張圖表現了選擇或決定的難題，適合用來表達在「死神在敲門」的處境中，對選擇的猶豫和不安。",
+      "pickRight": true,
+      "milliseconds": 1983.6811000000162
+    },
+    {
+      "q": "智商鐘形曲線,最左邊跟最右邊的人一樣",
+      "kind": "look",
+      "expect": [
+        "Bell Curve"
+      ],
+      "rank": 1,
+      "closest": "Bell Curve",
+      "chosen": "Bell Curve",
+      "explained": true,
+      "reason": "這張圖展示了智商分布的正態分布，幽默地表現了智商水平的分布，適合用來回應智商鐘形曲線的描述，因為它形象地展示了不同智商水平的人的分布情況。",
+      "pickRight": true,
+      "milliseconds": 2348.1657000000123
+    },
+    {
+      "q": "格魯拿著白板講他的計畫,四格",
+      "kind": "look",
+      "expect": [
+        "Gru's Plan"
+      ],
+      "rank": 1,
+      "closest": "Gru's Plan",
+      "chosen": "Gru's Plan",
+      "explained": true,
+      "reason": "這張圖展示了格魯在制定計劃時的各種表情變化，表現出他從自信到沮喪的心理過程，適合用來表達格魯拿著白板講計畫的情況。",
+      "pickRight": true,
+      "milliseconds": 2181.646399999998
+    },
+    {
+      "q": "Drake 一個嫌棄的手勢,一個喜歡的手勢",
+      "kind": "look",
+      "expect": [
+        "Drake Hotline Bling",
+        "Drake Blank"
+      ],
+      "rank": 1,
+      "closest": "Drake Hotline Bling",
+      "chosen": "Drake Hotline Bling",
+      "explained": true,
+      "reason": "這張圖展示了Drake在《Hotline Bling》中的經典動作，表現出一種自信和得意的感覺，適合用來表達嫌棄和喜歡的手勢對比。",
+      "pickRight": true,
+      "milliseconds": 2294.1299
+    },
+    {
+      "q": "到處都是巴斯光年指著遠方",
+      "kind": "look",
+      "expect": [
+        "X, X Everywhere"
+      ],
+      "rank": 1,
+      "closest": "X, X Everywhere",
+      "chosen": "X, X Everywhere",
+      "explained": true,
+      "reason": "這張圖展示了巴斯光年用手指向遠方，表現出無奈和厭煩的感覺，符合處境中提到的‘到處都是巴斯光年指著遠方’的情況。",
+      "pickRight": true,
+      "milliseconds": 2117.240600000019
+    },
+    {
+      "q": "三個頭的龍,每個頭表情不同",
+      "kind": "look",
+      "expect": [
+        "Three headed Dragon"
+      ],
+      "rank": 1,
+      "closest": "Three headed Dragon",
+      "chosen": "Three headed Dragon",
+      "explained": true,
+      "reason": "這張圖展示了三頭龍表現各不相同，從威嚇到搞笑，表現出不同的性格，符合使用者描述的三個頭的龍，每個頭表情不同的處境。",
+      "pickRight": true,
+      "milliseconds": 2046.0923000000184
+    },
+    {
+      "q": "一個人坐著睡覺,另一個人睜眼看著",
+      "kind": "look",
+      "expect": [
+        "Sleeping Shaq"
+      ],
+      "rank": 1,
+      "closest": "Sleeping Shaq",
+      "chosen": "Squidward window",
+      "explained": true,
+      "reason": "這張圖表現了角色們被窩窩頭和派大星嚇到的驚恐情緒，符合描述中一個人坐著睡覺，另一個人睜眼看著的場景，表現出驚嚇的感覺。",
+      "pickRight": false,
+      "milliseconds": 3366.6834999999846
+    },
+    {
+      "q": "皮卡丘驚訝",
+      "kind": "nickname",
+      "expect": [
+        "Surprised Pikachu"
+      ],
+      "rank": 1,
+      "closest": "Surprised Pikachu",
+      "chosen": "Surprised Pikachu",
+      "explained": true,
+      "reason": "這張圖表達了驚訝、驚嚇或困惑的感覺，常見於對某件事情感到意外時，符合皮卡丘驚訝的處境。",
+      "pickRight": true,
+      "milliseconds": 2016.192800000019
+    },
+    {
+      "q": "痛苦面具老爺爺",
+      "kind": "nickname",
+      "expect": [
+        "Hide the Pain Harold"
+      ],
+      "rank": 1,
+      "closest": "Hide the Pain Harold",
+      "chosen": "Hide the Pain Harold",
+      "explained": true,
+      "reason": "痛苦面具老爺爺",
+      "pickRight": true,
+      "milliseconds": 1850.6156999999948
+    },
+    {
+      "q": "嘲諷海綿寶寶",
+      "kind": "nickname",
+      "expect": [
+        "Mocking Spongebob"
+      ],
+      "rank": 6,
+      "closest": "Imagination Spongebob",
+      "chosen": "Batman Slapping Robin",
+      "explained": true,
+      "reason": "圖中蝙蝠俠打羅賓，表現出一種戲劇性的對比和幽默感，適合用來嘲諷海綿寶寶，因為它表現了角色的無奈與困惑。",
+      "pickRight": false,
+      "milliseconds": 3134.267900000006
+    },
+    {
+      "q": "憤怒的女人和貓",
+      "kind": "nickname",
+      "expect": [
+        "Woman Yelling At Cat"
+      ],
+      "rank": 1,
+      "closest": "Woman Yelling At Cat",
+      "chosen": "Woman Yelling At Cat",
+      "explained": true,
+      "reason": "這張圖表達了女人對貓的憤怒情緒，因為貓咪似乎在吃女人的飯，符合使用者描述的處境。",
+      "pickRight": true,
+      "milliseconds": 2122.0049
+    },
+    {
+      "q": "我現在是船長了",
+      "kind": "nickname",
+      "expect": [
+        "I'm The Captain Now"
+      ],
+      "rank": 1,
+      "closest": "I'm The Captain Now",
+      "chosen": "I'm The Captain Now",
+      "explained": true,
+      "reason": "這張圖表現了思考的模樣，常見於網絡上的反應圖，適合用來形容船長思考成為船長的情況。",
+      "pickRight": true,
+      "milliseconds": 2678.127000000037
+    },
+    {
+      "q": "絕對電影",
+      "kind": "nickname",
+      "expect": [
+        "Absolute Cinema"
+      ],
+      "rank": 1,
+      "closest": "Absolute Cinema",
+      "chosen": "Absolute Cinema",
+      "explained": true,
+      "reason": "這張圖表現出某人或某事已經達到極致的程度，適合用來形容電影製作水準達到無與倫比的地步。",
+      "pickRight": true,
+      "milliseconds": 2027.2754999999888
+    },
+    {
+      "q": "分心男友",
+      "kind": "name",
+      "expect": [
+        "Distracted Boyfriend"
+      ],
+      "rank": 1,
+      "closest": "Distracted Boyfriend",
+      "chosen": "Distracted Boyfriend",
+      "explained": true,
+      "reason": "這張圖表達了男朋友被另一個女人吸引的情景，適合用來諷刺或搞笑地描述分心的男友。",
+      "pickRight": true,
+      "milliseconds": 1655.9300999999978
+    },
+    {
+      "q": "Expanding Brain",
+      "kind": "name",
+      "expect": [
+        "Expanding Brain"
+      ],
+      "rank": 1,
+      "closest": "Expanding Brain",
+      "chosen": "Expanding Brain",
+      "explained": true,
+      "reason": "這張圖表現腦子越來越靈活、靈感爆發的情況，適合描述朋友在講一個有趣的故事或看到創意點子時腦子發光的情況。",
+      "pickRight": true,
+      "milliseconds": 2006.0829999999842
+    },
+    {
+      "q": "Surprised Pikachu",
+      "kind": "name",
+      "expect": [
+        "Surprised Pikachu"
+      ],
+      "rank": 1,
+      "closest": "Surprised Pikachu",
+      "chosen": "Surprised Pikachu",
+      "explained": true,
+      "reason": "Surprised Pikachu 表達了驚訝、驚嚇或困惑的感覺，常見於對某件事情感到意外時，適合用來表達對驚訝的皮卡丘的反應。",
+      "pickRight": true,
+      "milliseconds": 2243.237999999954
+    },
+    {
+      "q": "this is fine",
+      "kind": "name",
+      "expect": [
+        "This Is Fine"
+      ],
+      "rank": 1,
+      "closest": "This Is Fine",
+      "chosen": "This Is Fine",
+      "explained": true,
+      "reason": "This Is Fine 表達了一種面對困境時的無奈和堅韌，即使周圍環境已經非常糟糕，但主角還是保持著平靜，表現出一種超乎常人的豁達。",
+      "pickRight": true,
+      "milliseconds": 2276.415500000003
+    },
+    {
+      "q": "Two Buttons",
+      "kind": "name",
+      "expect": [
+        "Two Buttons"
+      ],
+      "rank": 1,
+      "closest": "Two Buttons",
+      "chosen": "Two Buttons",
+      "explained": true,
+      "reason": "這張圖表達了在兩難情境下做出抉擇時的壓力與焦慮，適合描述兩種選擇都很難抉擇的情況。",
+      "pickRight": true,
+      "milliseconds": 1796.709600000002
+    }
+  ]
+}
