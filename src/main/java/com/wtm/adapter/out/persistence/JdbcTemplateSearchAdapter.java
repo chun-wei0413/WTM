@@ -62,7 +62,8 @@ class JdbcTemplateSearchAdapter implements TemplateSearchPort {
         String[] ids = templateIds.stream().map(UUID::toString).toArray(String[]::new);
         return jdbc.sql("""
                         SELECT t.id, t.name, t.image_key, t.image_width, t.image_height, s.slot_layout::text AS slot_layout,
-                               t.meaning, t.tags, t.image_text, t.source_type, t.source_url, t.attribution
+                               t.meaning, t.usage_examples, t.emotions, t.tags, t.image_text, t.source_type, t.source_url,
+                               t.attribution
                         FROM meme_template t
                         JOIN template_search s ON s.template_id = t.id
                         WHERE t.id = ANY(?::uuid[])""")
@@ -70,7 +71,8 @@ class JdbcTemplateSearchAdapter implements TemplateSearchPort {
                 .query((rs, n) -> new SearchCard(rs.getObject("id", UUID.class), rs.getString("name"),
                         rs.getString("image_key"), rs.getInt("image_width"), rs.getInt("image_height"),
                         parseSlots(rs.getString("slot_layout")),
-                        rs.getString("meaning"), TemplateRows.strings(rs, "tags"), rs.getString("image_text"),
+                        rs.getString("meaning"), TemplateRows.strings(rs, "usage_examples"),
+                        TemplateRows.strings(rs, "emotions"), TemplateRows.strings(rs, "tags"), rs.getString("image_text"),
                         rs.getString("source_type"), rs.getString("source_url"), rs.getString("attribution")))
                 .list();
     }

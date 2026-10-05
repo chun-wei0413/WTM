@@ -18,7 +18,7 @@ public interface TemplateSearchPort {
 
     /** Everything the library needs to show one hit. */
     record SearchCard(UUID id, String name, String imageKey, int imageWidth, int imageHeight, List<Slot> slots, String meaning,
-                      List<String> tags, String imageText, String sourceType, String sourceUrl,
-                      String attribution) {
+                      List<String> usageExamples, List<String> emotions, List<String> tags, String imageText,
+                      String sourceType, String sourceUrl, String attribution) {
     }
 }
