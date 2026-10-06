@@ -39,7 +39,7 @@ class LibraryHandlersTest {
     private final UUID user = UUID.randomUUID();
 
     private LibraryCard card(String key) {
-        return new LibraryCard(UUID.randomUUID(), "name", key, 640, 480, "meaning", List.of("tag"), "???", "UPLOAD", null, null);
+        return new LibraryCard(UUID.randomUUID(), "name", key, 640, 480, "meaning", List.of("tag"), "???", "UPLOAD", null, null, null);
     }
 
     @Test

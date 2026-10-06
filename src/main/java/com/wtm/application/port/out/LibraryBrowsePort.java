@@ -1,5 +1,6 @@
 package com.wtm.application.port.out;
 
+import com.wtm.application.collection.Reference;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,7 +17,7 @@ public interface LibraryBrowsePort {
     Optional<LibraryImage> findPublishedImage(UUID templateId);
 
     record LibraryCard(UUID id, String name, String imageKey, int imageWidth, int imageHeight, String meaning, List<String> tags, String imageText,
-                       String sourceType, String sourceUrl, String attribution) {
+                       String sourceType, String sourceUrl, String attribution, Reference reference) {
     }
 
     record LibraryImage(String imageKey, String name) {

@@ -53,7 +53,7 @@ class PickMemeHandlerTest {
 
     private static SearchCard card(UUID id) {
         return new SearchCard(id, "name-" + id, "key-" + id, 100, 100, List.of(), "meaning-" + id,
-                List.of("usage-" + id), List.of("emotion"), List.of("tag"), "text", "UPLOAD", null, null);
+                List.of("usage-" + id), List.of("emotion"), List.of("tag"), "text", "UPLOAD", null, null, null);
     }
 
     @Test

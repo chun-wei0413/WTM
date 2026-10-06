@@ -1,5 +1,6 @@
 package com.wtm.adapter.out.persistence;
 
+import com.wtm.application.collection.Reference;
 import com.wtm.domain.template.MemeProfile;
 import com.wtm.domain.template.Slot;
 import java.sql.Array;
@@ -24,6 +25,12 @@ final class TemplateRows {
     static List<String> strings(ResultSet rs, String column) throws SQLException {
         Array array = rs.getArray(column);
         return array == null ? List.of() : List.of((String[]) array.getArray());
+    }
+
+    /** The explanation a source gave for a meme, read from the card queries' {@code reference_*} columns. */
+    static Reference reference(ResultSet rs) throws SQLException {
+        return Reference.ofNullable(rs.getString("reference_text"), rs.getString("reference_source"),
+                rs.getString("reference_url"), rs.getString("reference_license"));
     }
 
     static MemeProfile profile(ResultSet rs) throws SQLException {

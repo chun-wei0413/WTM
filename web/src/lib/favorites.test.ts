@@ -14,6 +14,7 @@ const item = (id: string): LibraryItem => ({
   sourceType: null,
   sourceUrl: null,
   attribution: null,
+  reference: null,
 });
 
 describe('favorites list', () => {

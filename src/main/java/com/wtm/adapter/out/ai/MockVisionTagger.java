@@ -1,6 +1,7 @@
 package com.wtm.adapter.out.ai;
 
 import com.wtm.application.collection.ImageTags;
+import com.wtm.application.collection.Reference;
 import com.wtm.application.port.out.LlmUnavailableException;
 import com.wtm.application.port.out.VisionTaggerPort;
 import com.wtm.application.report.ReviewRequest;
@@ -36,10 +37,11 @@ class MockVisionTagger implements VisionTaggerPort {
     }
 
     @Override
-    public ImageTags describe(byte[] image, String contentType, String hint) {
+    public ImageTags describe(byte[] image, String contentType, String hint, Reference reference) {
         pretendToWork();
         String title = hint == null || hint.isBlank() ? "模擬梗圖" : hint;
-        return new ImageTags(true, title, "這是測試用的描述:" + title,
+        String meaning = reference == null ? "這是測試用的描述:" + title : "依來源說明:" + reference.text();
+        return new ImageTags(true, title, meaning,
                 List.of("測試情境一:" + title, "測試情境二"), List.of("測試"), List.of("mock", "測試"), "");
     }
 

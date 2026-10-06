@@ -2181,3 +2181,32 @@ html {
   transform: translate(1px, 1px);
   box-shadow: none;
 }
+
+/* what the meme's source says it is, with its credit (a licence such as CC BY-SA asks for that) */
+.tile-pop .tile-reference {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.6rem 0.75rem;
+  background: color-mix(in srgb, var(--mint) 22%, #fff);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+}
+.tile-pop .tile-reference-label {
+  justify-self: start;
+  font-family: var(--fat);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  padding: 0 0.55rem;
+  background: var(--mint);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+}
+.tile-pop .tile-reference p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.tile-pop .tile-reference p.tile-reference-credit {
+  font-size: 0.78rem;
+  opacity: 0.75;
+}

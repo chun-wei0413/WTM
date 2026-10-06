@@ -131,6 +131,23 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
               ))}
             </ul>
           )}
+          {item.reference && (
+            <div className="tile-reference">
+              <span className="tile-reference-label">來源說明</span>
+              <p>{item.reference.text}</p>
+              <p className="tile-reference-credit">
+                出處:
+                {item.reference.url && isHttpUrl(item.reference.url) ? (
+                  <a href={item.reference.url} target="_blank" rel="noreferrer">
+                    {item.reference.sourceName ?? '原文'}
+                  </a>
+                ) : (
+                  (item.reference.sourceName ?? '未知')
+                )}
+                {item.reference.license && `,${item.reference.license}`}
+              </p>
+            </div>
+          )}
           {(source || note) && (
             <span className="muted">
               來源:

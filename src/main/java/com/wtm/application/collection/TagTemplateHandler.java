@@ -1,5 +1,6 @@
 package com.wtm.application.collection;
 
+import com.wtm.application.port.out.LibraryPort;
 import com.wtm.application.port.out.ObjectStoragePort;
 import com.wtm.application.port.out.TaggingQueuePort;
 import com.wtm.application.port.out.TemplateReadPort;
@@ -18,15 +19,17 @@ public class TagTemplateHandler {
     private static final Logger log = LoggerFactory.getLogger(TagTemplateHandler.class);
 
     private final TemplateReadPort templates;
+    private final LibraryPort library;
     private final ObjectStoragePort storage;
     private final VisionTaggerPort tagger;
     private final ApplyTagsHandler apply;
     private final TaggingQueuePort queue;
     private final int maxAttempts;
 
-    public TagTemplateHandler(TemplateReadPort templates, ObjectStoragePort storage, VisionTaggerPort tagger,
-                              ApplyTagsHandler apply, TaggingQueuePort queue, int maxAttempts) {
+    public TagTemplateHandler(TemplateReadPort templates, LibraryPort library, ObjectStoragePort storage,
+                              VisionTaggerPort tagger, ApplyTagsHandler apply, TaggingQueuePort queue, int maxAttempts) {
         this.templates = templates;
+        this.library = library;
         this.storage = storage;
         this.tagger = tagger;
         this.apply = apply;
@@ -43,7 +46,8 @@ public class TagTemplateHandler {
             }
             byte[] image = storage.get(template.imageKey());
             String hint = IngestMemeHandler.PLACEHOLDER_NAME.equals(template.name()) ? null : template.name();
-            ImageTags tags = tagger.describe(image, contentTypeOf(template.imageKey()), hint);
+            Reference reference = library.findReference(templateId).orElse(null);
+            ImageTags tags = tagger.describe(image, contentTypeOf(template.imageKey()), hint, reference);
             apply.handle(templateId, tags);
             queue.done(templateId);
         } catch (RuntimeException e) {

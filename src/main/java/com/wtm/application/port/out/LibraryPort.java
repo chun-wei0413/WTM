@@ -2,6 +2,7 @@ package com.wtm.application.port.out;
 
 import com.wtm.application.collection.DuplicateImageException;
 import com.wtm.application.collection.Origin;
+import com.wtm.application.collection.Reference;
 import com.wtm.application.port.out.ImageFingerprintPort.Fingerprint;
 import com.wtm.domain.template.MemeTemplate;
 import java.util.Optional;
@@ -25,6 +26,9 @@ public interface LibraryPort {
      * @throws DuplicateImageException when identical bytes were added by someone else meanwhile
      */
     void add(MemeTemplate template, Origin origin, Fingerprint fingerprint);
+
+    /** What the source said the meme is, when it said anything. */
+    Optional<Reference> findReference(UUID templateId);
 
     /** How many entries there are, by what has happened to them. */
     LibraryStats stats();

@@ -13,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.wtm.application.port.out.LlmUnavailableException;
+import com.wtm.application.port.out.LibraryPort;
 import com.wtm.application.port.out.ObjectStoragePort;
 import com.wtm.application.port.out.TaggingQueuePort;
 import com.wtm.application.port.out.TemplateReadPort;
@@ -108,11 +109,12 @@ class TaggingHandlersTest {
     // ---- TagTemplateHandler ----------------------------------------------------------------
 
     private final TemplateReadPort reads = mock(TemplateReadPort.class);
+    private final LibraryPort library = mock(LibraryPort.class);
     private final ObjectStoragePort storage = mock(ObjectStoragePort.class);
     private final VisionTaggerPort tagger = mock(VisionTaggerPort.class);
     private final ApplyTagsHandler applySpy = mock(ApplyTagsHandler.class);
     private final TaggingQueuePort queue = mock(TaggingQueuePort.class);
-    private final TagTemplateHandler handler = new TagTemplateHandler(reads, storage, tagger, applySpy, queue, 3);
+    private final TagTemplateHandler handler = new TagTemplateHandler(reads, library, storage, tagger, applySpy, queue, 3);
 
     private TemplateView view(String status, String name) {
         return new TemplateView(ID.value(), name, status, 1, 600, 400, "library/x.gif", null,
@@ -124,7 +126,7 @@ class TaggingHandlersTest {
         byte[] bytes = {9, 9};
         when(reads.findById(ID.value())).thenReturn(Optional.of(view("DRAFT", "Cat meme")));
         when(storage.get("library/x.gif")).thenReturn(bytes);
-        when(tagger.describe(bytes, "image/gif", "Cat meme")).thenReturn(A_MEME);
+        when(tagger.describe(bytes, "image/gif", "Cat meme", null)).thenReturn(A_MEME);
 
         handler.handle(ID.value());
 
@@ -137,18 +139,32 @@ class TaggingHandlersTest {
         byte[] bytes = {9};
         when(reads.findById(ID.value())).thenReturn(Optional.of(view("DRAFT", IngestMemeHandler.PLACEHOLDER_NAME)));
         when(storage.get(anyString())).thenReturn(bytes);
-        when(tagger.describe(any(), anyString(), any())).thenReturn(A_MEME);
+        when(tagger.describe(any(), anyString(), any(), any())).thenReturn(A_MEME);
 
         handler.handle(ID.value());
 
-        verify(tagger).describe(bytes, "image/gif", null);
+        verify(tagger).describe(bytes, "image/gif", null, null);
+    }
+
+    @Test
+    void passesOnWhatTheSourceSaidTheMemeIs() {
+        byte[] bytes = {7};
+        Reference said = new Reference("A meme about a dog.", "Wikipedia (en)", "https://en.wikipedia.org/wiki/Doge", "CC BY-SA 4.0");
+        when(reads.findById(ID.value())).thenReturn(Optional.of(view("DRAFT", "Doge")));
+        when(storage.get(anyString())).thenReturn(bytes);
+        when(library.findReference(ID.value())).thenReturn(Optional.of(said));
+        when(tagger.describe(any(), anyString(), any(), any())).thenReturn(A_MEME);
+
+        handler.handle(ID.value());
+
+        verify(tagger).describe(bytes, "image/gif", "Doge", said);
     }
 
     @Test
     void putsThePictureBackInLineWhenTheModelFails() {
         when(reads.findById(ID.value())).thenReturn(Optional.of(view("DRAFT", "x")));
         when(storage.get(anyString())).thenReturn(new byte[] {1});
-        when(tagger.describe(any(), anyString(), any())).thenThrow(new LlmUnavailableException("model busy"));
+        when(tagger.describe(any(), anyString(), any(), any())).thenThrow(new LlmUnavailableException("model busy"));
 
         handler.handle(ID.value());
 
@@ -161,7 +177,7 @@ class TaggingHandlersTest {
     void aFailureWhileApplyingAlsoPutsItBackInLine() {
         when(reads.findById(ID.value())).thenReturn(Optional.of(view("DRAFT", "x")));
         when(storage.get(anyString())).thenReturn(new byte[] {1});
-        when(tagger.describe(any(), anyString(), any())).thenReturn(A_MEME);
+        when(tagger.describe(any(), anyString(), any(), any())).thenReturn(A_MEME);
         doThrow(new IllegalStateException("incomplete")).when(applySpy).handle(any(), any());
 
         handler.handle(ID.value());
@@ -177,7 +193,7 @@ class TaggingHandlersTest {
         when(reads.findById(ID.value())).thenReturn(Optional.of(view("APPROVED", "x")));
         handler.handle(ID.value());
 
-        verify(tagger, never()).describe(any(), anyString(), any());
+        verify(tagger, never()).describe(any(), anyString(), any(), any());
         verify(queue, org.mockito.Mockito.times(2)).done(ID.value());
     }
 

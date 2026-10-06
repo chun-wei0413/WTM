@@ -2,6 +2,7 @@ package com.wtm.adapter.out.persistence;
 
 import com.wtm.application.collection.DuplicateImageException;
 import com.wtm.application.collection.Origin;
+import com.wtm.application.collection.Reference;
 import com.wtm.application.port.out.ImageFingerprintPort.Fingerprint;
 import com.wtm.application.port.out.LibraryPort;
 import com.wtm.application.port.out.TemplateRepository;
@@ -42,16 +43,21 @@ class JdbcLibraryAdapter implements LibraryPort {
     @Override
     @Transactional
     public void add(MemeTemplate template, Origin origin, Fingerprint fingerprint) {
+        Reference reference = origin.reference();
         try {
             templates.save(template);
             jdbc.sql("""
                             UPDATE meme_template SET
                                 source_type = ?, source_url = ?, source_page_url = ?, attribution = ?,
-                                license_note = ?, content_sha256 = ?, phash = ?, collected_at = now()
+                                license_note = ?, content_sha256 = ?, phash = ?, collected_at = now(),
+                                reference_text = ?, reference_source = ?, reference_url = ?, reference_license = ?
                             WHERE id = ?""")
                     .params(Arrays.asList(origin.sourceType(), origin.sourceUrl(), origin.pageUrl(),
                             origin.attribution(), origin.licenseNote(), fingerprint.sha256(),
-                            fingerprint.perceptualHash(), template.id().value()))
+                            fingerprint.perceptualHash(),
+                            reference == null ? null : reference.text(), reference == null ? null : reference.sourceName(),
+                            reference == null ? null : reference.url(), reference == null ? null : reference.license(),
+                            template.id().value()))
                     .update();
             jdbc.sql("INSERT INTO template_tagging (template_id, status) VALUES (?, 'PENDING')")
                     .param(template.id().value())
@@ -59,6 +65,15 @@ class JdbcLibraryAdapter implements LibraryPort {
         } catch (DuplicateKeyException e) {
             throw new DuplicateImageException();
         }
+    }
+
+    @Override
+    public Optional<Reference> findReference(UUID templateId) {
+        return jdbc.sql("SELECT reference_text, reference_source, reference_url, reference_license FROM meme_template WHERE id = ?")
+                .param(templateId)
+                .query((rs, n) -> Reference.ofNullable(rs.getString("reference_text"), rs.getString("reference_source"),
+                        rs.getString("reference_url"), rs.getString("reference_license")))
+                .optional();
     }
 
     @Override

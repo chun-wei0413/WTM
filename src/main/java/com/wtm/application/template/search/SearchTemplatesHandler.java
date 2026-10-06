@@ -58,7 +58,7 @@ public class SearchTemplatesHandler {
                             storage.presignedGetUrl(card.imageKey(), IMAGE_URL_TTL), card.imageWidth(),
                             card.imageHeight(), card.slots(),
                             card.meaning(), card.usageExamples(), card.emotions(), card.tags(), card.imageText(),
-                            card.sourceType(), card.sourceUrl(), card.attribution());
+                            card.sourceType(), card.sourceUrl(), card.attribution(), card.reference());
                 })
                 .toList();
     }

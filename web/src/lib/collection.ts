@@ -3,6 +3,7 @@ import type { IngestResult } from '../api/types';
 /** Where a picture in the library came from (its source type), shown in Chinese. */
 const SOURCE_TYPE_LABELS: Record<string, string> = {
   IMGFLIP: 'Imgflip',
+  MEMEGEN: 'memegen.link',
   WIKIMEDIA: '維基共享資源',
   PTT: 'PTT',
   UPLOAD: '手動上傳',

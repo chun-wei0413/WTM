@@ -197,10 +197,10 @@ class UseCaseConfig {
     }
 
     @Bean
-    TagTemplateHandler tagTemplateHandler(TemplateReadPort reads, ObjectStoragePort storage,
+    TagTemplateHandler tagTemplateHandler(TemplateReadPort reads, LibraryPort library, ObjectStoragePort storage,
                                           VisionTaggerPort tagger, ApplyTagsHandler apply,
                                           TaggingQueuePort queue, TaggingProperties properties) {
-        return new TagTemplateHandler(reads, storage, tagger, apply, queue, properties.maxAttempts());
+        return new TagTemplateHandler(reads, library, storage, tagger, apply, queue, properties.maxAttempts());
     }
 
     @Bean

@@ -56,6 +56,16 @@ export interface TemplateView {
   updatedAt: string;
 }
 
+/** An explanation of a meme written by its source (not by the model), with what is needed to credit it. */
+export interface Reference {
+  text: string;
+  /** For example "Wikipedia (zh)". */
+  sourceName: string | null;
+  url: string | null;
+  /** For example "CC BY-SA 4.0". */
+  license: string | null;
+}
+
 /** One meme of the library, as the browsing pages show it. */
 export interface LibraryItem {
   templateId: string;
@@ -73,6 +83,8 @@ export interface LibraryItem {
   sourceType: string | null;
   sourceUrl: string | null;
   attribution: string | null;
+  /** What the source says the meme is, when it says anything; shown with its credit. */
+  reference: Reference | null;
 }
 
 export interface SearchResult extends LibraryItem {
