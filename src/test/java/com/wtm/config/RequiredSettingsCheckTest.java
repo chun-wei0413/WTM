@@ -60,4 +60,30 @@ class RequiredSettingsCheckTest {
                 .anyMatch(p -> p.contains("DB_PASSWORD"))
                 .anyMatch(p -> p.contains("WTM_JWT_SECRET"));
     }
+
+    @Test
+    void acceptsTheModelProvidersThatExistWhateverTheCase() {
+        MockEnvironment env = complete()
+                .withProperty("wtm.vision.provider", "Gemini")
+                .withProperty("wtm.embedding.provider", "ollama")
+                .withProperty("wtm.explainer.provider", "mock");
+
+        assertThat(RequiredSettingsCheck.choiceProblems(env)).isEmpty();
+    }
+
+    @Test
+    void namesTheValuesThatCouldBeChosenWhenAProviderDoesNotExist() {
+        MockEnvironment env = complete()
+                .withProperty("wtm.vision.provider", "gemni")
+                .withProperty("wtm.embedding.provider", "gemini");
+
+        assertThat(RequiredSettingsCheck.choiceProblems(env)).containsExactly(
+                "WTM_VISION_PROVIDER=gemni is not valid; choose one of: mock | ollama | gemini",
+                "WTM_EMBEDDING_PROVIDER=gemini is not valid; choose one of: mock | ollama");
+    }
+
+    @Test
+    void aProviderThatIsNotSetIsLeftToItsDefault() {
+        assertThat(RequiredSettingsCheck.choiceProblems(complete())).isEmpty();
+    }
 }
