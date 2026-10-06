@@ -61,7 +61,9 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
   }
 
   return (
-    <article className={pop ? `meme-tile tile-pop${lead ? ' tile-lead' : ''}` : 'card meme-tile'}>
+    <article
+      className={pop ? `meme-tile tile-pop${lead ? ' tile-lead' : ''}${badge ? ' tile-picked' : ''}` : 'card meme-tile'}
+    >
       <img
         src={item.imageUrl}
         alt={item.meaning ?? item.name}

@@ -258,7 +258,8 @@ export function SearchPage() {
 
           {lead && (
             <section aria-live="polite">
-              <MemeTile item={lead} index={1} lead />
+              {/* keyed, so every new answer slaps down again instead of reusing the old first tile */}
+              <MemeTile key={lead.templateId} item={lead} index={1} lead />
               {rest.length > 0 && (
                 <div className="masonry masonry-pop">
                   {rest.map((item, i) => (
@@ -277,7 +278,20 @@ export function SearchPage() {
   );
 }
 
-/** The answer to "pick one for me": the chosen meme with its reason, then the other candidates. */
+/** A little deck of stickers being shuffled, to look at while the model reads the situation. Purely decorative. */
+function ShuffleDeck() {
+  return (
+    <div className="shuffle-deck" aria-hidden="true">
+      {['?', '!', '哈', '…'].map((mark) => (
+        <span key={mark} className="shuffle-card">
+          {mark}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** The answer to "pick one for me":the chosen meme with its reason, then the other candidates. */
 function PickPanel({ picked, onClear }: { picked: Picked; onClear: () => void }) {
   if (picked.state === 'idle') {
     return (
@@ -303,8 +317,8 @@ function PickPanel({ picked, onClear }: { picked: Picked; onClear: () => void })
       </div>
 
       {picked.state === 'loading' && (
-        <div className="status status-working" role="status">
-          <span className="spinner" aria-hidden="true" />
+        <div className="status status-working shuffle-status" role="status">
+          <ShuffleDeck />
           <span>正在讀你的處境、從圖庫挑圖…通常要幾秒鐘(很久沒用時,第一次要等久一點)。</span>
         </div>
       )}
@@ -322,6 +336,7 @@ function PickPanel({ picked, onClear }: { picked: Picked; onClear: () => void })
             <p className="pick-note">目前無法產生說明,先給你最接近的一張。</p>
           )}
           <MemeTile
+            key={result.chosen.templateId}
             item={result.chosen}
             index={1}
             lead
