@@ -1,6 +1,6 @@
 # wtm
 
-個人的梗圖圖庫:從網路上收集梗圖,由視覺模型自動標上標籤,之後只要用自己的話描述情境,
+個人的梗圖圖庫:加入梗圖,由視覺模型自動標上標籤,之後只要用自己的話描述情境,
 就能找到想用的那一張。
 
 > *「聽不懂對方剛剛在說什麼」* → 那張一臉困惑的梗圖就出現了,即使你根本不知道它叫什麼名字。
@@ -21,7 +21,7 @@
 
 ## 它做什麼
 
-**圖庫**:圖片從資料夾、貼上的網址,或 Imgflip、Wikimedia Commons、PTT 看板這類來源進來,經過去重、
+**圖庫**:圖片從檔案、資料夾或貼上的網址進來,經過去重、
 由視覺模型描述,再用語意與關鍵字搜尋。在它之上,使用者可以找梗圖、收藏、在自己的瀏覽器裡替收藏的梗圖加文字,
 以及回報描述不貼切的梗圖。
 
@@ -29,7 +29,7 @@
 
 ```mermaid
 flowchart LR
-    A[管理員<br/>檔案、網址、來源] -->|收集、去重| L[(meme_template<br/>PostgreSQL)]
+    A[管理員<br/>檔案、網址] -->|收集、去重| L[(meme_template<br/>PostgreSQL)]
     L -->|標記佇列,SKIP LOCKED| V[視覺模型<br/>描述圖片]
     V -->|意思、標籤、文字| L
     L -->|依狀態同步索引| S[搜尋索引<br/>pgvector + pg_trgm]
@@ -111,6 +111,11 @@ $env:WTM_EXPLAINER_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
+本機的看圖模型很小,認得的梗不多,只能描述看到的東西,說不出梗的由來。圖片也可以改交給 Google 的 Gemini 描述,
+它認得的梗多得多(決策 25):到 Google AI Studio 申請金鑰,放進 `.env` 的 `GEMINI_API_KEY`,再設
+`WTM_VISION_PROVIDER=gemini`。這樣圖片會離開你的電腦,而且免費版 Google 可能把內容拿去改進產品,
+所以只用在本來就公開的圖片上。
+
 ### 網頁介面
 
 需要 **Node.js 20 或更新版本**。後端啟動後:
@@ -128,7 +133,7 @@ npm run dev        # http://localhost:5173
 - **梗圖模板**:從收藏挑一張,在圖上畫文字框、輸入文字,再下載。圖是在瀏覽器裡畫的,不會送到伺服器,
   所以做出來的梗圖只供自己使用。
 
-管理員另外有「圖庫收集」(加入圖片:選檔案或資料夾、貼網址、從來源收集,並顯示標記進度)、
+管理員另外有「圖庫收集」(加入圖片:選檔案或資料夾、貼網址,並顯示標記進度)、
 「意見回報」(被回報的梗圖:用戶意見與影像模型重新分析的建議並排,由你決定採用或忽略)和
 「圖庫管理」(描述、編輯並核准圖庫條目與模板)。開發伺服器會把 `/api` 轉送到 `localhost:8080`,所以瀏覽器只看到
 一個來源,不需要設定 CORS。`npm run build` 會在 `web/dist` 產生靜態檔案,可以用任何靜態網站服務提供,
@@ -158,8 +163,7 @@ EOF
 ```
 
 第一筆就是上面那張圖,附有它的意思、標籤、情緒與來源。你也可以把圖片丟進資料夾的 `inbox`、貼網址
-(`POST /api/admin/collection/url`),或讓 Imgflip、Wikimedia Commons 這類來源自動填滿圖庫
-(`POST /api/admin/collection/runs`)。
+(`POST /api/admin/collection/url`)。
 
 > **在 Windows 上要注意:** 範例用到 `curl` 與 `jq`,並在 Git Bash 這類 bash 環境執行。如果把中文直接寫在
 > `curl` 的 `-d '...'` 參數裡,Windows 會用舊的系統編碼把參數交給 `curl.exe`,送出的 JSON 不是合法的 UTF-8,
@@ -295,8 +299,8 @@ mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # 檢索品質 → t
 
 - **網頁介面是用人工在瀏覽器裡檢查的,沒有自動化的瀏覽器(端對端)測試。** 模板編輯頁只在桌面寬度試過;
   其他頁面另外檢查過手機寬度與深色模式。
-- **PTT 笨板不是好的梗圖來源。** 它的圖大多是生活中好笑的照片、新聞和截圖,不是拿來回別人訊息的反應圖。
-  發佈的 50 張裡有 41 張在人工檢視後下架,這個看板已經不值得再收集。使用者可以把圖回報為「這不是梗圖」,
+- **PTT 笨板曾經是不好的梗圖來源。** 它的圖大多是生活中好笑的照片、新聞和截圖,不是拿來回別人訊息的反應圖。
+  發佈的 50 張裡有 41 張在人工檢視後下架,這是後來把「從網站收集」拿掉的原因之一(決策 24)。使用者可以把圖回報為「這不是梗圖」,
   這類回報一律交給管理員決定。
 - **「是不是梗圖」由視覺模型判斷,而且它偏保守。** 201 張收集到的圖裡,它下架了 35 張,
   其中包含六張知名的 Imgflip 模板。被下架的圖管理員可以查看並救回來。
@@ -328,7 +332,7 @@ src/main/java/com/wtm
 │   ├── in/web          REST 控制器、錯誤對應
 │   ├── out/persistence JDBC 資料存取與讀取模型
 │   ├── out/ai          Ollama 與模擬模型(embedding、看圖)
-│   ├── out/source      收集器:Imgflip、Wikimedia Commons、PTT
+│   ├── out/source      有禮貌的下載器,給貼上的網址用(robots.txt、間隔、位址檢查)
 │   ├── out/storage     S3    out/image  圖片檢查
 │   ├── scheduling      索引同步、標記與回報審查的背景工作
 │   └── security        JWT、BCrypt、限流器
@@ -348,6 +352,8 @@ docs/DECISIONS.md                  為什麼這樣設計(英文)
 | `S3_ACCESS_KEY`、`S3_SECRET_KEY` | 物件儲存 |
 | `WTM_JWT_SECRET` | 簽發 token 的密鑰(至少 32 個字元)。知道它的人可以偽造管理員 token |
 | `WTM_ADMIN_USERNAME`、`WTM_ADMIN_PASSWORD` | 第一位管理員 |
-| `WTM_VISION_PROVIDER`、`WTM_EMBEDDING_PROVIDER`、`WTM_EXPLAINER_PROVIDER` | `mock`(預設)或 `ollama` |
+| `WTM_VISION_PROVIDER` | `mock`(預設)、`ollama` 或 `gemini` |
+| `WTM_EMBEDDING_PROVIDER`、`WTM_EXPLAINER_PROVIDER` | `mock`(預設)或 `ollama` |
+| `GEMINI_API_KEY` | 只有 `WTM_VISION_PROVIDER=gemini` 時需要:Google AI Studio 的金鑰,不要 commit |
 
 其他設定都在 [`application.yml`](src/main/resources/application.yml)。

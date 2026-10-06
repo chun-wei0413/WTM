@@ -583,3 +583,119 @@ is written to defend the meme it is given. The page calls it the model's view an
 **Not done.** The reasons were read, not measured. Two ways to let the model do more are open and would be measured on the
 same set before they ship: let it override the search order only when it is sure, and a second question that asks only "does
 this meme fit?" so that the page can warn when the closest result is probably wrong.
+
+## 23. Where memes and their explanations come from
+
+*Decision 24 took collecting from other websites out again. What was measured here still stands, and the explanation that
+a source can carry (the `reference` of an entry) is kept.*
+
+**Context.** The first collection from a PTT board filled the library with photos of funny things (decision 17), and the
+vision model has to guess what a meme means, which it gets wrong. The wish was to collect more, by method, and to bring an
+explanation along when a source has one.
+
+**How a source is chosen.** A source must pass four questions before any code is written: may its content be read by a
+program (terms and `robots.txt`, not only the latter); is there an interface meant for programs; is everything in it a meme by
+construction, rather than a page that might contain one; and, for an explanation, under what licence is the text shared. The
+last one decides whether it can be credited and kept.
+
+**What was found** (probed on 2026-10-06, politely):
+
+| Source | Result |
+|---|---|
+| Know Your Meme | The one with the explanations, and the terms forbid it: content may not be downloaded or copied beyond personal use, and automated access beyond a human's pace is not allowed. `robots.txt` alone would allow the pages. Not used, and crediting it would not change that. |
+| memegen.link | MIT, an API for programs, 210 templates that are memes by construction, each with other names and an example caption. It was used for 17 pictures (below), then taken out with the rest. |
+| Imgflip | About 100 templates, an API for programs, no explanations. Used once, 99 pictures. |
+| Wikipedia and Wikidata | CC BY-SA text and CC0 data, with APIs. But the pictures that come with the articles are photos of people, logos and maps (6 of 20 zh articles had one, 9 of 20 in English, none a meme picture), so they would repeat the PTT mistake. And only 3 of the 100 Imgflip names and 2 of the 211 memegen names have an article of their own, by a title match. Usable for explanations only, and only for a few memes. |
+| Moegirl wiki | The API refuses calls without a login. Not used. |
+
+So there is no open source with both pictures and explanations at scale. What is open has the pictures (memegen, Imgflip,
+Commons); what has the explanations (Know Your Meme) cannot be read. This is a measured limit, not a choice.
+
+**Decisions.**
+
+- **An explanation is stored apart from the model's description, with where it came from.** `reference_text`, `_source`,
+  `_url` and `_license` on the entry. The page shows it as "來源說明" with its credit, separate from what the model wrote,
+  because CC BY-SA asks for the credit and because a reader should be able to tell a person's words from a model's.
+- **When there is one, the vision model is told it and follows it.** It is quoted as background with its line breaks removed,
+  not as an instruction, like the complaints in decision 17. Whether the picture is a meme is still judged from the picture:
+  an article's illustration can be a logo.
+- **memegen.link's own words are the first explanation used**: other names and an example caption, MIT. Its `source` link to
+  another site is kept as a link to read more and is never fetched.
+- **Pictures come from sources whose every entry is a meme.** Pages that merely may contain one are not collected in bulk.
+
+**Cost / limits.**
+
+- The explanation from memegen.link is thin: names and an example, not why it is funny. It narrows what the model may say, it
+  does not replace the model.
+- Nothing here helps Taiwanese memes: no open source with them was found. A list kept by hand, with the explanation written
+  or checked by a person, is the way, and is not built.
+- Whether the model actually follows an explanation, and whether it makes descriptions better, is not measured.
+
+## 24. Taking collection from other websites out
+
+**Context.** Three sources had been built to fill the library by themselves: Imgflip, Wikimedia Commons and a PTT board,
+and memegen.link was added as a fourth. The PTT board put photos of funny things into the library (decision 17), and the
+17 pictures taken from memegen.link, which are memes by construction, still got descriptions such as "expresses surprise or
+confusion", and two of them wrong, although each came with its other names and an example caption (decision 23; compared
+offline on 8 of them with a stronger prompt, without a clear gain). The administrator found the feature too hard to control.
+
+**Decisions.**
+
+- **Nothing is collected from another website by itself any more.** The sources, the runs, their list in the administration
+  page, the endpoints `/api/admin/collection/sources` and `/runs`, and the table of runs (migration V12) are gone. A picture is
+  added by choosing files or a folder, by pasting its address, or by the `inbox` folder, so a person has chosen each one.
+- **The polite downloader stays**, for pasted addresses: `robots.txt`, a delay between requests, refusal of private
+  addresses. Pictures already collected keep their source and licence note.
+- **The explanation an entry can carry stays** (`reference_*`, decision 23): stored with its credit, given to the vision model
+  as quoted background, and shown with its source. Nothing fills it now.
+
+**Cost / limits.**
+
+- There is no bulk way in. Adding two hundred pictures means choosing two hundred files, or a folder.
+- The library still holds what earlier runs brought: 99 pictures from Imgflip, 26 from Wikimedia Commons, 77 from PTT and 17 from
+  memegen.link.
+
+**Not done.** Finding where a meme comes from and what it means when it is added: searching the web with a service that
+cites its sources, writing the explanation from what was found, and showing it to a person before it is published, so that
+every explanation has a link to check. This is the next step, not built, and which service to use is not decided.
+
+## 25. Letting Gemini describe the pictures, and say where a meme comes from
+
+**Context.** Decision 23 found no open source that has both pictures and explanations, and a small local model (`qwen2.5vl:7b`)
+given a meme's name and other names still wrote "expresses surprise or confusion" and, for two of seventeen, the wrong
+film or show. The administrator asked for a service on the web that could be asked where a meme comes from.
+
+**What was tried** (2026-10-06, with a free Google AI Studio key):
+
+| | Free tier | Result |
+|---|---|---|
+| Gemini answering from its own knowledge | works | Names the show, the person and the joke for well-known memes; answered "I am not sure" for a meme made up for the test. |
+| Gemini with Google Search, answers with links | refused (HTTP 429, no quota) | Needs the paid tier: 5,000 searches a month free, then $14 per 1,000. Not used. |
+
+The seventeen memegen.link pictures were put back in line and described again by Gemini (`gemini-3.5-flash-lite`). All
+17 succeeded. Most now say which show, film or person the picture is from, and the two that were wrong (Archer, Admiral
+Ackbar) are right; for pictures it does not place ("Awkward Moment Seal") it says what the picture expresses and no more.
+The text was read, not checked against a source, and it carries no links.
+
+**Decisions.**
+
+- **Gemini is one more vision provider** (`WTM_VISION_PROVIDER=gemini`), in the same place as the local model and answering in
+  the same JSON, so tagging, the second look at a reported meme and everything after them are unchanged. The default is
+  still the mock, and the local model stays for pictures that should not leave the machine.
+- **The prompt asks it to say where a meme comes from and what it means, and to say so when it does not know** rather than make
+  up a source, a name or a year. Whatever it writes goes into the meme's meaning like any other description.
+- **No source is shown with it.** Without search there is nothing to link, and the page keeps saying that descriptions are
+  written by a model.
+- **The key is only in `GEMINI_API_KEY`** (the git-ignored `.env`), sent in a header, never in an address or a log. The
+  application refuses to start without it when this provider is chosen.
+- **Calls are spaced (5 seconds by default) and a refusal puts the picture back in line**, so a queue of pictures does not use
+  up the free tier's per-minute limit and a used-up day is reported in words instead of failing the picture for good.
+
+**Cost / limits.**
+
+- **The picture leaves the machine**, and on the free tier Google may use what it is sent to improve its products and have it
+  read by people. Use this provider for pictures that are already public.
+- **It can still be wrong**, with the same fluent tone, and nothing here lets a reader check it. A person looks at what it
+  wrote; searching with links is the way to make it checkable, and costs a card on file.
+- The free tier's daily limit was not measured; the 17 pictures went through without a refusal.
+- Only the 17 were described again. The other pictures keep what the local model wrote.

@@ -59,10 +59,10 @@ you make stays with you.
 
 ## Adding memes to the library
 
-The library is filled by the administrator: choose pictures or a folder, paste an address, or let the built-in
-collector read a source (Imgflip, Wikimedia Commons, a PTT board). A vision model looks at every new picture and
-writes what it means, when to use it, and the text in it. Identical and near-identical pictures are collected
-only once, and each picture keeps a note of where it came from.
+The library is filled by the administrator, one choice at a time: choose pictures or a folder, or paste an address.
+(Collecting in bulk from other websites was tried and taken out again, see decision 24.) A vision model looks at every
+new picture and writes what it means, when to use it, and the text in it. Identical and near-identical pictures are
+collected only once, and each picture keeps a note of where it came from.
 
 When someone reports a meme, the vision model looks at the picture again, with their complaint in hand, and the
 administrator sees both side by side ("user report: ...; suggested change: ...") to adopt or dismiss.
@@ -85,10 +85,9 @@ choice are in [docs/DECISIONS.md](docs/DECISIONS.md).*
 
 - **It is a personal tool, not a service.** There is no logout or password reset, the sign-in token is kept in the
   browser's `sessionStorage` and there is no Content-Security-Policy, so do not expose it to the internet as it is.
-- **The library is yours to fill, and yours to answer for.** The repository contains no collected pictures. The
-  collector reads Imgflip, Wikimedia Commons and PTT politely (it obeys `robots.txt`, waits between requests and says
-  who it is), but what you collect is still other people's work: follow each site's terms and respect the copyright
-  of the pictures.
+- **The library is yours to fill, and yours to answer for.** The repository contains no collected pictures. A picture
+  fetched from an address is downloaded politely (it obeys `robots.txt`, waits between requests and says who it is), but what
+  you add is still other people's work: follow each site's terms and respect the copyright of the pictures.
 
 ## License
 

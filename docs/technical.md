@@ -1,6 +1,6 @@
 # wtm
 
-A personal meme library: collect memes from the web, let a vision model tag them, and find the
+A personal meme library: add memes, let a vision model tag them, and find the
 one you want later by describing the situation in your own words.
 
 > *"When I do not understand what someone just said"* → the confused-face meme comes back,
@@ -21,15 +21,14 @@ use them, so the situation you remember is enough to find them.
 
 ## What it does
 
-The **library**: pictures come in (a folder, a pasted address, or a source such as Imgflip, Wikimedia Commons or a
-PTT board), are de-duplicated, described by a vision model, and found again by meaning and keywords. On top of it,
+The **library**: pictures come in (a folder, files or a pasted address), are de-duplicated, described by a vision model, and found again by meaning and keywords. On top of it,
 users find memes, keep favorites, caption a favorite in their own browser, and report descriptions that do not fit.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-    A[Administrator<br/>files, address, source] -->|collect, de-duplicate| L[(meme_template<br/>PostgreSQL)]
+    A[Administrator<br/>files, address] -->|collect, de-duplicate| L[(meme_template<br/>PostgreSQL)]
     L -->|tagging queue, SKIP LOCKED| V[Vision model<br/>describes the picture]
     V -->|meaning, tags, text| L
     L -->|index sync by state| S[Search index<br/>pgvector + pg_trgm]
@@ -113,6 +112,11 @@ $env:WTM_EXPLAINER_PROVIDER = "ollama"
 mvn spring-boot:run
 ```
 
+The local vision model is small and does not know many memes, so it describes what it sees but cannot say where a meme
+comes from. Pictures can instead be described by Google's Gemini, which knows far more (decision 25): put a key from
+Google AI Studio in `.env` as `GEMINI_API_KEY` and set `WTM_VISION_PROVIDER=gemini`. The picture then leaves your
+machine, and on the free tier Google may use it to improve its products, so use it for pictures that are already public.
+
 ### The web UI
 
 You need **Node.js 20 or newer**. With the backend running:
@@ -132,8 +136,7 @@ The web client has three pages for everyone:
 - **梗圖模板** (meme maker): pick a favorite, draw text boxes on it, type the text and download the result. The
   picture is drawn in the browser and never sent to the server, so what you make is for your own use.
 
-Administrators also get **圖庫收集** (add pictures: choose files or a folder, paste an address, or start a collection
-run from a source; shows tagging progress), **意見回報** (reported memes: the complaints next to the vision model's new
+Administrators also get **圖庫收集** (add pictures: choose files or a folder, or paste an address; shows tagging progress), **意見回報** (reported memes: the complaints next to the vision model's new
 proposal, to adopt or dismiss) and **圖庫管理** (describe, edit and approve library entries and templates).
 The dev server forwards `/api` to `localhost:8080`, so the browser sees
 a single origin and no CORS setup is needed. `npm run build` produces static files in `web/dist` that
@@ -164,8 +167,7 @@ curl -s -H "Authorization: Bearer $ADMIN" -G $BASE/api/templates/search   --data
 
 The first hit is the picture above, with its meaning, tags, emotions and where it came from.
 You can also drop pictures into the `inbox` folder of the data folder, paste an address
-(`POST /api/admin/collection/url`), or let a source such as Imgflip or Wikimedia Commons
-fill the library (`POST /api/admin/collection/runs`).
+(`POST /api/admin/collection/url`).
 
 > The examples use `curl` and `jq` in a bash shell. On Windows, putting non-ASCII text (such as Chinese)
 > directly inside a `curl -d '...'` argument hands it to `curl.exe` in the legacy system encoding, so the
@@ -311,9 +313,9 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **The web UI was checked by hand in a browser, with no automated browser (end-to-end) tests.** The
   template editor in particular has only been tried at desktop width; the other pages were also checked on
   a phone-sized screen and in dark mode.
-- **PTT's 笨板 is a poor source of memes.** Most of its pictures are photos of funny real-life things, news and
+- **PTT's 笨板 was a poor source of memes.** Most of its pictures are photos of funny real-life things, news and
   screenshots, not pictures people send to answer someone. Of the 50 that were published, 41 were withdrawn by hand
-  after review, and the board is no longer worth collecting. Users can report a picture as "not a meme", which is
+  after review. That is one reason collecting from websites was taken out (decision 24). Users can report a picture as "not a meme", which is
   always left to the administrator.
 - **The vision model decides whether a picture is a meme, and it is cautious.** Of 201 collected pictures it
   withdrew 35, including six well-known Imgflip templates. Withdrawn pictures can be looked at and brought back by
@@ -351,7 +353,7 @@ src/main/java/com/wtm
 │   ├── in/web          REST controllers, error mapping
 │   ├── out/persistence JDBC repositories and read models
 │   ├── out/ai          Ollama and mock model adapters (embeddings, vision)
-│   ├── out/source      collectors: Imgflip, Wikimedia Commons, PTT
+│   ├── out/source      polite downloader for pasted addresses (robots.txt, delay, address guard)
 │   ├── out/storage     S3 adapter    out/image  image checks
 │   ├── scheduling      index sync, tagging and review workers
 │   └── security        JWT, BCrypt, rate limiter
@@ -371,6 +373,8 @@ Secrets come from `.env` or real environment variables. None has a default.
 | `S3_ACCESS_KEY`, `S3_SECRET_KEY` | Object storage |
 | `WTM_JWT_SECRET` | Signs tokens (at least 32 characters). Anyone who knows it can forge admin tokens |
 | `WTM_ADMIN_USERNAME`, `WTM_ADMIN_PASSWORD` | The first administrator |
-| `WTM_VISION_PROVIDER`, `WTM_EMBEDDING_PROVIDER`, `WTM_EXPLAINER_PROVIDER` | `mock` (default) or `ollama` |
+| `WTM_VISION_PROVIDER` | `mock` (default), `ollama` or `gemini` |
+| `WTM_EMBEDDING_PROVIDER`, `WTM_EXPLAINER_PROVIDER` | `mock` (default) or `ollama` |
+| `GEMINI_API_KEY` | Only for `WTM_VISION_PROVIDER=gemini`: a key from Google AI Studio. Never commit it |
 
 Everything else is in [`application.yml`](src/main/resources/application.yml).
