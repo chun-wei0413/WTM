@@ -38,10 +38,13 @@ wtm:
     secret-key: ${S3_SECRET_KEY}
     bucket: wtm
   vision:                     # looks at collected pictures and describes them
-    provider: mock            # mock | ollama
+    provider: mock            # mock | ollama | gemini
     ollama:
       base-url: http://localhost:11434
       model: qwen2.5vl:7b
+    gemini:                   # Google's Gemini: knows far more memes, but the picture leaves the machine
+      model: gemini-3.5-flash-lite
+      api-key: ${GEMINI_API_KEY:}
   embedding:
     provider: mock            # mock | ollama
     dimension: 1024           # bge-m3
