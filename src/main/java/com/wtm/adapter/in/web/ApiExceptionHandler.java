@@ -4,7 +4,6 @@ import com.wtm.application.TemplateNotFoundException;
 import com.wtm.application.TooManyRequestsException;
 import com.wtm.application.UnsupportedImageException;
 import com.wtm.application.auth.InvalidCredentialsException;
-import com.wtm.application.collection.CollectionBusyException;
 import com.wtm.application.collection.FetchRefusedException;
 import com.wtm.application.auth.RegistrationClosedException;
 import com.wtm.application.auth.UsernameTakenException;
@@ -62,11 +61,6 @@ class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             response = response.header(HttpHeaders.RETRY_AFTER, String.valueOf(e.retryAfter().toSeconds()));
         }
         return response.body(ProblemDetail.forStatusAndDetail(HttpStatus.TOO_MANY_REQUESTS, e.getMessage()));
-    }
-
-    @ExceptionHandler(CollectionBusyException.class)
-    ProblemDetail collectionBusy(CollectionBusyException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     }
 
     @ExceptionHandler(FetchRefusedException.class)

@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import type { CollectionRun, IngestResult } from '../api/types';
+import type { IngestResult } from '../api/types';
 import {
   attributionNote,
-  changedOptions,
   describeUploads,
-  hasActiveRun,
   isHttpUrl,
   onlyImages,
-  runListDelay,
   sourceTypeLabel,
   summarizeUploads,
 } from './collection';
@@ -17,17 +14,6 @@ const result = (status: IngestResult['status'], fileName = 'a.png', reason: stri
   status,
   templateId: null,
   reason,
-});
-
-const run = (status: CollectionRun['status']): CollectionRun => ({
-  id: 'r',
-  source: 'IMGFLIP',
-  options: null,
-  status,
-  counts: { found: 0, imported: 0, duplicates: 0, rejected: 0, failed: 0 },
-  message: null,
-  startedAt: '2026-01-01T00:00:00Z',
-  finishedAt: null,
 });
 
 describe('upload summary', () => {
@@ -48,30 +34,6 @@ describe('upload summary', () => {
     expect(describeUploads(summarizeUploads([result('IMPORTED'), result('DUPLICATE')]))).toBe('新增 1 張、1 張已經在圖庫裡');
     expect(describeUploads(summarizeUploads([result('REJECTED')]))).toBe('1 張不能用');
     expect(describeUploads(summarizeUploads([]))).toBe('沒有收到任何圖片');
-  });
-});
-
-describe('runs', () => {
-  it('keeps asking while a run is going, and stops when none is', () => {
-    expect(hasActiveRun([run('COMPLETED'), run('RUNNING')])).toBe(true);
-    expect(runListDelay([run('RUNNING')])).toBe(2_000);
-    expect(runListDelay([run('COMPLETED'), run('FAILED')])).toBeNull();
-    expect(runListDelay([])).toBeNull();
-  });
-});
-
-describe('source options', () => {
-  const options = [
-    { key: 'query', defaultValue: '' },
-    { key: 'sort', defaultValue: 'top' },
-  ];
-
-  it('sends only what the administrator changed', () => {
-    expect(changedOptions(options, { query: ' 困惑 ', sort: 'top' })).toEqual({ query: '困惑' });
-  });
-
-  it('sends nothing when everything is at its default', () => {
-    expect(changedOptions(options, {})).toEqual({});
   });
 });
 

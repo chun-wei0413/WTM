@@ -1,7 +1,5 @@
 import type {
   AutomaticEntry,
-  CollectionRun,
-  CollectionSource,
   HotSearch,
   IngestResult,
   IndexSyncResult,
@@ -208,13 +206,6 @@ export const api = {
 
       addUrl: (url: string, title?: string) =>
         request<IngestResult>('POST', '/api/admin/collection/url', { json: { url, title: title || null } }),
-
-      sources: () => request<CollectionSource[]>('GET', '/api/admin/collection/sources'),
-
-      startRun: (source: string, limit: number, options: Record<string, string>) =>
-        request<{ runId: string }>('POST', '/api/admin/collection/runs', { json: { source, limit, options } }),
-
-      runs: () => request<CollectionRun[]>('GET', '/api/admin/collection/runs'),
     },
   },
 };

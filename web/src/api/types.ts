@@ -123,40 +123,6 @@ export interface IngestResult {
   reason: string | null;
 }
 
-interface SourceOption {
-  key: string;
-  label: string;
-  defaultValue: string;
-}
-
-export interface CollectionSource {
-  id: string;
-  name: string;
-  description: string;
-  options: SourceOption[];
-}
-
-interface RunCounts {
-  found: number;
-  imported: number;
-  duplicates: number;
-  rejected: number;
-  failed: number;
-}
-
-export type RunStatus = 'RUNNING' | 'COMPLETED' | 'FAILED';
-
-export interface CollectionRun {
-  id: string;
-  source: string;
-  options: string | null;
-  status: RunStatus;
-  counts: RunCounts;
-  message: string | null;
-  startedAt: string;
-  finishedAt: string | null;
-}
-
 export type ReportReason = 'WRONG_TAGS' | 'WRONG_MEANING' | 'NOT_A_MEME' | 'INAPPROPRIATE' | 'OTHER';
 
 /** What the vision model proposes after looking at a reported meme again. */

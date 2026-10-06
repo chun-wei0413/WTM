@@ -1,19 +1,9 @@
 import { useCallback, useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../api/client';
-import type { CollectionRun, CollectionSource, IndexSyncResult, IngestResult, LibraryStats } from '../../api/types';
+import type { IndexSyncResult, IngestResult, LibraryStats } from '../../api/types';
 import { ErrorNotice } from '../../components/ErrorNotice';
-import {
-  RUN_STATUS_LABELS,
-  changedOptions,
-  describeUploads,
-  isHttpUrl,
-  onlyImages,
-  runListDelay,
-  sourceTypeLabel,
-  summarizeUploads,
-  type UploadSummary,
-} from '../../lib/collection';
+import { describeUploads, isHttpUrl, onlyImages, summarizeUploads, type UploadSummary } from '../../lib/collection';
 
 /** Pictures sent per request, so a big folder shows progress and one bad batch does not lose the rest. */
 const UPLOAD_BATCH = 20;
@@ -32,7 +22,6 @@ export function CollectionPage() {
       <StatsSection />
       <UploadSection />
       <UrlSection />
-      <SourceSection />
     </div>
   );
 }
@@ -288,194 +277,5 @@ function UrlSection() {
         </div>
       )}
     </section>
-  );
-}
-
-/* -------------------------------------------------------------- sources */
-
-type Sources = { state: 'loading' } | { state: 'error'; error: unknown } | { state: 'ready'; sources: CollectionSource[] };
-
-function SourceSection() {
-  const [sources, setSources] = useState<Sources>({ state: 'loading' });
-  const [runs, setRuns] = useState<CollectionRun[]>([]);
-  const [runsError, setRunsError] = useState<unknown>(null);
-
-  const [sourceId, setSourceId] = useState('');
-  const [limit, setLimit] = useState(20);
-  const [values, setValues] = useState<Record<string, string>>({});
-  const [starting, setStarting] = useState(false);
-  const [startError, setStartError] = useState<unknown>(null);
-
-  const loadRuns = useCallback(async () => {
-    try {
-      const list = await api.admin.collection.runs();
-      setRuns(list);
-      setRunsError(null);
-      return list;
-    } catch (e) {
-      setRunsError(e);
-      return null;
-    }
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    api.admin.collection
-      .sources()
-      .then((list) => {
-        if (cancelled) return;
-        setSources({ state: 'ready', sources: list });
-        setSourceId((current) => current || list[0]?.id || '');
-      })
-      .catch((error: unknown) => !cancelled && setSources({ state: 'error', error }));
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // Look at the run list now, and again every couple of seconds for as long as something is running.
-  useEffect(() => {
-    let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const tick = async () => {
-      const list = await loadRuns();
-      if (cancelled) return;
-      const delay = list ? runListDelay(list) : 5_000;
-      if (delay !== null) timer = setTimeout(() => void tick(), delay);
-    };
-    void tick();
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [loadRuns, starting]);
-
-  const chosen = sources.state === 'ready' ? sources.sources.find((s) => s.id === sourceId) : undefined;
-  const running = runs.some((r) => r.status === 'RUNNING');
-
-  function pickSource(id: string) {
-    setSourceId(id);
-    setValues({});
-  }
-
-  async function start(event: FormEvent) {
-    event.preventDefault();
-    if (!chosen) return;
-    setStarting(true);
-    setStartError(null);
-    try {
-      await api.admin.collection.startRun(chosen.id, limit, changedOptions(chosen.options, values));
-    } catch (e) {
-      setStartError(e);
-    } finally {
-      setStarting(false); // also restarts the run list polling above
-    }
-  }
-
-  return (
-    <section className="section" aria-labelledby="source-title">
-      <h2 id="source-title">從網路來源收集</h2>
-      <p className="muted">在背景自動抓取,一次只能進行一個。請遵守各網站的使用條款;每張圖的來源與授權說明都會一併記下來。</p>
-
-      {sources.state === 'loading' && <p className="status">載入中…</p>}
-      {sources.state === 'error' && <ErrorNotice error={sources.error} />}
-      {sources.state === 'ready' && sources.sources.length === 0 && <p className="muted">目前沒有可用的來源。</p>}
-
-      {chosen && (
-        <form onSubmit={start} className="form source-form">
-          <label>
-            來源
-            <select value={sourceId} onChange={(e) => pickSource(e.target.value)} disabled={running || starting}>
-              {sources.state === 'ready' &&
-                sources.sources.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.name}
-                  </option>
-                ))}
-            </select>
-            <span className="hint">{chosen.description}</span>
-          </label>
-          <label>
-            最多收幾張
-            <input
-              type="number"
-              min={1}
-              max={500}
-              value={limit}
-              onChange={(e) => setLimit(Number(e.target.value))}
-              disabled={running || starting}
-            />
-          </label>
-          {chosen.options.map((option) => (
-            <label key={`${chosen.id}-${option.key}`}>
-              {option.label}
-              <input
-                value={values[option.key] ?? option.defaultValue}
-                onChange={(e) => setValues((previous) => ({ ...previous, [option.key]: e.target.value }))}
-                disabled={running || starting}
-              />
-            </label>
-          ))}
-          <div>
-            <button
-              type="submit"
-              className="button button-primary"
-              disabled={running || starting || !Number.isInteger(limit) || limit < 1}
-            >
-              {starting ? '送出中…' : running ? '已有收集在進行中' : '開始收集'}
-            </button>
-          </div>
-        </form>
-      )}
-      {startError != null && <ErrorNotice error={startError} />}
-
-      <h3>最近的收集紀錄</h3>
-      {runsError != null && <ErrorNotice error={runsError} />}
-      {runs.length === 0 && runsError == null && <p className="muted">還沒有收集紀錄。</p>}
-      {runs.length > 0 && (
-        <div className="table-wrap">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>來源</th>
-                <th>狀態</th>
-                <th>找到</th>
-                <th>新增</th>
-                <th>重複</th>
-                <th>不可用</th>
-                <th>失敗</th>
-                <th>開始時間</th>
-              </tr>
-            </thead>
-            <tbody>
-              {runs.map((run) => (
-                <RunRow key={run.id} run={run} />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-    </section>
-  );
-}
-
-function RunRow({ run }: { run: CollectionRun }) {
-  const badge = run.status === 'COMPLETED' ? 'badge badge-success' : run.status === 'FAILED' ? 'badge badge-danger' : 'badge badge-accent';
-  return (
-    <tr>
-      <td>{sourceTypeLabel(run.source) ?? run.source}</td>
-      <td>
-        <span className={badge}>{RUN_STATUS_LABELS[run.status]}</span>
-        {run.message && <div className="muted run-message">{run.message}</div>}
-      </td>
-      <td>{run.counts.found}</td>
-      <td>{run.counts.imported}</td>
-      <td>{run.counts.duplicates}</td>
-      <td>{run.counts.rejected}</td>
-      <td>{run.counts.failed}</td>
-      <td>
-        <time dateTime={run.startedAt}>{new Date(run.startedAt).toLocaleString('zh-TW')}</time>
-      </td>
-    </tr>
   );
 }

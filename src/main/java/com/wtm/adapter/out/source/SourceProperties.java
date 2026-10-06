@@ -1,13 +1,12 @@
 package com.wtm.adapter.out.source;
 
 import java.time.Duration;
-import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.util.unit.DataSize;
 
 /**
- * How the collector behaves towards other websites.
+ * How the application behaves towards other websites when it is asked to download a picture from one.
  */
 @ConfigurationProperties("wtm.sources")
 public record SourceProperties(
@@ -21,17 +20,7 @@ public record SourceProperties(
         @DefaultValue("15MB") DataSize maxImageSize,
         @DefaultValue("3MB") DataSize maxTextSize,
         /** Lets the collector reach loopback and private addresses. Only for tests; never switch it on otherwise. */
-        @DefaultValue("false") boolean allowPrivateAddresses,
-        @DefaultValue Ptt ptt) {
-
-    public record Ptt(
-            /**
-             * Boards suggested in the form. None by default: the boards tried (笨板, C_Chat) are mostly photos of funny
-             * things and discussion, not pictures people send to answer someone, so the administrator has to choose
-             * one on purpose. Boards that ask for an age confirmation are never collected.
-             */
-            @DefaultValue({}) List<String> boards) {
-    }
+        @DefaultValue("false") boolean allowPrivateAddresses) {
 
     /** The product name robots.txt groups are matched against. */
     public String productToken() {

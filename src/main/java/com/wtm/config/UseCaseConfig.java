@@ -19,9 +19,6 @@ import com.wtm.application.report.RunReviewHandler;
 import com.wtm.application.report.SubmitReportHandler;
 import com.wtm.application.collection.GetLibraryStatsHandler;
 import com.wtm.application.collection.ImportFromUrlHandler;
-import com.wtm.application.collection.ListCollectionRunsHandler;
-import com.wtm.application.collection.RunCollectionHandler;
-import com.wtm.application.collection.StartCollectionHandler;
 import com.wtm.application.collection.ImportUploadsHandler;
 import com.wtm.application.collection.IngestMemeHandler;
 import com.wtm.application.collection.TagTemplateHandler;
@@ -36,12 +33,10 @@ import com.wtm.application.port.out.ProfileHistoryPort;
 import com.wtm.application.port.out.ReportPort;
 import com.wtm.application.port.out.ReviewPort;
 import com.wtm.application.port.out.SearchLogPort;
-import com.wtm.application.port.out.CollectionRunPort;
 import com.wtm.application.port.out.ImageFingerprintPort;
 import com.wtm.application.port.out.ImageInspectorPort;
 import com.wtm.application.port.out.LibraryPort;
 import com.wtm.application.port.out.MemeExplainerPort;
-import com.wtm.application.port.out.MemeSourcePort;
 import com.wtm.application.port.out.RemoteFetchPort;
 import com.wtm.application.port.out.TaggingQueuePort;
 import com.wtm.application.port.out.VisionTaggerPort;
@@ -257,23 +252,7 @@ class UseCaseConfig {
     }
 
     @Bean
-    StartCollectionHandler startCollectionHandler(List<MemeSourcePort> sources, CollectionRunPort runs) {
-        return new StartCollectionHandler(sources, runs);
-    }
-
-    @Bean
-    RunCollectionHandler runCollectionHandler(RemoteFetchPort fetcher, IngestMemeHandler ingest,
-                                              CollectionRunPort runs) {
-        return new RunCollectionHandler(fetcher, ingest, runs);
-    }
-
-    @Bean
     ImportFromUrlHandler importFromUrlHandler(RemoteFetchPort fetcher, IngestMemeHandler ingest) {
         return new ImportFromUrlHandler(fetcher, ingest);
-    }
-
-    @Bean
-    ListCollectionRunsHandler listCollectionRunsHandler(CollectionRunPort runs) {
-        return new ListCollectionRunsHandler(runs);
     }
 }

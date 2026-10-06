@@ -1,6 +1,6 @@
-import type { CollectionRun, IngestResult, RunStatus } from '../api/types';
+import type { IngestResult } from '../api/types';
 
-/** The sources an administrator can pick; the ids the server uses are shown in Chinese. */
+/** Where a picture in the library came from (its source type), shown in Chinese. */
 const SOURCE_TYPE_LABELS: Record<string, string> = {
   IMGFLIP: 'Imgflip',
   WIKIMEDIA: '維基共享資源',
@@ -36,34 +36,6 @@ export function describeUploads(summary: UploadSummary): string {
   if (summary.duplicates > 0) parts.push(`${summary.duplicates} 張已經在圖庫裡`);
   if (summary.rejected.length > 0) parts.push(`${summary.rejected.length} 張不能用`);
   return parts.length > 0 ? parts.join('、') : '沒有收到任何圖片';
-}
-
-export const RUN_STATUS_LABELS: Record<RunStatus, string> = {
-  RUNNING: '進行中',
-  COMPLETED: '已完成',
-  FAILED: '失敗',
-};
-
-export function hasActiveRun(runs: readonly CollectionRun[]): boolean {
-  return runs.some((run) => run.status === 'RUNNING');
-}
-
-/** How often to ask again for the run list: often while something is running, rarely otherwise. */
-export function runListDelay(runs: readonly CollectionRun[]): number | null {
-  return hasActiveRun(runs) ? 2_000 : null;
-}
-
-/** The options of a source as the server wants them: only the ones that differ from the default. */
-export function changedOptions(
-  options: ReadonlyArray<{ key: string; defaultValue: string }>,
-  values: Readonly<Record<string, string>>,
-): Record<string, string> {
-  const result: Record<string, string> = {};
-  for (const { key, defaultValue } of options) {
-    const value = (values[key] ?? defaultValue).trim();
-    if (value !== '' && value !== defaultValue) result[key] = value;
-  }
-  return result;
 }
 
 /** Accepts only addresses a browser would open; the server checks them again. */

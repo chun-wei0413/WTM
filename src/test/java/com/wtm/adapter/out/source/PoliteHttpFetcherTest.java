@@ -85,8 +85,7 @@ class PoliteHttpFetcherTest {
 
     private PoliteHttpFetcher fetcher(boolean allowPrivate, Duration minDelay) {
         return new PoliteHttpFetcher(new SourceProperties("wtm-test/1.0 (testing)", "tester@example.com",
-                minDelay, Duration.ofSeconds(5), DataSize.ofKilobytes(64), DataSize.ofKilobytes(64), allowPrivate,
-                new SourceProperties.Ptt(List.of("StupidClown"))));
+                minDelay, Duration.ofSeconds(5), DataSize.ofKilobytes(64), DataSize.ofKilobytes(64), allowPrivate));
     }
 
     @Test
