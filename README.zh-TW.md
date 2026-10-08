@@ -98,4 +98,5 @@ docker compose -f docker-compose.app.yml up -d   # 然後開 http://localhost:80
 ## 更多
 
 怎麼執行、API、設計決策與已知限制,請看 [docs/technical.zh-TW.md](docs/technical.zh-TW.md)
-與 [docs/DECISIONS.md](docs/DECISIONS.md)(英文)。
+與 [docs/DECISIONS.md](docs/DECISIONS.md)(英文)。在 Mac 上執行、把圖庫搬到另一台電腦(或備份),
+請看 [docs/macos.zh-TW.md](docs/macos.zh-TW.md)。

@@ -107,4 +107,5 @@ See [docs/technical.md](docs/technical.md#docker-images-ci-and-releases) for wha
 ## More
 
 How to run it, the API, the design decisions and the known limitations are in
-[docs/technical.md](docs/technical.md) and [docs/DECISIONS.md](docs/DECISIONS.md).
+[docs/technical.md](docs/technical.md) and [docs/DECISIONS.md](docs/DECISIONS.md). Running it on a Mac, and moving a library
+from one computer to another (or backing it up), is in [docs/macos.md](docs/macos.md).
