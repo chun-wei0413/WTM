@@ -20,7 +20,7 @@
     <properties>
         <java.version>21</java.version>
         <archunit.version>1.5.1</archunit.version>
-        <awssdk.version>2.55.9</awssdk.version>
+        <awssdk.version>2.55.11</awssdk.version>
         <jsoup.version>1.23.2</jsoup.version>
     </properties>
 
