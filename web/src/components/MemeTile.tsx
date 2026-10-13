@@ -5,6 +5,7 @@ import { useFavorites } from '../favorites/FavoritesContext';
 import { fileNameFor, saveBlob } from '../lib/download';
 import { ErrorNotice } from './ErrorNotice';
 import { MemeDetails } from './MemeDetails';
+import { MemeViewer } from './MemeViewer';
 
 interface Props {
   item: LibraryItem;
@@ -20,7 +21,10 @@ interface Props {
   reason?: string;
 }
 
-/** One meme: the picture, the two things people do with it (download, favorite), and the rest behind "詳情". */
+/**
+ * One meme: the picture, the two things people do with it (download, favorite), and the rest behind "詳情".
+ * Clicking the picture or its description opens it large, with the description in full.
+ */
 export function MemeTile({ item, children, index, lead, badge, reason }: Props) {
   const pop = index !== undefined;
   const { isFavorite, add, remove } = useFavorites();
@@ -29,6 +33,7 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
   const [starring, setStarring] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [viewing, setViewing] = useState(false);
   const [reported, setReported] = useState(false);
 
   async function download() {
@@ -56,17 +61,37 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
     }
   }
 
+  const actions = (
+    <>
+      <button type="button" className="button" onClick={download} disabled={downloading}>
+        {downloading ? '下載中…' : '下載'}
+      </button>
+      <button
+        type="button"
+        className={favorite ? 'button button-favorite active' : 'button button-favorite'}
+        onClick={toggleFavorite}
+        disabled={starring}
+        aria-pressed={favorite}
+      >
+        {favorite ? '★ 已收藏' : '☆ 收藏'}
+      </button>
+    </>
+  );
+  const details = <MemeDetails item={item} reported={reported} onReported={() => setReported(true)} />;
+
   return (
     <article
       className={pop ? `meme-tile tile-pop${lead ? ' tile-lead' : ''}${badge ? ' tile-picked' : ''}` : 'card meme-tile'}
     >
-      <img
-        src={item.imageUrl}
-        alt={item.meaning ?? item.name}
-        width={item.imageWidth}
-        height={item.imageHeight}
-        loading={lead ? 'eager' : 'lazy'}
-      />
+      <button type="button" className="tile-picture" onClick={() => setViewing(true)} aria-label={`放大看「${item.name}」`}>
+        <img
+          src={item.imageUrl}
+          alt={item.meaning ?? item.name}
+          width={item.imageWidth}
+          height={item.imageHeight}
+          loading={lead ? 'eager' : 'lazy'}
+        />
+      </button>
       {pop && (
         <div className="tile-caption">
           <span className={badge ? 'tile-no tile-no-word' : 'tile-no'} aria-hidden={badge ? undefined : true}>
@@ -79,7 +104,11 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
               <p className="tile-reason-hint">AI 寫的,不一定準</p>
             </div>
           )}
-          {item.meaning && <p className="tile-meaning">{item.meaning}</p>}
+          {item.meaning && (
+            <button type="button" className="tile-meaning-button" onClick={() => setViewing(true)} title="看完整說明">
+              <span className="tile-meaning">{item.meaning}</span>
+            </button>
+          )}
           {item.tags.length > 0 && (
             <ul className="tag-list" aria-label="標籤">
               {item.tags.slice(0, lead ? 8 : 4).map((tag) => (
@@ -90,18 +119,7 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
         </div>
       )}
       <div className="tile-bar">
-        <button type="button" className="button" onClick={download} disabled={downloading}>
-          {downloading ? '下載中…' : '下載'}
-        </button>
-        <button
-          type="button"
-          className={favorite ? 'button button-favorite active' : 'button button-favorite'}
-          onClick={toggleFavorite}
-          disabled={starring}
-          aria-pressed={favorite}
-        >
-          {favorite ? '★ 已收藏' : '☆ 收藏'}
-        </button>
+        {actions}
         {children}
         <button
           type="button"
@@ -127,8 +145,17 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
               ))}
             </ul>
           )}
-          <MemeDetails item={item} reported={reported} onReported={() => setReported(true)} />
+          {details}
         </div>
+      )}
+      {viewing && (
+        <MemeViewer
+          item={item}
+          onClose={() => setViewing(false)}
+          actions={actions}
+          details={details}
+          notice={error != null && <ErrorNotice error={error} />}
+        />
       )}
     </article>
   );
