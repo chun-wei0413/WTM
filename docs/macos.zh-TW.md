@@ -127,8 +127,6 @@ IMAGE_NAMESPACE=wtm-local WTM_VERSION=local docker compose -f docker-compose.app
 `docker compose -f docker-compose.app.yml down`(volume 和圖庫都會保留;千萬不要加 `-v`)。
 匯出腳本也要加同樣的兩個名字:`PG_CONTAINER=wtm-app-postgres-1 S3_CONTAINER=wtm-app-object-storage-1 bash scripts/export-data.sh`。
 
-匯入時算的是資料庫裡所有的梗圖,搜尋索引只收已核准的,所以圖庫裡有下架的梗圖時兩個數字會不同,這是正常的。
-
 ## 出問題時
 
 | 看到什麼 | 代表什麼 |
@@ -139,6 +137,21 @@ IMAGE_NAMESPACE=wtm-local WTM_VERSION=local docker compose -f docker-compose.app
 | `db.dump does not match MANIFEST.txt` | 複製過程損壞了,重新複製整個資料夾 |
 | 最後的筆數對不上 | 不要使用這次匯入。回舊電腦重新匯出,對照 `MANIFEST.txt` |
 | 梗圖都在,但搜尋找不到 | 搜尋索引要用嵌入模型:執行 `ollama list` 確認有 `bge-m3` |
+| 登入一直說密碼錯誤 | 管理員帳號是跟著資料庫搬過來的,所以密碼是**舊電腦** `.env` 裡的 `WTM_ADMIN_PASSWORD`,不是 Mac 的。忘記的話看下面 |
+
+**忘記管理員密碼時**,把它改成這台 Mac `.env` 裡的 `WTM_ADMIN_PASSWORD`。在專案資料夾、資料庫有在跑的情況下執行
+(整個網站放在 Docker 裡跑的話,把 `wtm-postgres` 換成 `wtm-app-postgres-1`):
+
+```bash
+PW="$(grep '^WTM_ADMIN_PASSWORD=' .env | cut -d= -f2-)"
+docker exec -i wtm-postgres psql -q -U wtm -d wtm -v ON_ERROR_STOP=1 -v pw="$PW" <<'SQL'
+create extension if not exists pgcrypto;
+update app_user set password_hash = crypt(:'pw', gen_salt('bf', 10)) where role = 'ADMIN';
+drop extension pgcrypto;
+SQL
+```
+
+只會改密碼,帳號、收藏和梗圖都不動。失敗太多次會暫時鎖住那個位址的登入,稍等一下再試。
 
 ## 當作備份用
 

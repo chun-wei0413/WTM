@@ -131,9 +131,6 @@ Run the same line after a restart. After changing the code, build the images aga
 `docker compose -f docker-compose.app.yml down` (the volumes, and so the library, stay; never add `-v`).
 The export script takes the same two names: `PG_CONTAINER=wtm-app-postgres-1 S3_CONTAINER=wtm-app-object-storage-1 bash scripts/export-data.sh`.
 
-The import counts only the memes the database has, while the search index holds only the approved ones, so with retired
-memes in the library the two numbers differ. That is expected.
-
 ## If something goes wrong
 
 | What you see | What it means |
@@ -144,6 +141,22 @@ memes in the library the two numbers differ. That is expected.
 | `db.dump does not match MANIFEST.txt` | The copy is damaged. Copy the folder again |
 | The numbers at the end do not match | Do not use the import. Export again on the old computer and compare `MANIFEST.txt` |
 | Searching finds nothing but the memes are there | The search index needs the embedding model: check `ollama list` shows `bge-m3` |
+| Signing in says the password is wrong | The administrator came with the database, so its password is the `WTM_ADMIN_PASSWORD` of the **old** computer's `.env`, not of the Mac's. If it is lost, see below |
+
+**If the administrator's password is lost**, give it the `WTM_ADMIN_PASSWORD` of this Mac's `.env`. From the project folder, with
+the database running (for the site run from Docker, write `wtm-app-postgres-1` in place of `wtm-postgres`):
+
+```bash
+PW="$(grep '^WTM_ADMIN_PASSWORD=' .env | cut -d= -f2-)"
+docker exec -i wtm-postgres psql -q -U wtm -d wtm -v ON_ERROR_STOP=1 -v pw="$PW" <<'SQL'
+create extension if not exists pgcrypto;
+update app_user set password_hash = crypt(:'pw', gen_salt('bf', 10)) where role = 'ADMIN';
+drop extension pgcrypto;
+SQL
+```
+
+Only the password changes; the accounts, favourites and memes stay as they are. Too many failed attempts lock signing in
+from that address for a while, so wait a little before trying again.
 
 ## As a backup
 
