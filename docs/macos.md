@@ -98,6 +98,42 @@ cd web && npm install && npm run dev        # the web page, http://localhost:517
 **Signing in.** The accounts came with the database, so sign in with the administrator password you used on the old computer.
 The `WTM_ADMIN_PASSWORD` in the new `.env` is only used when there is no administrator yet.
 
+## Or: run the whole site in Docker
+
+Steps 4 and 5 run the application from the source, for working on it. To simply keep the site running, put it all in
+containers with `docker-compose.app.yml` (one address, http://localhost:8080; no Java or Node needed once the images are built).
+
+**Build the images on the Mac.** The images on Docker Hub are made for Intel and AMD only, and may be older than your code
+(the database must not be newer than the application). Build them from the code you have:
+
+```bash
+docker build -t wtm-local/wtm-backend:local .
+docker build -t wtm-local/wtm-web:local web
+```
+
+**Import into the site's own containers.** This file keeps its database and pictures in Docker volumes of its own, not in
+the data folder of `.env`, and its containers have other names. Start only those two, and tell the import script their names:
+
+```bash
+docker compose -f docker-compose.app.yml up -d postgres object-storage
+PG_CONTAINER=wtm-app-postgres-1 S3_CONTAINER=wtm-app-object-storage-1 \
+  bash scripts/import-data.sh ~/Downloads/wtm-export-<date>
+```
+
+**Start it**, with the models of step 5 in `.env` (Ollama runs on the Mac, not in a container; keep it running with
+`brew services start ollama`):
+
+```bash
+IMAGE_NAMESPACE=wtm-local WTM_VERSION=local docker compose -f docker-compose.app.yml up -d
+```
+
+Run the same line after a restart. After changing the code, build the images again first. To stop it:
+`docker compose -f docker-compose.app.yml down` (the volumes, and so the library, stay; never add `-v`).
+The export script takes the same two names: `PG_CONTAINER=wtm-app-postgres-1 S3_CONTAINER=wtm-app-object-storage-1 bash scripts/export-data.sh`.
+
+The import counts only the memes the database has, while the search index holds only the approved ones, so with retired
+memes in the library the two numbers differ. That is expected.
+
 ## If something goes wrong
 
 | What you see | What it means |

@@ -94,6 +94,41 @@ cd web && npm install && npm run dev        # 網頁,http://localhost:5173
 **登入。** 帳號是跟著資料庫一起來的,所以用**舊電腦上管理員的密碼**登入。新 `.env` 裡的 `WTM_ADMIN_PASSWORD`
 只有在「還沒有任何管理員」時才會用到。
 
+## 或者:整個網站都放在 Docker 裡跑
+
+步驟 4 和 5 是從原始碼執行,適合開發。如果只是要讓網站一直開著,用 `docker-compose.app.yml` 把全部放進容器
+(只有一個網址 http://localhost:8080;映像檔建好之後不需要 Java 或 Node)。
+
+**在 Mac 上自己建映像檔。** Docker Hub 上的映像檔只有 Intel/AMD 版本,而且可能比你的程式碼舊
+(資料庫不能比應用程式新)。用手上的程式碼建:
+
+```bash
+docker build -t wtm-local/wtm-backend:local .
+docker build -t wtm-local/wtm-web:local web
+```
+
+**匯入到這組網站自己的容器。** 這個檔案把資料庫和圖片放在它自己的 Docker volume,不在 `.env` 的資料夾裡,
+容器名稱也不一樣。只先啟動這兩個,並告訴匯入腳本它們的名字:
+
+```bash
+docker compose -f docker-compose.app.yml up -d postgres object-storage
+PG_CONTAINER=wtm-app-postgres-1 S3_CONTAINER=wtm-app-object-storage-1 \
+  bash scripts/import-data.sh ~/Downloads/wtm-export-<日期>
+```
+
+**啟動**,`.env` 裡要有步驟 5 的模型設定(Ollama 跑在 Mac 上,不在容器裡;用 `brew services start ollama`
+讓它常駐):
+
+```bash
+IMAGE_NAMESPACE=wtm-local WTM_VERSION=local docker compose -f docker-compose.app.yml up -d
+```
+
+重開機後執行同一行即可。改過程式碼的話,要先重建映像檔。要停掉:
+`docker compose -f docker-compose.app.yml down`(volume 和圖庫都會保留;千萬不要加 `-v`)。
+匯出腳本也要加同樣的兩個名字:`PG_CONTAINER=wtm-app-postgres-1 S3_CONTAINER=wtm-app-object-storage-1 bash scripts/export-data.sh`。
+
+匯入時算的是資料庫裡所有的梗圖,搜尋索引只收已核准的,所以圖庫裡有下架的梗圖時兩個數字會不同,這是正常的。
+
 ## 出問題時
 
 | 看到什麼 | 代表什麼 |
