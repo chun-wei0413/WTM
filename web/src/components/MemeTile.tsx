@@ -2,10 +2,9 @@ import { useState, type ReactNode } from 'react';
 import { api } from '../api/client';
 import type { LibraryItem } from '../api/types';
 import { useFavorites } from '../favorites/FavoritesContext';
-import { attributionNote, isHttpUrl, sourceTypeLabel } from '../lib/collection';
 import { fileNameFor, saveBlob } from '../lib/download';
 import { ErrorNotice } from './ErrorNotice';
-import { ReportForm } from './ReportForm';
+import { MemeDetails } from './MemeDetails';
 
 interface Props {
   item: LibraryItem;
@@ -30,10 +29,7 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
   const [starring, setStarring] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const [reporting, setReporting] = useState(false);
   const [reported, setReported] = useState(false);
-  const source = sourceTypeLabel(item.sourceType);
-  const note = attributionNote(source, item.attribution);
 
   async function download() {
     setDownloading(true);
@@ -131,63 +127,7 @@ export function MemeTile({ item, children, index, lead, badge, reason }: Props) 
               ))}
             </ul>
           )}
-          {item.reference && (
-            <div className="tile-reference">
-              <span className="tile-reference-label">來源說明</span>
-              <p>{item.reference.text}</p>
-              <p className="tile-reference-credit">
-                出處:
-                {item.reference.url && isHttpUrl(item.reference.url) ? (
-                  <a href={item.reference.url} target="_blank" rel="noreferrer">
-                    {item.reference.sourceName ?? '原文'}
-                  </a>
-                ) : (
-                  (item.reference.sourceName ?? '未知')
-                )}
-                {item.reference.license && `,${item.reference.license}`}
-              </p>
-            </div>
-          )}
-          {(source || note) && (
-            <span className="muted">
-              來源:
-              {item.sourceUrl && isHttpUrl(item.sourceUrl) ? (
-                <a href={item.sourceUrl} target="_blank" rel="noreferrer">
-                  {source ?? '原始網址'}
-                </a>
-              ) : (
-                source
-              )}
-              {note && `(${note})`}
-            </span>
-          )}
-          <div>
-            <button
-              type="button"
-              className="button button-quiet"
-              onClick={() => setReporting((open) => !open)}
-              disabled={reported}
-              aria-expanded={reporting}
-              title="標籤、描述不精確,或這不是梗圖?告訴管理員"
-            >
-              {reported ? '已回報' : '回報問題'}
-            </button>
-          </div>
-          {reporting && !reported && (
-            <ReportForm
-              templateId={item.templateId}
-              onSent={() => {
-                setReported(true);
-                setReporting(false);
-              }}
-              onCancel={() => setReporting(false)}
-            />
-          )}
-          {reported && (
-            <p className="notice notice-success" role="status">
-              已回報,謝謝你!管理員會查看,並請影像模型重新看這張圖。
-            </p>
-          )}
+          <MemeDetails item={item} reported={reported} onReported={() => setReported(true)} />
         </div>
       )}
     </article>
