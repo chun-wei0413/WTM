@@ -74,7 +74,7 @@ trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
 |---|---|
 | Language / framework | Java 21, Spring Boot 3.5 |
 | Web client | React 19, TypeScript, Vite, React Router (no UI library) |
-| Database | PostgreSQL 16 with `pgvector` (semantic search), Flyway migrations. Keyword search is BM25 in the application |
+| Database | PostgreSQL 16 with `pgvector` (semantic search), Flyway migrations. Keyword search is BM25 with Apache Lucene, in the application's memory |
 | Object storage | Any S3-compatible store through the AWS SDK v2 (RustFS in Docker Compose) |
 | Models | [Ollama](https://ollama.com): `bge-m3` for embeddings, `qwen2.5vl:7b` for looking at pictures; a deterministic mock is the default |
 | Security | Spring Security resource server, HS256 JWT, BCrypt |

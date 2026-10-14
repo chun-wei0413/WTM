@@ -73,7 +73,7 @@ flowchart TB
 |---|---|
 | 語言與框架 | Java 21、Spring Boot 3.5 |
 | 網頁前端 | React 19、TypeScript、Vite、React Router(不使用 UI 套件) |
-| 資料庫 | PostgreSQL 16,搭配 `pgvector`(語意搜尋),以 Flyway 管理遷移。關鍵字搜尋是應用程式內建的 BM25 |
+| 資料庫 | PostgreSQL 16,搭配 `pgvector`(語意搜尋),以 Flyway 管理遷移。關鍵字搜尋是 Apache Lucene 的 BM25,索引放在應用程式記憶體裡 |
 | 物件儲存 | 任何相容 S3 的服務,透過 AWS SDK v2(Docker Compose 使用 RustFS) |
 | 模型 | [Ollama](https://ollama.com):`bge-m3` 做 embedding、`qwen2.5vl:7b` 看圖;預設使用可重現的模擬模型 |
 | 安全 | Spring Security Resource Server、HS256 JWT、BCrypt |

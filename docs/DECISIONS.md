@@ -131,8 +131,8 @@ the templates table to filter by status) has not been checked.
 ## 5. Hybrid search, and what the numbers say about it
 
 **Decision (revised 2026-10-14; the first version, below, used `pg_trgm` and reciprocal rank fusion).** Search runs a
-semantic ranking (cosine similarity of `bge-m3` embeddings) and a keyword ranking (**BM25**, built in the application over the
-searchable text of every published meme, Chinese cut into overlapping two-character pieces) and merges them by a **weighted
+semantic ranking (cosine similarity of `bge-m3` embeddings) and a keyword ranking (**BM25** with Apache Lucene, kept in memory in the
+application over the searchable text of every published meme, Chinese cut into overlapping two-character pieces) and merges them by a **weighted
 sum of their scores, each scaled to 0..1 within its own list**, with a weight of 0.7 on the semantic ranking
 (`wtm.search.dense-weight`). If the embedding service fails, the keyword ranking alone still answers.
 
@@ -148,8 +148,14 @@ Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
 
 **Why not earlier.** `pg_trgm` was chosen in decision 4 because it is built into PostgreSQL and matches Chinese substrings
 without a word list; BM25 was not measured then. BM25 needs the text cut into words, which for Chinese is done here by pairs of
-characters, and PostgreSQL has no built-in BM25. Keeping the index in the application costs a few milliseconds when the
-library changes and no new component. The `pg_trgm` extension and its index are still in the database, unused by the search.
+characters, and PostgreSQL has no built-in BM25. The first implementation was written by hand (about 100 lines); it was
+then replaced by Apache Lucene, a library and not a new service: when the library changes, Lucene writes only the memes whose
+text changed instead of building the whole index again (the work grows with the memes that changed, not with the size of
+the library), and it is tested far more widely. Measured in the running application, the two give the same result (first
+result 83%, top three 90%, top ten 95%, MRR 0.87; 72% / 81% / 89% with the embedding service unreachable, against 73% / 81% /
+89% by hand). Lucene's dictionary-based Chinese segmenter (`SmartChineseAnalyzer`) was tried too and was no better (same
+83% / 90% / 95%, MRR 0.87, a little lower on named works and on situations), so the two-character pieces of `CJKAnalyzer`
+stay, without an extra dependency. The `pg_trgm` extension and its index are still in the database, unused by the search.
 
 **What was measured for the first version** (real `bge-m3` through Ollama; 12 hand-written templates, 20 situation
 queries; run with `mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true`):
