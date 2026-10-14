@@ -22,6 +22,7 @@
         <archunit.version>1.5.1</archunit.version>
         <awssdk.version>2.55.11</awssdk.version>
         <jsoup.version>1.23.2</jsoup.version>
+        <lucene.version>10.5.2</lucene.version>
     </properties>
 
     <dependencyManagement>
@@ -76,6 +77,16 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analysis-common</artifactId>
+            <version>${lucene.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

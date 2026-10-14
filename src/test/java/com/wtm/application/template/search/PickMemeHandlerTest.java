@@ -33,7 +33,8 @@ class PickMemeHandlerTest {
     private final MemeExplainerPort explainer = mock(MemeExplainerPort.class);
     private final RateLimiterPort limiter = mock(RateLimiterPort.class);
     private final PickMemeHandler handler =
-            new PickMemeHandler(new SearchTemplatesHandler(searchPort, embeddings, storage), explainer, limiter);
+            new PickMemeHandler(new SearchTemplatesHandler(searchPort, (query, limit) -> List.of(), embeddings, storage,
+                    SearchTemplatesHandler.DEFAULT_DENSE_WEIGHT), explainer, limiter);
 
     private final UUID first = UUID.randomUUID();
     private final UUID second = UUID.randomUUID();

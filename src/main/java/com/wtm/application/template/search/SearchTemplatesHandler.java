@@ -1,6 +1,7 @@
 package com.wtm.application.template.search;
 
 import com.wtm.application.port.out.EmbeddingPort;
+import com.wtm.application.port.out.KeywordSearchPort;
 import com.wtm.application.port.out.ObjectStoragePort;
 import com.wtm.application.port.out.TemplateSearchPort;
 import com.wtm.application.port.out.TemplateSearchPort.Hit;
@@ -28,12 +29,12 @@ public class SearchTemplatesHandler {
     public static final double DEFAULT_DENSE_WEIGHT = 0.7;
 
     private final TemplateSearchPort search;
-    private final KeywordSearch keywords;
+    private final KeywordSearchPort keywords;
     private final EmbeddingPort embeddings;
     private final ObjectStoragePort storage;
     private final double denseWeight;
 
-    public SearchTemplatesHandler(TemplateSearchPort search, KeywordSearch keywords, EmbeddingPort embeddings,
+    public SearchTemplatesHandler(TemplateSearchPort search, KeywordSearchPort keywords, EmbeddingPort embeddings,
                                   ObjectStoragePort storage, double denseWeight) {
         if (denseWeight < 0 || denseWeight > 1) {
             throw new IllegalArgumentException("The semantic weight must be between 0 and 1");
@@ -43,10 +44,6 @@ public class SearchTemplatesHandler {
         this.embeddings = embeddings;
         this.storage = storage;
         this.denseWeight = denseWeight;
-    }
-
-    public SearchTemplatesHandler(TemplateSearchPort search, EmbeddingPort embeddings, ObjectStoragePort storage) {
-        this(search, new KeywordSearch(search), embeddings, storage, DEFAULT_DENSE_WEIGHT);
     }
 
     public List<SearchResult> handle(String query, int limit) {

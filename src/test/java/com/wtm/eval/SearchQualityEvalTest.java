@@ -66,7 +66,7 @@ class SearchQualityEvalTest extends IntegrationTestBase {
     @Autowired EmbeddingPort embeddings;
     @Autowired TemplateSearchPort searchPort;
     @Autowired SearchTemplatesHandler hybrid;
-    @Autowired com.wtm.application.template.search.KeywordSearch keywordSearch;
+    @Autowired com.wtm.application.port.out.KeywordSearchPort keywordSearch;
     @Autowired SyncSearchIndexHandler sync;
     @Autowired DraftTemplateHandler draft;
     @Autowired ReviseProfileHandler reviseProfile;
