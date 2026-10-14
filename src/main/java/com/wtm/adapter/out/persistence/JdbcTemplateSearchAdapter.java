@@ -14,9 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 class JdbcTemplateSearchAdapter implements TemplateSearchPort {
 
-    /** Minimum trigram word similarity for a keyword hit (0..1). */
-    private static final double KEYWORD_THRESHOLD = 0.3;
-
     private final JdbcClient jdbc;
     private final ObjectMapper json;
 
@@ -26,32 +23,41 @@ class JdbcTemplateSearchAdapter implements TemplateSearchPort {
     }
 
     @Override
-    public List<UUID> byVector(float[] queryEmbedding, int limit) {
+    public List<Hit> byVector(float[] queryEmbedding, int limit) {
+        String vector = VectorLiteral.of(queryEmbedding);
         return jdbc.sql("""
-                        SELECT s.template_id
+                        SELECT s.template_id, 1 - (s.embedding <=> ?::vector) AS similarity
                         FROM template_search s
                         JOIN meme_template t ON t.id = s.template_id
                         WHERE t.status = 'APPROVED'
                         ORDER BY s.embedding <=> ?::vector
                         LIMIT ?""")
-                .params(List.of(VectorLiteral.of(queryEmbedding), limit))
-                .query(UUID.class)
+                .params(List.of(vector, vector, limit))
+                .query((rs, n) -> new Hit(rs.getObject("template_id", UUID.class), rs.getDouble("similarity")))
                 .list();
     }
 
     @Override
-    public List<UUID> byKeyword(String query, int limit) {
+    public List<IndexedText> searchTexts() {
         return jdbc.sql("""
-                        SELECT s.template_id
+                        SELECT s.template_id, s.search_text
                         FROM template_search s
                         JOIN meme_template t ON t.id = s.template_id
                         WHERE t.status = 'APPROVED'
-                          AND word_similarity(?, s.search_text) > ?
-                        ORDER BY word_similarity(?, s.search_text) DESC
-                        LIMIT ?""")
-                .params(List.of(query, KEYWORD_THRESHOLD, query, limit))
-                .query(UUID.class)
+                        ORDER BY s.template_id""")
+                .query((rs, n) -> new IndexedText(rs.getObject("template_id", UUID.class), rs.getString("search_text")))
                 .list();
+    }
+
+    @Override
+    public String searchTextsVersion() {
+        return jdbc.sql("""
+                        SELECT count(*) || ':' || coalesce(max(s.indexed_at)::text, '') || ':' || coalesce(max(t.updated_at)::text, '')
+                        FROM template_search s
+                        JOIN meme_template t ON t.id = s.template_id
+                        WHERE t.status = 'APPROVED'""")
+                .query(String.class)
+                .single();
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.wtm.application.template.search;
 import com.wtm.application.port.out.EmbeddingPort;
 import com.wtm.application.port.out.ObjectStoragePort;
 import com.wtm.application.port.out.TemplateSearchPort;
+import com.wtm.application.port.out.TemplateSearchPort.Hit;
 import com.wtm.application.port.out.TemplateSearchPort.SearchCard;
-import com.wtm.application.template.search.ReciprocalRankFusion.Scored;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Hybrid search: semantic (vector) and keyword rankings merged with
- * reciprocal rank fusion. If the embedding service is down, keyword search
- * alone still answers.
+ * Hybrid search: the semantic (vector) ranking and the keyword ranking (BM25) merged by a weighted sum of their scores.
+ * If the embedding service is down, keyword search alone still answers.
  */
 public class SearchTemplatesHandler {
 
@@ -25,15 +24,29 @@ public class SearchTemplatesHandler {
     private static final Duration IMAGE_URL_TTL = Duration.ofMinutes(15);
     private static final int CANDIDATES_PER_RANKING = 20;
 
+    /** The weight of the semantic ranking when none is given: chosen on half of the evaluation queries, checked on the rest. */
+    public static final double DEFAULT_DENSE_WEIGHT = 0.7;
+
     private final TemplateSearchPort search;
+    private final KeywordSearch keywords;
     private final EmbeddingPort embeddings;
     private final ObjectStoragePort storage;
+    private final double denseWeight;
 
-    public SearchTemplatesHandler(TemplateSearchPort search, EmbeddingPort embeddings,
-                                  ObjectStoragePort storage) {
+    public SearchTemplatesHandler(TemplateSearchPort search, KeywordSearch keywords, EmbeddingPort embeddings,
+                                  ObjectStoragePort storage, double denseWeight) {
+        if (denseWeight < 0 || denseWeight > 1) {
+            throw new IllegalArgumentException("The semantic weight must be between 0 and 1");
+        }
         this.search = search;
+        this.keywords = keywords;
         this.embeddings = embeddings;
         this.storage = storage;
+        this.denseWeight = denseWeight;
+    }
+
+    public SearchTemplatesHandler(TemplateSearchPort search, EmbeddingPort embeddings, ObjectStoragePort storage) {
+        this(search, new KeywordSearch(search), embeddings, storage, DEFAULT_DENSE_WEIGHT);
     }
 
     public List<SearchResult> handle(String query, int limit) {
@@ -43,11 +56,11 @@ public class SearchTemplatesHandler {
         }
         int candidates = Math.max(CANDIDATES_PER_RANKING, limit * 2);
 
-        List<UUID> semantic = semanticRanking(text, candidates);
-        List<UUID> keyword = search.byKeyword(text, candidates);
+        List<Hit> semantic = semanticRanking(text, candidates);
+        List<Hit> keyword = keywords.search(text, candidates);
 
-        List<Scored> fused = ReciprocalRankFusion.fuse(List.of(semantic, keyword), limit);
-        Map<UUID, SearchCard> cards = search.cards(fused.stream().map(Scored::id).toList()).stream()
+        List<Hit> fused = ConvexFusion.fuse(semantic, keyword, denseWeight, limit);
+        Map<UUID, SearchCard> cards = search.cards(fused.stream().map(Hit::id).toList()).stream()
                 .collect(Collectors.toMap(SearchCard::id, Function.identity()));
 
         return fused.stream()
@@ -63,7 +76,7 @@ public class SearchTemplatesHandler {
                 .toList();
     }
 
-    private List<UUID> semanticRanking(String text, int limit) {
+    private List<Hit> semanticRanking(String text, int limit) {
         try {
             return search.byVector(embeddings.embed(text), limit);
         } catch (RuntimeException e) {

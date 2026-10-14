@@ -37,6 +37,8 @@ wtm:
     access-key: ${S3_ACCESS_KEY}
     secret-key: ${S3_SECRET_KEY}
     bucket: wtm
+  search:
+    dense-weight: 0.7         # semantic ranking against keyword ranking (BM25): 0 = keywords only, 1 = meaning only
   vision:                     # looks at collected pictures and describes them
     provider: ${WTM_VISION_PROVIDER:mock}      # mock | ollama | gemini; from the environment or .env
     ollama:

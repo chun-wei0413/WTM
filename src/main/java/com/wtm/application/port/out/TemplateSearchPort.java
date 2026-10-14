@@ -7,13 +7,25 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Read side of template search. Each method returns template ids ranked best first.
+ * Read side of template search.
  */
 public interface TemplateSearchPort {
 
-    List<UUID> byVector(float[] queryEmbedding, int limit);
+    /** The published memes whose meaning is nearest to the query, best first, with their cosine similarity. */
+    List<Hit> byVector(float[] queryEmbedding, int limit);
 
-    List<UUID> byKeyword(String query, int limit);
+    /** The searchable text of every published meme, which the application ranks by keywords itself (BM25). */
+    List<IndexedText> searchTexts();
+
+    /** Changes whenever {@link #searchTexts()} would answer differently, so a copy can be kept until then. */
+    String searchTextsVersion();
+
+    /** A meme and how well it matched, higher is better. */
+    record Hit(UUID id, double score) {
+    }
+
+    record IndexedText(UUID id, String text) {
+    }
 
     List<SearchCard> cards(Collection<UUID> templateIds);
 

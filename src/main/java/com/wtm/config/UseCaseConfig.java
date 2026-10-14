@@ -60,6 +60,7 @@ import com.wtm.application.template.index.SyncSearchIndexHandler;
 import com.wtm.application.template.query.GetTemplateHandler;
 import com.wtm.application.template.query.ListTemplatesHandler;
 import com.wtm.application.template.search.PickMemeHandler;
+import com.wtm.application.template.search.KeywordSearch;
 import com.wtm.application.template.search.SearchTemplatesHandler;
 import java.time.Clock;
 import java.util.List;
@@ -145,9 +146,14 @@ class UseCaseConfig {
     }
 
     @Bean
-    SearchTemplatesHandler searchTemplatesHandler(TemplateSearchPort search, EmbeddingPort embeddings,
-                                                  ObjectStoragePort storage) {
-        return new SearchTemplatesHandler(search, embeddings, storage);
+    KeywordSearch keywordSearch(TemplateSearchPort search) {
+        return new KeywordSearch(search);
+    }
+
+    @Bean
+    SearchTemplatesHandler searchTemplatesHandler(TemplateSearchPort search, KeywordSearch keywords, EmbeddingPort embeddings,
+                                                  ObjectStoragePort storage, SearchProperties properties) {
+        return new SearchTemplatesHandler(search, keywords, embeddings, storage, properties.denseWeight());
     }
 
     @Bean

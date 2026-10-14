@@ -66,6 +66,7 @@ class SearchQualityEvalTest extends IntegrationTestBase {
     @Autowired EmbeddingPort embeddings;
     @Autowired TemplateSearchPort searchPort;
     @Autowired SearchTemplatesHandler hybrid;
+    @Autowired com.wtm.application.template.search.KeywordSearch keywordSearch;
     @Autowired SyncSearchIndexHandler sync;
     @Autowired DraftTemplateHandler draft;
     @Autowired ReviseProfileHandler reviseProfile;
@@ -114,8 +115,8 @@ class SearchQualityEvalTest extends IntegrationTestBase {
 
         for (Query q : situations) {
             float[] qv = embeddings.embed(q.query());
-            List<String> vector = searchPort.byVector(qv, DEPTH).stream().map(names::get).toList();
-            List<String> keyword = searchPort.byKeyword(q.query(), DEPTH).stream().map(names::get).toList();
+            List<String> vector = searchPort.byVector(qv, DEPTH).stream().map(h -> names.get(h.id())).toList();
+            List<String> keyword = keywordSearch.search(q.query(), DEPTH).stream().map(h -> names.get(h.id())).toList();
             List<String> fused = hybrid.handle(q.query(), DEPTH).stream().map(SearchResult::name).toList();
             double nearest = nearestDistance(qv);
             String top = vector.isEmpty() ? "-" : vector.get(0);
@@ -163,8 +164,8 @@ class SearchQualityEvalTest extends IntegrationTestBase {
         report.append(String.format(Locale.ROOT, "%-24s %-16s %5s %5s %5s%n", "query", "expected", "vec", "kw", "hyb"));
         Stats nVec = new Stats(), nKw = new Stats(), nHyb = new Stats();
         for (Query q : nameQueries) {
-            List<String> vector = searchPort.byVector(embeddings.embed(q.query()), DEPTH).stream().map(names::get).toList();
-            List<String> keyword = searchPort.byKeyword(q.query(), DEPTH).stream().map(names::get).toList();
+            List<String> vector = searchPort.byVector(embeddings.embed(q.query()), DEPTH).stream().map(h -> names.get(h.id())).toList();
+            List<String> keyword = keywordSearch.search(q.query(), DEPTH).stream().map(h -> names.get(h.id())).toList();
             List<String> fused = hybrid.handle(q.query(), DEPTH).stream().map(SearchResult::name).toList();
             report.append(String.format(Locale.ROOT, "%-24s %-16s %5s %5s %5s%n", clip(q.query(), 22), clip(q.expected(), 14),
                     rank(nVec.record(vector, q.expected())), rank(nKw.record(keyword, q.expected())),

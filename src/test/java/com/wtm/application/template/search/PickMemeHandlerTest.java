@@ -41,8 +41,14 @@ class PickMemeHandlerTest {
 
     private void libraryFinds(UUID... ids) {
         when(embeddings.embed(anyString())).thenReturn(new float[] {0.1f});
-        when(searchPort.byVector(any(), anyInt())).thenReturn(List.of(ids));
-        when(searchPort.byKeyword(anyString(), anyInt())).thenReturn(List.of());
+        // the closest first: the first id is the most similar
+        List<TemplateSearchPort.Hit> hits = new java.util.ArrayList<>();
+        for (int i = 0; i < ids.length; i++) {
+            hits.add(new TemplateSearchPort.Hit(ids[i], 1.0 - i * 0.1));
+        }
+        when(searchPort.byVector(any(), anyInt())).thenReturn(hits);
+        when(searchPort.searchTexts()).thenReturn(List.of());
+        when(searchPort.searchTextsVersion()).thenReturn("empty");
         when(searchPort.cards(any())).thenAnswer(call -> {
             var requested = call.<java.util.Collection<UUID>>getArgument(0);
             return requested.stream().map(PickMemeHandlerTest::card).toList();
