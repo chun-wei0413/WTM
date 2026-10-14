@@ -38,7 +38,7 @@ wtm:
     secret-key: ${S3_SECRET_KEY}
     bucket: wtm
   vision:                     # looks at collected pictures and describes them
-    provider: mock            # mock | ollama | gemini
+    provider: ${WTM_VISION_PROVIDER:mock}      # mock | ollama | gemini; from the environment or .env
     ollama:
       base-url: http://localhost:11434
       model: qwen2.5vl:7b
@@ -46,13 +46,13 @@ wtm:
       model: gemini-3.5-flash-lite
       api-key: ${GEMINI_API_KEY:}
   embedding:
-    provider: mock            # mock | ollama
+    provider: ${WTM_EMBEDDING_PROVIDER:mock}   # mock | ollama
     dimension: 1024           # bge-m3
     ollama:
       base-url: http://localhost:11434
       model: bge-m3
   explainer:                  # reads a situation and the closest meme and says why it fits
-    provider: mock            # mock | ollama
+    provider: ${WTM_EXPLAINER_PROVIDER:mock}   # mock | ollama
     ollama:
       base-url: http://localhost:11434
       model: qwen2.5vl:7b     # only reads words here, so it shares the model already on the graphics card

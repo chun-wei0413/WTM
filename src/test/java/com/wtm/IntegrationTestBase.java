@@ -55,6 +55,11 @@ public abstract class IntegrationTestBase {
         registry.add("wtm.security.jwt.secret", () -> JWT_SECRET);
         registry.add("wtm.security.bootstrap-admin.password", () -> ADMIN_PASSWORD);
         registry.add("wtm.tagging.poll-interval", () -> "PT0.1S");
+        // The models are the mocks whatever the .env of the machine says (it can name real ones, and application.yml reads it),
+        // except in the evaluation that asks for the real embedding model.
+        registry.add("wtm.vision.provider", () -> "mock");
+        registry.add("wtm.explainer.provider", () -> "mock");
+        registry.add("wtm.embedding.provider", () -> Boolean.getBoolean("wtm.eval") ? "ollama" : "mock");
         // Tests trigger the index sync themselves so results are deterministic.
         registry.add("wtm.index.scheduler-enabled", () -> "false");
     }
