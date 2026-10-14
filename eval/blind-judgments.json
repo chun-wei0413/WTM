@@ -1,0 +1,532 @@
+{
+ "judge": "Claude, a single judge who was not blind to the systems. Rubric: would a reasonable user accept the first result (or one of the first three) as an answer to the query, whether or not it is the meme the query was written for.",
+ "sample": "40 of the 159 blind queries, random seed 5; one excluded because the query says nothing (#13)",
+ "summary": {
+  "scored": 39,
+  "top1_plausible": 22,
+  "top3_plausible": 29,
+  "none": 10
+ },
+ "items": [
+  {
+   "n": 1,
+   "query": "朋友間互打屁眼時",
+   "kind": "g-situation",
+   "target": "Megamind no bitches",
+   "top3": [
+    "Hold fart",
+    "Batman Slapping Robin",
+    "Will Smith Slapping Chris Rock"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 2,
+   "query": "當兩個朋友之間有爭執時會用到這張圖。",
+   "kind": "g-situation",
+   "target": "Stop It Patrick You're Scaring Him",
+   "top3": [
+    "Are You Two Friends",
+    "At Least You Tried",
+    "Spider Man Double"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 3,
+   "query": "在朋友找某樣東西很久卻找不到時，用來表達朋友的沮喪心情。",
+   "kind": "g-situation",
+   "target": "The Scroll Of Truth",
+   "top3": [
+    "Sad Bill Clinton",
+    "Sad George Bush",
+    "Sad Barack Obama"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 4,
+   "query": "穿著西裝戴眼鏡的老人，右手高舉，背景是藍色幕布",
+   "kind": "g-look",
+   "target": "The Rent Is Too Damn High",
+   "top3": [
+    "Grandma Finds The Internet",
+    "First Try!",
+    "Man Holding Cardboard Sign"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 5,
+   "query": "朋友間的誤會或競爭時",
+   "kind": "g-situation",
+   "target": "Distracted Girlfriend",
+   "top3": [
+    "whe i'm in a competition and my opponent is",
+    "Are You Two Friends",
+    "Spider Man Triple"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 6,
+   "query": "在講故事或開玩笑時，用來描述某人做錯事或者被責備的情況。",
+   "kind": "g-situation",
+   "target": "One Does Not Simply",
+   "top3": [
+    "And Then I Said",
+    "Spider Man Triple",
+    "Hand on shoulder guy"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 7,
+   "query": "小弟在喝啤酒，突然想說個冷笑话。",
+   "kind": "g-situation",
+   "target": "10 Guy",
+   "top3": [
+    "Laughing Leo",
+    "Good Fellas Hilarious",
+    "The Most Interesting Man in the World"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 8,
+   "query": "一個光著上身的男子，先將眼鏡拿在手中，然後戴在頭上，背景是雜亂的書架。",
+   "kind": "g-look",
+   "target": "Peter Parker's Glasses",
+   "top3": [
+    "Spiderman Glasses",
+    "Peter Parker's Glasses",
+    "Commonsjak as neutral"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 9,
+   "query": "兩個人站在粉紅牆前，上圖笑著，下圖沒笑，表情有些嚴肅。",
+   "kind": "g-look",
+   "target": "Squid Game",
+   "top3": [
+    "First Try!",
+    "Hide the Pain Harold",
+    "Two guys on a bus"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 10,
+   "query": "派對或音樂會上，被擠壓時的驚恐表情",
+   "kind": "g-situation",
+   "target": "Sudden Clarity Clarence",
+   "top3": [
+    "sweating bullets",
+    "Hold fart",
+    "undertaker"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 11,
+   "query": "三人站在街頭，一男一女面臨中間的男子",
+   "kind": "g-look",
+   "target": "Distracted Girlfriend",
+   "top3": [
+    "Distracted Boyfriend",
+    "Man Holding Cardboard Sign",
+    "Two Paths"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 12,
+   "query": "台灣人在談論愛情的糾結時",
+   "kind": "g-situation",
+   "target": "kj2KhL9KAU6f5RjEbbzzuw.jpg",
+   "top3": [
+    "Yes Honey",
+    "I Bet He's Thinking About Other Women",
+    "Distracted Boyfriend"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 13,
+   "query": "有時候看到朋友在網上分享這張圖，覺得挺搞笑的，想知道什麼情境下可以用。",
+   "kind": "g-situation",
+   "target": "You Guys are Getting Paid",
+   "top3": [
+    "At Least You Tried",
+    "未命名梗圖",
+    "I hear Cheh in my oreillette"
+   ],
+   "verdict": "excluded_uninformative_query",
+   "bad_query": false
+  },
+  {
+   "n": 14,
+   "query": "有兩個人在爭辯，一方堅持己見，另一方則嘗試說服對方。",
+   "kind": "g-situation",
+   "target": "We Don't Do That Here",
+   "top3": [
+    "Who Would Win",
+    "Two guys on a bus",
+    "Spider Man Double"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 15,
+   "query": "圖中有一隻卡通動物舉起一根棍子，嘴巴張得很大，背景是放射狀的黃色光線",
+   "kind": "g-look",
+   "target": "X all the Y",
+   "top3": [
+    "Apollo with dodgeball",
+    "This Is Fine",
+    "Woman Holding Dog's Mouth"
+   ],
+   "verdict": "none",
+   "bad_query": true
+  },
+  {
+   "n": 16,
+   "query": "在討論美國總統簽署行政命令時用來表達對某些政策的不滿。",
+   "kind": "g-situation",
+   "target": "Trump Bill Signing",
+   "top3": [
+    "Trump Bill Signing",
+    "Donald Trump Transgender Weightlifter Impression (Ahegao Fac",
+    "Sad Barack Obama"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 17,
+   "query": "光頭戴墨鏡，穿黑色外套",
+   "kind": "g-look",
+   "target": "Matrix Morpheus",
+   "top3": [
+    "the office congratulations",
+    "Commonsjak as neutral",
+    "Who wants to be a millionaire"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 18,
+   "query": "在討論政治人物的態度時。",
+   "kind": "g-situation",
+   "target": "I am once again asking",
+   "top3": [
+    "Almost Politically Correct Redneck",
+    "Donald Trump Transgender Weightlifter Impression (Ahegao Fac",
+    "Sad Joe Biden"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 19,
+   "query": "一張藍色背景下的卡通人物，頭髮是橙色的，戴著眼鏡，臉部表情有點憂鬱。",
+   "kind": "g-look",
+   "target": "Futurama Fry",
+   "top3": [
+    "Avatar guy",
+    "Pepe the Frog",
+    "Hide the Pain Harold"
+   ],
+   "verdict": "none",
+   "bad_query": true
+  },
+  {
+   "n": 20,
+   "query": "用來表達失望或悲傷的心情。",
+   "kind": "g-situation",
+   "target": "Feels Bad Man",
+   "top3": [
+    "Disappointed Man",
+    "Sad Barack Obama",
+    "Disappointed Black Guy"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 21,
+   "query": "一隻綠色絨毛青蛙玩偶,背對著,側頭望著窗外的雨滴",
+   "kind": "g-look",
+   "target": "kermit window",
+   "top3": [
+    "kermit window",
+    "Squidward window",
+    "Feels Bad Man"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 22,
+   "query": "農場裡的農夫",
+   "kind": "g-situation",
+   "target": "But It's Honest Work",
+   "top3": [
+    "Pepperidge Farm Remembers",
+    "Guy Hammering Nails Into Sand",
+    "Mr bean waiting"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 23,
+   "query": "用來比喻老一輩的人對新事物的不習慣。",
+   "kind": "g-situation",
+   "target": "Bernie Sanders Once Again Asking",
+   "top3": [
+    "okay grandpa let's get you to bed",
+    "Sure grandma let's get you to bed",
+    "Grandma Finds The Internet"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 24,
+   "query": "小男孩穿着古裝，雙手捧著鐵碗，臉上表情嚴肅。",
+   "kind": "g-look",
+   "target": "Please sir may I have some more",
+   "top3": [
+    "Skeptical Third World Kid",
+    "Hold fart",
+    "Karate Kyle"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 25,
+   "query": "朋友家的浴缸壞了，洗澡水噴到他身上。",
+   "kind": "g-situation",
+   "target": "Salt Bae",
+   "top3": [
+    "What a Country",
+    "sweating bullets",
+    "drowning kid in the pool"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 26,
+   "query": "當有人想要開玩笑，且想要說出一些讓人感到恐懼的話時",
+   "kind": "g-situation",
+   "target": "Simba Shadowy Place",
+   "top3": [
+    "sweating bullets",
+    "Oh, Is That What We're Going to Do Today",
+    "I hear Cheh in my oreillette"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 27,
+   "query": "白色長毛貓，雙手舉起，面露不悅表情，坐在木椅上。",
+   "kind": "g-look",
+   "target": "Persian Cat Room Guardian",
+   "top3": [
+    "Crying cat",
+    "Woman Yelling At Cat",
+    "Persian Cat Room Guardian"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 28,
+   "query": "當朋友跟自己說要給人一個驚喜，但又怕自己真的會被嚇到時。",
+   "kind": "g-situation",
+   "target": "What's My Purpose Butter Robot",
+   "top3": [
+    "Whisper and Goosebumps",
+    "sweating bullets",
+    "Stop It Patrick You're Scaring Him"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 29,
+   "query": "在朋友聚會時，用來形容一個老成持重、智慧超群的朋友。",
+   "kind": "g-situation",
+   "target": "Star Wars Yoda",
+   "top3": [
+    "Ol' Reliable",
+    "Star Wars Yoda",
+    "Philosoraptor"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 30,
+   "query": "圖中有一隻綠色的外星生物，頭髮凌亂，臉上布滿皺紋，表情溫和，穿着破舊的棕色衣服，左手拿著一根棍子。",
+   "kind": "g-look",
+   "target": "Star Wars Yoda",
+   "top3": [
+    "Avatar guy",
+    "Probably Not a Good Idea",
+    "Ancient Aliens Guy"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 31,
+   "query": "在討論卡通頻道劇集的惡搞場景時。",
+   "kind": "g-situation",
+   "target": "Oh, I'm Sorry, I Thought This Was America",
+   "top3": [
+    "Mocking Spongebob",
+    "Spider Man Double",
+    "Don't You Squidward"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 32,
+   "query": "在台灣的宿舍裡，兩個室友之間的關係狀況。",
+   "kind": "g-situation",
+   "target": "The night before",
+   "top3": [
+    "Are You Two Friends",
+    "Two guys on a bus",
+    "The night before"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 33,
+   "query": "一匹馬的簡筆畫，馬的身上有兩隻翅膀，馬頭上有一對角。",
+   "kind": "g-look",
+   "target": "Horse Drawing",
+   "top3": [
+    "Horse Drawing",
+    "At Least You Tried",
+    "Two guys on a bus"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 34,
+   "query": "當朋友開玩笑說你像個醉漢。",
+   "kind": "g-situation",
+   "target": "Good Guy Greg",
+   "top3": [
+    "Drunk Baby",
+    "10 Guy",
+    "Laughing Leo"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 35,
+   "query": "在朋友聚會時，有人提到過去玩的遊戲，大家都很熟悉這張圖。",
+   "kind": "g-situation",
+   "target": "All Your Base Are Belong to Us",
+   "top3": [
+    "Ol' Reliable",
+    "Pepperidge Farm Remembers",
+    "REPLAYING the game Fresh Prince of Memes"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 36,
+   "query": "有同事說他剛才做了個惡作劇，現在要找個圖表來表達他的開心和得意。",
+   "kind": "g-situation",
+   "target": "grrr",
+   "top3": [
+    "Say it Again, Dexter",
+    "What Gives People Feelings of Power",
+    "Long day factory"
+   ],
+   "verdict": "none",
+   "bad_query": false
+  },
+  {
+   "n": 37,
+   "query": "阿拉丁神燈裏面的藍色神靈和阿拉丁，神燈在手心。",
+   "kind": "g-look",
+   "target": "Genie Lamp",
+   "top3": [
+    "Genie Lamp",
+    "Apollo with dodgeball",
+    "Persian Cat Room Guardian"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 38,
+   "query": "職場上加班到很晚，同事來找你時看到你這樣。",
+   "kind": "g-situation",
+   "target": "Charlie Conspiracy (Always Sunny in Philidelphia)",
+   "top3": [
+    "That Would Be Great",
+    "Long day factory",
+    "the office congratulations"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  },
+  {
+   "n": 39,
+   "query": "一隻青蛙模樣的卡通角色，頭戴棕色帽子，手拿一卷空白的紙，前面寫著“我終於找到它... 15年後”的字樣，後面的字樣寫著“真相之卷！”，最後一格裏面，青蛙模樣的頭",
+   "kind": "g-look",
+   "target": "The Scroll Of Truth",
+   "top3": [
+    "Gentleman frog",
+    "Foul Bachelor Frog",
+    "The Scroll Of Truth"
+   ],
+   "verdict": "top3_only",
+   "bad_query": false
+  },
+  {
+   "n": 40,
+   "query": "當有人很激動或非常激動時",
+   "kind": "g-situation",
+   "target": "X all the Y",
+   "top3": [
+    "Inhaling Seagull",
+    "Too Confusing, Too Extreme",
+    "X all the Y"
+   ],
+   "verdict": "top1_plausible",
+   "bad_query": false
+  }
+ ]
+}

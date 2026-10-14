@@ -1,0 +1,1458 @@
+{
+ "about": "Queries written by the LOCAL vision model qwen2.5vl:7b from the picture alone (no name, no description), for a random sample (seed 777) of 80 Imgflip and memegen.link memes of the 2026-10-14 library, two per meme (g-situation: when it would be used; g-look: what can be seen). They were not edited, so many are too vague to point at one meme: read the result of this set as a lower bound and look at blind-judgments.json. 'expect' holds the target and its duplicates.",
+ "queries": [
+  {
+   "q": "在朋友聚會時，用來形容一個老成持重、智慧超群的朋友。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Star Wars Yoda",
+   "expect": [
+    "Star Wars Yoda"
+   ]
+  },
+  {
+   "q": "圖中有一隻綠色的外星生物，頭髮凌亂，臉上布滿皺紋，表情溫和，穿着破舊的棕色衣服，左手拿著一根棍子。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Star Wars Yoda",
+   "expect": [
+    "Star Wars Yoda"
+   ]
+  },
+  {
+   "q": "當有人講話太沒頭緒時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Matrix Morpheus",
+   "expect": [
+    "Matrix Morpheus"
+   ]
+  },
+  {
+   "q": "光頭戴墨鏡，穿黑色外套",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Matrix Morpheus",
+   "expect": [
+    "Matrix Morpheus"
+   ]
+  },
+  {
+   "q": "當朋友在表演時，聽衆反應差，朋友很沮喪時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Get Better Material",
+   "expect": [
+    "Get Better Material"
+   ]
+  },
+  {
+   "q": "一隻鳥坐在麥克風前，聽衆在後面罵著，鳥轉頭看紙片",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Get Better Material",
+   "expect": [
+    "Get Better Material"
+   ]
+  },
+  {
+   "q": "講台上的演講者用力揮手時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "The Rent Is Too Damn High",
+   "expect": [
+    "The Rent Is Too Damn High",
+    "too damn high"
+   ]
+  },
+  {
+   "q": "穿著西裝戴眼鏡的老人，右手高舉，背景是藍色幕布",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "The Rent Is Too Damn High",
+   "expect": [
+    "The Rent Is Too Damn High",
+    "too damn high"
+   ]
+  },
+  {
+   "q": "用來形容瘋狂或瘋狂的狀態。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "It's Simple, Kill the Batman",
+   "expect": [
+    "It's Simple, Kill the Batman"
+   ]
+  },
+  {
+   "q": "有一個人頭髮亂糟糟的，臉上化了油彩，化妝成瘋子的樣子。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "It's Simple, Kill the Batman",
+   "expect": [
+    "It's Simple, Kill the Batman"
+   ]
+  },
+  {
+   "q": "在朋友聚會時，想用圖中諷刺的話題來開心玩笑。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Never ask a woman her age",
+   "expect": [
+    "Never ask a woman her age"
+   ]
+  },
+  {
+   "q": "當我們討論未來科技生活時會用到這張圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "The future world if",
+   "expect": [
+    "The future world if"
+   ]
+  },
+  {
+   "q": "未來城市，飛碟，電車，高樓，綠化園區，人牽狗。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "The future world if",
+   "expect": [
+    "The future world if"
+   ]
+  },
+  {
+   "q": "小弟在喝啤酒，突然想說個冷笑话。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "10 Guy",
+   "expect": [
+    "10 Guy"
+   ]
+  },
+  {
+   "q": "一個年輕男子側頭微笑，懷中握著酒瓶。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "10 Guy",
+   "expect": [
+    "10 Guy"
+   ]
+  },
+  {
+   "q": "在開玩笑說某人像龍套演員時會用到",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Winter is coming",
+   "expect": [
+    "Winter is coming"
+   ]
+  },
+  {
+   "q": "穿着皮毛大衣，手持權杖的男子",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Winter is coming",
+   "expect": [
+    "Winter is coming"
+   ]
+  },
+  {
+   "q": "小夥子在戰場上，手持鐵碗，眼神堅毅。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Please sir may I have some more",
+   "expect": [
+    "Please sir may I have some more"
+   ]
+  },
+  {
+   "q": "小男孩穿着古裝，雙手捧著鐵碗，臉上表情嚴肅。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Please sir may I have some more",
+   "expect": [
+    "Please sir may I have some more"
+   ]
+  },
+  {
+   "q": "當朋友心情低落時，可以拿來表達關心。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "First World Problems",
+   "expect": [
+    "First World Problems"
+   ]
+  },
+  {
+   "q": "一位女子手擋臉，眼睛閉著，神情低落。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "First World Problems",
+   "expect": [
+    "First World Problems"
+   ]
+  },
+  {
+   "q": "在朋友聚會時，有人提到過去玩的遊戲，大家都很熟悉這張圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "All Your Base Are Belong to Us",
+   "expect": [
+    "All Your Base Are Belong to Us"
+   ]
+  },
+  {
+   "q": "藍綠色頭髮，戴著紅色十字架耳環，穿著紫色披風，臉上有槍頭裝飾。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "All Your Base Are Belong to Us",
+   "expect": [
+    "All Your Base Are Belong to Us"
+   ]
+  },
+  {
+   "q": "在和朋友開玩笑或鬧劇時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Do It Live!",
+   "expect": [
+    "Do It Live!"
+   ]
+  },
+  {
+   "q": "穿著西裝打領帶，張開嘴巴大喊",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Do It Live!",
+   "expect": [
+    "Do It Live!"
+   ]
+  },
+  {
+   "q": "當有人很激動或非常激動時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "X all the Y",
+   "expect": [
+    "X all the Y"
+   ]
+  },
+  {
+   "q": "圖中有一隻卡通動物舉起一根棍子，嘴巴張得很大，背景是放射狀的黃色光線",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "X all the Y",
+   "expect": [
+    "X all the Y"
+   ]
+  },
+  {
+   "q": "在朋友開玩笑說自己變帥時用來反擊。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Squid Game",
+   "expect": [
+    "Squid Game"
+   ]
+  },
+  {
+   "q": "兩個人站在粉紅牆前，上圖笑著，下圖沒笑，表情有些嚴肅。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Squid Game",
+   "expect": [
+    "Squid Game"
+   ]
+  },
+  {
+   "q": "工作場所中,同事之間發生爭執時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "That Would Be Great",
+   "expect": [
+    "That Would Be Great"
+   ]
+  },
+  {
+   "q": "戴著眼鏡的男士,身穿藍色襯衫、紅色背帶褲,手持白色紙杯,表情激動。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "That Would Be Great",
+   "expect": [
+    "That Would Be Great"
+   ]
+  },
+  {
+   "q": "在和朋友開玩笑時，用來形容某人很傲慢或自以爲是的情境。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Persian Cat Room Guardian",
+   "expect": [
+    "Persian Cat Room Guardian"
+   ]
+  },
+  {
+   "q": "白色長毛貓，雙手舉起，面露不悅表情，坐在木椅上。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Persian Cat Room Guardian",
+   "expect": [
+    "Persian Cat Room Guardian"
+   ]
+  },
+  {
+   "q": "當朋友跟自己說要給人一個驚喜，但又怕自己真的會被嚇到時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "What's My Purpose Butter Robot",
+   "expect": [
+    "What's My Purpose Butter Robot"
+   ]
+  },
+  {
+   "q": "一個人在廚房吃早餐，突然發現一個不尋常的機器人站在旁邊。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "What's My Purpose Butter Robot",
+   "expect": [
+    "What's My Purpose Butter Robot"
+   ]
+  },
+  {
+   "q": "朋友家的浴缸壞了，洗澡水噴到他身上。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Salt Bae",
+   "expect": [
+    "Salt Bae"
+   ]
+  },
+  {
+   "q": "男子戴墨鏡，穿背心，舉起手臂，身上有水滴，背景有木門和植物。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Salt Bae",
+   "expect": [
+    "Salt Bae"
+   ]
+  },
+  {
+   "q": "職場上加班到很晚，同事來找你時看到你這樣。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Charlie Conspiracy (Always Sunny in Philidelphia)",
+   "expect": [
+    "Charlie Conspiracy (Always Sunny in Philidelphia)"
+   ]
+  },
+  {
+   "q": "一位戴著眼鏡的男子，站在布告欄前，兩隻手舉起來，臉上表情有些無奈。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Charlie Conspiracy (Always Sunny in Philidelphia)",
+   "expect": [
+    "Charlie Conspiracy (Always Sunny in Philidelphia)"
+   ]
+  },
+  {
+   "q": "朋友要我幫忙買副眼鏡，我問他要什麼樣的，他看起來很猶豫。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Peter Parker's Glasses",
+   "expect": [
+    "Peter Parker's Glasses",
+    "spiderman glasses"
+   ]
+  },
+  {
+   "q": "一個光著上身的男子，先將眼鏡拿在手中，然後戴在頭上，背景是雜亂的書架。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Peter Parker's Glasses",
+   "expect": [
+    "Peter Parker's Glasses",
+    "spiderman glasses"
+   ]
+  },
+  {
+   "q": "台灣人會在搜尋框裡打的查詢：在看到一張人手握錢的圖時，想知道這個圖可以用在哪種情境，比如慶功或慶生場合。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Shut Up and Take My Money!",
+   "expect": [
+    "Shut Up and Take My Money!"
+   ]
+  },
+  {
+   "q": "台灣人會在搜尋框裡打的查詢：紅色外套人手握鈔票的卡通圖，背景是銀色天花板。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Shut Up and Take My Money!",
+   "expect": [
+    "Shut Up and Take My Money!"
+   ]
+  },
+  {
+   "q": "在公園裡幫年長者推助行器的情境。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Sure grandma let's get you to bed",
+   "expect": [
+    "Sure grandma let's get you to bed"
+   ]
+  },
+  {
+   "q": "一個年輕人幫一位年長者推助行器的畫面。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Sure grandma let's get you to bed",
+   "expect": [
+    "Sure grandma let's get you to bed"
+   ]
+  },
+  {
+   "q": "下雨天想打開窗戶時發現雨滴打在窗玻璃上",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "kermit window",
+   "expect": [
+    "kermit window"
+   ]
+  },
+  {
+   "q": "一隻綠色絨毛青蛙玩偶,背對著,側頭望著窗外的雨滴",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "kermit window",
+   "expect": [
+    "kermit window"
+   ]
+  },
+  {
+   "q": "辦公室工作時，同事突然開口問：「你知道...」",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Aaaaand Its Gone",
+   "expect": [
+    "Aaaaand Its Gone",
+    "aaaand its gone",
+    "and it's gone"
+   ]
+  },
+  {
+   "q": "辦公桌前，男子坐著，前方電腦顯示器，背後有辦公桌和辦公椅。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Aaaaand Its Gone",
+   "expect": [
+    "Aaaaand Its Gone",
+    "aaaand its gone",
+    "and it's gone"
+   ]
+  },
+  {
+   "q": "看到這張圖時，可能會用來表達工作上遇到困難時，希望能得到同事或上司的幫助。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "I Have No Idea What I'm Doing",
+   "expect": [
+    "I Have No Idea What I'm Doing"
+   ]
+  },
+  {
+   "q": "一隻戴領結的狗，前爪放在電腦鍵盤上，另一隻手放在桌上，背後是一台顯示器和一臺電腦。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "I Have No Idea What I'm Doing",
+   "expect": [
+    "I Have No Idea What I'm Doing"
+   ]
+  },
+  {
+   "q": "在和朋友聊天時，說出一個令人意外或搞笑的話時用。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Expectation vs. Reality",
+   "expect": [
+    "Expectation vs. Reality"
+   ]
+  },
+  {
+   "q": "一個人在笑和說話時的樣子，背景是金色的裝飾圖案。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Expectation vs. Reality",
+   "expect": [
+    "Expectation vs. Reality"
+   ]
+  },
+  {
+   "q": "在討論卡通頻道劇集的惡搞場景時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Oh, I'm Sorry, I Thought This Was America",
+   "expect": [
+    "Oh, I'm Sorry, I Thought This Was America"
+   ]
+  },
+  {
+   "q": "一輛警車前面，幾個戴著警帽的人，背景有圍觀的群眾。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Oh, I'm Sorry, I Thought This Was America",
+   "expect": [
+    "Oh, I'm Sorry, I Thought This Was America"
+   ]
+  },
+  {
+   "q": "在討論政治人物的態度時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "I am once again asking",
+   "expect": [
+    "I am once again asking",
+    "bernie sanders once again asking",
+    "bernie i am once again asking for your support"
+   ]
+  },
+  {
+   "q": "一位年長男性，戴著眼鏡，穿著厚外套，站在戶外。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "I am once again asking",
+   "expect": [
+    "I am once again asking",
+    "bernie sanders once again asking",
+    "bernie i am once again asking for your support"
+   ]
+  },
+  {
+   "q": "台灣人可能在討論醫藥相關的笑話或諧趣",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Hard To Swallow Pills",
+   "expect": [
+    "Hard To Swallow Pills"
+   ]
+  },
+  {
+   "q": "一隻手拿著標有“難吞嚥藥片”的藥瓶，另一隻手拿著兩顆小圓片，上面寫著數字",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Hard To Swallow Pills",
+   "expect": [
+    "Hard To Swallow Pills"
+   ]
+  },
+  {
+   "q": "朋友在說話時突然做出思考狀，對方就會用這張圖來傳達朋友的狀態。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Roll Safe",
+   "expect": [
+    "Roll Safe",
+    "roll safe think about it"
+   ]
+  },
+  {
+   "q": "穿黑色皮夾克、戴金手錶、手指撐著臉，面帶微笑。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Roll Safe",
+   "expect": [
+    "Roll Safe",
+    "roll safe think about it"
+   ]
+  },
+  {
+   "q": "台灣人打牌時，看到有人抽到抽牌25，但牌上寫著抽25，會很無聊，於是用來逗朋友。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "UNO Draw 25 Cards",
+   "expect": [
+    "UNO Draw 25 Cards"
+   ]
+  },
+  {
+   "q": "一位男子坐在桌前，手拿一疊牌，桌上有一罐綠色飲料。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "UNO Draw 25 Cards",
+   "expect": [
+    "UNO Draw 25 Cards"
+   ]
+  },
+  {
+   "q": "在講故事或開玩笑時，用來描述某人做錯事或者被責備的情況。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "One Does Not Simply",
+   "expect": [
+    "One Does Not Simply"
+   ]
+  },
+  {
+   "q": "一個人比出OK的手勢，臉上帶著詫異的神情，背景看起來像是在室內。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "One Does Not Simply",
+   "expect": [
+    "One Does Not Simply"
+   ]
+  },
+  {
+   "q": "朋友間互打屁眼時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Megamind no bitches",
+   "expect": [
+    "Megamind no bitches"
+   ]
+  },
+  {
+   "q": "藍色的卡通人物，大大的綠色眼睛",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Megamind no bitches",
+   "expect": [
+    "Megamind no bitches"
+   ]
+  },
+  {
+   "q": "廚房裡的廚師指着某個方向",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "No Soup for You",
+   "expect": [
+    "No Soup for You"
+   ]
+  },
+  {
+   "q": "一個穿著白色圍裙的男人在廚房裡指著什麼",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "No Soup for You",
+   "expect": [
+    "No Soup for You"
+   ]
+  },
+  {
+   "q": "遇到有人表現得特別聰明或特別愚笨時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Bell Curve",
+   "expect": [
+    "Bell Curve"
+   ]
+  },
+  {
+   "q": "圖中有三張臉，分別代表高智商、正常智商和低智商，表情和比例各異。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Bell Curve",
+   "expect": [
+    "Bell Curve"
+   ]
+  },
+  {
+   "q": "用來表達失望或悲傷的心情。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Feels Bad Man",
+   "expect": [
+    "Feels Bad Man"
+   ]
+  },
+  {
+   "q": "一隻綠色的青蛙，頭部有皺紋，表情悶悶不樂。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Feels Bad Man",
+   "expect": [
+    "Feels Bad Man"
+   ]
+  },
+  {
+   "q": "車子開到路口的時候，發現前方的路標與自己的行進方向不符合時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Left Exit 12 Off Ramp",
+   "expect": [
+    "Left Exit 12 Off Ramp"
+   ]
+  },
+  {
+   "q": "藍色轎車在高速公路上突然轉彎，前方路標指示方向與車子行進方向相反。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Left Exit 12 Off Ramp",
+   "expect": [
+    "Left Exit 12 Off Ramp"
+   ]
+  },
+  {
+   "q": "在討論台灣美食時，用來形容像豬肉大餐一樣熱烈的討論。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Ugandan Knuckles",
+   "expect": [
+    "Ugandan Knuckles"
+   ]
+  },
+  {
+   "q": "紅色的卡通豬角色，頭上帶著一個像小棍子的頭飾，右手握著一根棒子，背景是藍天。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Ugandan Knuckles",
+   "expect": [
+    "Ugandan Knuckles"
+   ]
+  },
+  {
+   "q": "在講到某人很自戀或對自己非常自滿時會用到這張圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Foul Bachelor Frog",
+   "expect": [
+    "Foul Bachelor Frog"
+   ]
+  },
+  {
+   "q": "一隻青蛙被修圖成仰視的視角，臉部表情輕蔑或高傲。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Foul Bachelor Frog",
+   "expect": [
+    "Foul Bachelor Frog"
+   ]
+  },
+  {
+   "q": "在和朋友調侃對方的時候。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Joseph Ducreux",
+   "expect": [
+    "Joseph Ducreux"
+   ]
+  },
+  {
+   "q": "一個老頭子戴著帽子，右手撐著柺杖，左手手指向畫面外，表情生氣。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Joseph Ducreux",
+   "expect": [
+    "Joseph Ducreux"
+   ]
+  },
+  {
+   "q": "有時候看到不爽的東西時會用到這張圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Pepe the Frog",
+   "expect": [
+    "Pepe the Frog"
+   ]
+  },
+  {
+   "q": "一隻綠色的青蛙，眼睛大而圓，嘴巴向下彎曲，背景是淺藍色。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Pepe the Frog",
+   "expect": [
+    "Pepe the Frog"
+   ]
+  },
+  {
+   "q": "有朋友在開玩笑時，會用到這張圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Don't You Squidward",
+   "expect": [
+    "Don't You Squidward"
+   ]
+  },
+  {
+   "q": "海綿寶寶戴著大太陽帽，表情得意，背景是廁所的廁所門和洗手台。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Don't You Squidward",
+   "expect": [
+    "Don't You Squidward"
+   ]
+  },
+  {
+   "q": "在朋友開的搞笑電影首映會上，有人裝模作樣地穿正裝，結果被朋友戲弄。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Jason Momoa Henry Cavill Meme",
+   "expect": [
+    "Jason Momoa Henry Cavill Meme"
+   ]
+  },
+  {
+   "q": "一男一女在紅毯上，後者裝模作樣地穿正裝，前者則裝模作樣地穿非正式服裝，後者被戲弄地笑著跑開。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Jason Momoa Henry Cavill Meme",
+   "expect": [
+    "Jason Momoa Henry Cavill Meme"
+   ]
+  },
+  {
+   "q": "當朋友在談戀愛時，你跟他說別想死，別愛，別想復活。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Genie Rules",
+   "expect": [
+    "Genie Rules"
+   ]
+  },
+  {
+   "q": "一個用頭巾包頭的老人和一個穿綠色上衣的年輕人，老人說有三個規則，年輕人反問有四個規則。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Genie Rules",
+   "expect": [
+    "Genie Rules"
+   ]
+  },
+  {
+   "q": "遇到不順心的事情時，用來表達無奈或憤怒的心情。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Laughing Leo",
+   "expect": [
+    "Laughing Leo"
+   ]
+  },
+  {
+   "q": "一個人身穿古典風格的西裝，手持酒杯，表情痛苦，背景是古典裝飾的房間。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Laughing Leo",
+   "expect": [
+    "Laughing Leo"
+   ]
+  },
+  {
+   "q": "當兩個朋友之間有爭執時會用到這張圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Stop It Patrick You're Scaring Him",
+   "expect": [
+    "Stop It Patrick You're Scaring Him"
+   ]
+  },
+  {
+   "q": "有三個人物，一個是胖人，另外兩個是方塊和海星。胖人一直舉著手，方塊和海星則是在辯論。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Stop It Patrick You're Scaring Him",
+   "expect": [
+    "Stop It Patrick You're Scaring Him"
+   ]
+  },
+  {
+   "q": "當兩個朋友在討論誰更帥時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Yes Honey",
+   "expect": [
+    "Yes Honey"
+   ]
+  },
+  {
+   "q": "一個穿紅色毛衣的年輕女孩和一個用手抹眼淚的老人臉部圖像對比。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Yes Honey",
+   "expect": [
+    "Yes Honey"
+   ]
+  },
+  {
+   "q": "派對或音樂會上，被擠壓時的驚恐表情",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Sudden Clarity Clarence",
+   "expect": [
+    "Sudden Clarity Clarence"
+   ]
+  },
+  {
+   "q": "一群人在擠壓著的場景，中間的男人表情驚恐",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Sudden Clarity Clarence",
+   "expect": [
+    "Sudden Clarity Clarence"
+   ]
+  },
+  {
+   "q": "有時候看到朋友在網上分享這張圖，覺得挺搞笑的，想知道什麼情境下可以用。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "You Guys are Getting Paid",
+   "expect": [
+    "You Guys are Getting Paid"
+   ]
+  },
+  {
+   "q": "一個年輕人站在車牌前，穿著彩色條紋的POLO衫，表情生氣。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "You Guys are Getting Paid",
+   "expect": [
+    "You Guys are Getting Paid"
+   ]
+  },
+  {
+   "q": "農場裡的農夫",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "But It's Honest Work",
+   "expect": [
+    "But It's Honest Work"
+   ]
+  },
+  {
+   "q": "農夫站在田裡，穿格子襯衫和牛仔背帶褲",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "But It's Honest Work",
+   "expect": [
+    "But It's Honest Work"
+   ]
+  },
+  {
+   "q": "在朋友間用來調皮或玩笑時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Whisper and Goosebumps",
+   "expect": [
+    "Whisper and Goosebumps"
+   ]
+  },
+  {
+   "q": "一個人的耳朵旁邊和另一個人的臂膀。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Whisper and Goosebumps",
+   "expect": [
+    "Whisper and Goosebumps"
+   ]
+  },
+  {
+   "q": "當朋友跟我說最近很不開心時，我可以用這張圖來表達他的心情。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Futurama Fry",
+   "expect": [
+    "Futurama Fry"
+   ]
+  },
+  {
+   "q": "一張藍色背景下的卡通人物，頭髮是橙色的，戴著眼鏡，臉部表情有點憂鬱。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Futurama Fry",
+   "expect": [
+    "Futurama Fry"
+   ]
+  },
+  {
+   "q": "在臺北市的陽明山公園拍攝到的野生動物",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "This is Bull, Shark",
+   "expect": [
+    "This is Bull, Shark"
+   ]
+  },
+  {
+   "q": "一個人在海邊舉著一條小魚",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "This is Bull, Shark",
+   "expect": [
+    "This is Bull, Shark"
+   ]
+  },
+  {
+   "q": "在團體會議上，領導人用來形容大家士氣高漲的場景。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Member Berries",
+   "expect": [
+    "Member Berries"
+   ]
+  },
+  {
+   "q": "一疊紫色圓形氣球，每個氣球都面帶笑容，最上面的氣球開心地張嘴大笑。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Member Berries",
+   "expect": [
+    "Member Berries"
+   ]
+  },
+  {
+   "q": "小孩喝啤酒",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Drunk Baby",
+   "expect": [
+    "Drunk Baby"
+   ]
+  },
+  {
+   "q": "嬰兒坐在桌邊，面前有一杯啤酒",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Drunk Baby",
+   "expect": [
+    "Drunk Baby"
+   ]
+  },
+  {
+   "q": "有同事說他剛才做了個惡作劇，現在要找個圖表來表達他的開心和得意。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "grrr",
+   "expect": [
+    "grrr"
+   ]
+  },
+  {
+   "q": "紅色圓形表情圖案，臉上帶著得意的微笑，左手上比出剪刀手的姿勢。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "grrr",
+   "expect": [
+    "grrr"
+   ]
+  },
+  {
+   "q": "當有人想要開玩笑，且想要說出一些讓人感到恐懼的話時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Simba Shadowy Place",
+   "expect": [
+    "Simba Shadowy Place"
+   ]
+  },
+  {
+   "q": "小獅子站在山頂，遠處有個陰影",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Simba Shadowy Place",
+   "expect": [
+    "Simba Shadowy Place"
+   ]
+  },
+  {
+   "q": "台灣人開玩笑時用來表達某種失禮或尷尬的情境。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "the office congratulations",
+   "expect": [
+    "the office congratulations"
+   ]
+  },
+  {
+   "q": "兩人握手，一人穿正裝，另一人穿白襯衫藍領帶，辦公室背景，書架、燈具、世界地圖。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "the office congratulations",
+   "expect": [
+    "the office congratulations"
+   ]
+  },
+  {
+   "q": "當朋友間開心時，用來表達激動的心情。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Socially Awesome Penguin",
+   "expect": [
+    "Socially Awesome Penguin"
+   ]
+  },
+  {
+   "q": "企鵝站在紅色背景上，腳尖點地，展翅欲飛。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Socially Awesome Penguin",
+   "expect": [
+    "Socially Awesome Penguin"
+   ]
+  },
+  {
+   "q": "朋友間的誤會或競爭時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Distracted Girlfriend",
+   "expect": [
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "三人站在街頭，一男一女面臨中間的男子",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Distracted Girlfriend",
+   "expect": [
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "朋友間開玩笑時用來笑話。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Horse Drawing",
+   "expect": [
+    "Horse Drawing"
+   ]
+  },
+  {
+   "q": "一匹馬的簡筆畫，馬的身上有兩隻翅膀，馬頭上有一對角。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Horse Drawing",
+   "expect": [
+    "Horse Drawing"
+   ]
+  },
+  {
+   "q": "什麼時候會用到這張圖？",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Genie Lamp",
+   "expect": [
+    "Genie Lamp"
+   ]
+  },
+  {
+   "q": "阿拉丁神燈裏面的藍色神靈和阿拉丁，神燈在手心。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Genie Lamp",
+   "expect": [
+    "Genie Lamp"
+   ]
+  },
+  {
+   "q": "當朋友開玩笑說你像個醉漢。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Good Guy Greg",
+   "expect": [
+    "Good Guy Greg"
+   ]
+  },
+  {
+   "q": "一個鬍子濃密的男人，臉上燭著一支煙，眼神飄渺，背景模糊。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Good Guy Greg",
+   "expect": [
+    "Good Guy Greg"
+   ]
+  },
+  {
+   "q": "在玩腦筋急轉彎遊戲時，看到對方答案後的反應。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Who wants to be a millionaire",
+   "expect": [
+    "Who wants to be a millionaire"
+   ]
+  },
+  {
+   "q": "一位留著鬍子的男子，頭髮光禿禿，戴著一隻耳機，臉上露出驚訝的表情。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Who wants to be a millionaire",
+   "expect": [
+    "Who wants to be a millionaire"
+   ]
+  },
+  {
+   "q": "在飯店遇到不滿意的服務人員時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Moe throws Barney",
+   "expect": [
+    "Moe throws Barney"
+   ]
+  },
+  {
+   "q": "兩個男人在飯店的吧檯前，一個被另一個按著肩膀，最後他把手從對方肩膀上拿開。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Moe throws Barney",
+   "expect": [
+    "Moe throws Barney"
+   ]
+  },
+  {
+   "q": "工作或學習時，想打開視窗散散心，喝杯茶",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "But That's None of My Business",
+   "expect": [
+    "But That's None of My Business"
+   ]
+  },
+  {
+   "q": "青蛙手拿一玻璃杯熱茶，杯子裡有茶包，背景模糊",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "But That's None of My Business",
+   "expect": [
+    "But That's None of My Business"
+   ]
+  },
+  {
+   "q": "當看見自己或周圍發生很糟糕的事情，卻還能泰然自若地說：這還不錯。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "This Is Fine",
+   "expect": [
+    "This Is Fine"
+   ]
+  },
+  {
+   "q": "一隻戴著草帽的狗坐在火海中，手中端著一杯咖啡，面帶微笑說：'這還不錯。'",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "This Is Fine",
+   "expect": [
+    "This Is Fine"
+   ]
+  },
+  {
+   "q": "在朋友找某樣東西很久卻找不到時，用來表達朋友的沮喪心情。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "The Scroll Of Truth",
+   "expect": [
+    "The Scroll Of Truth"
+   ]
+  },
+  {
+   "q": "一隻青蛙模樣的卡通角色，頭戴棕色帽子，手拿一卷空白的紙，前面寫著“我終於找到它... 15年後”的字樣，後面的字樣寫著“真相之卷！”，最後一格裏面，青蛙模樣的頭",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "The Scroll Of Truth",
+   "expect": [
+    "The Scroll Of Truth"
+   ]
+  },
+  {
+   "q": "當朋友說他要打掃浴室，對方卻說要幫他鋪床。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Elmo Choosing Cocaine",
+   "expect": [
+    "Elmo Choosing Cocaine",
+    "elmo cocaine"
+   ]
+  },
+  {
+   "q": "紅色的絨毛玩偶旁邊有水果和糖粉，下一格玩偶被糖粉蓋住。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Elmo Choosing Cocaine",
+   "expect": [
+    "Elmo Choosing Cocaine",
+    "elmo cocaine"
+   ]
+  },
+  {
+   "q": "有兩個人在爭辯，一方堅持己見，另一方則嘗試說服對方。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "We Don't Do That Here",
+   "expect": [
+    "We Don't Do That Here"
+   ]
+  },
+  {
+   "q": "圖中一名男子伸出手掌，另一名男子則側身與他對話。背景是城市建築。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "We Don't Do That Here",
+   "expect": [
+    "We Don't Do That Here"
+   ]
+  },
+  {
+   "q": "在台灣的宿舍裡，兩個室友之間的關係狀況。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "The night before",
+   "expect": [
+    "The night before"
+   ]
+  },
+  {
+   "q": "兩個人坐在床上，一個人穿黃色上衣，一個人穿藍色印有蝙蝠俠圖案的T恤，背景有床頭櫃和掛畫。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "The night before",
+   "expect": [
+    "The night before"
+   ]
+  },
+  {
+   "q": "當有人在玩遊戲時，輸了，很鬱悶，用來表達很無語的表情。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Dr Evil Laser",
+   "expect": [
+    "Dr Evil Laser"
+   ]
+  },
+  {
+   "q": "一個人穿着銀色太空服，雙手比出V字，臉部表情很驚詫。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Dr Evil Laser",
+   "expect": [
+    "Dr Evil Laser"
+   ]
+  },
+  {
+   "q": "台灣人討論車子價格時用到的圖。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Car Salesman Slaps Roof Of Car",
+   "expect": [
+    "Car Salesman Slaps Roof Of Car"
+   ]
+  },
+  {
+   "q": "一個人在指著一輛車，另一個人在思考。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Car Salesman Slaps Roof Of Car",
+   "expect": [
+    "Car Salesman Slaps Roof Of Car"
+   ]
+  },
+  {
+   "q": "在討論美國總統簽署行政命令時用來表達對某些政策的不滿。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Trump Bill Signing",
+   "expect": [
+    "Trump Bill Signing"
+   ]
+  },
+  {
+   "q": "總統坐在桌前，舉起兩本文件，背景有穿著西裝的男子。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Trump Bill Signing",
+   "expect": [
+    "Trump Bill Signing"
+   ]
+  },
+  {
+   "q": "在朋友家開趴，看到大家都很興奮，覺得自己應該比別人更聰明，所以拿這個圖分享。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Expanding Brain",
+   "expect": [
+    "Expanding Brain"
+   ]
+  },
+  {
+   "q": "腦袋裡面有很多亮點，最後腦袋發出光線。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Expanding Brain",
+   "expect": [
+    "Expanding Brain"
+   ]
+  },
+  {
+   "q": "用來比喻老一輩的人對新事物的不習慣。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Bernie Sanders Once Again Asking",
+   "expect": [
+    "Bernie Sanders Once Again Asking",
+    "bernie i am once again asking for your support",
+    "i am once again asking"
+   ]
+  },
+  {
+   "q": "一位戴眼鏡的老人穿着禦寒衣物，背景是樹木和部分積雪的街道。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Bernie Sanders Once Again Asking",
+   "expect": [
+    "Bernie Sanders Once Again Asking",
+    "bernie i am once again asking for your support",
+    "i am once again asking"
+   ]
+  },
+  {
+   "q": "台灣人在談論愛情的糾結時",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "kj2KhL9KAU6f5RjEbbzzuw.jpg",
+   "expect": [
+    "kj2KhL9KAU6f5RjEbbzzuw.jpg"
+   ]
+  },
+  {
+   "q": "一個人用食指指著另一个人的臉",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "kj2KhL9KAU6f5RjEbbzzuw.jpg",
+   "expect": [
+    "kj2KhL9KAU6f5RjEbbzzuw.jpg"
+   ]
+  },
+  {
+   "q": "當看到有人很興奮或驚訝時。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Vince McMahon Reaction",
+   "expect": [
+    "Vince McMahon Reaction",
+    "mr. mcmahon reaction"
+   ]
+  },
+  {
+   "q": "三格圖，每一格都有一個男人的頭部，表情從驚訝到大張嘴巴，最後張開大口，背景是模糊的觀眾席。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Vince McMahon Reaction",
+   "expect": [
+    "Vince McMahon Reaction",
+    "mr. mcmahon reaction"
+   ]
+  },
+  {
+   "q": "有時候看到同學買了很多書，自己卻什麼書都沒買，就會這樣問。",
+   "kind": "g-situation",
+   "set": "blind",
+   "target": "Ermahgerd",
+   "expect": [
+    "Ermahgerd"
+   ]
+  },
+  {
+   "q": "一個女孩手捧書本，嘴巴張得很大，頭髮是雙馬尾，穿着白色的衣服和彩色的背心，還掛著一個花色的書包。",
+   "kind": "g-look",
+   "set": "blind",
+   "target": "Ermahgerd",
+   "expect": [
+    "Ermahgerd"
+   ]
+  }
+ ]
+}

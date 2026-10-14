@@ -1,51 +1,2013 @@
 {
-  "about": "Searches a person might type, and which memes of the real library answer them. Written from knowledge of the memes, not copied from the library's own descriptions. Every expected name must exist in the library; any of the listed names counts as a hit. Edit freely: this is what the search is measured against.",
-  "queries": [
-    { "q": "男朋友看到別的女生眼睛都直了", "kind": "situation", "expect": ["Distracted Boyfriend"] },
-    { "q": "兩個選項都想選,手懸在按鈕上滿頭大汗", "kind": "situation", "expect": ["Two Buttons"] },
-    { "q": "一切都在燃燒,但我還是假裝沒事", "kind": "situation", "expect": ["This Is Fine"] },
-    { "q": "想法一格比一格更高端,腦袋越來越大", "kind": "situation", "expect": ["Expanding Brain"] },
-    { "q": "老闆又改需求,我只能微笑硬撐", "kind": "situation", "expect": ["Hide the Pain Harold"] },
-    { "q": "等了好久好久,等到變成骷髏", "kind": "situation", "expect": ["Waiting Skeleton"] },
-    { "q": "我就爛 做什麼都倒楣", "kind": "situation", "expect": ["Bad Luck Brian"] },
-    { "q": "別人都在恐慌,只有我很淡定", "kind": "situation", "expect": ["Panik Kalm Panik"] },
-    { "q": "這個價錢已經是我能給的極限了", "kind": "situation", "expect": ["Pawn Stars Best I Can Do"] },
-    { "q": "又來求大家支持我一次", "kind": "situation", "expect": ["Bernie Sanders Once Again Asking", "Bernie I Am Once Again Asking For Your Support"] },
-    { "q": "你們兩個都是假的,互相指著對方", "kind": "situation", "expect": ["spiderman pointing at spiderman", "Spider Man Triple"] },
-    { "q": "我跟你們不一樣", "kind": "situation", "expect": ["Gus Fring we are not the same"] },
-    { "q": "誰都不知道我其實是個科學家", "kind": "situation", "expect": ["You know, I'm something of a scientist myself"] },
-    { "q": "三個人吵得面紅耳赤,誰都不讓誰", "kind": "situation", "expect": ["American Chopper Argument"] },
-    { "q": "在偷看鄰居的窗戶", "kind": "situation", "expect": ["Squidward window"] },
-    { "q": "怎麼離開 Vim", "kind": "situation", "expect": ["How do I exit Vim Stack Overflow"] },
-    { "q": "選擇太多,車子在最後一刻猛然轉向另一條路", "kind": "situation", "expect": ["Left Exit 12 Off Ramp"] },
-    { "q": "背後房子燒起來了她還在笑", "kind": "look", "expect": ["Disaster Girl"] },
-    { "q": "女人對著貓大吼,貓一臉無辜坐在餐桌前", "kind": "look", "expect": ["Woman Yelling At Cat"] },
-    { "q": "坐在桌子後面的人,桌上放著一個牌子", "kind": "look", "expect": ["Change My Mind"] },
-    { "q": "一個人指著蝴蝶問這是不是鴿子", "kind": "look", "expect": ["Is This A Pigeon"] },
-    { "q": "穿燕尾服的小熊維尼,看起來比較高級", "kind": "look", "expect": ["Tuxedo Winnie The Pooh"] },
-    { "q": "海鷗從平靜變成大叫再變成發光", "kind": "look", "expect": ["Inhaling Seagull"] },
-    { "q": "小丑在化妝,越畫越誇張", "kind": "look", "expect": ["Clown Applying Makeup"] },
-    { "q": "指著太陽穴的人,一臉我想到了很聰明的事", "kind": "look", "expect": ["Roll Safe Think About It"] },
-    { "q": "肌肉發達的柴犬跟哭哭的柴犬對比", "kind": "look", "expect": ["Buff Doge vs. Cheems"] },
-    { "q": "兩隻手用力握在一起的史詩級畫面", "kind": "look", "expect": ["Epic Handshake"] },
-    { "q": "一個人手上拿著一堆UNO牌", "kind": "look", "expect": ["UNO Draw 25 Cards"] },
-    { "q": "死神在敲門", "kind": "look", "expect": ["Grim Reaper Knocking Door"] },
-    { "q": "智商鐘形曲線,最左邊跟最右邊的人一樣", "kind": "look", "expect": ["Bell Curve"] },
-    { "q": "格魯拿著白板講他的計畫,四格", "kind": "look", "expect": ["Gru's Plan"] },
-    { "q": "Drake 一個嫌棄的手勢,一個喜歡的手勢", "kind": "look", "expect": ["Drake Hotline Bling", "Drake Blank"] },
-    { "q": "到處都是巴斯光年指著遠方", "kind": "look", "expect": ["X, X Everywhere"] },
-    { "q": "三個頭的龍,每個頭表情不同", "kind": "look", "expect": ["Three headed Dragon"] },
-    { "q": "一個人坐著睡覺,另一個人睜眼看著", "kind": "look", "expect": ["Sleeping Shaq"] },
-    { "q": "皮卡丘驚訝", "kind": "nickname", "expect": ["Surprised Pikachu"] },
-    { "q": "痛苦面具老爺爺", "kind": "nickname", "expect": ["Hide the Pain Harold"] },
-    { "q": "嘲諷海綿寶寶", "kind": "nickname", "expect": ["Mocking Spongebob"] },
-    { "q": "憤怒的女人和貓", "kind": "nickname", "expect": ["Woman Yelling At Cat"] },
-    { "q": "我現在是船長了", "kind": "nickname", "expect": ["I'm The Captain Now"] },
-    { "q": "絕對電影", "kind": "nickname", "expect": ["Absolute Cinema"] },
-    { "q": "分心男友", "kind": "name", "expect": ["Distracted Boyfriend"] },
-    { "q": "Expanding Brain", "kind": "name", "expect": ["Expanding Brain"] },
-    { "q": "Surprised Pikachu", "kind": "name", "expect": ["Surprised Pikachu"] },
-    { "q": "this is fine", "kind": "name", "expect": ["This Is Fine"] },
-    { "q": "Two Buttons", "kind": "name", "expect": ["Two Buttons"] }
-  ]
+ "about": "Searches a person might type, and which memes of the real library answer them. Written from knowledge of the memes, not copied from the library's own descriptions, so the library is not graded on its own words. Every expected name must exist in the library; any of the listed names counts as a hit (the same meme is often in the library twice, from two sources, under two names). 'set' v1 is the first 46 queries (first measured on 2026-10-02 on 171 memes); v2 and v2b were added on 2026-10-14 for the 410-meme library: v2b are 'entity' queries (the work or character a picture comes from) and 'quote' queries (a remembered line), which favour keyword matching on purpose. 'negative' queries have no right answer: they show what the search returns when nothing fits. The memes named here are those of the library as it was on 2026-10-14; edit freely, this is what the search is measured against.",
+ "queries": [
+  {
+   "q": "男朋友看到別的女生眼睛都直了",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Distracted Boyfriend"
+   ]
+  },
+  {
+   "q": "兩個選項都想選,手懸在按鈕上滿頭大汗",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Two Buttons"
+   ]
+  },
+  {
+   "q": "一切都在燃燒,但我還是假裝沒事",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "This Is Fine"
+   ]
+  },
+  {
+   "q": "想法一格比一格更高端,腦袋越來越大",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Expanding Brain"
+   ]
+  },
+  {
+   "q": "老闆又改需求,我只能微笑硬撐",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Hide the Pain Harold"
+   ]
+  },
+  {
+   "q": "等了好久好久,等到變成骷髏",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Waiting Skeleton"
+   ]
+  },
+  {
+   "q": "我就爛 做什麼都倒楣",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Bad Luck Brian"
+   ]
+  },
+  {
+   "q": "別人都在恐慌,只有我很淡定",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Panik Kalm Panik"
+   ]
+  },
+  {
+   "q": "這個價錢已經是我能給的極限了",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Pawn Stars Best I Can Do"
+   ]
+  },
+  {
+   "q": "又來求大家支持我一次",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Bernie Sanders Once Again Asking",
+    "Bernie I Am Once Again Asking For Your Support"
+   ]
+  },
+  {
+   "q": "你們兩個都是假的,互相指著對方",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "spiderman pointing at spiderman",
+    "Spider Man Triple"
+   ]
+  },
+  {
+   "q": "我跟你們不一樣",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Gus Fring we are not the same"
+   ]
+  },
+  {
+   "q": "誰都不知道我其實是個科學家",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "You know, I'm something of a scientist myself"
+   ]
+  },
+  {
+   "q": "三個人吵得面紅耳赤,誰都不讓誰",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "American Chopper Argument"
+   ]
+  },
+  {
+   "q": "在偷看鄰居的窗戶",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Squidward window"
+   ]
+  },
+  {
+   "q": "怎麼離開 Vim",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "How do I exit Vim Stack Overflow"
+   ]
+  },
+  {
+   "q": "選擇太多,車子在最後一刻猛然轉向另一條路",
+   "kind": "situation",
+   "set": "v1",
+   "expect": [
+    "Left Exit 12 Off Ramp"
+   ]
+  },
+  {
+   "q": "背後房子燒起來了她還在笑",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Disaster Girl"
+   ]
+  },
+  {
+   "q": "女人對著貓大吼,貓一臉無辜坐在餐桌前",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Woman Yelling At Cat"
+   ]
+  },
+  {
+   "q": "坐在桌子後面的人,桌上放著一個牌子",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Change My Mind"
+   ]
+  },
+  {
+   "q": "一個人指著蝴蝶問這是不是鴿子",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Is This A Pigeon"
+   ]
+  },
+  {
+   "q": "穿燕尾服的小熊維尼,看起來比較高級",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Tuxedo Winnie The Pooh"
+   ]
+  },
+  {
+   "q": "海鷗從平靜變成大叫再變成發光",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Inhaling Seagull"
+   ]
+  },
+  {
+   "q": "小丑在化妝,越畫越誇張",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Clown Applying Makeup"
+   ]
+  },
+  {
+   "q": "指著太陽穴的人,一臉我想到了很聰明的事",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Roll Safe Think About It"
+   ]
+  },
+  {
+   "q": "肌肉發達的柴犬跟哭哭的柴犬對比",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Buff Doge vs. Cheems"
+   ]
+  },
+  {
+   "q": "兩隻手用力握在一起的史詩級畫面",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Epic Handshake"
+   ]
+  },
+  {
+   "q": "一個人手上拿著一堆UNO牌",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "UNO Draw 25 Cards"
+   ]
+  },
+  {
+   "q": "死神在敲門",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Grim Reaper Knocking Door"
+   ]
+  },
+  {
+   "q": "智商鐘形曲線,最左邊跟最右邊的人一樣",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Bell Curve"
+   ]
+  },
+  {
+   "q": "格魯拿著白板講他的計畫,四格",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Gru's Plan"
+   ]
+  },
+  {
+   "q": "Drake 一個嫌棄的手勢,一個喜歡的手勢",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Drake Hotline Bling",
+    "Drake Blank"
+   ]
+  },
+  {
+   "q": "到處都是巴斯光年指著遠方",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "X, X Everywhere"
+   ]
+  },
+  {
+   "q": "三個頭的龍,每個頭表情不同",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Three headed Dragon"
+   ]
+  },
+  {
+   "q": "一個人坐著睡覺,另一個人睜眼看著",
+   "kind": "look",
+   "set": "v1",
+   "expect": [
+    "Sleeping Shaq"
+   ]
+  },
+  {
+   "q": "皮卡丘驚訝",
+   "kind": "nickname",
+   "set": "v1",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "痛苦面具老爺爺",
+   "kind": "nickname",
+   "set": "v1",
+   "expect": [
+    "Hide the Pain Harold"
+   ]
+  },
+  {
+   "q": "嘲諷海綿寶寶",
+   "kind": "nickname",
+   "set": "v1",
+   "expect": [
+    "Mocking Spongebob"
+   ]
+  },
+  {
+   "q": "憤怒的女人和貓",
+   "kind": "nickname",
+   "set": "v1",
+   "expect": [
+    "Woman Yelling At Cat"
+   ]
+  },
+  {
+   "q": "我現在是船長了",
+   "kind": "nickname",
+   "set": "v1",
+   "expect": [
+    "I'm The Captain Now"
+   ]
+  },
+  {
+   "q": "絕對電影",
+   "kind": "nickname",
+   "set": "v1",
+   "expect": [
+    "Absolute Cinema"
+   ]
+  },
+  {
+   "q": "分心男友",
+   "kind": "name",
+   "set": "v1",
+   "expect": [
+    "Distracted Boyfriend"
+   ]
+  },
+  {
+   "q": "Expanding Brain",
+   "kind": "name",
+   "set": "v1",
+   "expect": [
+    "Expanding Brain"
+   ]
+  },
+  {
+   "q": "Surprised Pikachu",
+   "kind": "name",
+   "set": "v1",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "this is fine",
+   "kind": "name",
+   "set": "v1",
+   "expect": [
+    "This Is Fine"
+   ]
+  },
+  {
+   "q": "Two Buttons",
+   "kind": "name",
+   "set": "v1",
+   "expect": [
+    "Two Buttons"
+   ]
+  },
+  {
+   "q": "明明自己做了蠢事,結果壞事發生還一臉意外",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "主管笑笑地說週末能不能進來加班,那就太好了",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "That Would Be Great"
+   ]
+  },
+  {
+   "q": "什麼事都要怪給外星人",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Ancient Aliens",
+    "Ancient Aliens Guy"
+   ]
+  },
+  {
+   "q": "手上的專案做到一半,又被新點子吸引",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Distracted Boyfriend",
+    "I Bet He's Thinking About Other Women",
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "不要這個,要那個",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Drake Hotline Bling",
+    "Drake Blank",
+    "Drakeposting"
+   ]
+  },
+  {
+   "q": "我的看法就是這樣,有種來反駁我",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Change My Mind"
+   ]
+  },
+  {
+   "q": "把完全不同的東西誤認成別的東西",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Is This A Pigeon"
+   ]
+  },
+  {
+   "q": "不交作業就不會被扣分,我真聰明",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Roll Safe Think About It",
+    "Roll Safe"
+   ]
+  },
+  {
+   "q": "終於成功了,握拳慶祝",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Success Kid"
+   ]
+  },
+  {
+   "q": "超級不爽,什麼都討厭",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Grumpy Cat"
+   ]
+  },
+  {
+   "q": "借了東西都不還的混蛋",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Scumbag Steve"
+   ]
+  },
+  {
+   "q": "每次都願意幫忙的大好人",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Good Guy Greg"
+   ]
+  },
+  {
+   "q": "手機電量剩一點就開始焦慮的現代人問題",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "First World Problems"
+   ]
+  },
+  {
+   "q": "如果沒人看見,那算不算真的發生過",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Philosoraptor"
+   ]
+  },
+  {
+   "q": "看不下去了,太蠢了,用手掩面",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Facepalm"
+   ]
+  },
+  {
+   "q": "為什麼你就是不肯這樣做",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Y U No",
+    "Y U NO Guy"
+   ]
+  },
+  {
+   "q": "哦,你說你很忙?你一定很重要吧",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Creepy Condescending Wonka",
+    "Condescending Wonka"
+   ]
+  },
+  {
+   "q": "我分不出他是在生氣還是我想太多",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Futurama Fry"
+   ]
+  },
+  {
+   "q": "控制慾超強、黏人黏到可怕的女友",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Overly Attached Girlfriend"
+   ]
+  },
+  {
+   "q": "極端又誇張的人生建議",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Insanity Wolf",
+    "Baby Insanity Wolf"
+   ]
+  },
+  {
+   "q": "心裡的惡魔慫恿我去做壞事",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Evil Kermit"
+   ]
+  },
+  {
+   "q": "用嘲笑的語氣把別人說的話重複一遍",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Mocking Spongebob"
+   ]
+  },
+  {
+   "q": "你不能就這樣直接走進魔多",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "One Does Not Simply"
+   ]
+  },
+  {
+   "q": "等等,所以一直都是這樣?一直都是",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Always Has Been"
+   ]
+  },
+  {
+   "q": "亂買股票結果大賺",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Stonks"
+   ]
+  },
+  {
+   "q": "我給你這個,你給我那個,成交嗎",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Trade Offer"
+   ]
+  },
+  {
+   "q": "我已經說過很多次了,不要再問",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Don't make me tap the sign"
+   ]
+  },
+  {
+   "q": "你是為了大家好,對吧?對吧?",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Anakin Padme 4 Panel",
+    "Anakin and Padme Change the World For the Better"
+   ]
+  },
+  {
+   "q": "你閉嘴,我不想聽",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Batman Slapping Robin"
+   ]
+  },
+  {
+   "q": "我不相信你說的話",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Third World Skeptical Kid",
+    "Skeptical Third World Kid"
+   ]
+  },
+  {
+   "q": "假裝自己跟年輕人很熟的大人",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Steve Buscemi Fellow Kids"
+   ]
+  },
+  {
+   "q": "一巴掌打下去",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Will Smith Slapping Chris Rock"
+   ]
+  },
+  {
+   "q": "天啊,不要,不要這樣",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Michael Scott No God No"
+   ]
+  },
+  {
+   "q": "一個人孤零零地等著",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Sad Pablo Escobar"
+   ]
+  },
+  {
+   "q": "這麼簡單的事,為什麼你們要搞得這麼複雜",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Khaby Lame Shrug"
+   ]
+  },
+  {
+   "q": "阿嬤第一次學上網",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Grandma Finds The Internet"
+   ]
+  },
+  {
+   "q": "很難接受但就是事實的真相",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Hard To Swallow Pills"
+   ]
+  },
+  {
+   "q": "你以為你有選擇,其實結果都一樣",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Illusion of free choice"
+   ]
+  },
+  {
+   "q": "一邊開車一邊露出震驚的表情",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "The Rock Driving"
+   ]
+  },
+  {
+   "q": "還有嗎,再給我多一點",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Y'all Got Any More Of That"
+   ]
+  },
+  {
+   "q": "氣到把桌子掀了",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Table Flip Guy"
+   ]
+  },
+  {
+   "q": "如果這件事成真,世界會變得更美好",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "The future world if"
+   ]
+  },
+  {
+   "q": "一個小失誤引發連鎖反應",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Domino Effect"
+   ]
+  },
+  {
+   "q": "自己把棍子插進輪子裡,然後怪別人害他跌倒",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Bike Fall"
+   ]
+  },
+  {
+   "q": "這個膠帶可以補好所有東西",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Flex Tape"
+   ]
+  },
+  {
+   "q": "現在最紅最夯的東西",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Mugatu So Hot Right Now"
+   ]
+  },
+  {
+   "q": "你有一台車,你有一台車,大家都有一台車",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Oprah You Get A",
+    "Oprah You Get A Car Everybody Gets A Car"
+   ]
+  },
+  {
+   "q": "我聽說你喜歡這個,所以我在這個裡面放了一個這個",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Yo Dawg Heard You",
+    "Xzibit Yo Dawg"
+   ]
+  },
+  {
+   "q": "我不認為這個詞的意思是你以為的那樣",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Inigo Montoya"
+   ]
+  },
+  {
+   "q": "如果我告訴你這一切都是假的",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Matrix Morpheus"
+   ]
+  },
+  {
+   "q": "凜冬將至,大事不妙",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Winter is coming"
+   ]
+  },
+  {
+   "q": "不要硬要讓它流行起來",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Stop Trying to Make Fetch Happen"
+   ]
+  },
+  {
+   "q": "閉嘴快收下我的錢",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Shut Up and Take My Money!"
+   ]
+  },
+  {
+   "q": "我記得以前的事,我都記得",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Pepperidge Farm Remembers"
+   ]
+  },
+  {
+   "q": "誰會贏,一邊超強壯一邊超弱小",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Who Would Win"
+   ]
+  },
+  {
+   "q": "他們不知道我其實什麼都懂",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "They don't know"
+   ]
+  },
+  {
+   "q": "一個小問題越滾越大最後整個爆炸",
+   "kind": "situation",
+   "set": "v2",
+   "expect": [
+    "Domino Effect",
+    "This Is Fine"
+   ]
+  },
+  {
+   "q": "一隻很不爽的貓,臉很臭",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Grumpy Cat"
+   ]
+  },
+  {
+   "q": "一個握著拳頭的小男孩,一臉得意",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Success Kid"
+   ]
+  },
+  {
+   "q": "戴著眼鏡的恐龍在思考",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Philosoraptor"
+   ]
+  },
+  {
+   "q": "穿著西裝、留著鬍子、手拿啤酒的帥氣男人",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "The Most Interesting Man in the World"
+   ]
+  },
+  {
+   "q": "一個人把鹽從手臂上撒下來",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Salt Bae"
+   ]
+  },
+  {
+   "q": "一隻敲著鼓的貓",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Bongo Cat"
+   ]
+  },
+  {
+   "q": "一個人在笑,旁邊有一個在哭,海綿寶寶",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Squidward window",
+    "Mocking Spongebob",
+    "Imagination Spongebob"
+   ]
+  },
+  {
+   "q": "兩個蜘蛛人互相指著對方",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "spiderman pointing at spiderman",
+    "Spider Man Double",
+    "Spider Man Triple"
+   ]
+  },
+  {
+   "q": "蝙蝠俠搧小羅賓一巴掌",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Batman Slapping Robin"
+   ]
+  },
+  {
+   "q": "戴著墨鏡的人在開車",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "The Rock Driving"
+   ]
+  },
+  {
+   "q": "兩個人握手握得很用力,手臂肌肉很誇張",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Epic Handshake"
+   ]
+  },
+  {
+   "q": "一個老爺爺露出痛苦又勉強的微笑",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Hide the Pain Harold"
+   ]
+  },
+  {
+   "q": "一個小丑在鏡子前化妝",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Clown Applying Makeup"
+   ]
+  },
+  {
+   "q": "一個骷髏坐在椅子上等",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Waiting Skeleton"
+   ]
+  },
+  {
+   "q": "兩個選項按鈕,一個人在冒汗",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Two Buttons"
+   ]
+  },
+  {
+   "q": "女人指著桌上的貓,貓一臉無辜",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Woman Yelling At Cat"
+   ]
+  },
+  {
+   "q": "男人轉頭看路過的女生,女友一臉不爽",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Distracted Boyfriend",
+    "I Bet He's Thinking About Other Women",
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "皮卡丘張大嘴巴一臉驚訝",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "肌肉很大的柴犬和很小很弱的柴犬",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Buff Doge vs. Cheems"
+   ]
+  },
+  {
+   "q": "一隻柴犬,旁邊有很多彩色的字",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Doge",
+    "Cheems"
+   ]
+  },
+  {
+   "q": "一個人站在桌子後面舉著牌子",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Change My Mind",
+    "Man Holding Cardboard Sign"
+   ]
+  },
+  {
+   "q": "一個太空人從太空看地球,後面還有一個太空人拿著槍",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Always Has Been"
+   ]
+  },
+  {
+   "q": "兩個男人在巴士上對話",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Two guys on a bus"
+   ]
+  },
+  {
+   "q": "一個女人和一個大腿很粗的男人在吵架,背景是工廠",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "American Chopper Argument"
+   ]
+  },
+  {
+   "q": "一個戴著帽子的男人比出數字,在拍賣店",
+   "kind": "look",
+   "set": "v2",
+   "expect": [
+    "Pawn Stars Best I Can Do"
+   ]
+  },
+  {
+   "q": "柴犬",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Doge",
+    "Cheems",
+    "Buff Doge vs. Cheems"
+   ]
+  },
+  {
+   "q": "臭臉貓",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Grumpy Cat"
+   ]
+  },
+  {
+   "q": "壞運布萊恩",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Bad Luck Brian"
+   ]
+  },
+  {
+   "q": "成功小子",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Success Kid"
+   ]
+  },
+  {
+   "q": "社交尷尬企鵝",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Socially Awkward Penguin",
+    "Socially Awesome Awkward Penguin",
+    "Socially Awkward Awesome Penguin"
+   ]
+  },
+  {
+   "q": "哲學恐龍",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Philosoraptor"
+   ]
+  },
+  {
+   "q": "世界上最有趣的男人",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "The Most Interesting Man in the World"
+   ]
+  },
+  {
+   "q": "撒鹽哥",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Salt Bae"
+   ]
+  },
+  {
+   "q": "派大星",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Push it somewhere else Patrick",
+    "Patrick Star's Wallet",
+    "Stop It Patrick You're Scaring Him",
+    "patrick to do list actually blank"
+   ]
+  },
+  {
+   "q": "小丑化妝",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Clown Applying Makeup"
+   ]
+  },
+  {
+   "q": "蝙蝠俠打小羅賓",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Batman Slapping Robin"
+   ]
+  },
+  {
+   "q": "分心女友",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Distracted Girlfriend",
+    "Distracted Boyfriend",
+    "I Bet He's Thinking About Other Women",
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "魷魚遊戲",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Squid Game",
+    "Squid Game (Season 1 vs Season 2)"
+   ]
+  },
+  {
+   "q": "烏干達小子",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Ugandan Knuckles"
+   ]
+  },
+  {
+   "q": "史詩級握手",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Epic Handshake"
+   ]
+  },
+  {
+   "q": "巴斯光年到處都是",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "X, X Everywhere",
+    "Woody and Buzz Lightyear Everywhere Widescreen"
+   ]
+  },
+  {
+   "q": "蜘蛛人指蜘蛛人",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "spiderman pointing at spiderman",
+    "Spider Man Double",
+    "Spider Man Triple"
+   ]
+  },
+  {
+   "q": "嘲諷海綿寶寶",
+   "kind": "nickname",
+   "set": "v2",
+   "expect": [
+    "Mocking Spongebob"
+   ]
+  },
+  {
+   "q": "Roll Safe",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Roll Safe Think About It",
+    "Roll Safe"
+   ]
+  },
+  {
+   "q": "Stonks",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Stonks"
+   ]
+  },
+  {
+   "q": "Salt Bae",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Salt Bae"
+   ]
+  },
+  {
+   "q": "Doge",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Doge"
+   ]
+  },
+  {
+   "q": "Grumpy Cat",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Grumpy Cat"
+   ]
+  },
+  {
+   "q": "Success Kid",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Success Kid"
+   ]
+  },
+  {
+   "q": "Philosoraptor",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Philosoraptor"
+   ]
+  },
+  {
+   "q": "Sad Pablo Escobar",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Sad Pablo Escobar"
+   ]
+  },
+  {
+   "q": "Y U No",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Y U No",
+    "Y U NO Guy"
+   ]
+  },
+  {
+   "q": "Disaster Girl",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Disaster Girl"
+   ]
+  },
+  {
+   "q": "Always Has Been",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Always Has Been"
+   ]
+  },
+  {
+   "q": "Trade Offer",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Trade Offer"
+   ]
+  },
+  {
+   "q": "Bad Luck Brian",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Bad Luck Brian"
+   ]
+  },
+  {
+   "q": "Mocking Spongebob",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Mocking Spongebob"
+   ]
+  },
+  {
+   "q": "Change My Mind",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Change My Mind"
+   ]
+  },
+  {
+   "q": "Is This A Pigeon",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Is This A Pigeon"
+   ]
+  },
+  {
+   "q": "Woman Yelling At Cat",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Woman Yelling At Cat"
+   ]
+  },
+  {
+   "q": "Panik Kalm Panik",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Panik Kalm Panik"
+   ]
+  },
+  {
+   "q": "Waiting Skeleton",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Waiting Skeleton"
+   ]
+  },
+  {
+   "q": "Gru's Plan",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Gru's Plan"
+   ]
+  },
+  {
+   "q": "Ugandan Knuckles",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Ugandan Knuckles"
+   ]
+  },
+  {
+   "q": "Drake Hotline Bling",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Drake Hotline Bling",
+    "Drake Blank",
+    "Drakeposting"
+   ]
+  },
+  {
+   "q": "Hide the Pain Harold",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Hide the Pain Harold"
+   ]
+  },
+  {
+   "q": "This is Sparta",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "This is Sparta!"
+   ]
+  },
+  {
+   "q": "Facepalm",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Facepalm"
+   ]
+  },
+  {
+   "q": "Flex Tape",
+   "kind": "name",
+   "set": "v2",
+   "expect": [
+    "Flex Tape"
+   ]
+  },
+  {
+   "q": "everyone is panicking but I am completely calm",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Panik Kalm Panik"
+   ]
+  },
+  {
+   "q": "waiting forever for a reply that never comes",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Waiting Skeleton"
+   ]
+  },
+  {
+   "q": "everything is on fire and I am pretending it is fine",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "This Is Fine"
+   ]
+  },
+  {
+   "q": "distracted by something new while already in a relationship",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Distracted Boyfriend",
+    "I Bet He's Thinking About Other Women",
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "I will take that trade",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Trade Offer"
+   ]
+  },
+  {
+   "q": "a man cannot decide between two buttons",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Two Buttons"
+   ]
+  },
+  {
+   "q": "shocked that something obvious happened",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "smart idea: if I do not turn it in I cannot fail",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Roll Safe Think About It",
+    "Roll Safe"
+   ]
+  },
+  {
+   "q": "you think you have a choice but you do not",
+   "kind": "english",
+   "set": "v2",
+   "expect": [
+    "Illusion of free choice"
+   ]
+  },
+  {
+   "q": "dsitracted boyfriend",
+   "kind": "typo",
+   "set": "v2",
+   "expect": [
+    "Distracted Boyfriend",
+    "I Bet He's Thinking About Other Women",
+    "Distracted Girlfriend"
+   ]
+  },
+  {
+   "q": "surpised pikachu",
+   "kind": "typo",
+   "set": "v2",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "exapnding brain",
+   "kind": "typo",
+   "set": "v2",
+   "expect": [
+    "Expanding Brain"
+   ]
+  },
+  {
+   "q": "succes kid",
+   "kind": "typo",
+   "set": "v2",
+   "expect": [
+    "Success Kid"
+   ]
+  },
+  {
+   "q": "gru plan",
+   "kind": "typo",
+   "set": "v2",
+   "expect": [
+    "Gru's Plan"
+   ]
+  },
+  {
+   "q": "bad luk brian",
+   "kind": "typo",
+   "set": "v2",
+   "expect": [
+    "Bad Luck Brian"
+   ]
+  },
+  {
+   "q": "阿克巴上將",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "It's A Trap!"
+   ]
+  },
+  {
+   "q": "Admiral Ackbar",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "It's A Trap!"
+   ]
+  },
+  {
+   "q": "星際大戰 這是陷阱",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "It's A Trap!"
+   ]
+  },
+  {
+   "q": "Zoidberg",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "You Should Feel Bad"
+   ]
+  },
+  {
+   "q": "飛出個未來",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Futurama Fry",
+    "You Should Feel Bad"
+   ]
+  },
+  {
+   "q": "Archer 間諜亞契",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Do You Want Ants?"
+   ]
+  },
+  {
+   "q": "辛普森家庭",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Comic Book Guy",
+    "Principal Skinner",
+    "Say the Line, Bart!",
+    "say the line bart! simpsons",
+    "Homer Simpson's Back Fat",
+    "Moe throws Barney",
+    "0 days without (Lenny, Simpsons)"
+   ]
+  },
+  {
+   "q": "漫畫店老闆",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Comic Book Guy"
+   ]
+  },
+  {
+   "q": "史金納校長",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Principal Skinner"
+   ]
+  },
+  {
+   "q": "侏羅紀公園",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Life... Finds a Way"
+   ]
+  },
+  {
+   "q": "王牌播報員",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Milk Was a Bad Choice"
+   ]
+  },
+  {
+   "q": "公園與遊憩 安迪",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Afraid to Ask Andy"
+   ]
+  },
+  {
+   "q": "汪達幻視",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Agnes Harkness Winking"
+   ]
+  },
+  {
+   "q": "星艦奇航記 皮卡艦長",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Facepalm"
+   ]
+  },
+  {
+   "q": "駭客任務",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Matrix Morpheus"
+   ]
+  },
+  {
+   "q": "魔戒 甘道夫",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Confused Gandalf"
+   ]
+  },
+  {
+   "q": "辦公室 麥可史考特",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Michael Scott No God No"
+   ]
+  },
+  {
+   "q": "六人行",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Phoebe Teaching Joey"
+   ]
+  },
+  {
+   "q": "冰與火之歌",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Winter is coming"
+   ]
+  },
+  {
+   "q": "300壯士 斯巴達",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "This is Sparta!"
+   ]
+  },
+  {
+   "q": "公主新娘 伊尼戈",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Inigo Montoya"
+   ]
+  },
+  {
+   "q": "海綿寶寶 派大星",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Push it somewhere else Patrick",
+    "Patrick Star's Wallet",
+    "Stop It Patrick You're Scaring Him",
+    "patrick to do list actually blank"
+   ]
+  },
+  {
+   "q": "小熊維尼",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Tuxedo Winnie The Pooh"
+   ]
+  },
+  {
+   "q": "寶可夢 皮卡丘",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Surprised Pikachu"
+   ]
+  },
+  {
+   "q": "絕命毒師",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Gus Fring we are not the same"
+   ]
+  },
+  {
+   "q": "蜘蛛人",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "spiderman pointing at spiderman",
+    "Spider Man Double",
+    "Spider Man Triple",
+    "Peter Parker's Glasses",
+    "Spiderman Glasses"
+   ]
+  },
+  {
+   "q": "黑暗騎士 小丑",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "It's Simple, Kill the Batman"
+   ]
+  },
+  {
+   "q": "蝙蝠俠",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Batman Slapping Robin",
+    "It's Simple, Kill the Batman"
+   ]
+  },
+  {
+   "q": "獅子王 辛巴",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "Simba Shadowy Place"
+   ]
+  },
+  {
+   "q": "復仇者聯盟 薩諾斯",
+   "kind": "entity",
+   "set": "v2b",
+   "expect": [
+    "thanos what did it cost"
+   ]
+  },
+  {
+   "q": "ain't nobody got time for that",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Sweet Brown"
+   ]
+  },
+  {
+   "q": "one does not simply walk into mordor",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "One Does Not Simply"
+   ]
+  },
+  {
+   "q": "what if I told you",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Matrix Morpheus"
+   ]
+  },
+  {
+   "q": "I'm not saying it was aliens",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Ancient Aliens",
+    "Ancient Aliens Guy"
+   ]
+  },
+  {
+   "q": "I see dead people",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "I See Dead People"
+   ]
+  },
+  {
+   "q": "you should feel bad",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "You Should Feel Bad"
+   ]
+  },
+  {
+   "q": "what's in the box",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "What's in the box!"
+   ]
+  },
+  {
+   "q": "that would be great",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "That Would Be Great"
+   ]
+  },
+  {
+   "q": "shut up and take my money",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Shut Up and Take My Money!"
+   ]
+  },
+  {
+   "q": "no soup for you",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "No Soup for You"
+   ]
+  },
+  {
+   "q": "I fear no man",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "I fear no man"
+   ]
+  },
+  {
+   "q": "we have food at home",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "We Have Food at Home"
+   ]
+  },
+  {
+   "q": "so I got that going for me which is nice",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "So I Got That Goin' For Me, Which is Nice"
+   ]
+  },
+  {
+   "q": "why can't I hold all these limes",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Why Can't I Hold All These Limes"
+   ]
+  },
+  {
+   "q": "member berries",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Member Berries"
+   ]
+  },
+  {
+   "q": "it's happening",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "It's Happening"
+   ]
+  },
+  {
+   "q": "ermahgerd",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Ermahgerd"
+   ]
+  },
+  {
+   "q": "I can has cheezburger",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "I Can Has Cheezburger"
+   ]
+  },
+  {
+   "q": "all your base are belong to us",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "All Your Base Are Belong to Us"
+   ]
+  },
+  {
+   "q": "stop trying to make fetch happen",
+   "kind": "quote",
+   "set": "v2b",
+   "expect": [
+    "Stop Trying to Make Fetch Happen"
+   ]
+  },
+  {
+   "q": "今天晚餐吃什麼比較好",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "高鐵台北到台中的時刻表",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "怎麼申請護照要帶哪些文件",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "Python 怎麼把陣列排序",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "報稅要準備哪些資料",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "明天的天氣預報",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "紅燒肉的食譜",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  },
+  {
+   "q": "新竹有哪些好吃的餐廳",
+   "kind": "negative",
+   "set": "v2",
+   "expect": []
+  }
+ ]
 }

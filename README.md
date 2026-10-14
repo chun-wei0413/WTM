@@ -69,8 +69,8 @@ administrator sees both side by side ("user report: ...; suggested change: ...")
 
 ## Architecture
 
-A search runs two lookups in PostgreSQL, a vector search (`bge-m3` embeddings with pgvector) and a keyword search
-(`pg_trgm`), and merges the two rankings with reciprocal rank fusion. In the background, a vision model
+A search runs two rankings, a vector search in PostgreSQL (`bge-m3` embeddings with pgvector) and a keyword search
+(BM25, kept in the application), and merges them by a weighted sum of their scores. In the background, a vision model
 (`qwen2.5vl`) describes every new picture and a sync job keeps the search index in line with the library.
 The picture files themselves are stored in S3-compatible object storage (RustFS), not fetched from their original sites.
 

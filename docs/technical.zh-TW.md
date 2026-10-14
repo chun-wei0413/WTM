@@ -32,7 +32,7 @@ flowchart LR
     A[管理員<br/>檔案、網址] -->|收集、去重| L[(meme_template<br/>PostgreSQL)]
     L -->|標記佇列,SKIP LOCKED| V[視覺模型<br/>描述圖片]
     V -->|意思、標籤、文字| L
-    L -->|依狀態同步索引| S[搜尋索引<br/>pgvector + pg_trgm]
+    L -->|依狀態同步索引| S[搜尋索引<br/>pgvector + BM25]
     U[使用者] -->|搜尋| S
     U -->|回報| R[(report_review<br/>佇列)]
     R --> V2[視覺模型<br/>重新看一遍]
@@ -73,7 +73,7 @@ flowchart TB
 |---|---|
 | 語言與框架 | Java 21、Spring Boot 3.5 |
 | 網頁前端 | React 19、TypeScript、Vite、React Router(不使用 UI 套件) |
-| 資料庫 | PostgreSQL 16,搭配 `pgvector`(語意搜尋)與 `pg_trgm`(關鍵字搜尋),以 Flyway 管理遷移 |
+| 資料庫 | PostgreSQL 16,搭配 `pgvector`(語意搜尋),以 Flyway 管理遷移。關鍵字搜尋是應用程式內建的 BM25 |
 | 物件儲存 | 任何相容 S3 的服務,透過 AWS SDK v2(Docker Compose 使用 RustFS) |
 | 模型 | [Ollama](https://ollama.com):`bge-m3` 做 embedding、`qwen2.5vl:7b` 看圖;預設使用可重現的模擬模型 |
 | 安全 | Spring Security Resource Server、HS256 JWT、BCrypt |
@@ -274,7 +274,9 @@ mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # 檢索品質 → t
 
 ### 在真實圖庫上
 
-`eval/library-queries.json` 裡有 46 句搜尋(情境、長相、暱稱、名稱)和它們該找到的梗圖;
+`eval/library-queries.json` 裡有 237 句有正確答案的搜尋(情境、長相、暱稱、名稱、作品與角色、經典台詞、錯字)、
+8 句沒有正確答案的搜尋,以及它們該找到的梗圖。完整、最新的評測(含各種排序方式的比較、信賴區間與限制)請看
+[EVALUATION.zh-TW.md](EVALUATION.zh-TW.md)。以下是最早的量測,其中 46 句、171 張圖:
 `node scripts/eval-search.mjs` 會對執行中的應用程式跑一遍,印出命中率,以及每個沒命中的查詢實際找到了什麼。
 第一次量測的結果(171 張可搜尋的梗圖、`bge-m3`):
 

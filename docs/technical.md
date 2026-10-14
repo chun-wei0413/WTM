@@ -31,7 +31,7 @@ flowchart LR
     A[Administrator<br/>files, address] -->|collect, de-duplicate| L[(meme_template<br/>PostgreSQL)]
     L -->|tagging queue, SKIP LOCKED| V[Vision model<br/>describes the picture]
     V -->|meaning, tags, text| L
-    L -->|index sync by state| S[Search index<br/>pgvector + pg_trgm]
+    L -->|index sync by state| S[Search index<br/>pgvector + BM25]
     U[User] -->|search| S
     U -->|report| R[(report_review<br/>queue)]
     R --> V2[Vision model<br/>looks again]
@@ -74,7 +74,7 @@ trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
 |---|---|
 | Language / framework | Java 21, Spring Boot 3.5 |
 | Web client | React 19, TypeScript, Vite, React Router (no UI library) |
-| Database | PostgreSQL 16 with `pgvector` (semantic search) and `pg_trgm` (keyword search), Flyway migrations |
+| Database | PostgreSQL 16 with `pgvector` (semantic search), Flyway migrations. Keyword search is BM25 in the application |
 | Object storage | Any S3-compatible store through the AWS SDK v2 (RustFS in Docker Compose) |
 | Models | [Ollama](https://ollama.com): `bge-m3` for embeddings, `qwen2.5vl:7b` for looking at pictures; a deterministic mock is the default |
 | Security | Spring Security resource server, HS256 JWT, BCrypt |
@@ -285,9 +285,12 @@ absolute numbers as optimistic and use them to compare changes):
 
 ### On the real library
 
-`eval/library-queries.json` holds 46 searches (situations, looks, nicknames, names) and the memes that answer them;
+`eval/library-queries.json` holds 237 searches with a right answer (situations, looks, nicknames, names, works and
+characters, remembered lines, typos) and 8 that have none, together with the memes that answer them;
 `node scripts/eval-search.mjs` runs them against the running application and prints the hit rates and what was found
-instead for every miss. First measurement, on 171 searchable memes, with `bge-m3`:
+instead for every miss. The full, current evaluation, with a comparison of ways of ranking, confidence intervals and the
+limits, is in [EVALUATION.zh-TW.md](EVALUATION.zh-TW.md) (Traditional Chinese). The first measurement, on 46 of those
+searches and 171 searchable memes, with `bge-m3`:
 
 | Kind of search | n | first result | in top 3 | in top 10 |
 |---|---|---|---|---|

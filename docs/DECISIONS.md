@@ -130,11 +130,28 @@ the templates table to filter by status) has not been checked.
 
 ## 5. Hybrid search, and what the numbers say about it
 
-**Decision.** Search runs a semantic ranking and a keyword ranking and merges them with
-reciprocal rank fusion (RRF), which needs no comparison between distance and similarity scales.
-If the embedding service fails, keyword search alone still answers.
+**Decision (revised 2026-10-14; the first version, below, used `pg_trgm` and reciprocal rank fusion).** Search runs a
+semantic ranking (cosine similarity of `bge-m3` embeddings) and a keyword ranking (**BM25**, built in the application over the
+searchable text of every published meme, Chinese cut into overlapping two-character pieces) and merges them by a **weighted
+sum of their scores, each scaled to 0..1 within its own list**, with a weight of 0.7 on the semantic ranking
+(`wtm.search.dense-weight`). If the embedding service fails, the keyword ranking alone still answers.
 
-**What was measured** (real `bge-m3` through Ollama; 12 hand-written templates, 20 situation
+**Why it was revised.** On 410 memes and 237 queries written without looking at the library, the first version was no better
+than the vector search alone (first result 83.5% against 82.7%, p = 0.49), and as the fallback `pg_trgm` was right first for only
+49% of the queries (11% of the situation queries; it found nothing at all for natural Chinese sentences). BM25 over the same texts
+was right first for 73% alone, and BM25 with the convex combination raised the right answer's presence in the first ten from
+92.4% to 94.9% (paired test p = 0.03) and MRR on queries written from the pictures alone by 3.6 points (p = 0.003); a reciprocal
+rank fusion of the same two rankings lowered the first result by 4.2 points, as Bruch, Gai and Ingber (2022) found. Measured in the
+running application after the change: first result 83%, top three 90%, top ten 95%, MRR 0.87 on the 237 queries; with the embedding
+service made unreachable, 73% / 81% / 89%. The weight 0.7 was chosen on half of the queries and checked on the other half.
+Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
+
+**Why not earlier.** `pg_trgm` was chosen in decision 4 because it is built into PostgreSQL and matches Chinese substrings
+without a word list; BM25 was not measured then. BM25 needs the text cut into words, which for Chinese is done here by pairs of
+characters, and PostgreSQL has no built-in BM25. Keeping the index in the application costs a few milliseconds when the
+library changes and no new component. The `pg_trgm` extension and its index are still in the database, unused by the search.
+
+**What was measured for the first version** (real `bge-m3` through Ollama; 12 hand-written templates, 20 situation
 queries; run with `mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true`):
 
 | | first result correct | in top 3 | MRR |

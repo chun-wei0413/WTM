@@ -63,8 +63,8 @@ WTM 會先找出最接近的八張,把最接近的一張交給你,並附上語�
 
 ## 架構
 
-一次搜尋會在 PostgreSQL 裡做兩種查詢:向量檢索(`bge-m3` 嵌入加 pgvector)與關鍵字檢索(`pg_trgm`),
-再用倒數排名融合(RRF)把兩份排名合併。在背景裡,視覺模型(`qwen2.5vl`)會為每張新圖寫下描述,
+一次搜尋會做兩種排名:PostgreSQL 裡的向量檢索(`bge-m3` 嵌入加 pgvector),與應用程式內建的關鍵字檢索(BM25),
+再把兩份分數加權合併。在背景裡,視覺模型(`qwen2.5vl`)會為每張新圖寫下描述,
 同步程式則讓搜尋索引跟上圖庫的內容。圖片檔案本身存放在 S3 相容的物件儲存(RustFS),不是每次都去原網站載入。
 
 [![WTM 檢索架構:查詢流程與建索引流程](docs/images/search-architecture.drawio.png)](docs/images/search-architecture.drawio.png)
