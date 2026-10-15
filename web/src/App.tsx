@@ -7,7 +7,7 @@ import { CreatePage } from './Create/CreatePage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './Search/SearchPage';
 import { CollectionPage } from './pages/admin/CollectionPage';
-import { ReportsPage } from './pages/admin/ReportsPage';
+import { ReportsPage } from './Admin/Reports/ReportsPage';
 import { TemplateEditorPage } from './Admin/TemplateEditor/TemplateEditorPage';
 import { TemplatesPage } from './pages/admin/TemplatesPage';
 
