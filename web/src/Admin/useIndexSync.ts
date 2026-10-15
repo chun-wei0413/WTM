@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { api } from '../../api/client';
-import type { IndexSyncResult } from '../../api/types';
+import { api } from '../api/client';
+import type { IndexSyncResult } from '../api/types';
 
-/** Brings the search index up to date at once, instead of waiting for the next regular sync; `onSynced` runs after it. */
-export function useIndexSync(onSynced: () => Promise<void>) {
+/**
+ * Brings the search index up to date at once, instead of waiting for the next regular sync.
+ * `onSynced`, when given, runs after a sync that went through.
+ */
+export function useIndexSync(onSynced?: () => Promise<void>) {
   const [syncing, setSyncing] = useState(false);
   const [synced, setSynced] = useState<IndexSyncResult | null>(null);
   const [syncError, setSyncError] = useState<unknown>(null);
@@ -14,7 +17,7 @@ export function useIndexSync(onSynced: () => Promise<void>) {
     setSynced(null);
     try {
       setSynced(await api.admin.syncIndex());
-      await onSynced();
+      if (onSynced) await onSynced();
     } catch (e) {
       setSyncError(e);
     } finally {

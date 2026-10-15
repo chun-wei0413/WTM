@@ -9,7 +9,7 @@ import { SearchPage } from './Search/SearchPage';
 import { CollectionPage } from './Admin/Collection/CollectionPage';
 import { ReportsPage } from './Admin/Reports/ReportsPage';
 import { TemplateEditorPage } from './Admin/TemplateEditor/TemplateEditorPage';
-import { TemplatesPage } from './pages/admin/TemplatesPage';
+import { TemplatesPage } from './Admin/Templates/TemplatesPage';
 
 function RequireAuth() {
   const { user } = useAuth();

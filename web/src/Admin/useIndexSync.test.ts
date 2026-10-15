@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useIndexSync } from './useIndexSync';
 
 const { syncIndex } = vi.hoisted(() => ({ syncIndex: vi.fn() }));
-vi.mock('../../api/client', () => ({ api: { admin: { syncIndex } } }));
+vi.mock('../api/client', () => ({ api: { admin: { syncIndex } } }));
 
 const onSynced = vi.fn();
 
@@ -69,5 +69,14 @@ describe('useIndexSync', () => {
     await act(() => result.current.sync());
 
     expect(result.current.synced).toBeNull();
+  });
+
+  it('needs no callback', async () => {
+    const { result } = renderHook(() => useIndexSync());
+
+    await act(() => result.current.sync());
+
+    expect(result.current.synced).toEqual({ indexed: 3, removed: 1, failed: 0 });
+    expect(result.current.syncError).toBeNull();
   });
 });

@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { ErrorNotice } from '../../components/ErrorNotice';
+import { IndexSyncNotice } from '../IndexSyncNotice';
+import { useIndexSync } from '../useIndexSync';
 import { Stat } from './Stat';
-import { useIndexSync } from './useIndexSync';
 import { useLibraryStats } from './useLibraryStats';
 
 /** How many pictures the library has in each state, and the buttons to refresh the numbers or sync the search index. */
@@ -43,13 +44,7 @@ export function StatsSection() {
           <span>還有 {pending} 張正在等視覺模型標記,這頁會自動更新。</span>
         </p>
       )}
-      {synced && (
-        <div className="notice notice-success" role="status">
-          搜尋索引已同步:建立或更新 {synced.indexed} 個、移除 {synced.removed} 個
-          {synced.failed > 0 && `,有 ${synced.failed} 個失敗(稍後會自動重試)`}。
-        </div>
-      )}
-      {syncError != null && <ErrorNotice error={syncError} />}
+      <IndexSyncNotice synced={synced} error={syncError} />
     </section>
   );
 }
