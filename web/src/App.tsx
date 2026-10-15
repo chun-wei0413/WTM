@@ -6,7 +6,7 @@ import { LoginPage } from './pages/LoginPage';
 import { CreatePage } from './Create/CreatePage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './Search/SearchPage';
-import { CollectionPage } from './pages/admin/CollectionPage';
+import { CollectionPage } from './Admin/Collection/CollectionPage';
 import { ReportsPage } from './Admin/Reports/ReportsPage';
 import { TemplateEditorPage } from './Admin/TemplateEditor/TemplateEditorPage';
 import { TemplatesPage } from './pages/admin/TemplatesPage';
