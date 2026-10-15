@@ -5,7 +5,7 @@ import { Layout } from './components/Layout';
 import { LoginPage } from './pages/LoginPage';
 import { EditorPage } from './pages/EditorPage';
 import { FavoritesPage } from './pages/FavoritesPage';
-import { SearchPage } from './pages/SearchPage';
+import { SearchPage } from './Search/SearchPage';
 import { CollectionPage } from './pages/admin/CollectionPage';
 import { ReportsPage } from './pages/admin/ReportsPage';
 import { TemplateEditorPage } from './pages/admin/TemplateEditorPage';
