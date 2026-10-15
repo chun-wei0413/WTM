@@ -6,8 +6,10 @@ import {
   moveRect,
   nextSlotNo,
   rectFromPoints,
+  rectOf,
   resizeRect,
   toImageCoords,
+  withRect,
   type Rect,
 } from './slotGeometry';
 
@@ -122,5 +124,35 @@ describe('nextSlotNo', () => {
     expect(nextSlotNo([])).toBe(1);
     expect(nextSlotNo([{ slotNo: 1 }, { slotNo: 2 }])).toBe(3);
     expect(nextSlotNo([{ slotNo: 1 }, { slotNo: 5 }])).toBe(6);
+  });
+});
+
+describe('rectOf', () => {
+  it('keeps only the position and size of a slot', () => {
+    expect(rectOf({ x: 1, y: 2, width: 3, height: 4, role: 'x', slotNo: 7 } as Rect)).toEqual({ x: 1, y: 2, width: 3, height: 4 });
+  });
+});
+
+describe('withRect', () => {
+  const slots = [
+    { slotNo: 1, role: 'a', x: 0, y: 0, width: 50, height: 50 },
+    { slotNo: 2, role: 'b', x: 10, y: 10, width: 60, height: 60 },
+  ];
+
+  it('moves only the slot with that number and keeps what else it carries', () => {
+    const next = withRect(slots, 2, { x: 5, y: 6, width: 70, height: 80 });
+
+    expect(next[0]).toBe(slots[0]);
+    expect(next[1]).toEqual({ slotNo: 2, role: 'b', x: 5, y: 6, width: 70, height: 80 });
+  });
+
+  it('does not change the slots it was given', () => {
+    withRect(slots, 1, { x: 9, y: 9, width: 9, height: 9 });
+
+    expect(slots[0]?.x).toBe(0);
+  });
+
+  it('leaves everything as it is when no slot has that number', () => {
+    expect(withRect(slots, 9, { x: 1, y: 1, width: 1, height: 1 })).toEqual(slots);
   });
 });

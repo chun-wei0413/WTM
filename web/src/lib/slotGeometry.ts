@@ -84,3 +84,13 @@ export function nextSlotNo(slots: ReadonlyArray<{ slotNo: number }>): number {
 export function isBigEnough(rect: Rect): boolean {
   return rect.width >= MIN_SLOT_SIZE && rect.height >= MIN_SLOT_SIZE;
 }
+
+/** The position and size of a slot, without the rest of what a slot carries. */
+export function rectOf(slot: Rect): Rect {
+  return { x: slot.x, y: slot.y, width: slot.width, height: slot.height };
+}
+
+/** The same slots, with one of them given a new position and size. */
+export function withRect<T extends Rect & { slotNo: number }>(slots: ReadonlyArray<T>, slotNo: number, rect: Rect): T[] {
+  return slots.map((s) => (s.slotNo === slotNo ? { ...s, ...rect } : s));
+}

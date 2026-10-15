@@ -3,7 +3,7 @@ import { useAuth } from './auth/AuthContext';
 import { FavoritesProvider } from './favorites/FavoritesContext';
 import { Layout } from './components/Layout';
 import { LoginPage } from './pages/LoginPage';
-import { EditorPage } from './pages/EditorPage';
+import { CreatePage } from './Create/CreatePage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './Search/SearchPage';
 import { CollectionPage } from './pages/admin/CollectionPage';
@@ -37,7 +37,7 @@ export function App() {
         <Route element={<Layout />}>
           <Route index element={<SearchPage />} />
           <Route path="favorites" element={<FavoritesPage />} />
-          <Route path="create" element={<EditorPage />} />
+          <Route path="create" element={<CreatePage />} />
           <Route element={<RequireAdmin />}>
             <Route path="admin/collection" element={<CollectionPage />} />
             <Route path="admin/reports" element={<ReportsPage />} />

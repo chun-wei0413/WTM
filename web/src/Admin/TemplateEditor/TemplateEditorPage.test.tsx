@@ -17,7 +17,7 @@ const admin = vi.hoisted(() => ({
 vi.mock('../../api/client', () => ({ api: { admin } }));
 vi.mock('../../components/ErrorNotice', () => ({ ErrorNotice: () => <p role="alert">error</p> }));
 // the drawing area is tested on its own; here it only has to show which slot is selected
-vi.mock('../../components/SlotEditor', () => ({
+vi.mock('../../SlotEditor/SlotEditor', () => ({
   SlotEditor: ({ slots, selected, onSelect }: { slots: Array<{ slotNo: number }>; selected: number | null; onSelect: (n: number) => void }) => (
     <div data-testid="canvas" data-selected={String(selected)}>
       {slots.map((s) => (

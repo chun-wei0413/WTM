@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import type { TemplateView } from '../../api/types';
 import { ErrorNotice } from '../../components/ErrorNotice';
-import { SlotEditor } from '../../components/SlotEditor';
 import { StatusBadge } from '../../components/StatusBadge';
+import { SlotEditor } from '../../SlotEditor/SlotEditor';
 import { ProfilePanel } from './ProfilePanel';
 import { PublishPanel } from './PublishPanel';
 import { SlotsPanel } from './SlotsPanel';
