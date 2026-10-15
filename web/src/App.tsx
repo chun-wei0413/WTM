@@ -8,7 +8,7 @@ import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './Search/SearchPage';
 import { CollectionPage } from './pages/admin/CollectionPage';
 import { ReportsPage } from './pages/admin/ReportsPage';
-import { TemplateEditorPage } from './pages/admin/TemplateEditorPage';
+import { TemplateEditorPage } from './Admin/TemplateEditor/TemplateEditorPage';
 import { TemplatesPage } from './pages/admin/TemplatesPage';
 
 function RequireAuth() {
