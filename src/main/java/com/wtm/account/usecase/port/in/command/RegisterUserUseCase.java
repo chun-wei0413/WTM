@@ -13,5 +13,8 @@ public interface RegisterUserUseCase {
      * @throws IllegalArgumentException when the username or password is not acceptable
      * @throws UsernameTakenException when another account already uses the name (ignoring case)
      */
-    User handle(String username, String rawPassword, String clientAddress);
+    User handle(Input input);
+
+    record Input(String username, String rawPassword, String clientAddress) {
+    }
 }

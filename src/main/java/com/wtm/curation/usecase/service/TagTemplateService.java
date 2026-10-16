@@ -1,5 +1,6 @@
 package com.wtm.curation.usecase.service;
 
+import com.wtm.curation.usecase.port.in.command.ApplyTagsUseCase;
 import com.wtm.curation.usecase.port.in.command.TagTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
@@ -53,7 +54,7 @@ public class TagTemplateService implements TagTemplateUseCase {
             String hint = IngestMemeService.PLACEHOLDER_NAME.equals(template.name()) ? null : template.name();
             Reference reference = library.findReference(templateId).orElse(null);
             ImageTags tags = tagger.describe(image, ImageTypes.contentTypeOf(template.imageKey()), hint, reference);
-            apply.handle(templateId, tags);
+            apply.handle(new ApplyTagsUseCase.Input(templateId, tags));
             queue.done(templateId);
         } catch (RuntimeException e) {
             log.warn("Tagging {} failed: {}", templateId, e.getMessage());

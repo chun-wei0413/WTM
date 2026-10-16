@@ -5,11 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wtm.IntegrationTestBase;
+import com.wtm.curation.usecase.port.in.command.DefineSlotUseCase;
+import com.wtm.curation.usecase.port.in.command.DraftTemplateUseCase;
+import com.wtm.curation.usecase.port.in.command.ReviseProfileUseCase;
 import com.wtm.curation.usecase.service.ApproveTemplateService;
 import com.wtm.curation.usecase.service.DefineSlotService;
 import com.wtm.curation.usecase.service.DraftTemplateService;
 import com.wtm.curation.usecase.service.ReviseProfileService;
 import com.wtm.discovery.usecase.port.in.query.SearchResult;
+import com.wtm.discovery.usecase.port.in.query.SearchTemplatesUseCase;
 import com.wtm.discovery.usecase.port.out.embedding.EmbeddingPort;
 import com.wtm.discovery.usecase.port.out.search.KeywordSearchPort;
 import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort;
@@ -118,7 +122,7 @@ class SearchQualityEvalTest extends IntegrationTestBase {
             float[] qv = embeddings.embed(q.query());
             List<String> vector = searchPort.byVector(qv, DEPTH).stream().map(h -> names.get(h.id())).toList();
             List<String> keyword = keywordSearch.search(q.query(), DEPTH).stream().map(h -> names.get(h.id())).toList();
-            List<String> fused = hybrid.handle(q.query(), DEPTH).stream().map(SearchResult::name).toList();
+            List<String> fused = hybrid.handle(new SearchTemplatesUseCase.Input(q.query(), DEPTH)).stream().map(SearchResult::name).toList();
             double nearest = nearestDistance(qv);
             String top = vector.isEmpty() ? "-" : vector.get(0);
 
@@ -167,7 +171,7 @@ class SearchQualityEvalTest extends IntegrationTestBase {
         for (Query q : nameQueries) {
             List<String> vector = searchPort.byVector(embeddings.embed(q.query()), DEPTH).stream().map(h -> names.get(h.id())).toList();
             List<String> keyword = keywordSearch.search(q.query(), DEPTH).stream().map(h -> names.get(h.id())).toList();
-            List<String> fused = hybrid.handle(q.query(), DEPTH).stream().map(SearchResult::name).toList();
+            List<String> fused = hybrid.handle(new SearchTemplatesUseCase.Input(q.query(), DEPTH)).stream().map(SearchResult::name).toList();
             report.append(String.format(Locale.ROOT, "%-24s %-16s %5s %5s %5s%n", clip(q.query(), 22), clip(q.expected(), 14),
                     rank(nVec.record(vector, q.expected())), rank(nKw.record(keyword, q.expected())),
                     rank(nHyb.record(fused, q.expected()))));
@@ -184,13 +188,13 @@ class SearchQualityEvalTest extends IntegrationTestBase {
     private Map<UUID, String> seedTemplates(List<TemplateSeed> seeds) throws Exception {
         Map<UUID, String> names = new HashMap<>();
         for (TemplateSeed seed : seeds) {
-            TemplateId id = draft.handle(seed.name(), placeholderPng());
-            reviseProfile.handle(id, new MemeProfile(seed.meaning(), seed.usageExamples(),
-                    seed.emotions(), seed.aliases()));
+            TemplateId id = draft.handle(new DraftTemplateUseCase.Input(seed.name(), placeholderPng()));
+            reviseProfile.handle(new ReviseProfileUseCase.Input(id, new MemeProfile(seed.meaning(), seed.usageExamples(),
+                    seed.emotions(), seed.aliases())));
             int slotNo = 1;
             for (SlotSeed s : seed.slots()) {
-                defineSlot.handle(id, new Slot(slotNo++, s.role(), s.maxChars(), true,
-                        s.x(), s.y(), s.width(), s.height()));
+                defineSlot.handle(new DefineSlotUseCase.Input(id, new Slot(slotNo++, s.role(), s.maxChars(), true,
+                        s.x(), s.y(), s.width(), s.height())));
             }
             approve.handle(id);
             names.put(id.value(), seed.name());

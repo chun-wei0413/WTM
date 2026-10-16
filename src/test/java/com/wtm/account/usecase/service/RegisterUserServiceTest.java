@@ -16,6 +16,7 @@ import com.wtm.account.entity.Role;
 import com.wtm.account.entity.User;
 import com.wtm.account.usecase.port.in.RegistrationClosedException;
 import com.wtm.account.usecase.port.in.UsernameTakenException;
+import com.wtm.account.usecase.port.in.command.RegisterUserUseCase;
 import com.wtm.account.usecase.port.out.PasswordHasher;
 import com.wtm.account.usecase.port.out.UserRepository;
 import com.wtm.shared.RateLimiterPort;
@@ -46,7 +47,7 @@ class RegisterUserServiceTest {
 
     @Test
     void createsAnOrdinaryUserWithAHashedPassword() {
-        User created = handler.handle("  frank_li  ", "correct horse", CLIENT);
+        User created = handler.handle(new RegisterUserUseCase.Input("  frank_li  ", "correct horse", CLIENT));
 
         ArgumentCaptor<User> saved = ArgumentCaptor.forClass(User.class);
         verify(users).save(saved.capture());
@@ -61,7 +62,7 @@ class RegisterUserServiceTest {
     void refusesWhenRegistrationIsClosed() {
         var closed = new RegisterUserService(users, hasher, limiter, new RegistrationPolicy(false, 5, Duration.ofHours(1)));
 
-        assertThatThrownBy(() -> closed.handle("frank", "correct horse", CLIENT))
+        assertThatThrownBy(() -> closed.handle(new RegisterUserUseCase.Input("frank", "correct horse", CLIENT)))
                 .isInstanceOf(RegistrationClosedException.class);
         verify(users, never()).save(any());
     }
@@ -70,7 +71,7 @@ class RegisterUserServiceTest {
     void refusesAnAddressThatRegistersTooOften() {
         when(limiter.tryAcquire("register:" + CLIENT, 5, OPEN.window())).thenReturn(false);
 
-        assertThatThrownBy(() -> handler.handle("frank", "correct horse", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank", "correct horse", CLIENT)))
                 .isInstanceOf(TooManyRequestsException.class);
         verify(users, never()).save(any());
     }
@@ -78,7 +79,7 @@ class RegisterUserServiceTest {
     @Test
     void rejectsUsernamesThatAreTooShortTooLongOrUseOddCharacters() {
         for (String bad : new String[] {"ab", "a".repeat(33), "has space", "名字很長", "semi;colon", "", null}) {
-            assertThatThrownBy(() -> handler.handle(bad, "correct horse", CLIENT))
+            assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input(bad, "correct horse", CLIENT)))
                     .as("username %s", bad).isInstanceOf(IllegalArgumentException.class);
         }
         verify(users, never()).save(any());
@@ -86,11 +87,11 @@ class RegisterUserServiceTest {
 
     @Test
     void rejectsPasswordsThatAreTooShortTooLongOrEqualToTheUsername() {
-        assertThatThrownBy(() -> handler.handle("frank", "short", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank", "short", CLIENT)))
                 .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> handler.handle("frank", "x".repeat(73), CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank", "x".repeat(73), CLIENT)))
                 .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> handler.handle("frank_li", "FRANK_LI", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank_li", "FRANK_LI", CLIENT)))
                 .isInstanceOf(IllegalArgumentException.class);
         verify(users, never()).save(any());
     }
@@ -98,16 +99,16 @@ class RegisterUserServiceTest {
     @Test
     void countsPasswordLengthInBytesBecauseBcryptCutsOffAt72() {
         // 25 Chinese characters are 75 bytes in UTF-8.
-        assertThatThrownBy(() -> handler.handle("frank", "字".repeat(25), CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank", "字".repeat(25), CLIENT)))
                 .isInstanceOf(IllegalArgumentException.class);
-        assertThat(handler.handle("frank", "字".repeat(24), CLIENT).username()).isEqualTo("frank");
+        assertThat(handler.handle(new RegisterUserUseCase.Input("frank", "字".repeat(24), CLIENT)).username()).isEqualTo("frank");
     }
 
     @Test
     void refusesANameThatIsAlreadyTaken() {
         when(users.findByUsername("frank")).thenReturn(Optional.of(User.register("Frank", "h", Role.USER)));
 
-        assertThatThrownBy(() -> handler.handle("frank", "correct horse", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank", "correct horse", CLIENT)))
                 .isInstanceOf(UsernameTakenException.class);
         verify(users, never()).save(any());
     }
@@ -116,7 +117,7 @@ class RegisterUserServiceTest {
     void anotherRegistrationWinningTheRaceStillCountsAsTaken() {
         doThrow(new UsernameTakenException()).when(users).save(any());
 
-        assertThatThrownBy(() -> handler.handle("frank", "correct horse", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new RegisterUserUseCase.Input("frank", "correct horse", CLIENT)))
                 .isInstanceOf(UsernameTakenException.class);
     }
 }

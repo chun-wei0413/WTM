@@ -73,7 +73,7 @@ class AdminTemplateController {
     @PostMapping(consumes = "multipart/form-data")
     ResponseEntity<CreatedResponse> draft(@RequestParam @NotBlank String name,
                                           @RequestParam("file") MultipartFile file) throws IOException {
-        TemplateId id = draft.handle(name, file.getBytes());
+        TemplateId id = draft.handle(new DraftTemplateUseCase.Input(name, file.getBytes()));
         return ResponseEntity.created(URI.create("/api/admin/templates/" + id.value()))
                 .body(new CreatedResponse(id.value()));
     }
@@ -92,28 +92,28 @@ class AdminTemplateController {
     @PutMapping("/{id}/profile")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void reviseProfile(@PathVariable UUID id, @RequestBody ProfileRequest request) {
-        reviseProfile.handle(new TemplateId(id), new MemeProfile(request.meaning(),
+        reviseProfile.handle(new ReviseProfileUseCase.Input(new TemplateId(id), new MemeProfile(request.meaning(),
                 request.usageExamples(), request.emotions(), request.aliases(),
-                request.imageText(), request.tags()));
+                request.imageText(), request.tags())));
     }
 
     @PostMapping("/{id}/slots")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void defineSlot(@PathVariable UUID id, @Valid @RequestBody SlotRequest request) {
-        defineSlot.handle(new TemplateId(id), request.toSlot(request.slotNo()));
+        defineSlot.handle(new DefineSlotUseCase.Input(new TemplateId(id), request.toSlot(request.slotNo())));
     }
 
     @PutMapping("/{id}/slots/{slotNo}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void redefineSlot(@PathVariable UUID id, @PathVariable int slotNo,
                       @Valid @RequestBody SlotRequest request) {
-        redefineSlot.handle(new TemplateId(id), request.toSlot(slotNo));
+        redefineSlot.handle(new RedefineSlotUseCase.Input(new TemplateId(id), request.toSlot(slotNo)));
     }
 
     @DeleteMapping("/{id}/slots/{slotNo}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void removeSlot(@PathVariable UUID id, @PathVariable int slotNo) {
-        removeSlot.handle(new TemplateId(id), slotNo);
+        removeSlot.handle(new RemoveSlotUseCase.Input(new TemplateId(id), slotNo));
     }
 
     @PostMapping("/{id}/approve")

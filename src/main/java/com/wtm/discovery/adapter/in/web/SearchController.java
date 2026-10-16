@@ -39,7 +39,7 @@ class SearchController {
     /** "Pick one for me": the closest memes to a situation, one chosen by a language model with its reason. */
     @PostMapping("/pick")
     PickResult pick(@RequestBody PickRequest request, @AuthenticationPrincipal Jwt jwt) {
-        return pick.handle(jwt.getSubject(), request.situation());
+        return pick.handle(new PickMemeUseCase.Input(jwt.getSubject(), request.situation()));
     }
 
     record PickRequest(String situation) {
@@ -52,7 +52,7 @@ class SearchController {
                               // turn its own test queries into "popular searches".
                               @RequestParam(defaultValue = "true") boolean record,
                               @AuthenticationPrincipal Jwt jwt) {
-        List<SearchResult> results = search.handle(query, limit);
+        List<SearchResult> results = search.handle(new SearchTemplatesUseCase.Input(query, limit));
         if (record && !results.isEmpty()) {
             try {
                 history.record(UUID.fromString(jwt.getSubject()), query);

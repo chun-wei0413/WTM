@@ -20,6 +20,7 @@ import com.wtm.curation.usecase.port.in.query.TemplateView;
 import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.entity.ReportPolicy.Standing;
 import com.wtm.feedback.entity.ReportReason;
+import com.wtm.feedback.usecase.port.in.command.SubmitReportUseCase;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.AutomaticAction;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
@@ -98,7 +99,7 @@ class ReportServicesTest {
                 report(ReportReason.WRONG_TAGS, "b")));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.empty());
 
-        submitter().handle(user, memeId, ReportReason.WRONG_TAGS, "  標籤是貓但圖是狗 ");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.WRONG_TAGS, "  標籤是貓但圖是狗 "));
 
         verify(reviews).request(memeId, false);
     }
@@ -108,7 +109,7 @@ class ReportServicesTest {
         when(reports.submit(any(), any(), any(), anyString())).thenReturn(true);
         when(reports.openAbout(memeId)).thenReturn(List.of(report(ReportReason.WRONG_TAGS, "a")));
 
-        submitter().handle(user, memeId, ReportReason.WRONG_TAGS, "a");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.WRONG_TAGS, "a"));
 
         verify(reviews, never()).request(any(), anyBoolean());
     }
@@ -121,7 +122,7 @@ class ReportServicesTest {
         when(reports.openAbout(memeId)).thenReturn(List.of(report(liar, ReportReason.OTHER, "x"),
                 report(ReportReason.OTHER, "y")));
 
-        submitter().handle(user, memeId, ReportReason.OTHER, "x");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER, "x"));
 
         verify(reviews, never()).request(any(), anyBoolean());
     }
@@ -134,7 +135,7 @@ class ReportServicesTest {
         when(reports.openAbout(memeId)).thenReturn(List.of(report(admin, ReportReason.WRONG_MEANING, "x")));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.empty());
 
-        submitter().handle(admin, memeId, ReportReason.WRONG_MEANING, "x");
+        submitter().handle(new SubmitReportUseCase.Input(admin, memeId, ReportReason.WRONG_MEANING, "x"));
 
         verify(reviews).request(memeId, false);
     }
@@ -145,7 +146,7 @@ class ReportServicesTest {
         when(reports.openAbout(memeId)).thenReturn(List.of(report(ReportReason.OTHER, "a"), report(ReportReason.OTHER, "b")));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.of(NOW.minus(Duration.ofHours(1))));
 
-        submitter().handle(user, memeId, ReportReason.OTHER, "again");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER, "again"));
 
         verify(reviews, never()).request(any(), anyBoolean());
     }
@@ -156,7 +157,7 @@ class ReportServicesTest {
         when(reports.openAbout(memeId)).thenReturn(List.of(report(ReportReason.OTHER, "a"), report(ReportReason.OTHER, "b")));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.of(NOW.minus(Duration.ofHours(25))));
 
-        submitter().handle(user, memeId, ReportReason.OTHER, "again");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER, "again"));
 
         verify(reviews).request(memeId, false);
     }
@@ -167,7 +168,7 @@ class ReportServicesTest {
         when(reports.openAbout(memeId)).thenReturn(reporters(3, ReportReason.WRONG_TAGS));
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", suggestion(), null, false)));
 
-        submitter().handle(user, memeId, ReportReason.WRONG_TAGS, "me too");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.WRONG_TAGS, "me too"));
 
         verify(resolver).applyAutomatically(memeId);
         verify(reviews, never()).request(any(), anyBoolean());
@@ -180,7 +181,7 @@ class ReportServicesTest {
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", suggestion(), null, false)));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.of(NOW.minus(Duration.ofHours(1))));
 
-        submitter().handle(user, memeId, ReportReason.WRONG_TAGS, "me too");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.WRONG_TAGS, "me too"));
 
         verify(resolver, never()).applyAutomatically(any());
     }
@@ -192,7 +193,7 @@ class ReportServicesTest {
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", suggestion(), null, true)));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.of(NOW.minus(Duration.ofHours(1))));
 
-        submitter().handle(user, memeId, ReportReason.WRONG_TAGS, "me too");
+        submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.WRONG_TAGS, "me too"));
 
         verify(resolver, never()).applyAutomatically(any());
     }
@@ -201,7 +202,7 @@ class ReportServicesTest {
     void reportingAMemeThatIsNotPublishedLooksLikeReportingAMissingOne() {
         when(reports.submit(any(), any(), any(), anyString())).thenReturn(false);
 
-        assertThatThrownBy(() -> submitter().handle(user, memeId, ReportReason.OTHER, ""))
+        assertThatThrownBy(() -> submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER, "")))
                 .isInstanceOf(TemplateNotFoundException.class);
         verify(reviews, never()).request(any(), anyBoolean());
     }
@@ -210,9 +211,9 @@ class ReportServicesTest {
     void aReasonIsRequiredAndTheCommentHasALimit() {
         var handler = submitter();
 
-        assertThatThrownBy(() -> handler.handle(user, memeId, null, "x")).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> handler.handle(user, memeId, ReportReason.OTHER,
-                "字".repeat(SubmitReportService.MAX_COMMENT_LENGTH + 1))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> handler.handle(new SubmitReportUseCase.Input(user, memeId, null, "x"))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> handler.handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER,
+                "字".repeat(SubmitReportService.MAX_COMMENT_LENGTH + 1)))).isInstanceOf(IllegalArgumentException.class);
         verify(reports, never()).submit(any(), any(), any(), anyString());
     }
 
@@ -220,7 +221,7 @@ class ReportServicesTest {
     void aPersonWithTooManyReportsWaitingMustWait() {
         when(reports.openCountOf(user)).thenReturn(SubmitReportService.MAX_OPEN_PER_USER);
 
-        assertThatThrownBy(() -> submitter().handle(user, memeId, ReportReason.OTHER, "x"))
+        assertThatThrownBy(() -> submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER, "x")))
                 .isInstanceOf(TooManyRequestsException.class);
         verify(reports, never()).submit(any(), any(), any(), anyString());
     }
@@ -230,7 +231,7 @@ class ReportServicesTest {
         when(reports.reportedSince(user, NOW.minus(Duration.ofHours(24)), memeId))
                 .thenReturn(ReportPolicy.standard().dailyReportsPerUser());
 
-        assertThatThrownBy(() -> submitter().handle(user, memeId, ReportReason.OTHER, "x"))
+        assertThatThrownBy(() -> submitter().handle(new SubmitReportUseCase.Input(user, memeId, ReportReason.OTHER, "x")))
                 .isInstanceOf(TooManyRequestsException.class)
                 .hasMessageContaining("today");
         verify(reports, never()).submit(any(), any(), any(), anyString());

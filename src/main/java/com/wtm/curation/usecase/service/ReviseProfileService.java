@@ -17,7 +17,9 @@ public class ReviseProfileService implements ReviseProfileUseCase {
 
     @Transactional
     @Override
-    public void handle(TemplateId id, MemeProfile profile) {
+    public void handle(Input input) {
+        TemplateId id = input.id();
+        MemeProfile profile = input.profile();
         MemeTemplate template = templates.getForUpdate(id);
         template.reviseProfile(profile);
         templates.save(template);

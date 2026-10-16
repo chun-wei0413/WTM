@@ -21,7 +21,9 @@ public class BootstrapAdminService implements BootstrapAdminUseCase {
 
     /** @return true when an administrator was created */
     @Override
-    public boolean handle(String username, String rawPassword) {
+    public boolean handle(Input input) {
+        String username = input.username();
+        String rawPassword = input.rawPassword();
         if (users.existsByRole(Role.ADMIN)) {
             return false;
         }

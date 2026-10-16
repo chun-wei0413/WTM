@@ -22,7 +22,9 @@ public class DraftTemplateService implements DraftTemplateUseCase {
     }
 
     @Override
-    public TemplateId handle(String name, byte[] image) {
+    public TemplateId handle(Input input) {
+        String name = input.name();
+        byte[] image = input.image();
         ImageInfo info = inspector.inspect(image);
         TemplateId id = TemplateId.newId();
         String key = "templates/" + id.value() + "." + info.extension();

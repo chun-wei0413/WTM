@@ -31,7 +31,7 @@ class ReportController {
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void report(@Valid @RequestBody ReportRequest request, @AuthenticationPrincipal Jwt jwt) {
-        submit.handle(UUID.fromString(jwt.getSubject()), request.templateId(), request.reason(), request.comment());
+        submit.handle(new SubmitReportUseCase.Input(UUID.fromString(jwt.getSubject()), request.templateId(), request.reason(), request.comment()));
     }
 
     record ReportRequest(@NotNull UUID templateId, @NotNull ReportReason reason, @Size(max = 1000) String comment) {

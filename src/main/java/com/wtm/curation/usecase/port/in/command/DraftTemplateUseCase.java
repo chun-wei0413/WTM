@@ -4,5 +4,8 @@ import com.wtm.shared.TemplateId;
 
 public interface DraftTemplateUseCase {
 
-    TemplateId handle(String name, byte[] image);
+    TemplateId handle(Input input);
+
+    record Input(String name, byte[] image) {
+    }
 }

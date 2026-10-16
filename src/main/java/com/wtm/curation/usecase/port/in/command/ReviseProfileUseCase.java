@@ -5,5 +5,8 @@ import com.wtm.shared.TemplateId;
 
 public interface ReviseProfileUseCase {
 
-    void handle(TemplateId id, MemeProfile profile);
+    void handle(Input input);
+
+    record Input(TemplateId id, MemeProfile profile) {
+    }
 }

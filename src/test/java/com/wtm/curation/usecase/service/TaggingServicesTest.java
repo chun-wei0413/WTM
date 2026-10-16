@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.TemplateStatus;
+import com.wtm.curation.usecase.port.in.command.ApplyTagsUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.tagging.TaggingQueuePort;
@@ -54,7 +55,7 @@ class TaggingServicesTest {
     void publishesAMemeWithWhatTheModelSaw() {
         MemeTemplate template = draft("cat");
 
-        apply.handle(ID.value(), A_MEME);
+        apply.handle(new ApplyTagsUseCase.Input(ID.value(), A_MEME));
 
         assertThat(template.status()).isEqualTo(TemplateStatus.APPROVED);
         assertThat(template.profile().meaning()).contains("新事物");
@@ -67,12 +68,12 @@ class TaggingServicesTest {
     @Test
     void namesAPlaceholderAfterWhatItShowsButKeepsARealNameAndRemembersTheModelsTitleAsAnAlias() {
         MemeTemplate unnamed = draft(IngestMemeService.PLACEHOLDER_NAME);
-        apply.handle(ID.value(), A_MEME);
+        apply.handle(new ApplyTagsUseCase.Input(ID.value(), A_MEME));
         assertThat(unnamed.name()).isEqualTo("分心男友");
         assertThat(unnamed.profile().aliases()).isEmpty();
 
         MemeTemplate named = draft("Distracted Boyfriend");
-        apply.handle(ID.value(), A_MEME);
+        apply.handle(new ApplyTagsUseCase.Input(ID.value(), A_MEME));
         assertThat(named.name()).isEqualTo("Distracted Boyfriend");
         assertThat(named.profile().aliases()).containsExactly("分心男友");
     }
@@ -81,7 +82,7 @@ class TaggingServicesTest {
     void aPictureThatIsNotAMemeIsWithdrawnButKept() {
         MemeTemplate template = draft("holiday photo");
 
-        apply.handle(ID.value(), new ImageTags(false, "風景照", "", List.of(), List.of(), List.of(), ""));
+        apply.handle(new ApplyTagsUseCase.Input(ID.value(), new ImageTags(false, "風景照", "", List.of(), List.of(), List.of(), "")));
 
         assertThat(template.status()).isEqualTo(TemplateStatus.RETIRED);
         verify(templates).save(template);
@@ -91,8 +92,8 @@ class TaggingServicesTest {
     void anIncompleteDescriptionIsAnErrorSoTheTaggingIsTriedAgain() {
         draft("x");
 
-        assertThatThrownBy(() -> apply.handle(ID.value(),
-                new ImageTags(true, "t", "意思", List.of(), List.of(), List.of(), "")))
+        assertThatThrownBy(() -> apply.handle(new ApplyTagsUseCase.Input(ID.value(),
+                new ImageTags(true, "t", "意思", List.of(), List.of(), List.of(), ""))))
                 .isInstanceOf(IllegalStateException.class);
         verify(templates, never()).save(any());
     }
@@ -103,7 +104,7 @@ class TaggingServicesTest {
         template.reviseProfile(new MemeProfile("手動寫的", List.of("手動範例"), List.of(), List.of()));
         template.approve();
 
-        apply.handle(ID.value(), A_MEME);
+        apply.handle(new ApplyTagsUseCase.Input(ID.value(), A_MEME));
 
         assertThat(template.profile().meaning()).isEqualTo("手動寫的");
         verify(templates, never()).save(any());
@@ -133,7 +134,7 @@ class TaggingServicesTest {
 
         handler.handle(ID.value());
 
-        verify(applySpy).handle(ID.value(), A_MEME);
+        verify(applySpy).handle(new ApplyTagsUseCase.Input(ID.value(), A_MEME));
         verify(queue).done(ID.value());
     }
 
@@ -173,7 +174,7 @@ class TaggingServicesTest {
 
         verify(queue).fail(eq(ID.value()), eq("model busy"), eq(3));
         verify(queue, never()).done(any());
-        verify(applySpy, never()).handle(any(), any());
+        verify(applySpy, never()).handle(any(ApplyTagsUseCase.Input.class));
     }
 
     @Test
@@ -181,7 +182,7 @@ class TaggingServicesTest {
         when(reads.findById(ID.value())).thenReturn(Optional.of(view("DRAFT", "x")));
         when(storage.get(anyString())).thenReturn(new byte[] {1});
         when(tagger.describe(any(), anyString(), any(), any())).thenReturn(A_MEME);
-        doThrow(new IllegalStateException("incomplete")).when(applySpy).handle(any(), any());
+        doThrow(new IllegalStateException("incomplete")).when(applySpy).handle(any(ApplyTagsUseCase.Input.class));
 
         handler.handle(ID.value());
 

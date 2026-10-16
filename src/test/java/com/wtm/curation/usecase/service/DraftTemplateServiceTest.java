@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.usecase.port.in.UnsupportedImageException;
+import com.wtm.curation.usecase.port.in.command.DraftTemplateUseCase;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.ImageInfo;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
@@ -39,7 +40,7 @@ class DraftTemplateServiceTest {
 
     @Test
     void storesImageThenSavesDraft() {
-        TemplateId id = handler.handle("Drake", image);
+        TemplateId id = handler.handle(new DraftTemplateUseCase.Input("Drake", image));
 
         ArgumentCaptor<MemeTemplate> saved = ArgumentCaptor.forClass(MemeTemplate.class);
         verify(templates).save(saved.capture());
@@ -53,14 +54,14 @@ class DraftTemplateServiceTest {
     void removesUploadedImageWhenSavingFails() {
         doThrow(new IllegalStateException("db down")).when(templates).save(any());
 
-        assertThatThrownBy(() -> handler.handle("Drake", image)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> handler.handle(new DraftTemplateUseCase.Input("Drake", image))).isInstanceOf(IllegalStateException.class);
 
         verify(storage).delete(anyString());
     }
 
     @Test
     void doesNotUploadWhenNameIsInvalid() {
-        assertThatThrownBy(() -> handler.handle("  ", image)).isInstanceOf(DomainRuleViolation.class);
+        assertThatThrownBy(() -> handler.handle(new DraftTemplateUseCase.Input("  ", image))).isInstanceOf(DomainRuleViolation.class);
 
         verify(storage, never()).put(anyString(), any(), anyString());
     }
@@ -70,7 +71,7 @@ class DraftTemplateServiceTest {
         byte[] bad = {9};
         when(inspector.inspect(bad)).thenThrow(new UnsupportedImageException("nope"));
 
-        assertThatThrownBy(() -> handler.handle("Drake", bad)).isInstanceOf(UnsupportedImageException.class);
+        assertThatThrownBy(() -> handler.handle(new DraftTemplateUseCase.Input("Drake", bad))).isInstanceOf(UnsupportedImageException.class);
 
         verify(storage, never()).put(anyString(), any(), anyString());
     }

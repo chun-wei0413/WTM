@@ -10,5 +10,8 @@ public interface SubmitReportUseCase {
      * @throws TemplateNotFoundException when there is no published meme with that id
      * @throws TooManyRequestsException when the person has reported too much today or has too many reports waiting
      */
-    void handle(UUID userId, UUID templateId, ReportReason reason, String comment);
+    void handle(Input input);
+
+    record Input(UUID userId, UUID templateId, ReportReason reason, String comment) {
+    }
 }

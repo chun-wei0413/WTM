@@ -44,7 +44,10 @@ public class RegisterUserService implements RegisterUserUseCase {
      * @throws UsernameTakenException when another account already uses the name (ignoring case)
      */
     @Override
-    public User handle(String username, String rawPassword, String clientAddress) {
+    public User handle(Input input) {
+        String username = input.username();
+        String rawPassword = input.rawPassword();
+        String clientAddress = input.clientAddress();
         if (!policy.enabled()) {
             throw new RegistrationClosedException();
         }

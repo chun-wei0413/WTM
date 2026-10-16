@@ -50,8 +50,8 @@ class InboxScanner {
         int failed = 0;
         for (Path file : waitingFiles()) {
             try {
-                IngestOutcome outcome = ingest.handle(Files.readAllBytes(file), file.getFileName().toString(),
-                        new Origin("INBOX", null, null, null, null));
+                IngestOutcome outcome = ingest.handle(new IngestMemeUseCase.Input(Files.readAllBytes(file), file.getFileName().toString(),
+                        new Origin("INBOX", null, null, null, null)));
                 switch (outcome.status()) {
                     case IMPORTED -> {
                         added++;

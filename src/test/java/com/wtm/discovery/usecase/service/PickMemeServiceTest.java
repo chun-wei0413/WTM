@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.wtm.discovery.entity.Hit;
+import com.wtm.discovery.usecase.port.in.query.PickMemeUseCase;
 import com.wtm.discovery.usecase.port.in.query.PickResult;
 import com.wtm.discovery.usecase.port.in.query.SearchResult;
 import com.wtm.discovery.usecase.port.out.embedding.EmbeddingPort;
@@ -71,7 +72,7 @@ class PickMemeServiceTest {
         libraryFinds(first, second, third);
         when(explainer.explain(anyString(), any())).thenReturn("  because it fits  ");
 
-        PickResult result = handler.handle("user-1", "my friend says I overreact");
+        PickResult result = handler.handle(new PickMemeUseCase.Input("user-1", "my friend says I overreact"));
 
         assertThat(result.chosen().templateId()).isEqualTo(first);
         assertThat(result.reason()).isEqualTo("because it fits");
@@ -83,7 +84,7 @@ class PickMemeServiceTest {
         libraryFinds(first, second);
         when(explainer.explain(anyString(), any())).thenReturn("ok");
 
-        handler.handle("user-1", "a situation");
+        handler.handle(new PickMemeUseCase.Input("user-1", "a situation"));
 
         verify(explainer).explain("a situation", new Meme("name-" + first, "meaning-" + first,
                 List.of("usage-" + first), List.of("emotion"), List.of("tag"), "text"));
@@ -94,7 +95,7 @@ class PickMemeServiceTest {
         libraryFinds(first, second);
         when(explainer.explain(anyString(), any())).thenThrow(new LlmUnavailableException("down"));
 
-        PickResult result = handler.handle("user-1", "a situation");
+        PickResult result = handler.handle(new PickMemeUseCase.Input("user-1", "a situation"));
 
         assertThat(result.chosen().templateId()).isEqualTo(first);
         assertThat(result.reason()).isNull();
@@ -106,14 +107,14 @@ class PickMemeServiceTest {
         libraryFinds(first);
         when(explainer.explain(anyString(), any())).thenReturn("   ");
 
-        assertThat(handler.handle("user-1", "a situation").reason()).isNull();
+        assertThat(handler.handle(new PickMemeUseCase.Input("user-1", "a situation")).reason()).isNull();
     }
 
     @Test
     void aLibraryWithNothingToOfferDoesNotAskTheModel() {
         libraryFinds();
 
-        PickResult result = handler.handle("user-1", "a situation");
+        PickResult result = handler.handle(new PickMemeUseCase.Input("user-1", "a situation"));
 
         assertThat(result.chosen()).isNull();
         assertThat(result.others()).isEmpty();
@@ -124,9 +125,9 @@ class PickMemeServiceTest {
     void refusesABlankOrOverlongSituation() {
         libraryFinds(first);
 
-        assertThatThrownBy(() -> handler.handle("user-1", "   ")).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> handler.handle("user-1", null)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> handler.handle("user-1", "x".repeat(PickMemeService.MAX_SITUATION_LENGTH + 1)))
+        assertThatThrownBy(() -> handler.handle(new PickMemeUseCase.Input("user-1", "   "))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> handler.handle(new PickMemeUseCase.Input("user-1", null))).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> handler.handle(new PickMemeUseCase.Input("user-1", "x".repeat(PickMemeService.MAX_SITUATION_LENGTH + 1))))
                 .isInstanceOf(IllegalArgumentException.class);
         verify(explainer, never()).explain(anyString(), any());
     }
@@ -136,7 +137,7 @@ class PickMemeServiceTest {
         when(limiter.tryAcquire(eq("pick:user-1"), eq(PickMemeService.PICKS_PER_WINDOW), any(Duration.class)))
                 .thenReturn(false);
 
-        assertThatThrownBy(() -> handler.handle("user-1", "a situation"))
+        assertThatThrownBy(() -> handler.handle(new PickMemeUseCase.Input("user-1", "a situation")))
                 .isInstanceOfSatisfying(TooManyRequestsException.class,
                         e -> assertThat(e.retryAfter()).isEqualTo(PickMemeService.WINDOW));
         verify(embeddings, never()).embed(anyString());

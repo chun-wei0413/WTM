@@ -50,7 +50,9 @@ public class SearchTemplatesService implements SearchTemplatesUseCase {
     }
 
     @Override
-    public List<SearchResult> handle(String query, int limit) {
+    public List<SearchResult> handle(Input input) {
+        String query = input.query();
+        int limit = input.limit();
         String text = query == null ? "" : query.strip();
         if (text.isEmpty()) {
             throw new IllegalArgumentException("Search text must not be blank");

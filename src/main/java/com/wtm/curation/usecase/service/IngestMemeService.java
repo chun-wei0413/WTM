@@ -46,11 +46,11 @@ public class IngestMemeService implements IngestMemeUseCase {
         this.storage = storage;
     }
 
-    /**
-     * @param suggestedName a title or file name for the picture, or null when there is none
-     */
     @Override
-    public IngestOutcome handle(byte[] image, String suggestedName, Origin origin) {
+    public IngestOutcome handle(Input input) {
+        byte[] image = input.image();
+        String suggestedName = input.suggestedName();
+        Origin origin = input.origin();
         ImageInfo info;
         try {
             info = inspector.inspect(image);

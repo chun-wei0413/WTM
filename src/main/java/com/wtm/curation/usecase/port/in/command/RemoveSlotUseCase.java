@@ -4,5 +4,8 @@ import com.wtm.shared.TemplateId;
 
 public interface RemoveSlotUseCase {
 
-    void handle(TemplateId id, int slotNo);
+    void handle(Input input);
+
+    record Input(TemplateId id, int slotNo) {
+    }
 }

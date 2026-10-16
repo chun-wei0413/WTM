@@ -4,8 +4,9 @@ import com.wtm.curation.entity.Origin;
 
 public interface IngestMemeUseCase {
 
-    /**
-     * @param suggestedName a title or file name for the picture, or null when there is none
-     */
-    IngestOutcome handle(byte[] image, String suggestedName, Origin origin);
+    IngestOutcome handle(Input input);
+
+    /** @param suggestedName a title or file name for the picture, or null when there is none */
+    record Input(byte[] image, String suggestedName, Origin origin) {
+    }
 }

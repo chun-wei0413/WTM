@@ -17,7 +17,9 @@ public class RedefineSlotService implements RedefineSlotUseCase {
 
     @Transactional
     @Override
-    public void handle(TemplateId id, Slot slot) {
+    public void handle(Input input) {
+        TemplateId id = input.id();
+        Slot slot = input.slot();
         MemeTemplate template = templates.getForUpdate(id);
         template.redefineSlot(slot);
         templates.save(template);

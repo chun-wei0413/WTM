@@ -48,7 +48,11 @@ public class SubmitReportService implements SubmitReportUseCase {
      */
     @Transactional
     @Override
-    public void handle(UUID userId, UUID templateId, ReportReason reason, String comment) {
+    public void handle(Input input) {
+        UUID userId = input.userId();
+        UUID templateId = input.templateId();
+        ReportReason reason = input.reason();
+        String comment = input.comment();
         if (reason == null) {
             throw new IllegalArgumentException("A reason is required");
         }

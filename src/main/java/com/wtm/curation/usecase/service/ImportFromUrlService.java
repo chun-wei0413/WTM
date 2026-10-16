@@ -2,6 +2,7 @@ package com.wtm.curation.usecase.service;
 
 import com.wtm.curation.entity.Origin;
 import com.wtm.curation.usecase.port.in.command.ImportFromUrlUseCase;
+import com.wtm.curation.usecase.port.in.command.IngestMemeUseCase;
 import com.wtm.curation.usecase.port.in.command.IngestOutcome;
 import com.wtm.curation.usecase.port.out.fetch.RemoteFetchPort;
 import com.wtm.curation.usecase.port.out.fetch.RemoteFetchPort.FetchedImage;
@@ -20,17 +21,19 @@ public class ImportFromUrlService implements ImportFromUrlUseCase {
     }
 
     /**
-     * @param pageUrl the page it was found on, if the administrator knows it
      * @throws FetchRefusedException when the address cannot or may not be downloaded
      */
     @Override
-    public IngestOutcome handle(String imageUrl, String title, String pageUrl) {
+    public IngestOutcome handle(Input input) {
+        String imageUrl = input.imageUrl();
+        String title = input.title();
+        String pageUrl = input.pageUrl();
         String url = imageUrl == null ? "" : imageUrl.strip();
         if (url.isEmpty()) {
             throw new IllegalArgumentException("Please give the address of a picture");
         }
         FetchedImage image = fetcher.fetchImage(url);
-        return ingest.handle(image.content(), blankToNull(title), new Origin("URL", url, blankToNull(pageUrl), null, null));
+        return ingest.handle(new IngestMemeUseCase.Input(image.content(), blankToNull(title), new Origin("URL", url, blankToNull(pageUrl), null, null)));
     }
 
     private static String blankToNull(String text) {

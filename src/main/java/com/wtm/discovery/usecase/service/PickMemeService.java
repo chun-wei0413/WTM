@@ -3,6 +3,7 @@ package com.wtm.discovery.usecase.service;
 import com.wtm.discovery.usecase.port.in.query.PickMemeUseCase;
 import com.wtm.discovery.usecase.port.in.query.PickResult;
 import com.wtm.discovery.usecase.port.in.query.SearchResult;
+import com.wtm.discovery.usecase.port.in.query.SearchTemplatesUseCase;
 import com.wtm.discovery.usecase.port.out.explainer.MemeExplainerPort;
 import com.wtm.discovery.usecase.port.out.explainer.MemeExplainerPort.Meme;
 import com.wtm.shared.RateLimiterPort;
@@ -41,11 +42,12 @@ public class PickMemeService implements PickMemeUseCase {
     }
 
     /**
-     * @param userKey who is asking, for the rate limit
      * @throws TooManyRequestsException when this person has asked too often in the last minute
      */
     @Override
-    public PickResult handle(String userKey, String situation) {
+    public PickResult handle(Input input) {
+        String userKey = input.userKey();
+        String situation = input.situation();
         String text = situation == null ? "" : situation.strip();
         if (text.isEmpty()) {
             throw new IllegalArgumentException("Describe the situation you want a meme for");
@@ -58,7 +60,7 @@ public class PickMemeService implements PickMemeUseCase {
             throw new TooManyRequestsException("Too many picks in a short time. Please try again in a minute.", WINDOW);
         }
 
-        List<SearchResult> found = search.handle(text, CANDIDATES);
+        List<SearchResult> found = search.handle(new SearchTemplatesUseCase.Input(text, CANDIDATES));
         if (found.isEmpty()) {
             return PickResult.nothing();
         }

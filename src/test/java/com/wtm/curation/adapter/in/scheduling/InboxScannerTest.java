@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.wtm.curation.entity.Origin;
+import com.wtm.curation.usecase.port.in.command.IngestMemeUseCase;
 import com.wtm.curation.usecase.port.in.command.IngestOutcome;
 import com.wtm.curation.usecase.service.IngestMemeService;
 import java.io.IOException;
@@ -50,9 +51,9 @@ class InboxScannerTest {
         drop("new.png", "n", 60);
         drop("again.jpg", "a", 60);
         drop("broken.gif", "b", 60);
-        when(ingest.handle(any(), eq("new.png"), any())).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
-        when(ingest.handle(any(), eq("again.jpg"), any())).thenReturn(IngestOutcome.duplicate(UUID.randomUUID()));
-        when(ingest.handle(any(), eq("broken.gif"), any())).thenReturn(IngestOutcome.rejected("unreadable"));
+        when(ingest.handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), "new.png")))).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
+        when(ingest.handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), "again.jpg")))).thenReturn(IngestOutcome.duplicate(UUID.randomUUID()));
+        when(ingest.handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), "broken.gif")))).thenReturn(IngestOutcome.rejected("unreadable"));
 
         var counts = scanner.scan();
 
@@ -66,13 +67,14 @@ class InboxScannerTest {
     @Test
     void tellsTheLibraryWhereThePictureCameFrom() throws IOException {
         drop("meme.png", "x", 60);
-        when(ingest.handle(any(), any(), any())).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
+        when(ingest.handle(any(IngestMemeUseCase.Input.class))).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
 
         scanner.scan();
 
-        ArgumentCaptor<Origin> origin = ArgumentCaptor.forClass(Origin.class);
-        verify(ingest).handle(any(), eq("meme.png"), origin.capture());
-        assertThat(origin.getValue().sourceType()).isEqualTo("INBOX");
+        ArgumentCaptor<IngestMemeUseCase.Input> input = ArgumentCaptor.forClass(IngestMemeUseCase.Input.class);
+        verify(ingest).handle(input.capture());
+        assertThat(input.getValue().suggestedName()).isEqualTo("meme.png");
+        assertThat(input.getValue().origin().sourceType()).isEqualTo("INBOX");
     }
 
     @Test
@@ -83,7 +85,7 @@ class InboxScannerTest {
 
         assertThat(counts).isEqualTo(new InboxScanner.Counts(0, 0, 0, 0));
         assertThat(inbox.resolve("copying.png")).exists();
-        verify(ingest, never()).handle(any(), any(), any());
+        verify(ingest, never()).handle(any(IngestMemeUseCase.Input.class));
     }
 
     @Test
@@ -95,7 +97,7 @@ class InboxScannerTest {
 
         scanner.scan();
 
-        verify(ingest, never()).handle(any(), any(), any());
+        verify(ingest, never()).handle(any(IngestMemeUseCase.Input.class));
         assertThat(inbox.resolve("notes.txt")).exists();
     }
 
@@ -103,8 +105,8 @@ class InboxScannerTest {
     void aFileThatFailsIsSetAsideSoItIsNotTriedAgainForever() throws IOException {
         drop("bad.png", "x", 60);
         drop("good.png", "y", 60);
-        when(ingest.handle(any(), eq("bad.png"), any())).thenThrow(new IllegalStateException("db down"));
-        when(ingest.handle(any(), eq("good.png"), any())).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
+        when(ingest.handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), "bad.png")))).thenThrow(new IllegalStateException("db down"));
+        when(ingest.handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), "good.png")))).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
 
         var counts = scanner.scan();
 
@@ -118,7 +120,7 @@ class InboxScannerTest {
         Files.createDirectories(inbox.resolve("_done"));
         Files.writeString(inbox.resolve("_done/same.png"), "older");
         drop("same.png", "newer", 60);
-        when(ingest.handle(any(), any(), any())).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
+        when(ingest.handle(any(IngestMemeUseCase.Input.class))).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
 
         scanner.scan();
 
@@ -139,7 +141,7 @@ class InboxScannerTest {
     void whenLookedAtRightAfterItWasWrittenTheFileCountsAsStillSettling() throws IOException {
         Path file = drop("fresh.png", "x", 0);
         Files.setLastModifiedTime(file, FileTime.from(NOW));
-        when(ingest.handle(any(), any(), any())).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
+        when(ingest.handle(any(IngestMemeUseCase.Input.class))).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
 
         assertThat(scanner.scan().added()).isZero();
     }

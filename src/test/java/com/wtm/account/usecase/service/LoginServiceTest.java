@@ -16,6 +16,7 @@ import com.wtm.account.entity.LoginPolicy;
 import com.wtm.account.entity.Role;
 import com.wtm.account.entity.User;
 import com.wtm.account.usecase.port.in.InvalidCredentialsException;
+import com.wtm.account.usecase.port.in.command.LoginUseCase;
 import com.wtm.account.usecase.port.out.PasswordHasher;
 import com.wtm.account.usecase.port.out.TokenIssuer;
 import com.wtm.account.usecase.port.out.TokenIssuer.IssuedToken;
@@ -53,7 +54,7 @@ class LoginServiceTest {
         when(hasher.matches("secret", "stored-hash")).thenReturn(true);
         when(tokens.issue(user)).thenReturn(token);
 
-        assertThat(handler.handle("frank", "secret", CLIENT)).isSameAs(token);
+        assertThat(handler.handle(new LoginUseCase.Input("frank", "secret", CLIENT))).isSameAs(token);
     }
 
     @Test
@@ -62,7 +63,7 @@ class LoginServiceTest {
         when(users.findByUsername("frank")).thenReturn(Optional.of(user));
         when(hasher.matches(anyString(), eq("stored-hash"))).thenReturn(false);
 
-        assertThatThrownBy(() -> handler.handle("frank", "wrong", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new LoginUseCase.Input("frank", "wrong", CLIENT)))
                 .isInstanceOf(InvalidCredentialsException.class);
     }
 
@@ -71,7 +72,7 @@ class LoginServiceTest {
         when(users.findByUsername("ghost")).thenReturn(Optional.empty());
         when(hasher.matches(anyString(), eq("dummy-hash"))).thenReturn(false);
 
-        assertThatThrownBy(() -> handler.handle("ghost", "whatever", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new LoginUseCase.Input("ghost", "whatever", CLIENT)))
                 .isInstanceOf(InvalidCredentialsException.class);
         verify(hasher).matches("whatever", "dummy-hash");
         verifyNoInteractions(tokens);
@@ -82,7 +83,7 @@ class LoginServiceTest {
         when(users.findByUsername("ghost")).thenReturn(Optional.empty());
         when(hasher.matches(anyString(), anyString())).thenReturn(true);
 
-        assertThatThrownBy(() -> handler.handle("ghost", "dummy", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new LoginUseCase.Input("ghost", "dummy", CLIENT)))
                 .isInstanceOf(InvalidCredentialsException.class);
         verify(tokens, never()).issue(any());
     }
@@ -91,7 +92,7 @@ class LoginServiceTest {
     void countsFailuresForTheAccountAndForTheAddress() {
         when(users.findByUsername("Frank")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> handler.handle("Frank", "wrong", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new LoginUseCase.Input("Frank", "wrong", CLIENT)))
                 .isInstanceOf(InvalidCredentialsException.class);
 
         verify(limiter).tryAcquire("login:" + CLIENT + "|frank", 5, POLICY.window());
@@ -102,7 +103,7 @@ class LoginServiceTest {
     void refusesWithoutCheckingThePasswordOnceTheAccountIsLocked() {
         when(limiter.isLimited(eq("login:" + CLIENT + "|frank"), anyInt(), any())).thenReturn(true);
 
-        assertThatThrownBy(() -> handler.handle("frank", "right-password", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new LoginUseCase.Input("frank", "right-password", CLIENT)))
                 .isInstanceOf(TooManyRequestsException.class)
                 .satisfies(e -> assertThat(((TooManyRequestsException) e).retryAfter()).isEqualTo(POLICY.window()));
         verify(users, never()).findByUsername(anyString());
@@ -114,7 +115,7 @@ class LoginServiceTest {
     void refusesEverythingFromAnAddressThatFailedTooOften() {
         when(limiter.isLimited(eq("login:" + CLIENT), anyInt(), any())).thenReturn(true);
 
-        assertThatThrownBy(() -> handler.handle("anyone", "anything", CLIENT))
+        assertThatThrownBy(() -> handler.handle(new LoginUseCase.Input("anyone", "anything", CLIENT)))
                 .isInstanceOf(TooManyRequestsException.class);
     }
 
@@ -125,7 +126,7 @@ class LoginServiceTest {
         when(hasher.matches("secret", "stored-hash")).thenReturn(true);
         when(tokens.issue(user)).thenReturn(new IssuedToken("jwt", Instant.now()));
 
-        handler.handle("frank", "secret", CLIENT);
+        handler.handle(new LoginUseCase.Input("frank", "secret", CLIENT));
 
         verify(limiter).reset("login:" + CLIENT + "|frank");
         verify(limiter, never()).tryAcquire(anyString(), anyInt(), any());

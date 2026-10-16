@@ -56,7 +56,7 @@ class CollectionController {
     /** Adds one picture, given its address. */
     @PostMapping("/url")
     FileResult addUrl(@Valid @RequestBody UrlRequest request) {
-        IngestOutcome outcome = fromUrl.handle(request.url(), request.title(), request.pageUrl());
+        IngestOutcome outcome = fromUrl.handle(new ImportFromUrlUseCase.Input(request.url(), request.title(), request.pageUrl()));
         return new FileResult(request.url(), outcome.status(), outcome.templateId(), outcome.reason());
     }
 

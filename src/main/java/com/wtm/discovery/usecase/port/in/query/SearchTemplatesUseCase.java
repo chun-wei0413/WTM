@@ -4,5 +4,8 @@ import java.util.List;
 
 public interface SearchTemplatesUseCase {
 
-    List<SearchResult> handle(String query, int limit);
+    List<SearchResult> handle(Input input);
+
+    record Input(String query, int limit) {
+    }
 }

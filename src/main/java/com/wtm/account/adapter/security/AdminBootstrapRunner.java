@@ -30,7 +30,7 @@ class AdminBootstrapRunner implements ApplicationRunner {
             log.warn("No bootstrap admin password configured; skipping admin creation");
             return;
         }
-        if (handler.handle(admin.username(), admin.password())) {
+        if (handler.handle(new BootstrapAdminUseCase.Input(admin.username(), admin.password()))) {
             log.info("Created bootstrap administrator '{}'", admin.username());
         }
     }

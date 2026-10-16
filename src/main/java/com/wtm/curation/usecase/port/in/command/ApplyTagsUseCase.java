@@ -5,5 +5,8 @@ import java.util.UUID;
 
 public interface ApplyTagsUseCase {
 
-    void handle(UUID templateId, ImageTags tags);
+    void handle(Input input);
+
+    record Input(UUID templateId, ImageTags tags) {
+    }
 }

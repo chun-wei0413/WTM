@@ -26,7 +26,9 @@ public class ApplyTagsService implements ApplyTagsUseCase {
 
     @Transactional
     @Override
-    public void handle(UUID templateId, ImageTags tags) {
+    public void handle(Input input) {
+        UUID templateId = input.templateId();
+        ImageTags tags = input.tags();
         MemeTemplate template = templates.getForUpdate(new TemplateId(templateId));
         if (template.status() != TemplateStatus.DRAFT) {
             return;   // someone published, edited or withdrew it meanwhile; leave their decision alone

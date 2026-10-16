@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.wtm.curation.entity.Origin;
+import com.wtm.curation.usecase.port.in.command.ImportFromUrlUseCase;
+import com.wtm.curation.usecase.port.in.command.IngestMemeUseCase;
 import com.wtm.curation.usecase.port.in.command.IngestOutcome;
 import com.wtm.curation.usecase.port.out.fetch.RemoteFetchPort;
 import com.wtm.curation.usecase.port.out.fetch.RemoteFetchPort.FetchedImage;
@@ -32,26 +34,27 @@ class CollectionServicesTest {
     void addsOnePictureFromItsAddress() {
         when(fetcher.fetchImage("https://img.example/x.jpg")).thenReturn(image());
         UUID id = UUID.randomUUID();
-        when(ingest.handle(any(), eq("my title"), any())).thenReturn(IngestOutcome.imported(id));
+        when(ingest.handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), "my title")))).thenReturn(IngestOutcome.imported(id));
 
         IngestOutcome outcome = new ImportFromUrlService(fetcher, ingest)
-                .handle(" https://img.example/x.jpg ", " my title ", "https://page");
+                .handle(new ImportFromUrlUseCase.Input(" https://img.example/x.jpg ", " my title ", "https://page"));
 
         assertThat(outcome.templateId()).isEqualTo(id);
-        ArgumentCaptor<Origin> origin = ArgumentCaptor.forClass(Origin.class);
-        verify(ingest).handle(any(), eq("my title"), origin.capture());
-        assertThat(origin.getValue()).isEqualTo(new Origin("URL", "https://img.example/x.jpg", "https://page", null, null));
+        ArgumentCaptor<IngestMemeUseCase.Input> input = ArgumentCaptor.forClass(IngestMemeUseCase.Input.class);
+        verify(ingest).handle(input.capture());
+        assertThat(input.getValue().suggestedName()).isEqualTo("my title");
+        assertThat(input.getValue().origin()).isEqualTo(new Origin("URL", "https://img.example/x.jpg", "https://page", null, null));
     }
 
     @Test
     void anEmptyAddressIsRejectedAndABlankTitleBecomesNoTitle() {
         ImportFromUrlService handler = new ImportFromUrlService(fetcher, ingest);
-        assertThatThrownBy(() -> handler.handle("  ", null, null)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> handler.handle(new ImportFromUrlUseCase.Input("  ", null, null))).isInstanceOf(IllegalArgumentException.class);
 
         when(fetcher.fetchImage(anyString())).thenReturn(image());
-        when(ingest.handle(any(), any(), any())).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
-        handler.handle("https://img.example/x.jpg", "  ", "");
+        when(ingest.handle(any(IngestMemeUseCase.Input.class))).thenReturn(IngestOutcome.imported(UUID.randomUUID()));
+        handler.handle(new ImportFromUrlUseCase.Input("https://img.example/x.jpg", "  ", ""));
 
-        verify(ingest).handle(any(), eq(null), any());
+        verify(ingest).handle(org.mockito.ArgumentMatchers.argThat(in -> in != null && java.util.Objects.equals(in.suggestedName(), null)));
     }
 }

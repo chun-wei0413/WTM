@@ -30,14 +30,14 @@ class AuthController {
 
     @PostMapping("/login")
     LoginResponse login(@Valid @RequestBody LoginRequest request, HttpServletRequest http) {
-        IssuedToken token = login.handle(request.username(), request.password(), http.getRemoteAddr());
+        IssuedToken token = login.handle(new LoginUseCase.Input(request.username(), request.password(), http.getRemoteAddr()));
         return new LoginResponse(token.value(), token.expiresAt());
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     RegisteredResponse register(@Valid @RequestBody RegisterRequest request, HttpServletRequest http) {
-        User user = register.handle(request.username(), request.password(), http.getRemoteAddr());
+        User user = register.handle(new RegisterUserUseCase.Input(request.username(), request.password(), http.getRemoteAddr()));
         return new RegisteredResponse(user.id(), user.username());
     }
 

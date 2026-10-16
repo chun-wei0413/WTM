@@ -16,7 +16,9 @@ public class RemoveSlotService implements RemoveSlotUseCase {
 
     @Transactional
     @Override
-    public void handle(TemplateId id, int slotNo) {
+    public void handle(Input input) {
+        TemplateId id = input.id();
+        int slotNo = input.slotNo();
         MemeTemplate template = templates.getForUpdate(id);
         template.removeSlot(slotNo);
         templates.save(template);

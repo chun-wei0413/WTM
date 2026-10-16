@@ -5,5 +5,8 @@ import com.wtm.shared.TemplateId;
 
 public interface DefineSlotUseCase {
 
-    void handle(TemplateId id, Slot slot);
+    void handle(Input input);
+
+    record Input(TemplateId id, Slot slot) {
+    }
 }

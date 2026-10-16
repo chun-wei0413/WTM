@@ -35,11 +35,13 @@ public class LoginService implements LoginUseCase {
     }
 
     /**
-     * @param clientAddress where the attempt came from; failed attempts are counted per address
      * @throws TooManyRequestsException when this address has failed too often recently
      */
     @Override
-    public IssuedToken handle(String username, String rawPassword, String clientAddress) {
+    public IssuedToken handle(Input input) {
+        String username = input.username();
+        String rawPassword = input.rawPassword();
+        String clientAddress = input.clientAddress();
         String name = username == null ? "" : username.strip();
         String accountKey = "login:" + clientAddress + "|" + name.toLowerCase(Locale.ROOT);
         String addressKey = "login:" + clientAddress;
