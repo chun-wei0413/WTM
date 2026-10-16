@@ -1,9 +1,7 @@
 package com.wtm.account.adapter.in.web;
 
-import com.wtm.account.entity.User;
 import com.wtm.account.usecase.port.in.command.LoginUseCase;
 import com.wtm.account.usecase.port.in.command.RegisterUserUseCase;
-import com.wtm.account.usecase.port.out.TokenIssuer.IssuedToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -30,14 +28,14 @@ class AuthController {
 
     @PostMapping("/login")
     LoginResponse login(@Valid @RequestBody LoginRequest request, HttpServletRequest http) {
-        IssuedToken token = login.handle(new LoginUseCase.Input(request.username(), request.password(), http.getRemoteAddr()));
-        return new LoginResponse(token.value(), token.expiresAt());
+        LoginUseCase.Output token = login.handle(new LoginUseCase.Input(request.username(), request.password(), http.getRemoteAddr()));
+        return new LoginResponse(token.token(), token.expiresAt());
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     RegisteredResponse register(@Valid @RequestBody RegisterRequest request, HttpServletRequest http) {
-        User user = register.handle(new RegisterUserUseCase.Input(request.username(), request.password(), http.getRemoteAddr()));
+        RegisterUserUseCase.Output user = register.handle(new RegisterUserUseCase.Input(request.username(), request.password(), http.getRemoteAddr()));
         return new RegisteredResponse(user.id(), user.username());
     }
 

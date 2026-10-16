@@ -6,7 +6,7 @@ import com.wtm.curation.usecase.port.in.command.ImportUploadsUseCase.Result;
 import com.wtm.curation.usecase.port.in.command.ImportUploadsUseCase.Upload;
 import com.wtm.curation.usecase.port.in.command.IngestOutcome;
 import com.wtm.curation.usecase.port.in.query.GetLibraryStatsUseCase;
-import com.wtm.curation.usecase.port.out.library.LibraryPort.LibraryStats;
+import com.wtm.curation.usecase.port.in.query.LibraryStats;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.io.IOException;

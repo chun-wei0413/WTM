@@ -1,6 +1,5 @@
 package com.wtm.feedback.usecase.port.in.query;
 
-import com.wtm.feedback.usecase.port.out.report.ReportViewPort.OpenReport;
 import com.wtm.shared.MemeProfile;
 import com.wtm.shared.port.Suggestion;
 import java.time.Instant;

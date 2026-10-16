@@ -44,7 +44,7 @@ public class RegisterUserService implements RegisterUserUseCase {
      * @throws UsernameTakenException when another account already uses the name (ignoring case)
      */
     @Override
-    public User handle(Input input) {
+    public Output handle(Input input) {
         String username = input.username();
         String rawPassword = input.rawPassword();
         String clientAddress = input.clientAddress();
@@ -68,7 +68,7 @@ public class RegisterUserService implements RegisterUserUseCase {
         }
         User user = User.register(name, hasher.hash(rawPassword), Role.USER);
         users.save(user);
-        return user;
+        return new Output(user.id(), user.username());
     }
 
     private static void checkPassword(String username, String password) {

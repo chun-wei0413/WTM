@@ -1,8 +1,8 @@
 package com.wtm.curation.usecase.service;
 
 import com.wtm.curation.usecase.port.in.query.GetLibraryStatsUseCase;
+import com.wtm.curation.usecase.port.in.query.LibraryStats;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
-import com.wtm.curation.usecase.port.out.library.LibraryPort.LibraryStats;
 
 public class GetLibraryStatsService implements GetLibraryStatsUseCase {
 

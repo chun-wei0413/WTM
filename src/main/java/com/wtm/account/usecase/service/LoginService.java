@@ -38,7 +38,7 @@ public class LoginService implements LoginUseCase {
      * @throws TooManyRequestsException when this address has failed too often recently
      */
     @Override
-    public IssuedToken handle(Input input) {
+    public Output handle(Input input) {
         String username = input.username();
         String rawPassword = input.rawPassword();
         String clientAddress = input.clientAddress();
@@ -61,6 +61,7 @@ public class LoginService implements LoginUseCase {
             throw new InvalidCredentialsException();
         }
         limiter.reset(accountKey);
-        return tokens.issue(user.get());
+        IssuedToken issued = tokens.issue(user.get());
+        return new Output(issued.value(), issued.expiresAt());
     }
 }

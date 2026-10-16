@@ -1,5 +1,6 @@
 package com.wtm.discovery.adapter.out.persistence;
 
+import com.wtm.discovery.usecase.port.in.query.HotTerm;
 import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort;
 import java.sql.Timestamp;
 import java.time.Instant;

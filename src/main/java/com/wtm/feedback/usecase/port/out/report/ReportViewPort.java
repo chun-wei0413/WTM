@@ -2,6 +2,7 @@ package com.wtm.feedback.usecase.port.out.report;
 
 import com.wtm.feedback.entity.ReportReason;
 import com.wtm.feedback.entity.Resolution;
+import com.wtm.feedback.usecase.port.in.query.OpenReport;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -17,10 +18,6 @@ public interface ReportViewPort {
 
     /** What the rules closed on their own since the given time, newest first, one entry per meme and outcome. */
     List<AutomaticAction> automaticSince(Instant since);
-
-    record OpenReport(UUID id, UUID templateId, UUID userId, String username, ReportReason reason, String comment,
-                      Instant createdAt) {
-    }
 
     record AutomaticAction(UUID templateId, Resolution resolution, int reports, String note, Instant at) {
     }

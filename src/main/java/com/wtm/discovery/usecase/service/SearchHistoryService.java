@@ -1,8 +1,8 @@
 package com.wtm.discovery.usecase.service;
 
 import com.wtm.discovery.usecase.port.in.command.SearchHistoryUseCase;
+import com.wtm.discovery.usecase.port.in.query.HotTerm;
 import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort;
-import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort.HotTerm;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;

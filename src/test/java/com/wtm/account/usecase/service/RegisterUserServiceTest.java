@@ -47,14 +47,14 @@ class RegisterUserServiceTest {
 
     @Test
     void createsAnOrdinaryUserWithAHashedPassword() {
-        User created = handler.handle(new RegisterUserUseCase.Input("  frank_li  ", "correct horse", CLIENT));
+        var created = handler.handle(new RegisterUserUseCase.Input("  frank_li  ", "correct horse", CLIENT));
 
         ArgumentCaptor<User> saved = ArgumentCaptor.forClass(User.class);
         verify(users).save(saved.capture());
-        assertThat(saved.getValue()).isEqualTo(created);
-        assertThat(created.username()).isEqualTo("frank_li");
-        assertThat(created.role()).isEqualTo(Role.USER);
-        assertThat(created.passwordHash()).isEqualTo("hashed");
+        assertThat(created).isEqualTo(new RegisterUserUseCase.Output(saved.getValue().id(), "frank_li"));
+        assertThat(saved.getValue().username()).isEqualTo("frank_li");
+        assertThat(saved.getValue().role()).isEqualTo(Role.USER);
+        assertThat(saved.getValue().passwordHash()).isEqualTo("hashed");
         verify(hasher).hash("correct horse");
     }
 

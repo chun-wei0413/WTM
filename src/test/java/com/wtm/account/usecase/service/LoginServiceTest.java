@@ -54,7 +54,8 @@ class LoginServiceTest {
         when(hasher.matches("secret", "stored-hash")).thenReturn(true);
         when(tokens.issue(user)).thenReturn(token);
 
-        assertThat(handler.handle(new LoginUseCase.Input("frank", "secret", CLIENT))).isSameAs(token);
+        assertThat(handler.handle(new LoginUseCase.Input("frank", "secret", CLIENT)))
+                .isEqualTo(new LoginUseCase.Output(token.value(), token.expiresAt()));
     }
 
     @Test

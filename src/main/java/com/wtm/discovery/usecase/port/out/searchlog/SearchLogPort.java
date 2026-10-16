@@ -1,5 +1,6 @@
 package com.wtm.discovery.usecase.port.out.searchlog;
 
+import com.wtm.discovery.usecase.port.in.query.HotTerm;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +15,4 @@ public interface SearchLogPort {
     /** The phrases searched most since the given time, most searched first. */
     List<HotTerm> hot(Instant since, int limit);
 
-    record HotTerm(String term, int searches) {
-    }
 }

@@ -3,6 +3,7 @@ package com.wtm.curation.usecase.port.out.library;
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.Origin;
 import com.wtm.curation.usecase.port.in.DuplicateImageException;
+import com.wtm.curation.usecase.port.in.query.LibraryStats;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort.Fingerprint;
 import com.wtm.shared.Reference;
 import java.util.Optional;
@@ -33,7 +34,4 @@ public interface LibraryPort {
     /** How many entries there are, by what has happened to them. */
     LibraryStats stats();
 
-    record LibraryStats(int total, int approved, int retired, int waitingForTags, int beingTagged,
-                        int tagFailures) {
-    }
 }

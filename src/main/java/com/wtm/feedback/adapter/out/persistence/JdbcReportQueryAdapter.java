@@ -3,6 +3,7 @@ package com.wtm.feedback.adapter.out.persistence;
 import com.wtm.feedback.entity.ReportPolicy.Standing;
 import com.wtm.feedback.entity.ReportReason;
 import com.wtm.feedback.entity.Resolution;
+import com.wtm.feedback.usecase.port.in.query.OpenReport;
 import com.wtm.feedback.usecase.port.out.report.ReportViewPort;
 import com.wtm.feedback.usecase.port.out.report.ReporterPort;
 import com.wtm.shared.adapter.persistence.TemplateRows;

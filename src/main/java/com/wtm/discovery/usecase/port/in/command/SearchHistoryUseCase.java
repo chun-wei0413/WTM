@@ -1,6 +1,6 @@
 package com.wtm.discovery.usecase.port.in.command;
 
-import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort.HotTerm;
+import com.wtm.discovery.usecase.port.in.query.HotTerm;
 import java.util.List;
 import java.util.UUID;
 
