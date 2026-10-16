@@ -36,6 +36,7 @@ Contents
 28. [Package layout: one folder per context, one file per use case](#28-package-layout-one-folder-per-context-one-file-per-use-case)
 29. [Architecture rules that follow the contexts](#29-architecture-rules-that-follow-the-contexts)
 30. [ReportCase is the first aggregate that exists in the code](#30-reportcase-is-the-first-aggregate-that-exists-in-the-code)
+31. [Favorite is an aggregate with almost nothing in it](#31-favorite-is-an-aggregate-with-almost-nothing-in-it)
 
 ---
 
@@ -889,3 +890,17 @@ together, or a report arriving while an administrator decides, are handled one a
 **Cost.** A report is loaded and saved as part of its meme's whole case, so a meme with very many reports costs more
 than the single-row statements did. The reports of one meme are few; if that changes, only the repository needs to.
 
+## 31. Favorite is an aggregate with almost nothing in it
+
+**Context.** The domain model has `Favorite` as an aggregate (user, meme, time). The code had `FavoritePort` with SQL
+(`INSERT ... ON CONFLICT DO NOTHING`, a `WITH published` check).
+
+**Decision.** `Favorite` is an entity of Discovery, identified by the user and the meme together, with a
+`FavoriteRepository`. The list of favorites as cards is a read (`FavoriteListPort`) and does not load aggregates.
+"Only a published meme can be favorited" is Curation's to say, so the service asks `GetTemplateUseCase` before it makes
+a favorite, as Feedback does for reports. Adding one twice changes nothing and keeps the first time.
+
+**Honest cost.** There is almost no rule inside `Favorite`: it only refuses a missing user, meme or time. Its worth is
+that Discovery now asks Curation for the one rule that is not its own and no longer reads another context's table
+inside a SQL statement, and that every aggregate on the domain model is built the same way. If favorites ever
+gain a rule (a limit, folders, an order) it has somewhere to live.
