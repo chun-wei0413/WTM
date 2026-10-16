@@ -1,4 +1,4 @@
-package com.wtm.curation.usecase.port.out.vision;
+package com.wtm.shared.port;
 
 import java.util.List;
 

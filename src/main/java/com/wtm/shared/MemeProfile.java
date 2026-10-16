@@ -1,4 +1,4 @@
-package com.wtm.curation.entity;
+package com.wtm.shared;
 
 import java.util.List;
 

@@ -13,21 +13,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.curation.entity.MemeTemplate;
-import com.wtm.curation.entity.TemplateStatus;
+import com.wtm.curation.usecase.port.in.command.RestoreProfileUseCase;
+import com.wtm.curation.usecase.port.in.command.ReviseProfileFromProposalUseCase;
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort.Change;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort.Source;
-import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
-import com.wtm.curation.usecase.port.out.template.TemplateRepository;
-import com.wtm.curation.usecase.port.out.vision.ReviewRequest;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
 import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.entity.ReportPolicy.Standing;
 import com.wtm.feedback.entity.ReportReason;
-import com.wtm.feedback.entity.Suggestion;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.AutomaticAction;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
@@ -35,11 +27,15 @@ import com.wtm.feedback.usecase.port.out.report.ReportPort.Resolution;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort.ReviewState;
 import com.wtm.shared.DomainRuleViolation;
+import com.wtm.shared.MemeProfile;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.TemplateNotFoundException;
 import com.wtm.shared.TooManyRequestsException;
 import com.wtm.shared.port.LlmUnavailableException;
 import com.wtm.shared.port.ObjectStoragePort;
+import com.wtm.shared.port.ReviewRequest;
+import com.wtm.shared.port.Suggestion;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -54,11 +50,11 @@ class ReportServicesTest {
 
     private final ReportPort reports = mock(ReportPort.class);
     private final ReviewPort reviews = mock(ReviewPort.class);
-    private final TemplateReadPort reads = mock(TemplateReadPort.class);
-    private final TemplateRepository templates = mock(TemplateRepository.class);
+    private final GetTemplateUseCase reads = mock(GetTemplateUseCase.class);
+    private final ReviseProfileFromProposalUseCase revise = mock(ReviseProfileFromProposalUseCase.class);
+    private final RestoreProfileUseCase restore = mock(RestoreProfileUseCase.class);
     private final ObjectStoragePort storage = mock(ObjectStoragePort.class);
     private final VisionTaggerPort tagger = mock(VisionTaggerPort.class);
-    private final ProfileHistoryPort history = mock(ProfileHistoryPort.class);
 
     private static final Instant NOW = Instant.parse("2026-10-09T12:00:00Z");
     private final Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
@@ -254,7 +250,7 @@ class ReportServicesTest {
     }
 
     private void theModelAnswers(Suggestion answer, List<OpenReport> open) {
-        when(reads.findById(memeId)).thenReturn(Optional.of(view("APPROVED")));
+        when(reads.handle(memeId)).thenReturn(view("APPROVED"));
         when(reports.openAbout(memeId)).thenReturn(open);
         when(storage.get("library/a.png")).thenReturn(new byte[] {1});
         when(tagger.reassess(any(), eq("image/png"), any())).thenReturn(answer);
@@ -287,7 +283,7 @@ class ReportServicesTest {
 
     @Test
     void whenThereIsNothingLeftToLookAtTheReviewIsDropped() {
-        when(reads.findById(memeId)).thenReturn(Optional.of(view("APPROVED")));
+        when(reads.handle(memeId)).thenReturn(view("APPROVED"));
         when(reports.openAbout(memeId)).thenReturn(List.of());
 
         runner().handle(memeId);
@@ -298,7 +294,7 @@ class ReportServicesTest {
 
     @Test
     void aMemeThatWasWithdrawnMeanwhileIsNotLookedAt() {
-        when(reads.findById(memeId)).thenReturn(Optional.of(view("RETIRED")));
+        when(reads.handle(memeId)).thenReturn(view("RETIRED"));
         when(reports.openAbout(memeId)).thenReturn(List.of(report(ReportReason.INAPPROPRIATE, "")));
 
         runner().handle(memeId);
@@ -309,7 +305,7 @@ class ReportServicesTest {
 
     @Test
     void aFailureGoesBackInLineWithTheReason() {
-        when(reads.findById(memeId)).thenReturn(Optional.of(view("APPROVED")));
+        when(reads.handle(memeId)).thenReturn(view("APPROVED"));
         when(reports.openAbout(memeId)).thenReturn(List.of(report(ReportReason.WRONG_TAGS, "x")));
         when(storage.get(anyString())).thenReturn(new byte[] {1});
         when(tagger.reassess(any(), anyString(), any())).thenThrow(new LlmUnavailableException("model is down"));
@@ -382,42 +378,29 @@ class ReportServicesTest {
 
     // -- the administrator decides ----------------------------------------------
 
-    private MemeTemplate approved() {
-        return MemeTemplate.restore(new TemplateId(memeId), "貓", "library/a.png", 600, 400,
-                TemplateStatus.APPROVED, 1, CURRENT, List.of());
-    }
-
     private ResolveReportsService resolving() {
-        return new ResolveReportsService(reports, reviews, templates, history, clock);
+        return new ResolveReportsService(reports, reviews, revise, restore, clock);
     }
 
     @Test
-    void adoptingTheProposalReplacesTheDescriptionButKeepsTheOtherNames() {
-        MemeTemplate template = approved();
+    void adoptingTheProposalHandsItToCurationAndClosesTheReports() {
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", suggestion(), null, false)));
-        when(templates.getForUpdate(new TemplateId(memeId))).thenReturn(template);
 
         resolving().apply(memeId);
 
-        assertThat(template.profile().meaning()).isEqualTo("新的意思");
-        assertThat(template.profile().tags()).containsExactly("新標籤");
-        assertThat(template.profile().imageText()).isEqualTo("新文字");
-        assertThat(template.profile().aliases()).containsExactly("別名");
-        assertThat(template.status()).isEqualTo(TemplateStatus.APPROVED);
-        verify(templates).save(template);
-        verify(history).record(eq(memeId), eq(CURRENT), eq(template.profile()), eq(Source.ADMIN));
+        verify(revise).handle(new ReviseProfileFromProposalUseCase.Input(memeId, "新的意思", List.of("新情境"),
+                List.of("得意"), "新文字", List.of("新標籤"), false));
         verify(reports).resolve(memeId, Resolution.APPLIED, false, "因為圖裡其實是…");
         verify(reviews).delete(memeId);
     }
 
     @Test
-    void anAutomaticAdoptionIsRecordedAsSuchSoItCanBeTakenBack() {
+    void anAutomaticAdoptionIsMarkedAsSuchSoItCanBeTakenBack() {
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", suggestion(), null, false)));
-        when(templates.getForUpdate(new TemplateId(memeId))).thenReturn(approved());
 
         resolving().applyAutomatically(memeId);
 
-        verify(history).record(eq(memeId), eq(CURRENT), any(), eq(Source.AUTO));
+        verify(revise).handle(org.mockito.ArgumentMatchers.argThat(input -> input.automatic()));
         verify(reports).resolve(eq(memeId), eq(Resolution.APPLIED), eq(true), anyString());
     }
 
@@ -430,13 +413,12 @@ class ReportServicesTest {
     }
 
     @Test
-    void aProposalWithoutAMeaningIsNotAdopted() {
+    void aProposalCurationRefusesIsNotAdopted() {
         var empty = new Suggestion(false, "", List.of(), List.of(), List.of(), "", "不是梗圖");
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", empty, null, false)));
-        when(templates.getForUpdate(any())).thenReturn(approved());
+        doThrow(new DomainRuleViolation("no")).when(revise).handle(any());
 
         assertThatThrownBy(() -> resolving().apply(memeId)).isInstanceOf(DomainRuleViolation.class);
-        verify(templates, never()).save(any());
         verify(reports, never()).resolve(any(), any(), anyBoolean(), any());
     }
 
@@ -446,7 +428,7 @@ class ReportServicesTest {
 
         verify(reports).resolve(memeId, Resolution.DISMISSED, false, null);
         verify(reviews).delete(memeId);
-        verify(templates, never()).save(any());
+        verify(revise, never()).handle(any());
     }
 
     @Test
@@ -464,35 +446,25 @@ class ReportServicesTest {
     // -- taking an automatic decision back ----------------------------------------
 
     @Test
-    void anAutomaticChangeIsPutBackToTheEarlierDescription() {
-        MemeTemplate template = approved();
-        MemeProfile after = suggestionProfile();
-        template.reviseProfile(after);
-        when(templates.getForUpdate(new TemplateId(memeId))).thenReturn(template);
-        var change = new Change(UUID.randomUUID(), CURRENT, after);
-        when(history.latestAutomaticChange(memeId)).thenReturn(Optional.of(change));
+    void anAutomaticChangeIsPutBackByCuration() {
+        when(restore.handle(memeId)).thenReturn(true);
 
         resolving().undoAutomatic(memeId);
 
-        assertThat(template.profile()).isEqualTo(CURRENT);
-        verify(history).markUndone(change.id());
+        verify(restore).handle(memeId);
     }
 
     @Test
-    void aChangeIsNotPutBackOverALaterEdit() {
-        MemeTemplate template = approved();
-        template.reviseProfile(new MemeProfile("管理員後來改的", List.of("x"), List.of(), List.of()));
-        when(templates.getForUpdate(new TemplateId(memeId))).thenReturn(template);
-        when(history.latestAutomaticChange(memeId))
-                .thenReturn(Optional.of(new Change(UUID.randomUUID(), CURRENT, suggestionProfile())));
+    void aChangeCurationWillNotPutBackIsReportedAndLeavesTheReportsAlone() {
+        when(restore.handle(memeId)).thenThrow(new DomainRuleViolation("changed since"));
 
         assertThatThrownBy(() -> resolving().undoAutomatic(memeId)).isInstanceOf(DomainRuleViolation.class);
-        verify(history, never()).markUndone(any());
+        verify(reports, never()).reopenAutomaticallyDismissed(any(), any());
     }
 
     @Test
     void automaticallyClosedReportsCanBeOpenedAgainAndTheModelLooksOnceMore() {
-        when(history.latestAutomaticChange(memeId)).thenReturn(Optional.empty());
+        when(restore.handle(memeId)).thenReturn(false);
         when(reports.reopenAutomaticallyDismissed(eq(memeId), any())).thenReturn(2);
 
         resolving().undoAutomatic(memeId);
@@ -503,26 +475,22 @@ class ReportServicesTest {
 
     @Test
     void whenTheRulesDidNothingThereIsNothingToTakeBack() {
-        when(history.latestAutomaticChange(memeId)).thenReturn(Optional.empty());
+        when(restore.handle(memeId)).thenReturn(false);
         when(reports.reopenAutomaticallyDismissed(any(), any())).thenReturn(0);
 
         assertThatThrownBy(() -> resolving().undoAutomatic(memeId)).isInstanceOf(DomainRuleViolation.class);
     }
 
-    private static MemeProfile suggestionProfile() {
-        return new MemeProfile("新的意思", List.of("新情境"), List.of("得意"), List.of("別名"), "新文字", List.of("新標籤"));
-    }
-
     // -- the administrator's list --------------------------------------------------
 
     private ListReportCasesService lister() {
-        return new ListReportCasesService(reports, reviews, reads, storage, history, judge, clock);
+        return new ListReportCasesService(reports, reviews, reads, storage, restore, judge, clock);
     }
 
     @Test
     void theListPutsComplaintsAndProposalSideBySideWithTheirWeight() {
         when(reports.open()).thenReturn(List.of(report(ReportReason.WRONG_TAGS, "x"), report(ReportReason.WRONG_MEANING, "y")));
-        when(reads.findById(memeId)).thenReturn(Optional.of(view("APPROVED")));
+        when(reads.handle(memeId)).thenReturn(view("APPROVED"));
         when(reviews.find(memeId)).thenReturn(Optional.of(new ReviewState("DONE", suggestion(), null, false)));
         when(storage.presignedGetUrl(anyString(), any())).thenReturn("https://storage/a");
 
@@ -543,8 +511,10 @@ class ReportServicesTest {
         when(reports.automaticSince(NOW.minus(ResolveReportsService.UNDO_WINDOW))).thenReturn(List.of(
                 new AutomaticAction(memeId, Resolution.APPLIED, 3, "改了標籤", NOW),
                 new AutomaticAction(UUID.randomUUID(), Resolution.DISMISSED, 1, "沒問題", NOW)));
-        when(reads.findById(memeId)).thenReturn(Optional.of(view("APPROVED")));
-        when(history.latestAutomaticChange(memeId)).thenReturn(Optional.empty());   // already taken back
+        when(reads.handle(memeId)).thenReturn(view("APPROVED"));
+        when(restore.canRestore(memeId)).thenReturn(false);   // already taken back
+        when(reads.handle(org.mockito.ArgumentMatchers.argThat(id -> !memeId.equals(id))))
+                .thenThrow(new TemplateNotFoundException(new TemplateId(UUID.randomUUID())));
         when(storage.presignedGetUrl(anyString(), any())).thenReturn("https://storage/a");
 
         var entries = lister().automatic();

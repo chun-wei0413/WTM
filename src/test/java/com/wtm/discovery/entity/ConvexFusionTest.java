@@ -3,7 +3,6 @@ package com.wtm.discovery.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
-import com.wtm.discovery.entity.Hit;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

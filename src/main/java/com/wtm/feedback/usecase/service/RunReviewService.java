@@ -1,16 +1,17 @@
 package com.wtm.feedback.usecase.service;
 
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
-import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
-import com.wtm.curation.usecase.port.out.vision.ReviewRequest;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
-import com.wtm.curation.usecase.service.TagTemplateService;
-import com.wtm.feedback.entity.Suggestion;
 import com.wtm.feedback.usecase.port.in.command.RunReviewUseCase;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
+import com.wtm.shared.ImageTypes;
+import com.wtm.shared.TemplateNotFoundException;
 import com.wtm.shared.port.ObjectStoragePort;
+import com.wtm.shared.port.ReviewRequest;
+import com.wtm.shared.port.Suggestion;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ public class RunReviewService implements RunReviewUseCase {
 
     private static final Logger log = LoggerFactory.getLogger(RunReviewService.class);
 
-    private final TemplateReadPort templates;
+    private final GetTemplateUseCase templates;
     private final ObjectStoragePort storage;
     private final VisionTaggerPort tagger;
     private final ReportPort reports;
@@ -34,7 +35,7 @@ public class RunReviewService implements RunReviewUseCase {
     private final ResolveReportsService resolver;
     private final int maxAttempts;
 
-    public RunReviewService(TemplateReadPort templates, ObjectStoragePort storage, VisionTaggerPort tagger,
+    public RunReviewService(GetTemplateUseCase templates, ObjectStoragePort storage, VisionTaggerPort tagger,
                             ReportPort reports, ReviewPort reviews, ReportJudge judge,
                             ResolveReportsService resolver, int maxAttempts) {
         this.templates = templates;
@@ -50,7 +51,7 @@ public class RunReviewService implements RunReviewUseCase {
     @Override
     public void handle(UUID templateId) {
         try {
-            TemplateView template = templates.findById(templateId).orElse(null);
+            TemplateView template = find(templateId);
             List<OpenReport> open = reports.openAbout(templateId);
             if (template == null || !"APPROVED".equals(template.status()) || open.isEmpty()) {
                 reviews.delete(templateId);   // gone, withdrawn or already dealt with: nothing left to look at
@@ -58,7 +59,7 @@ public class RunReviewService implements RunReviewUseCase {
             }
             boolean askedByAdministrator = reviews.find(templateId).map(state -> state.forced()).orElse(false);
             byte[] image = storage.get(template.imageKey());
-            Suggestion suggestion = tagger.reassess(image, TagTemplateService.contentTypeOf(template.imageKey()),
+            Suggestion suggestion = tagger.reassess(image, ImageTypes.contentTypeOf(template.imageKey()),
                     new ReviewRequest(template.profile(), open.stream().map(RunReviewService::describe).toList()));
             reviews.complete(templateId, suggestion);
             if (!askedByAdministrator) {
@@ -70,6 +71,14 @@ public class RunReviewService implements RunReviewUseCase {
         } catch (RuntimeException e) {
             log.warn("Looking again at {} failed: {}", templateId, e.getMessage());
             reviews.fail(templateId, truncate(e.getMessage()), maxAttempts);
+        }
+    }
+
+    private TemplateView find(UUID templateId) {
+        try {
+            return templates.handle(templateId);
+        } catch (TemplateNotFoundException e) {
+            return null;
         }
     }
 

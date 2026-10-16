@@ -1,14 +1,15 @@
 package com.wtm.curation.usecase.service;
 
-import com.wtm.curation.entity.Reference;
 import com.wtm.curation.usecase.port.in.command.TagTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.tagging.TaggingQueuePort;
 import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
-import com.wtm.curation.usecase.port.out.vision.ImageTags;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
+import com.wtm.shared.ImageTypes;
+import com.wtm.shared.Reference;
+import com.wtm.shared.port.ImageTags;
 import com.wtm.shared.port.ObjectStoragePort;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,24 +52,13 @@ public class TagTemplateService implements TagTemplateUseCase {
             byte[] image = storage.get(template.imageKey());
             String hint = IngestMemeService.PLACEHOLDER_NAME.equals(template.name()) ? null : template.name();
             Reference reference = library.findReference(templateId).orElse(null);
-            ImageTags tags = tagger.describe(image, contentTypeOf(template.imageKey()), hint, reference);
+            ImageTags tags = tagger.describe(image, ImageTypes.contentTypeOf(template.imageKey()), hint, reference);
             apply.handle(templateId, tags);
             queue.done(templateId);
         } catch (RuntimeException e) {
             log.warn("Tagging {} failed: {}", templateId, e.getMessage());
             queue.fail(templateId, truncate(e.getMessage()), maxAttempts);
         }
-    }
-
-    public static String contentTypeOf(String imageKey) {
-        String key = imageKey.toLowerCase();
-        if (key.endsWith(".png")) {
-            return "image/png";
-        }
-        if (key.endsWith(".gif")) {
-            return "image/gif";
-        }
-        return "image/jpeg";
     }
 
     private static String truncate(String message) {

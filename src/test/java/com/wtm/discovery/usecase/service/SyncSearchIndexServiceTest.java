@@ -7,10 +7,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wtm.curation.entity.MemeProfile;
 import com.wtm.discovery.usecase.port.out.embedding.EmbeddingPort;
 import com.wtm.discovery.usecase.port.out.search.SearchIndexPort;
 import com.wtm.discovery.usecase.port.out.search.SearchIndexPort.IndexableTemplate;
+import com.wtm.shared.MemeProfile;
 import com.wtm.shared.port.LlmUnavailableException;
 import java.time.Instant;
 import java.util.List;

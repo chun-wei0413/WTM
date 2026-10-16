@@ -1,4 +1,4 @@
-package com.wtm.curation.entity;
+package com.wtm.shared;
 
 /**
  * An explanation of a meme written by a source other than the vision model, with what is needed to credit it.

@@ -1,9 +1,9 @@
 package com.wtm.curation.usecase.service;
 
-import com.wtm.curation.entity.MemeProfile;
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.usecase.port.in.command.ReviseProfileUseCase;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
+import com.wtm.shared.MemeProfile;
 import com.wtm.shared.TemplateId;
 import org.springframework.transaction.annotation.Transactional;
 

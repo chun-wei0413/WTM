@@ -12,20 +12,21 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wtm.curation.entity.MemeProfile;
 import com.wtm.curation.entity.MemeTemplate;
-import com.wtm.curation.entity.Reference;
 import com.wtm.curation.entity.TemplateStatus;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.tagging.TaggingQueuePort;
 import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
-import com.wtm.curation.usecase.port.out.vision.ImageTags;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
+import com.wtm.shared.ImageTypes;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Reference;
 import com.wtm.shared.TemplateId;
+import com.wtm.shared.port.ImageTags;
 import com.wtm.shared.port.LlmUnavailableException;
 import com.wtm.shared.port.ObjectStoragePort;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -201,9 +202,9 @@ class TaggingServicesTest {
 
     @Test
     void knowsTheContentTypeFromTheFileEnding() {
-        assertThat(TagTemplateService.contentTypeOf("a.PNG")).isEqualTo("image/png");
-        assertThat(TagTemplateService.contentTypeOf("a.gif")).isEqualTo("image/gif");
-        assertThat(TagTemplateService.contentTypeOf("a.jpg")).isEqualTo("image/jpeg");
+        assertThat(ImageTypes.contentTypeOf("a.PNG")).isEqualTo("image/png");
+        assertThat(ImageTypes.contentTypeOf("a.gif")).isEqualTo("image/gif");
+        assertThat(ImageTypes.contentTypeOf("a.jpg")).isEqualTo("image/jpeg");
         assertThat(UUID.randomUUID()).isNotNull();
     }
 }

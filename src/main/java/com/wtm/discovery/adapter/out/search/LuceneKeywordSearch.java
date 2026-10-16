@@ -1,8 +1,8 @@
 package com.wtm.discovery.adapter.out.search;
 
+import com.wtm.discovery.entity.Hit;
 import com.wtm.discovery.usecase.port.out.search.KeywordSearchPort;
 import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort;
-import com.wtm.discovery.entity.Hit;
 import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort.IndexedText;
 import jakarta.annotation.PreDestroy;
 import java.io.IOException;

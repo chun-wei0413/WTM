@@ -1,8 +1,8 @@
-package com.wtm.curation.adapter.out.persistence;
+package com.wtm.shared.adapter.persistence;
 
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.curation.entity.Reference;
-import com.wtm.curation.entity.Slot;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Reference;
+import com.wtm.shared.Slot;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;

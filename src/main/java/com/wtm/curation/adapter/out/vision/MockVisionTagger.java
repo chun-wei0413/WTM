@@ -1,11 +1,11 @@
 package com.wtm.curation.adapter.out.vision;
 
-import com.wtm.curation.entity.Reference;
-import com.wtm.curation.usecase.port.out.vision.ImageTags;
-import com.wtm.curation.usecase.port.out.vision.ReviewRequest;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
-import com.wtm.feedback.entity.Suggestion;
+import com.wtm.shared.Reference;
+import com.wtm.shared.port.ImageTags;
 import com.wtm.shared.port.LlmUnavailableException;
+import com.wtm.shared.port.ReviewRequest;
+import com.wtm.shared.port.Suggestion;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

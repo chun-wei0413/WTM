@@ -6,9 +6,9 @@ import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.tagging.TaggingQueuePort;
+import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
 import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
 import com.wtm.curation.usecase.service.ApplyTagsService;
 import com.wtm.curation.usecase.service.ApproveTemplateService;
 import com.wtm.curation.usecase.service.DefineSlotService;
@@ -21,11 +21,14 @@ import com.wtm.curation.usecase.service.IngestMemeService;
 import com.wtm.curation.usecase.service.ListTemplatesService;
 import com.wtm.curation.usecase.service.RedefineSlotService;
 import com.wtm.curation.usecase.service.RemoveSlotService;
+import com.wtm.curation.usecase.service.RestoreProfileService;
 import com.wtm.curation.usecase.service.RetireTemplateService;
+import com.wtm.curation.usecase.service.ReviseProfileFromProposalService;
 import com.wtm.curation.usecase.service.ReviseProfileService;
 import com.wtm.curation.usecase.service.TagTemplateService;
 import com.wtm.curation.usecase.service.TaggingQueueService;
 import com.wtm.shared.port.ObjectStoragePort;
+import com.wtm.shared.port.VisionTaggerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -117,5 +120,16 @@ class CurationConfig {
     @Bean
     ImportFromUrlService importFromUrlService(RemoteFetchPort fetcher, IngestMemeService ingest) {
         return new ImportFromUrlService(fetcher, ingest);
+    }
+
+    @Bean
+    ReviseProfileFromProposalService reviseProfileFromProposalService(TemplateRepository templates,
+                                                                      ProfileHistoryPort history) {
+        return new ReviseProfileFromProposalService(templates, history);
+    }
+
+    @Bean
+    RestoreProfileService restoreProfileService(TemplateRepository templates, ProfileHistoryPort history) {
+        return new RestoreProfileService(templates, history);
     }
 }

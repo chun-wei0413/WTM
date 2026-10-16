@@ -1,6 +1,6 @@
 package com.wtm.curation.usecase.port.out.template;
 
-import com.wtm.curation.entity.MemeProfile;
+import com.wtm.shared.MemeProfile;
 import java.util.Optional;
 import java.util.UUID;
 

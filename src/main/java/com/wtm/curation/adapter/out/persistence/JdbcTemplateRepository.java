@@ -1,11 +1,12 @@
 package com.wtm.curation.adapter.out.persistence;
 
-import com.wtm.curation.entity.MemeProfile;
 import com.wtm.curation.entity.MemeTemplate;
-import com.wtm.curation.entity.Slot;
 import com.wtm.curation.entity.TemplateStatus;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
+import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.jdbc.core.simple.JdbcClient;

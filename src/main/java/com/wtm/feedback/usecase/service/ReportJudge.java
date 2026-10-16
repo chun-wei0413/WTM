@@ -1,9 +1,9 @@
 package com.wtm.feedback.usecase.service;
 
 import com.wtm.feedback.entity.ReportPolicy;
-import com.wtm.feedback.entity.Suggestion;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
+import com.wtm.shared.port.Suggestion;
 import java.util.List;
 
 /**

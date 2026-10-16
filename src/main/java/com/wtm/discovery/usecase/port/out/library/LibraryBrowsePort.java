@@ -1,6 +1,6 @@
 package com.wtm.discovery.usecase.port.out.library;
 
-import com.wtm.curation.entity.Reference;
+import com.wtm.shared.Reference;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

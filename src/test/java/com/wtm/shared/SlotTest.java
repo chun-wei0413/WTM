@@ -1,4 +1,4 @@
-package com.wtm.curation.entity;
+package com.wtm.shared;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

@@ -1,18 +1,13 @@
 package com.wtm.feedback.usecase.service;
 
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.curation.entity.MemeTemplate;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort.Change;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort.Source;
-import com.wtm.curation.usecase.port.out.template.TemplateRepository;
-import com.wtm.feedback.entity.Suggestion;
+import com.wtm.curation.usecase.port.in.command.RestoreProfileUseCase;
+import com.wtm.curation.usecase.port.in.command.ReviseProfileFromProposalUseCase;
 import com.wtm.feedback.usecase.port.in.command.ResolveReportsUseCase;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.Resolution;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.shared.DomainRuleViolation;
-import com.wtm.shared.TemplateId;
+import com.wtm.shared.port.Suggestion;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.UUID;
@@ -30,16 +25,16 @@ public class ResolveReportsService implements ResolveReportsUseCase {
 
     private final ReportPort reports;
     private final ReviewPort reviews;
-    private final TemplateRepository templates;
-    private final ProfileHistoryPort history;
+    private final ReviseProfileFromProposalUseCase revise;
+    private final RestoreProfileUseCase restore;
     private final Clock clock;
 
-    public ResolveReportsService(ReportPort reports, ReviewPort reviews, TemplateRepository templates,
-                                 ProfileHistoryPort history, Clock clock) {
+    public ResolveReportsService(ReportPort reports, ReviewPort reviews, ReviseProfileFromProposalUseCase revise,
+                                 RestoreProfileUseCase restore, Clock clock) {
         this.reports = reports;
         this.reviews = reviews;
-        this.templates = templates;
-        this.history = history;
+        this.revise = revise;
+        this.restore = restore;
         this.clock = clock;
     }
 
@@ -96,18 +91,7 @@ public class ResolveReportsService implements ResolveReportsUseCase {
     @Transactional
     @Override
     public void undoAutomatic(UUID templateId) {
-        boolean restored = false;
-        Change change = history.latestAutomaticChange(templateId).orElse(null);
-        if (change != null) {
-            MemeTemplate template = templates.getForUpdate(new TemplateId(templateId));
-            if (!template.profile().equals(change.after())) {
-                throw new DomainRuleViolation("The description was changed again since, so it is not put back");
-            }
-            template.reviseProfile(change.before());
-            templates.save(template);
-            history.markUndone(change.id());
-            restored = true;
-        }
+        boolean restored = restore.handle(templateId);
         int reopened = reports.reopenAutomaticallyDismissed(templateId, clock.instant().minus(UNDO_WINDOW));
         if (!restored && reopened == 0) {
             throw new DomainRuleViolation("There is nothing automatic to take back for this meme");
@@ -121,16 +105,8 @@ public class ResolveReportsService implements ResolveReportsUseCase {
         Suggestion suggestion = reviews.find(templateId)
                 .map(state -> state.suggestion())
                 .orElseThrow(() -> new DomainRuleViolation("There is no proposal to adopt for this meme"));
-        MemeTemplate template = templates.getForUpdate(new TemplateId(templateId));
-        MemeProfile before = template.profile();
-        MemeProfile after = new MemeProfile(suggestion.meaning(), suggestion.usageExamples(),
-                suggestion.emotions(), before.aliases(), suggestion.imageText(), suggestion.tags());
-        if (!after.isComplete()) {
-            throw new DomainRuleViolation("The proposal is missing the meaning or a usage example");
-        }
-        template.reviseProfile(after);
-        templates.save(template);
-        history.record(templateId, before, after, automatic ? Source.AUTO : Source.ADMIN);
+        revise.handle(new ReviseProfileFromProposalUseCase.Input(templateId, suggestion.meaning(),
+                suggestion.usageExamples(), suggestion.emotions(), suggestion.imageText(), suggestion.tags(), automatic));
         reports.resolve(templateId, Resolution.APPLIED, automatic, suggestion.reasoning());
         reviews.delete(templateId);
     }

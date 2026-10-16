@@ -1,9 +1,9 @@
 package com.wtm.curation.usecase.service;
 
 import com.wtm.curation.entity.MemeTemplate;
-import com.wtm.curation.entity.Slot;
 import com.wtm.curation.usecase.port.in.command.DefineSlotUseCase;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
+import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
 import org.springframework.transaction.annotation.Transactional;
 

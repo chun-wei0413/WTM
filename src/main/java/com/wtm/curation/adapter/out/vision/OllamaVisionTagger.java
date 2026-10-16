@@ -2,12 +2,12 @@ package com.wtm.curation.adapter.out.vision;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wtm.curation.entity.Reference;
-import com.wtm.curation.usecase.port.out.vision.ImageTags;
-import com.wtm.curation.usecase.port.out.vision.ReviewRequest;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
-import com.wtm.feedback.entity.Suggestion;
+import com.wtm.shared.Reference;
+import com.wtm.shared.port.ImageTags;
 import com.wtm.shared.port.LlmUnavailableException;
+import com.wtm.shared.port.ReviewRequest;
+import com.wtm.shared.port.Suggestion;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

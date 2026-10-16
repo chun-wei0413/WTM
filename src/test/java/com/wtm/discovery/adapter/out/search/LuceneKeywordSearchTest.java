@@ -6,8 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort;
 import com.wtm.discovery.entity.Hit;
+import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort;
 import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort.IndexedText;
 import java.util.List;
 import java.util.UUID;

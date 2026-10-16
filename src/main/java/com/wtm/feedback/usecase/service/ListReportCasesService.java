@@ -1,9 +1,8 @@
 package com.wtm.feedback.usecase.service;
 
-import com.wtm.curation.entity.MemeProfile;
+import com.wtm.curation.usecase.port.in.command.RestoreProfileUseCase;
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
-import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
 import com.wtm.feedback.usecase.port.in.query.ListReportCasesUseCase;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.AutomaticAction;
@@ -11,6 +10,7 @@ import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.Resolution;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort.ReviewState;
+import com.wtm.shared.TemplateNotFoundException;
 import com.wtm.shared.port.ObjectStoragePort;
 import java.time.Clock;
 import java.time.Duration;
@@ -30,20 +30,20 @@ public class ListReportCasesService implements ListReportCasesUseCase {
 
     private final ReportPort reports;
     private final ReviewPort reviews;
-    private final TemplateReadPort templates;
+    private final GetTemplateUseCase templates;
     private final ObjectStoragePort storage;
-    private final ProfileHistoryPort history;
+    private final RestoreProfileUseCase restore;
     private final ReportJudge judge;
     private final Clock clock;
 
-    public ListReportCasesService(ReportPort reports, ReviewPort reviews, TemplateReadPort templates,
-                                  ObjectStoragePort storage, ProfileHistoryPort history, ReportJudge judge,
+    public ListReportCasesService(ReportPort reports, ReviewPort reviews, GetTemplateUseCase templates,
+                                  ObjectStoragePort storage, RestoreProfileUseCase restore, ReportJudge judge,
                                   Clock clock) {
         this.reports = reports;
         this.reviews = reviews;
         this.templates = templates;
         this.storage = storage;
-        this.history = history;
+        this.restore = restore;
         this.judge = judge;
         this.clock = clock;
     }
@@ -55,7 +55,7 @@ public class ListReportCasesService implements ListReportCasesUseCase {
             byMeme.computeIfAbsent(report.templateId(), id -> new java.util.ArrayList<>()).add(report);
         }
         return byMeme.entrySet().stream()
-                .flatMap(entry -> templates.findById(entry.getKey()).stream()
+                .flatMap(entry -> find(entry.getKey()).stream()
                         .map(t -> toCase(t, entry.getValue())))
                 .toList();
     }
@@ -65,8 +65,16 @@ public class ListReportCasesService implements ListReportCasesUseCase {
     public List<AutomaticEntry> automatic() {
         Instant since = clock.instant().minus(ResolveReportsService.UNDO_WINDOW);
         return reports.automaticSince(since).stream()
-                .flatMap(action -> templates.findById(action.templateId()).stream().map(t -> toEntry(t, action)))
+                .flatMap(action -> find(action.templateId()).stream().map(t -> toEntry(t, action)))
                 .toList();
+    }
+
+    private java.util.Optional<TemplateView> find(UUID id) {
+        try {
+            return java.util.Optional.of(templates.handle(id));
+        } catch (TemplateNotFoundException e) {
+            return java.util.Optional.empty();
+        }
     }
 
     private ReportCase toCase(TemplateView template, List<OpenReport> open) {
@@ -79,7 +87,7 @@ public class ListReportCasesService implements ListReportCasesUseCase {
 
     private AutomaticEntry toEntry(TemplateView template, AutomaticAction action) {
         boolean canUndo = action.resolution() == Resolution.DISMISSED
-                || history.latestAutomaticChange(template.id()).isPresent();
+                || restore.canRestore(template.id());
         return new AutomaticEntry(template.id(), template.name(),
                 storage.presignedGetUrl(template.imageKey(), IMAGE_URL_TTL), action.resolution().name(),
                 action.reports(), action.note(), action.at(), canUndo);

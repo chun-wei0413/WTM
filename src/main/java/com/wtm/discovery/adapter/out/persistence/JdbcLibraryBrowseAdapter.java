@@ -1,7 +1,7 @@
 package com.wtm.discovery.adapter.out.persistence;
 
-import com.wtm.curation.adapter.out.persistence.TemplateRows;
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort;
+import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

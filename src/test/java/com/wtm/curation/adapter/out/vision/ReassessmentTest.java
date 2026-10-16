@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.curation.entity.Reference;
-import com.wtm.curation.usecase.port.out.vision.ReviewRequest;
-import com.wtm.feedback.entity.Suggestion;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Reference;
 import com.wtm.shared.port.LlmUnavailableException;
+import com.wtm.shared.port.ReviewRequest;
+import com.wtm.shared.port.Suggestion;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

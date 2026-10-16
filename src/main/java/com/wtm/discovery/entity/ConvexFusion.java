@@ -1,6 +1,5 @@
 package com.wtm.discovery.entity;
 
-import com.wtm.discovery.entity.Hit;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;

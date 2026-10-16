@@ -2,9 +2,9 @@ package com.wtm.curation.usecase.port.out.library;
 
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.Origin;
-import com.wtm.curation.entity.Reference;
 import com.wtm.curation.usecase.port.in.DuplicateImageException;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort.Fingerprint;
+import com.wtm.shared.Reference;
 import java.util.Optional;
 import java.util.UUID;
 

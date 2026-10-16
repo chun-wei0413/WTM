@@ -1,6 +1,6 @@
-package com.wtm.curation.usecase.port.out.vision;
+package com.wtm.shared.port;
 
-import com.wtm.curation.entity.MemeProfile;
+import com.wtm.shared.MemeProfile;
 import java.util.List;
 
 /**

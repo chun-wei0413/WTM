@@ -1,6 +1,8 @@
 package com.wtm.curation.entity;
 
 import com.wtm.shared.DomainRuleViolation;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
 import java.util.ArrayList;
 import java.util.Collections;

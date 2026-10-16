@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.wtm.shared.DomainRuleViolation;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
 import java.util.List;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,10 @@
 package com.wtm.curation.adapter.out.persistence;
 
-import com.wtm.curation.entity.Slot;
 import com.wtm.curation.usecase.port.in.query.TemplateSummary;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
 import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
+import com.wtm.shared.Slot;
+import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

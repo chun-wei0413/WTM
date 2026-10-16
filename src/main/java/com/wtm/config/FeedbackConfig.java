@@ -1,11 +1,10 @@
 package com.wtm.config;
 
-import com.wtm.curation.adapter.in.scheduling.TaggingProperties;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
-import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
-import com.wtm.curation.usecase.port.out.template.TemplateRepository;
-import com.wtm.curation.usecase.port.out.vision.VisionTaggerPort;
+import com.wtm.curation.usecase.port.in.command.RestoreProfileUseCase;
+import com.wtm.curation.usecase.port.in.command.ReviseProfileFromProposalUseCase;
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.feedback.adapter.in.scheduling.ReportProperties;
+import com.wtm.feedback.adapter.in.scheduling.ReviewProperties;
 import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
@@ -16,6 +15,7 @@ import com.wtm.feedback.usecase.service.ReviewQueueService;
 import com.wtm.feedback.usecase.service.RunReviewService;
 import com.wtm.feedback.usecase.service.SubmitReportService;
 import com.wtm.shared.port.ObjectStoragePort;
+import com.wtm.shared.port.VisionTaggerPort;
 import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,10 +43,10 @@ class FeedbackConfig {
     }
 
     @Bean
-    RunReviewService runReviewService(TemplateReadPort templates, ObjectStoragePort storage,
+    RunReviewService runReviewService(GetTemplateUseCase templates, ObjectStoragePort storage,
                                       VisionTaggerPort tagger, ReportPort reports, ReviewPort reviews,
                                       ReportJudge judge, ResolveReportsService resolver,
-                                      TaggingProperties properties) {
+                                      ReviewProperties properties) {
         return new RunReviewService(templates, storage, tagger, reports, reviews, judge, resolver,
                 properties.maxAttempts());
     }
@@ -57,15 +57,15 @@ class FeedbackConfig {
     }
 
     @Bean
-    ListReportCasesService listReportCasesService(ReportPort reports, ReviewPort reviews, TemplateReadPort templates,
-                                                  ObjectStoragePort storage, ProfileHistoryPort history,
+    ListReportCasesService listReportCasesService(ReportPort reports, ReviewPort reviews, GetTemplateUseCase templates,
+                                                  ObjectStoragePort storage, RestoreProfileUseCase restore,
                                                   ReportJudge judge) {
-        return new ListReportCasesService(reports, reviews, templates, storage, history, judge, Clock.systemUTC());
+        return new ListReportCasesService(reports, reviews, templates, storage, restore, judge, Clock.systemUTC());
     }
 
     @Bean
     ResolveReportsService resolveReportsService(ReportPort reports, ReviewPort reviews,
-                                                TemplateRepository templates, ProfileHistoryPort history) {
-        return new ResolveReportsService(reports, reviews, templates, history, Clock.systemUTC());
+                                                ReviseProfileFromProposalUseCase revise, RestoreProfileUseCase restore) {
+        return new ResolveReportsService(reports, reviews, revise, restore, Clock.systemUTC());
     }
 }

@@ -10,7 +10,6 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import com.tngtech.archunit.library.freeze.FreezingArchRule;
 
 /**
  * Clean Architecture inside every bounded context, and a few rules between the contexts (decision 29).
@@ -19,8 +18,7 @@ import com.tngtech.archunit.library.freeze.FreezingArchRule;
  *   adapter -> usecase -> entity
  * </pre>
  *
- * The rules between contexts are frozen: the dependencies that already exist are recorded in
- * {@code src/test/resources/archunit_store} and tolerated, any new one fails the build. The list is meant to shrink.
+ * A context may use another one only through its {@code usecase.port.in} and through {@code shared}.
  */
 @AnalyzeClasses(packages = "com.wtm", importOptions = ImportOption.DoNotIncludeTests.class)
 class ArchitectureTest {
@@ -78,7 +76,7 @@ class ArchitectureTest {
 
     @ArchTest
     static final ArchRule contexts_have_no_cycles =
-            FreezingArchRule.freeze(slices().matching("com.wtm.(*)..").should().beFreeOfCycles());
+            slices().matching("com.wtm.(*)..").should().beFreeOfCycles();
 
     private static ArchRule insideOfOthers(String context) {
         java.util.List<String> inside = new java.util.ArrayList<>();
@@ -90,8 +88,7 @@ class ArchitectureTest {
                 inside.add("com.wtm." + other + ".usecase.service..");
             }
         }
-        return FreezingArchRule.freeze(
-                noClasses().that().resideInAPackage("com.wtm." + context + "..")
-                        .should().dependOnClassesThat().resideInAnyPackage(inside.toArray(new String[0])));
+        return noClasses().that().resideInAPackage("com.wtm." + context + "..")
+                .should().dependOnClassesThat().resideInAnyPackage(inside.toArray(new String[0]));
     }
 }

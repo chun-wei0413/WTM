@@ -1,12 +1,12 @@
 package com.wtm.discovery.usecase.service;
 
 import com.wtm.discovery.entity.ConvexFusion;
+import com.wtm.discovery.entity.Hit;
 import com.wtm.discovery.usecase.port.in.query.SearchResult;
 import com.wtm.discovery.usecase.port.in.query.SearchTemplatesUseCase;
 import com.wtm.discovery.usecase.port.out.embedding.EmbeddingPort;
 import com.wtm.discovery.usecase.port.out.search.KeywordSearchPort;
 import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort;
-import com.wtm.discovery.entity.Hit;
 import com.wtm.discovery.usecase.port.out.search.TemplateSearchPort.SearchCard;
 import com.wtm.shared.port.ObjectStoragePort;
 import java.time.Duration;

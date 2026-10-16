@@ -1,5 +1,7 @@
 package com.wtm.curation.entity;
 
+import com.wtm.shared.Reference;
+
 /**
  * Where a collected picture came from, kept so it can be credited, checked and found again.
  *

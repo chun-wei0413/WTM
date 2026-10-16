@@ -2,8 +2,8 @@ package com.wtm.curation.adapter.out.persistence;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wtm.curation.entity.MemeProfile;
 import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
+import com.wtm.shared.MemeProfile;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

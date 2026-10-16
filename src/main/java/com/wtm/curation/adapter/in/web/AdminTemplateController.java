@@ -1,7 +1,5 @@
 package com.wtm.curation.adapter.in.web;
 
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.curation.entity.Slot;
 import com.wtm.curation.entity.TemplateStatus;
 import com.wtm.curation.usecase.port.in.command.ApproveTemplateUseCase;
 import com.wtm.curation.usecase.port.in.command.DefineSlotUseCase;
@@ -14,6 +12,8 @@ import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.ListTemplatesUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateSummary;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;

@@ -1,6 +1,6 @@
 package com.wtm.feedback.usecase.port.out.review;
 
-import com.wtm.feedback.entity.Suggestion;
+import com.wtm.shared.port.Suggestion;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;

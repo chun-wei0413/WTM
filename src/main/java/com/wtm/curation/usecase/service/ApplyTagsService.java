@@ -1,12 +1,12 @@
 package com.wtm.curation.usecase.service;
 
-import com.wtm.curation.entity.MemeProfile;
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.TemplateStatus;
 import com.wtm.curation.usecase.port.in.command.ApplyTagsUseCase;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
-import com.wtm.curation.usecase.port.out.vision.ImageTags;
+import com.wtm.shared.MemeProfile;
 import com.wtm.shared.TemplateId;
+import com.wtm.shared.port.ImageTags;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;

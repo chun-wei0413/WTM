@@ -1,4 +1,4 @@
-package com.wtm.feedback.entity;
+package com.wtm.shared.port;
 
 import java.util.List;
 

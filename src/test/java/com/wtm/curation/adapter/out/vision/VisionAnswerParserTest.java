@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wtm.curation.usecase.port.out.vision.ImageTags;
+import com.wtm.shared.port.ImageTags;
 import com.wtm.shared.port.LlmUnavailableException;
 import org.junit.jupiter.api.Test;
 

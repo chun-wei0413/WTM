@@ -1,4 +1,4 @@
-package com.wtm.curation.entity;
+package com.wtm.shared;
 
 /**
  * A text area on a meme template where a caption can be placed.

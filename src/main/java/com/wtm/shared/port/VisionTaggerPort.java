@@ -1,7 +1,6 @@
-package com.wtm.curation.usecase.port.out.vision;
+package com.wtm.shared.port;
 
-import com.wtm.curation.entity.Reference;
-import com.wtm.feedback.entity.Suggestion;
+import com.wtm.shared.Reference;
 
 /**
  * Outbound port that looks at a picture and describes it.

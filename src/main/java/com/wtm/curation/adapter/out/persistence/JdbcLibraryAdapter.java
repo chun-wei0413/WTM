@@ -2,11 +2,11 @@ package com.wtm.curation.adapter.out.persistence;
 
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.Origin;
-import com.wtm.curation.entity.Reference;
 import com.wtm.curation.usecase.port.in.DuplicateImageException;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort.Fingerprint;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
+import com.wtm.shared.Reference;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

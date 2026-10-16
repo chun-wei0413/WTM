@@ -1,7 +1,7 @@
 package com.wtm.discovery.usecase.port.in.query;
 
-import com.wtm.curation.entity.Reference;
-import com.wtm.curation.entity.Slot;
+import com.wtm.shared.Reference;
+import com.wtm.shared.Slot;
 import java.util.List;
 import java.util.UUID;
 

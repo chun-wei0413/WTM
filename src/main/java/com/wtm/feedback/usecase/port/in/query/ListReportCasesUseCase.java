@@ -1,8 +1,8 @@
 package com.wtm.feedback.usecase.port.in.query;
 
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.feedback.entity.Suggestion;
 import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.port.Suggestion;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;

@@ -1,6 +1,5 @@
 package com.wtm.feedback.adapter.in.scheduling;
 
-import com.wtm.curation.adapter.in.scheduling.TaggingProperties;
 import com.wtm.feedback.usecase.port.in.command.ReviewQueueUseCase;
 import com.wtm.feedback.usecase.port.in.command.RunReviewUseCase;
 import jakarta.annotation.PreDestroy;
@@ -28,11 +27,11 @@ class ReviewWorker {
 
     private final ReviewQueueUseCase queue;
     private final RunReviewUseCase reviewer;
-    private final TaggingProperties properties;
+    private final ReviewProperties properties;
     private final Semaphore capacity;
     private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
-    ReviewWorker(ReviewQueueUseCase queue, RunReviewUseCase reviewer, TaggingProperties properties) {
+    ReviewWorker(ReviewQueueUseCase queue, RunReviewUseCase reviewer, ReviewProperties properties) {
         this.queue = queue;
         this.reviewer = reviewer;
         this.properties = properties;

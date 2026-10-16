@@ -2,8 +2,8 @@ package com.wtm.feedback.adapter.out.persistence;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wtm.feedback.entity.Suggestion;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
+import com.wtm.shared.port.Suggestion;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;

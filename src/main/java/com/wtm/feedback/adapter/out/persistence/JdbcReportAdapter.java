@@ -1,9 +1,9 @@
 package com.wtm.feedback.adapter.out.persistence;
 
-import com.wtm.curation.adapter.out.persistence.TemplateRows;
 import com.wtm.feedback.entity.ReportPolicy.Standing;
 import com.wtm.feedback.entity.ReportReason;
 import com.wtm.feedback.usecase.port.out.report.ReportPort;
+import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;

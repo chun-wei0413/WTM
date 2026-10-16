@@ -2,10 +2,10 @@ package com.wtm.discovery.adapter.out.persistence;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wtm.curation.adapter.out.persistence.TemplateRows;
-import com.wtm.curation.entity.MemeProfile;
-import com.wtm.curation.entity.Slot;
 import com.wtm.discovery.usecase.port.out.search.SearchIndexPort;
+import com.wtm.shared.MemeProfile;
+import com.wtm.shared.Slot;
+import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
