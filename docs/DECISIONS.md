@@ -35,6 +35,7 @@ Contents
 27. [Events are a way to analyse, not a way to build](#27-events-are-a-way-to-analyse-not-a-way-to-build)
 28. [Package layout: one folder per context, one file per use case](#28-package-layout-one-folder-per-context-one-file-per-use-case)
 29. [Architecture rules that follow the contexts](#29-architecture-rules-that-follow-the-contexts)
+30. [ReportCase is the first aggregate that exists in the code](#30-reportcase-is-the-first-aggregate-that-exists-in-the-code)
 
 ---
 
@@ -852,3 +853,39 @@ decision 28 no class matches, and a rule with nothing to check either fails the 
 
 **Cost.** The rules are stricter than before, and a context cannot reach into another one any more: what it needs
 from it must be offered as a use case.
+
+## 30. ReportCase is the first aggregate that exists in the code
+
+**Context.** The domain model drew `ReportCase` as an aggregate, but the code had `ReportPort` with SQL that did the
+work: "a second report replaces the first" was an `ON CONFLICT` clause, "close the reports" was an `UPDATE`, and
+"open the dismissed ones again" was a `NOT EXISTS` query.
+
+**Decision.** `ReportCase` (with `Report`) lives in `feedback.entity` and holds those rules:
+
+- one open report per person, a new one replaces it and keeps its id;
+- a reason is required and a comment has a limit;
+- closing takes every open report at once, as dismissed or applied, by the rules or by an administrator;
+- the reports the rules dismissed can be opened again, except where the person has reported since, and a person's
+  most recent dismissed report is the one that comes back (the old SQL could have reopened two and broken the
+  one-open-report index).
+
+Persistence is `ReportCaseRepository`; `getForUpdate` takes an advisory lock on the meme, so two reports arriving
+together, or a report arriving while an administrator decides, are handled one after the other.
+
+**What stays outside, on purpose.**
+
+- The rules that look across memes (how many a person may report a day, how many are waiting, how much a person's
+  word weighs) stay in `ReportPolicy` and `ReportJudge`, fed by `ReporterPort`. No single case can guard them.
+  `Standing` is a read model.
+- The administrator's list (with user names) is `ReportViewPort`, which reads without loading aggregates.
+- The vision model's proposal and the line of reviews (claiming, retries, the daily budget) stay in the review queue
+  table behind `ReviewPort`. The first domain model put the proposal on `ReportCase`; it is not there because the
+  queue's concurrency (claim, fail, recover) would fight an aggregate that saves the whole case.
+- Whether a meme can be reported is Curation's to say: Feedback asks `GetTemplateUseCase` and treats anything that is
+  not approved as missing.
+
+**Not changed.** The database schema, the API and the behaviour: the report integration tests pass unchanged.
+
+**Cost.** A report is loaded and saved as part of its meme's whole case, so a meme with very many reports costs more
+than the single-row statements did. The reports of one meme are few; if that changes, only the repository needs to.
+
