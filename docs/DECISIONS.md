@@ -158,7 +158,19 @@ was right first for 73% alone, and BM25 with the convex combination raised the r
 92.4% to 94.9% (paired test p = 0.03) and MRR on queries written from the pictures alone by 3.6 points (p = 0.003); a reciprocal
 rank fusion of the same two rankings lowered the first result by 4.2 points, as Bruch, Gai and Ingber (2022) found. Measured in the
 running application after the change: first result 83%, top three 90%, top ten 95%, MRR 0.87 on the 237 queries; with the embedding
-service made unreachable, 73% / 81% / 89%. The weight 0.7 was chosen on half of the queries and checked on the other half.
+service made unreachable, 73% / 81% / 89%. The weight 0.7 was chosen on the author's 237 queries and then checked on queries that took no part in choosing it.
+
+**Why 0.7, with the numbers (measured 2026-10-17).** The weight was swept from 0.0 to 1.0 on three sets of queries: the
+author's 237 (where it was chosen), 159 written by a local vision model from the pictures alone, and 134 written by a
+separate model that saw only the names of memes no other query covers. 0.7 has the highest MRR@10 on all three
+(0.874, 0.261, 0.821). Paired over all 530 queries, 0.7 against the others: 0.4 and below (more keyword weight) are
+clearly worse (−0.026 to −0.083, p ≤ 0.005); 0.5 and 0.6 cannot be told apart from it (−0.004, p = 0.46; −0.000, p = 0.94); 0.8
+and above are slightly worse (−0.008 to −0.019, p ≤ 0.008). So 0.7 is **not a sharp optimum**: the data cannot separate 0.5, 0.6 and
+0.7, and 0.7 is kept because it is the highest on every set and the weights above it measurably lose. Against the
+semantic ranking alone it gains 0.019 MRR (p < 0.001) and 0.019 in the first ten (p = 0.04), but only 0.013 in the first
+result (p = 0.09), and on the held-out queries alone none of the three gains is significant (p = 0.08, 0.12, 1.0); the larger value of the
+keyword ranking is the fallback. The result holds for this library, this embedding model, the two-character segmentation
+and the min-max scaling of each list; changing any of them means measuring again (`python scripts/eval-alpha.py`).
 Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
 
 **Why not earlier.** `pg_trgm` was chosen in decision 4 because it is built into PostgreSQL and matches Chinese substrings
