@@ -33,31 +33,21 @@ public class MemeTemplate {
 
     private final TemplateId id;
     private String name;
-    private final String imageKey;
-    private final int imageWidth;
-    private final int imageHeight;
+    private final ImageInfo image;
     private TemplateStatus status;
     private int version;
     private MemeProfile profile;
     private final Map<Integer, Slot> slots = new TreeMap<>();
     private final List<ProfileChange> profileChanges = new ArrayList<>();
 
-    private MemeTemplate(TemplateId id, String name, String imageKey, int imageWidth, int imageHeight,
+    private MemeTemplate(TemplateId id, String name, ImageInfo image,
                          TemplateStatus status, int version, MemeProfile profile, List<Slot> slots) {
         if (name == null || name.isBlank()) {
             throw new DomainRuleViolation("Template name must not be blank");
         }
-        if (imageKey == null || imageKey.isBlank()) {
-            throw new DomainRuleViolation("Template image must be provided");
-        }
-        if (imageWidth <= 0 || imageHeight <= 0) {
-            throw new DomainRuleViolation("Image size must be positive");
-        }
         this.id = id;
         this.name = name.strip();
-        this.imageKey = imageKey;
-        this.imageWidth = imageWidth;
-        this.imageHeight = imageHeight;
+        this.image = image;
         this.status = status;
         this.version = version;
         this.profile = profile;
@@ -66,15 +56,18 @@ public class MemeTemplate {
 
     public static MemeTemplate draft(TemplateId id, String name, String imageKey,
                                      int imageWidth, int imageHeight) {
-        return new MemeTemplate(id, name, imageKey, imageWidth, imageHeight,
-                TemplateStatus.DRAFT, 1, MemeProfile.empty(), List.of());
+        return draft(id, name, ImageInfo.of(imageKey, imageWidth, imageHeight));
+    }
+
+    public static MemeTemplate draft(TemplateId id, String name, ImageInfo image) {
+        return new MemeTemplate(id, name, image, TemplateStatus.DRAFT, 1, MemeProfile.empty(), List.of());
     }
 
     /** Rebuilds a template from storage. */
     public static MemeTemplate restore(TemplateId id, String name, String imageKey,
                                        int imageWidth, int imageHeight, TemplateStatus status,
                                        int version, MemeProfile profile, List<Slot> slots) {
-        return new MemeTemplate(id, name, imageKey, imageWidth, imageHeight,
+        return new MemeTemplate(id, name, ImageInfo.of(imageKey, imageWidth, imageHeight),
                 status, version, profile, slots);
     }
 
@@ -83,7 +76,15 @@ public class MemeTemplate {
                                        int imageWidth, int imageHeight, TemplateStatus status,
                                        int version, MemeProfile profile, List<Slot> slots,
                                        List<ProfileChange> profileChanges) {
-        MemeTemplate template = restore(id, name, imageKey, imageWidth, imageHeight, status, version, profile, slots);
+        return restore(id, name, ImageInfo.of(imageKey, imageWidth, imageHeight), status, version, profile, slots,
+                profileChanges);
+    }
+
+    /** Rebuilds a template from storage, with its picture as it was kept. */
+    public static MemeTemplate restore(TemplateId id, String name, ImageInfo image, TemplateStatus status,
+                                       int version, MemeProfile profile, List<Slot> slots,
+                                       List<ProfileChange> profileChanges) {
+        MemeTemplate template = new MemeTemplate(id, name, image, status, version, profile, slots);
         template.profileChanges.addAll(profileChanges);
         return template;
     }
@@ -213,16 +214,20 @@ public class MemeTemplate {
         return name;
     }
 
+    public ImageInfo image() {
+        return image;
+    }
+
     public String imageKey() {
-        return imageKey;
+        return image.key();
     }
 
     public int imageWidth() {
-        return imageWidth;
+        return image.width();
     }
 
     public int imageHeight() {
-        return imageHeight;
+        return image.height();
     }
 
     public TemplateStatus status() {
@@ -248,7 +253,7 @@ public class MemeTemplate {
     }
 
     private void requireInsideImage(Slot slot) {
-        if (!slot.fitsWithin(imageWidth, imageHeight)) {
+        if (!slot.fitsWithin(image.width(), image.height())) {
             throw new DomainRuleViolation("Slot " + slot.slotNo() + " lies outside the image");
         }
     }

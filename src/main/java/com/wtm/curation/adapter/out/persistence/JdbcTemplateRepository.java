@@ -2,6 +2,7 @@ package com.wtm.curation.adapter.out.persistence;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wtm.curation.entity.ImageInfo;
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.ProfileChange;
 import com.wtm.curation.entity.TemplateStatus;
@@ -45,11 +46,12 @@ class JdbcTemplateRepository implements TemplateRepository {
     private Optional<MemeTemplate> load(TemplateId id, String lock) {
         Optional<Row> row = jdbc.sql(
                         "SELECT " + TemplateRows.PROFILE_AND_META_COLUMNS
-                                + " FROM meme_template WHERE id = ?" + lock)
+                                + ", content_sha256, phash FROM meme_template WHERE id = ?" + lock)
                 .param(id.value())
                 .query((rs, n) -> new Row(
-                        rs.getString("name"), rs.getString("image_key"),
-                        rs.getInt("image_width"), rs.getInt("image_height"),
+                        rs.getString("name"), new ImageInfo(rs.getString("image_key"),
+                                rs.getInt("image_width"), rs.getInt("image_height"),
+                                rs.getString("content_sha256"), rs.getObject("phash", Long.class)),
                         TemplateStatus.valueOf(rs.getString("status")), rs.getInt("version"),
                         TemplateRows.profile(rs)))
                 .optional();
@@ -73,7 +75,7 @@ class JdbcTemplateRepository implements TemplateRepository {
                         TemplateRows.instant(rs, "created_at"), null))
                 .list();
         Row r = row.get();
-        return Optional.of(MemeTemplate.restore(id, r.name, r.imageKey, r.imageWidth, r.imageHeight,
+        return Optional.of(MemeTemplate.restore(id, r.name, r.image,
                 r.status, r.version, r.profile, slots, changes));
     }
 
@@ -84,8 +86,8 @@ class JdbcTemplateRepository implements TemplateRepository {
         jdbc.sql("""
                         INSERT INTO meme_template
                             (id, name, image_key, image_width, image_height, status, version,
-                             meaning, usage_examples, emotions, aliases, image_text, tags)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::text[], ?::text[], ?::text[], ?, ?::text[])
+                             meaning, usage_examples, emotions, aliases, image_text, tags, content_sha256, phash)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?::text[], ?::text[], ?::text[], ?, ?::text[], ?, ?)
                         ON CONFLICT (id) DO UPDATE SET
                             status = EXCLUDED.status,
                             version = EXCLUDED.version,
@@ -96,7 +98,7 @@ class JdbcTemplateRepository implements TemplateRepository {
                             image_text = EXCLUDED.image_text,
                             tags = EXCLUDED.tags,
                             updated_at = now()""")
-                .params(List.of(
+                .params(Arrays.asList(
                         template.id().value(), template.name(), template.imageKey(),
                         template.imageWidth(), template.imageHeight(),
                         template.status().name(), template.version(), profile.meaning(),
@@ -104,7 +106,8 @@ class JdbcTemplateRepository implements TemplateRepository {
                         profile.emotions().toArray(String[]::new),
                         profile.aliases().toArray(String[]::new),
                         profile.imageText(),
-                        profile.tags().toArray(String[]::new)))
+                        profile.tags().toArray(String[]::new),
+                        template.image().sha256(), template.image().perceptualHash()))
                 .update();
 
         jdbc.sql("DELETE FROM template_slot WHERE template_id = ?")
@@ -151,7 +154,7 @@ class JdbcTemplateRepository implements TemplateRepository {
         }
     }
 
-    private record Row(String name, String imageKey, int imageWidth, int imageHeight,
+    private record Row(String name, ImageInfo image,
                        TemplateStatus status, int version, MemeProfile profile) {
     }
 }

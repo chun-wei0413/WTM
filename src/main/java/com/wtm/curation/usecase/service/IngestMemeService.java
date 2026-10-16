@@ -1,5 +1,6 @@
 package com.wtm.curation.usecase.service;
 
+import com.wtm.curation.entity.ImageInfo;
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.Origin;
 import com.wtm.curation.usecase.port.in.DuplicateImageException;
@@ -9,7 +10,7 @@ import com.wtm.curation.usecase.port.in.command.IngestOutcome;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort.Fingerprint;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
-import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.ImageInfo;
+import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.InspectedImage;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.port.ObjectStoragePort;
@@ -51,7 +52,7 @@ public class IngestMemeService implements IngestMemeUseCase {
         byte[] image = input.image();
         String suggestedName = input.suggestedName();
         Origin origin = input.origin();
-        ImageInfo info;
+        InspectedImage info;
         try {
             info = inspector.inspect(image);
         } catch (UnsupportedImageException e) {
@@ -69,11 +70,12 @@ public class IngestMemeService implements IngestMemeUseCase {
 
         TemplateId id = TemplateId.newId();
         String key = "library/" + id.value() + "." + info.extension();
-        MemeTemplate draft = MemeTemplate.draft(id, nameFor(suggestedName), key, info.width(), info.height());
+        MemeTemplate draft = MemeTemplate.draft(id, nameFor(suggestedName), new ImageInfo(key, info.width(),
+                info.height(), fingerprint.sha256(), fingerprint.perceptualHash()));
 
         storage.put(key, image, info.contentType());
         try {
-            library.add(draft, origin, fingerprint);
+            library.add(draft, origin);
         } catch (DuplicateImageException e) {
             deleteQuietly(key, e);
             return IngestOutcome.duplicate(library.findDuplicate(fingerprint.sha256(), fingerprint.perceptualHash(), 0)

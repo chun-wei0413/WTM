@@ -15,7 +15,7 @@ import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.usecase.port.in.UnsupportedImageException;
 import com.wtm.curation.usecase.port.in.command.DraftTemplateUseCase;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
-import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.ImageInfo;
+import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.InspectedImage;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
 import com.wtm.shared.DomainRuleViolation;
 import com.wtm.shared.TemplateId;
@@ -35,7 +35,7 @@ class DraftTemplateServiceTest {
     @BeforeEach
     void setUp() {
         handler = new DraftTemplateService(inspector, storage, templates);
-        when(inspector.inspect(image)).thenReturn(new ImageInfo(600, 400, "png", "image/png"));
+        when(inspector.inspect(image)).thenReturn(new InspectedImage(600, 400, "png", "image/png"));
     }
 
     @Test

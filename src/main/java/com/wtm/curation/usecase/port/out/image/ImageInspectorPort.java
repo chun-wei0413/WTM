@@ -7,8 +7,8 @@ import com.wtm.curation.usecase.port.in.UnsupportedImageException;
  */
 public interface ImageInspectorPort {
 
-    ImageInfo inspect(byte[] content) throws UnsupportedImageException;
+    InspectedImage inspect(byte[] content) throws UnsupportedImageException;
 
-    record ImageInfo(int width, int height, String extension, String contentType) {
+    record InspectedImage(int width, int height, String extension, String contentType) {
     }
 }

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.wtm.curation.usecase.port.in.UnsupportedImageException;
-import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.ImageInfo;
+import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.InspectedImage;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import javax.imageio.ImageIO;
@@ -22,23 +22,23 @@ class JdkImageInspectorTest {
 
     @Test
     void readsPngSize() throws Exception {
-        ImageInfo info = inspector.inspect(encode("png", 320, 200));
+        InspectedImage info = inspector.inspect(encode("png", 320, 200));
 
-        assertThat(info).isEqualTo(new ImageInfo(320, 200, "png", "image/png"));
+        assertThat(info).isEqualTo(new InspectedImage(320, 200, "png", "image/png"));
     }
 
     @Test
     void readsJpegSize() throws Exception {
-        ImageInfo info = inspector.inspect(encode("jpg", 120, 80));
+        InspectedImage info = inspector.inspect(encode("jpg", 120, 80));
 
-        assertThat(info).isEqualTo(new ImageInfo(120, 80, "jpg", "image/jpeg"));
+        assertThat(info).isEqualTo(new InspectedImage(120, 80, "jpg", "image/jpeg"));
     }
 
     @Test
     void readsGifSize() throws Exception {
-        ImageInfo info = inspector.inspect(encode("gif", 160, 90));
+        InspectedImage info = inspector.inspect(encode("gif", 160, 90));
 
-        assertThat(info).isEqualTo(new ImageInfo(160, 90, "gif", "image/gif"));
+        assertThat(info).isEqualTo(new InspectedImage(160, 90, "gif", "image/gif"));
     }
 
     @Test

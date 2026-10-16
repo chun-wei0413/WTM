@@ -21,7 +21,7 @@ class JdkImageInspector implements ImageInspectorPort {
     private static final long MAX_PIXELS = 25_000_000L;
 
     @Override
-    public ImageInfo inspect(byte[] content) {
+    public InspectedImage inspect(byte[] content) {
         if (content == null || content.length == 0) {
             throw new UnsupportedImageException("The image is empty");
         }
@@ -40,9 +40,9 @@ class JdkImageInspector implements ImageInspectorPort {
                     throw new UnsupportedImageException("The image is too large");
                 }
                 return switch (format) {
-                    case "png" -> new ImageInfo(width, height, "png", "image/png");
-                    case "jpeg", "jpg" -> new ImageInfo(width, height, "jpg", "image/jpeg");
-                    case "gif" -> new ImageInfo(width, height, "gif", "image/gif");
+                    case "png" -> new InspectedImage(width, height, "png", "image/png");
+                    case "jpeg", "jpg" -> new InspectedImage(width, height, "jpg", "image/jpeg");
+                    case "gif" -> new InspectedImage(width, height, "gif", "image/gif");
                     default -> throw new UnsupportedImageException(
                             "Only PNG, JPEG and GIF images are supported (found " + format + ")");
                 };

@@ -3,7 +3,7 @@ package com.wtm.curation.usecase.service;
 import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.usecase.port.in.command.DraftTemplateUseCase;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
-import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.ImageInfo;
+import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.InspectedImage;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.port.ObjectStoragePort;
@@ -25,7 +25,7 @@ public class DraftTemplateService implements DraftTemplateUseCase {
     public TemplateId handle(Input input) {
         String name = input.name();
         byte[] image = input.image();
-        ImageInfo info = inspector.inspect(image);
+        InspectedImage info = inspector.inspect(image);
         TemplateId id = TemplateId.newId();
         String key = "templates/" + id.value() + "." + info.extension();
         MemeTemplate template = MemeTemplate.draft(id, name, key, info.width(), info.height());

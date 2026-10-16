@@ -4,7 +4,6 @@ import com.wtm.curation.entity.MemeTemplate;
 import com.wtm.curation.entity.Origin;
 import com.wtm.curation.usecase.port.in.DuplicateImageException;
 import com.wtm.curation.usecase.port.in.query.LibraryStats;
-import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort.Fingerprint;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
 import com.wtm.shared.Reference;
@@ -43,19 +42,18 @@ class JdbcLibraryAdapter implements LibraryPort {
 
     @Override
     @Transactional
-    public void add(MemeTemplate template, Origin origin, Fingerprint fingerprint) {
+    public void add(MemeTemplate template, Origin origin) {
         Reference reference = origin.reference();
         try {
             templates.save(template);
             jdbc.sql("""
                             UPDATE meme_template SET
                                 source_type = ?, source_url = ?, source_page_url = ?, attribution = ?,
-                                license_note = ?, content_sha256 = ?, phash = ?, collected_at = now(),
+                                license_note = ?, collected_at = now(),
                                 reference_text = ?, reference_source = ?, reference_url = ?, reference_license = ?
                             WHERE id = ?""")
                     .params(Arrays.asList(origin.sourceType(), origin.sourceUrl(), origin.pageUrl(),
-                            origin.attribution(), origin.licenseNote(), fingerprint.sha256(),
-                            fingerprint.perceptualHash(),
+                            origin.attribution(), origin.licenseNote(),
                             reference == null ? null : reference.text(), reference == null ? null : reference.sourceName(),
                             reference == null ? null : reference.url(), reference == null ? null : reference.license(),
                             template.id().value()))

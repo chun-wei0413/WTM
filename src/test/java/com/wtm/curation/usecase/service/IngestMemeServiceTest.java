@@ -24,7 +24,7 @@ import com.wtm.curation.usecase.port.in.command.IngestOutcome.Status;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort;
 import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort.Fingerprint;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
-import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.ImageInfo;
+import com.wtm.curation.usecase.port.out.image.ImageInspectorPort.InspectedImage;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.shared.port.ObjectStoragePort;
 import java.util.Optional;
@@ -47,7 +47,7 @@ class IngestMemeServiceTest {
 
     @BeforeEach
     void setUp() {
-        when(inspector.inspect(image)).thenReturn(new ImageInfo(640, 480, "jpg", "image/jpeg"));
+        when(inspector.inspect(image)).thenReturn(new InspectedImage(640, 480, "jpg", "image/jpeg"));
         when(fingerprints.of(image)).thenReturn(fingerprint);
         when(library.findDuplicate(anyString(), anyLong(), anyInt())).thenReturn(Optional.empty());
     }
@@ -58,12 +58,14 @@ class IngestMemeServiceTest {
 
         assertThat(outcome.status()).isEqualTo(Status.IMPORTED);
         ArgumentCaptor<MemeTemplate> added = ArgumentCaptor.forClass(MemeTemplate.class);
-        verify(library).add(added.capture(), eq(origin), eq(fingerprint));
+        verify(library).add(added.capture(), eq(origin));
         MemeTemplate template = added.getValue();
         assertThat(template.id().value()).isEqualTo(outcome.templateId());
         assertThat(template.name()).isEqualTo("Cat staring");
         assertThat(template.status()).isEqualTo(TemplateStatus.DRAFT);
         assertThat(template.imageKey()).isEqualTo("library/" + outcome.templateId() + ".jpg");
+        assertThat(template.image().sha256()).isEqualTo(fingerprint.sha256());
+        assertThat(template.image().perceptualHash()).isEqualTo(fingerprint.perceptualHash());
         assertThat(template.imageWidth()).isEqualTo(640);
         verify(storage).put(eq(template.imageKey()), eq(image), eq("image/jpeg"));
     }
@@ -78,7 +80,7 @@ class IngestMemeServiceTest {
         assertThat(outcome.status()).isEqualTo(Status.DUPLICATE);
         assertThat(outcome.templateId()).isEqualTo(existing);
         verify(storage, never()).put(anyString(), any(), anyString());
-        verify(library, never()).add(any(), any(), any());
+        verify(library, never()).add(any(), any());
     }
 
     @Test
@@ -87,7 +89,7 @@ class IngestMemeServiceTest {
         when(library.findDuplicate(anyString(), anyLong(), anyInt()))
                 .thenReturn(Optional.empty())          // the check before adding
                 .thenReturn(Optional.of(winner));      // the lookup after losing the race
-        doThrow(new DuplicateImageException()).when(library).add(any(), any(), any());
+        doThrow(new DuplicateImageException()).when(library).add(any(), any());
 
         IngestOutcome outcome = handler.handle(new IngestMemeUseCase.Input(image, "race.jpg", origin));
 
@@ -109,7 +111,7 @@ class IngestMemeServiceTest {
 
     @Test
     void tinyPicturesAreRejected() {
-        when(inspector.inspect(image)).thenReturn(new ImageInfo(64, 64, "png", "image/png"));
+        when(inspector.inspect(image)).thenReturn(new InspectedImage(64, 64, "png", "image/png"));
 
         IngestOutcome outcome = handler.handle(new IngestMemeUseCase.Input(image, "icon.png", origin));
 
@@ -119,7 +121,7 @@ class IngestMemeServiceTest {
 
     @Test
     void removesTheStoredImageWhenTheDatabaseWriteFails() {
-        doThrow(new IllegalStateException("db down")).when(library).add(any(), any(), any());
+        doThrow(new IllegalStateException("db down")).when(library).add(any(), any());
 
         assertThatThrownBy(() -> handler.handle(new IngestMemeUseCase.Input(image, "x.jpg", origin))).isInstanceOf(IllegalStateException.class);
 
