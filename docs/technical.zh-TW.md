@@ -40,32 +40,26 @@ flowchart LR
     AD -->|採用| L
 ```
 
-程式碼採用 Clean Architecture,只有真正有業務規則的部分使用 DDD:
+程式碼分成四個 bounded context(用事件風暴找出來的),每一個都採用 Clean Architecture:
 
 ```mermaid
 flowchart TB
-    subgraph adapter
+    subgraph context["Curation、Discovery、Feedback、Account 各自都是"]
         direction LR
-        web[REST 控制器]
-        db[JDBC 資料存取]
-        ai[Ollama 與模擬模型]
-        s3[S3 儲存]
-        sec[JWT 安全]
+        adapter["adapter<br/>控制器、背景工作、JDBC、模型、儲存"]
+        usecase["usecase<br/>port.in(用例)· service · port.out"]
+        entity["entity<br/>聚合、值物件、政策"]
+        adapter --> usecase --> entity
     end
-    subgraph application
-        direction LR
-        h[指令與查詢處理器]
-        p[Port 介面]
-    end
-    subgraph domain
-        direction LR
-        t[MemeTemplate]
-        u[User]
-    end
-    adapter --> application --> domain
+    shared["shared<br/>TemplateId、共用例外、物件儲存 port"]
+    context -.-> shared
 ```
 
-依賴方向只能由外向內,並且有 ArchUnit 測試,一旦違反就無法通過建置。
+[![Context Map](images/context-map.drawio.png)](images/context-map.drawio.png)
+
+在 context 內部,依賴方向只能由外向內,並且有 ArchUnit 測試,一旦違反就無法通過建置。
+目前還跨過 context 邊界的依賴記在 `src/test/resources/archunit_store`,新增一條就會讓建置失敗。
+用到的詞彙在 [GLOSSARY.md](GLOSSARY.md)(英文)。
 
 ## 技術
 
@@ -328,17 +322,21 @@ mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # 檢索品質 → t
 
 ```
 src/main/java/com/wtm
-├── domain          MemeTemplate 聚合與使用者(不含框架程式碼)
-├── application     指令與查詢處理器,以及它們依賴的 Port
-├── adapter
-│   ├── in/web          REST 控制器、錯誤對應
-│   ├── out/persistence JDBC 資料存取與讀取模型
-│   ├── out/ai          Ollama 與模擬模型(embedding、看圖)
-│   ├── out/source      有禮貌的下載器,給貼上的網址用(robots.txt、間隔、位址檢查)
-│   ├── out/storage     S3    out/image  圖片檢查
-│   ├── scheduling      索引同步、標記與回報審查的背景工作
-│   └── security        JWT、BCrypt、限流器
-└── config          元件組裝與必要密碼的啟動檢查
+├── curation        核心:圖片變成有描述、已核准的模板
+├── discovery       核心:搜尋、挑一張梗圖、收藏、搜尋索引
+├── feedback        支援:回報與模型的第二次檢視
+├── account         通用:使用者、登入、JWT、限流
+│     每一個都有:
+│     ├── entity          聚合、值物件與政策(不含框架程式碼)
+│     ├── usecase
+│     │   ├── port/in         一個用例一個檔案(command/ 與 query/),Input 與 Output 是內嵌型別
+│     │   ├── port/out        用例需要的東西,依用途分組
+│     │   └── service         用例的實作
+│     └── adapter
+│         ├── in/web          REST 控制器(in/scheduling:背景工作)
+│         └── out/...         JDBC、Ollama / Gemini / 模擬模型、S3、圖片檢查、下載器
+├── shared          TemplateId、共用例外、物件儲存與限流器的 port、S3 轉接器
+└── config          依 context 組裝元件、錯誤對應與必要密碼的啟動檢查
 src/main/resources/db/migration    Flyway 遷移
 web/                               React + TypeScript 網頁前端(Vite)
 docs/DECISIONS.md                  為什麼這樣設計(英文)

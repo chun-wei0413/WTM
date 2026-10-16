@@ -39,32 +39,26 @@ flowchart LR
     AD -->|adopt| L
 ```
 
-The code follows Clean Architecture, and only the part that has real rules uses DDD:
+The code is split into four bounded contexts (found by event storming), and each one follows Clean Architecture:
 
 ```mermaid
 flowchart TB
-    subgraph adapter
+    subgraph context["each of Curation, Discovery, Feedback, Account"]
         direction LR
-        web[REST controllers]
-        db[JDBC repositories]
-        ai[Ollama and mock models]
-        s3[S3 storage]
-        sec[JWT security]
+        adapter["adapter<br/>controllers, workers, JDBC, models, storage"]
+        usecase["usecase<br/>port.in (use cases) · service · port.out"]
+        entity["entity<br/>aggregates, value objects, policies"]
+        adapter --> usecase --> entity
     end
-    subgraph application
-        direction LR
-        h[command and query handlers]
-        p[ports]
-    end
-    subgraph domain
-        direction LR
-        t[MemeTemplate]
-        u[User]
-    end
-    adapter --> application --> domain
+    shared["shared<br/>TemplateId, shared exceptions, object storage port"]
+    context -.-> shared
 ```
 
-Dependencies only point inward, and an ArchUnit test fails the build if they do not.
+[![Context map](images/context-map.drawio.png)](images/context-map.drawio.png)
+
+Inside a context, dependencies only point inward, and an ArchUnit test fails the build if they do not. The dependencies
+that still cross a context border are listed in `src/test/resources/archunit_store`; a new one fails the build.
+The words used are in [GLOSSARY.md](GLOSSARY.md).
 The reasoning behind this and the other major choices, including what was measured and what the
 trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
 
@@ -350,17 +344,21 @@ More detail, including an experiment that was **not** adopted and why, is in
 
 ```
 src/main/java/com/wtm
-├── domain          MemeTemplate aggregate, users (no framework code)
-├── application     handlers (commands and queries) and the ports they depend on
-├── adapter
-│   ├── in/web          REST controllers, error mapping
-│   ├── out/persistence JDBC repositories and read models
-│   ├── out/ai          Ollama and mock model adapters (embeddings, vision)
-│   ├── out/source      polite downloader for pasted addresses (robots.txt, delay, address guard)
-│   ├── out/storage     S3 adapter    out/image  image checks
-│   ├── scheduling      index sync, tagging and review workers
-│   └── security        JWT, BCrypt, rate limiter
-└── config          wiring and the startup check for required secrets
+├── curation        core: pictures become described, approved templates
+├── discovery       core: search, picking a meme, favorites, the search index
+├── feedback        supporting: reports and the model's second look
+├── account         generic: users, sign-in, JWT, throttling
+│     each of them:
+│     ├── entity          aggregates, value objects and policies (no framework code)
+│     ├── usecase
+│     │   ├── port/in         one use case per file (command/ and query/), with its Input and Output as nested types
+│     │   ├── port/out        what the use cases need, grouped by purpose
+│     │   └── service         the use case implementations
+│     └── adapter
+│         ├── in/web          REST controllers (in/scheduling: background workers)
+│         └── out/...         JDBC, Ollama / Gemini / mock models, S3, image checks, downloader
+├── shared          TemplateId, shared exceptions, the object storage and rate limiter ports, the S3 adapter
+└── config          wiring per context, error mapping and the startup check for required secrets
 src/main/resources/db/migration    Flyway migrations
 web/                               React + TypeScript web client (Vite)
 docs/DECISIONS.md                  why it is built this way

@@ -28,10 +28,19 @@ Contents
 20. [The vision model answers in a bounded JSON Schema](#20-the-vision-model-answers-in-a-bounded-json-schema)
 21. [Images, CI and releases](#21-images-ci-and-releases)
 22. [Picking one meme for a situation](#22-picking-one-meme-for-a-situation)
+23. [Where memes and their explanations come from](#23-where-memes-and-their-explanations-come-from)
+24. [Taking collection from other websites out](#24-taking-collection-from-other-websites-out)
+25. [Letting Gemini describe the pictures, and say where a meme comes from](#25-letting-gemini-describe-the-pictures-and-say-where-a-meme-comes-from)
+26. [Four bounded contexts, found by event storming](#26-four-bounded-contexts-found-by-event-storming)
+27. [Events are a way to analyse, not a way to build](#27-events-are-a-way-to-analyse-not-a-way-to-build)
+28. [Package layout: one folder per context, one file per use case](#28-package-layout-one-folder-per-context-one-file-per-use-case)
+29. [Architecture rules that follow the contexts](#29-architecture-rules-that-follow-the-contexts)
 
 ---
 
 ## 1. Clean Architecture with DDD only where there are rules
+
+> **Amended by decisions 26, 28 and 29: the single bounded context and the layer-first packages (`domain`, `application`, `adapter`) are replaced. The `Meme` aggregate and `GenerationReadPort` below went away with decision 19. The rest (ports, light CQRS, no event sourcing) still stands.**
 
 **Context.** The system's difficulty is technical (retrieval quality, calling models, concurrency),
 not in its business rules. Applying full DDD to everything would produce a lot of ceremony for
@@ -83,6 +92,8 @@ because the ports are what make the model swap (Ollama ↔ mock) and the load te
 is enforced by SQL (`WHERE status = 'PENDING'` and friends), not by an aggregate.
 
 ## 3. No domain events: the search index is reconciled by state
+
+> **Still true of the code. Decision 27 explains why the event storming boards use events anyway.**
 
 **Context.** When a template is approved, edited or retired, its search entry (text + embedding)
 must follow. The reflex solution is a domain event plus a transactional outbox. Domain events were
@@ -722,3 +733,114 @@ The text was read, not checked against a source, and it carries no links.
   wrote; searching with links is the way to make it checkable, and costs a card on file.
 - The free tier's daily limit was not measured; the 17 pictures went through without a refusal.
 - Only the 17 were described again. The other pictures keep what the local model wrote.
+
+## 26. Four bounded contexts, found by event storming
+
+**Context.** Decision 1 chose one bounded context because the vocabulary was shared. That was written before reports,
+favorites and the library existed. An event storming of the whole system (`docs/images/event-storming-*.drawio.png`) found
+that the vocabulary is not shared any more: the administrator side says *template*, the reader side says *meme*, and the
+event "template approved" is where the language changes. Each part also has its own rules: a report has a weight, a daily
+limit and a cool-down; a favorite has none of them.
+
+**Decision.** Four bounded contexts (`docs/images/context-map.drawio.png`, `docs/images/domain-model.drawio.png`):
+
+| Context | Subdomain | Holds |
+|---|---|---|
+| Curation | core | `MemeTemplate` (with `Slot`, `ProfileChange`), ingesting, describing, approving, retiring |
+| Discovery | core | search, picking, the search index (a read model), `Favorite` |
+| Feedback | supporting | `ReportCase` (with `Report`), `ReportPolicy`, the model's second look |
+| Account | generic | `User`, registration, sign-in |
+
+- Relations: Account is upstream of the other three (Open Host / Published Language, the others conform). Curation is
+  the supplier of Discovery and of Feedback, which are its customers. Discovery reads Curation's state through the
+  database, so there is no anticorruption layer until the two ever become separate services.
+- The shared kernel is `TemplateId` (and `UserId`, once users are given a type of their own). `Role` stays in Account.
+  `shared` also holds what several contexts need and none owns: the exceptions `DomainRuleViolation`,
+  `TemplateNotFoundException` and `TooManyRequestsException`, and the ports for object storage and rate limiting
+  with the S3 adapter. It depends on no context.
+- What is **not** domain: the queue of pictures waiting for the model (`TaggingJob`), the queue of reports waiting for a
+  second look (`ReportReview`), the log of searches (`SearchLog`). No rule depends on them, so they stay ports and JDBC.
+- The Maven build stays one module. A context is a package, not a deployment unit. If the system is ever split to scale,
+  the cut that matters is the query side (Discovery) against the background workers, not one module per context.
+
+**Cost.** Some translation between *template* and *meme* at the border, and more packages. The glossary
+(`docs/GLOSSARY.md`) fixes which word is used where.
+
+**Status.** Accepted. The diagrams show the target; the code is moved in steps (decision 28).
+
+## 27. Events are a way to analyse, not a way to build
+
+**Context.** The event storming boards are full of domain events, and decision 3 says the code has none.
+
+**Decision.** Both stand. An event on a board is a business fact that was found while analysing ("Template Approved",
+"Reports Dismissed"), and it is what shows where one aggregate ends and the next begins. The code stores the **state**
+that follows from the fact and the search index is still reconciled by state (decision 3). Nothing is published, nothing
+is replayed.
+
+- The board rule: an event is a past-tense, business-meaningful change of state in an aggregate (or a fact from outside).
+  A queue entry, a log line or an index update is not an event.
+- Where a policy on a board says "when X happens, do Y", the code does Y in the same transaction, or from a scheduled
+  job that looks at state, whichever is cheaper. "Update the search index" is drawn as a projection for that reason.
+- Where a board says Feedback "listens" to Curation, the code has Feedback call a Curation use case.
+
+**Cost.** A reader must know that the boards describe the business, not the mechanism. The domain model and the
+context map say so in their subtitles.
+
+## 28. Package layout: one folder per context, one file per use case
+
+**Context.** Layer-first packages (`domain`, `application`, `adapter`) put everything about reports in four places and
+let a class from any context reach a class in any other. The layout was compared with that of the author's earlier
+project (ezKanban).
+
+**Decision.** Context first, then the layers of Clean Architecture inside it:
+
+```
+com.wtm.<context>/            curation | discovery | feedback | account
+  entity/                     aggregates, entities, value objects, policies
+  usecase/
+    port/in/command|query/    XxxUseCase  (interface, with its Input and Output as nested records)
+    port/out/                 what the use cases need, grouped by purpose
+    service/                  XxxService  (implements the use case)
+  adapter/in/web|scheduling   controllers (one per endpoint), workers
+  adapter/out/...             persistence, models, storage
+com.wtm.shared/               TemplateId, shared exceptions and ports; depends on no context
+com.wtm.config/               wiring, split per context
+```
+
+- `Handler` becomes `Service`, and gets an interface (`UseCase`) that a controller or a worker calls.
+- **A use case is one file, not one folder.** Its `Input` and `Output` are records nested in the interface. A folder is
+  not worth it at about forty use cases; it would triple the number of files. A use case that needs more than a few
+  classes of its own may be given a folder later.
+- Queries that go straight to SQL stay queries: they do not touch an aggregate.
+- The folder is called `entity` as in ezKanban, though it also holds value objects and policies.
+- Not adopted: event sourcing, DCI, the ezddd/ezdci/ucontract libraries.
+
+**Cost.** Moving about 150 files and changing the packages of their tests. Done one context at a time, with the build
+green after each.
+
+**Status.** Done for the package layout, with these shortcuts still to be removed:
+
+- Every use case is an interface with its service, but `Input` and `Output` exist only where a use case already had
+  its own result types (they are now nested in the interface). Plain arguments were not wrapped into `Input` records.
+- The dependencies between contexts that are still there are recorded in `src/test/resources/archunit_store`
+  (Feedback reads templates through Curation's ports, Discovery's results carry Curation's value objects, the vision
+  adapters in Curation return Feedback's `Suggestion`, and the JDBC adapters share `TemplateRows`). The ArchUnit
+  store is meant to shrink: remove a line by fixing the code, never by adding to it.
+
+## 29. Architecture rules that follow the contexts
+
+**Context.** `ArchitectureTest` names the layers by package (`..domain..`, `..application..`, `..adapter..`). After
+decision 28 no class matches, and a rule with nothing to check either fails the build or, worse, silently passes.
+
+**Decision.** The rules are rewritten before any class is moved, and each rule must match something:
+
+- `entity` depends on no `usecase`, no `adapter`, no Spring.
+- `usecase` depends on no `adapter` and no Spring, except `@Transactional`.
+- A context reaches another one only through the other's `usecase.port.in`, and through `shared`.
+- `shared` depends on no context.
+- Controllers, workers and other services call a use case, never a `service` class. Only `config` creates services.
+- No cycles between contexts.
+- `config` is used by nothing but the application class.
+
+**Cost.** The rules are stricter than before. The rules between contexts are *frozen* (ArchUnit `FreezingArchRule`): what
+already crosses a border is tolerated and listed, anything new fails the build.
