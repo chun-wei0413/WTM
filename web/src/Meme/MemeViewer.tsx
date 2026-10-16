@@ -35,7 +35,11 @@ export function MemeViewer({ item, onClose, actions, details, notice }: Props) {
       className="meme-viewer"
       aria-label={item.name}
       tabIndex={-1}
-      onClose={onClose}
+      // While developing, React opens, closes and opens the dialog again to check its cleanup, and the browser
+      // announces that first close afterwards; only a close that left the dialog shut means the visitor closed it.
+      onClose={() => {
+        if (!dialog.current?.open) onClose();
+      }}
       // A click on the dimmed backdrop lands on the dialog itself; one inside lands on its content.
       onClick={(event) => {
         if (event.target === event.currentTarget) dialog.current?.close();
