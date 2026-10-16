@@ -335,7 +335,7 @@ src/main/java/com/wtm
 │     └── adapter
 │         ├── in/web          REST 控制器(in/scheduling:背景工作)
 │         └── out/...         JDBC、Ollama / Gemini / 模擬模型、S3、圖片檢查、下載器
-├── shared          共用核心(TemplateId、MemeProfile、Slot、Reference)、共用例外、物件儲存、限流與視覺模型的 port、S3 轉接器
+├── shared          共用核心(TemplateId、UserId、MemeProfile、Slot、Reference)、共用例外、物件儲存、限流與視覺模型的 port、S3 轉接器
 └── config          依 context 組裝元件、錯誤對應與必要密碼的啟動檢查
 src/main/resources/db/migration    Flyway 遷移
 web/                               React + TypeScript 網頁前端(Vite)

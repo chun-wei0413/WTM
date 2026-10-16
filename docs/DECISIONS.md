@@ -38,6 +38,7 @@ Contents
 30. [ReportCase is the first aggregate that exists in the code](#30-reportcase-is-the-first-aggregate-that-exists-in-the-code)
 31. [Favorite is an aggregate with almost nothing in it](#31-favorite-is-an-aggregate-with-almost-nothing-in-it)
 32. [ProfileChange belongs to MemeTemplate, and taking a change back is its rule](#32-profilechange-belongs-to-memetemplate-and-taking-a-change-back-is-its-rule)
+33. [ImageInfo and UserId](#33-imageinfo-and-userid)
 
 ---
 
@@ -757,8 +758,7 @@ limit and a cool-down; a favorite has none of them.
 - Relations: Account is upstream of the other three (Open Host / Published Language, the others conform). Curation is
   the supplier of Discovery and of Feedback, which are its customers. Discovery reads Curation's state through the
   database, so there is no anticorruption layer until the two ever become separate services.
-- The shared kernel is `TemplateId`, `MemeProfile`, `Slot` and `Reference` (and `UserId`, once users are given a type
-  of their own). `Role` stays in Account. `shared` also holds what several contexts need and none owns: the exceptions
+- The shared kernel is `TemplateId`, `UserId`, `MemeProfile`, `Slot` and `Reference`. `Role` stays in Account. `shared` also holds what several contexts need and none owns: the exceptions
   `DomainRuleViolation`, `TemplateNotFoundException` and `TooManyRequestsException`, and the ports for object storage,
   rate limiting and the vision model, with the S3 adapter. It depends on no context. Changing the kernel needs every
   context to agree.
@@ -824,7 +824,10 @@ green after each.
 
 **Status.** Done. A use case that takes more than one argument takes an `Input` record nested in its interface
 (`LoginUseCase.Input`); one with a single argument keeps it plain. Results that were already types of their own
-(`SearchResult`, `TemplateView`, `IngestOutcome`) stay where they were; no `Output` record was added for the rest.
+(`SearchResult`, `TemplateView`, `IngestOutcome`) stay where they were. Login and register return an `Output` record
+instead of a token port type and a `User`, and the three records a use case returned from an outgoing port
+(`LibraryStats`, `HotTerm`, `OpenReport`) now live next to the use case, so a controller never reads a type from a
+port. Every endpoint has its own controller, named after what it does.
 
 **What it took to separate the contexts.** The dependencies that crossed a border when the packages were first moved
 were removed, not tolerated:
@@ -928,3 +931,21 @@ template. The table `profile_change` is unchanged.
 **Cost.** Every command that loads a template now also reads its few un-undone changes, and any command that saves
 it writes them again; with a handful of changes per template this is not noticeable. `RestoreProfileService` is
 now a thin shell around the entity, and the history port is gone.
+
+## 33. ImageInfo and UserId
+
+**ImageInfo.** `MemeTemplate` kept its picture as three loose fields, and the two values that tell pictures apart
+(`sha256` and the perceptual hash) were written by a second `UPDATE` in `JdbcLibraryAdapter` after the template was
+saved. `ImageInfo(key, width, height, sha256, perceptualHash)` is now a value object of the template: it refuses a
+missing key or a size that is not positive, and the repository writes the fingerprint in the same statement that
+creates the template. `LibraryPort.add` no longer takes the fingerprint separately. The inspector's own record, which
+was also called `ImageInfo`, is now `InspectedImage`. A picture added by uploading a template has no fingerprint, as before.
+`imageKey()`, `imageWidth()` and `imageHeight()` stay on the template as shortcuts.
+
+**UserId.** Users were bare `UUID`s, so a user and a meme could be swapped without the compiler noticing. `UserId` is a
+record in `shared`, like `TemplateId`, and `User`, `Favorite`, `Report`, `ReportCase` and the use cases that take a user
+now use it. JSON and the database still carry the plain UUID: `UserId` ends at the controllers and the JDBC adapters,
+and the output types an API returns (`OpenReport`, the register response) keep a `UUID`.
+
+**Cost.** About thirty files changed their types for a guarantee that no test had asked for. The suite and the
+integration tests that use real accounts, reports and favorites pass unchanged in behaviour.

@@ -356,7 +356,7 @@ src/main/java/com/wtm
 │     └── adapter
 │         ├── in/web          REST controllers (in/scheduling: background workers)
 │         └── out/...         JDBC, Ollama / Gemini / mock models, S3, image checks, downloader
-├── shared          the shared kernel (TemplateId, MemeProfile, Slot, Reference), shared exceptions, the ports for object storage, rate limiting and the vision model, the S3 adapter
+├── shared          the shared kernel (TemplateId, UserId, MemeProfile, Slot, Reference), shared exceptions, the ports for object storage, rate limiting and the vision model, the S3 adapter
 └── config          wiring per context, error mapping and the startup check for required secrets
 src/main/resources/db/migration    Flyway migrations
 web/                               React + TypeScript web client (Vite)
