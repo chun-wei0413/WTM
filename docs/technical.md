@@ -50,14 +50,13 @@ flowchart TB
         entity["entity<br/>aggregates, value objects, policies"]
         adapter --> usecase --> entity
     end
-    shared["shared<br/>TemplateId, shared exceptions, object storage port"]
+    shared["shared<br/>shared kernel, shared exceptions, object storage and vision ports"]
     context -.-> shared
 ```
 
 [![Context map](images/context-map.drawio.png)](images/context-map.drawio.png)
 
-Inside a context, dependencies only point inward, and an ArchUnit test fails the build if they do not. The dependencies
-that still cross a context border are listed in `src/test/resources/archunit_store`; a new one fails the build.
+Inside a context, dependencies only point inward, and an ArchUnit test fails the build if they do not. A context reaches another one only through its use cases and `shared`, and the same test checks that too.
 The words used are in [GLOSSARY.md](GLOSSARY.md).
 The reasoning behind this and the other major choices, including what was measured and what the
 trade-offs are, is in **[docs/DECISIONS.md](docs/DECISIONS.md)**.
@@ -357,7 +356,7 @@ src/main/java/com/wtm
 │     └── adapter
 │         ├── in/web          REST controllers (in/scheduling: background workers)
 │         └── out/...         JDBC, Ollama / Gemini / mock models, S3, image checks, downloader
-├── shared          TemplateId, shared exceptions, the object storage and rate limiter ports, the S3 adapter
+├── shared          the shared kernel (TemplateId, MemeProfile, Slot, Reference), shared exceptions, the ports for object storage, rate limiting and the vision model, the S3 adapter
 └── config          wiring per context, error mapping and the startup check for required secrets
 src/main/resources/db/migration    Flyway migrations
 web/                               React + TypeScript web client (Vite)

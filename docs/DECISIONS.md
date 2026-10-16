@@ -754,10 +754,11 @@ limit and a cool-down; a favorite has none of them.
 - Relations: Account is upstream of the other three (Open Host / Published Language, the others conform). Curation is
   the supplier of Discovery and of Feedback, which are its customers. Discovery reads Curation's state through the
   database, so there is no anticorruption layer until the two ever become separate services.
-- The shared kernel is `TemplateId` (and `UserId`, once users are given a type of their own). `Role` stays in Account.
-  `shared` also holds what several contexts need and none owns: the exceptions `DomainRuleViolation`,
-  `TemplateNotFoundException` and `TooManyRequestsException`, and the ports for object storage and rate limiting
-  with the S3 adapter. It depends on no context.
+- The shared kernel is `TemplateId`, `MemeProfile`, `Slot` and `Reference` (and `UserId`, once users are given a type
+  of their own). `Role` stays in Account. `shared` also holds what several contexts need and none owns: the exceptions
+  `DomainRuleViolation`, `TemplateNotFoundException` and `TooManyRequestsException`, and the ports for object storage,
+  rate limiting and the vision model, with the S3 adapter. It depends on no context. Changing the kernel needs every
+  context to agree.
 - What is **not** domain: the queue of pictures waiting for the model (`TaggingJob`), the queue of reports waiting for a
   second look (`ReportReview`), the log of searches (`SearchLog`). No rule depends on them, so they stay ports and JDBC.
 - The Maven build stays one module. A context is a package, not a deployment unit. If the system is ever split to scale,
@@ -803,7 +804,7 @@ com.wtm.<context>/            curation | discovery | feedback | account
     service/                  XxxService  (implements the use case)
   adapter/in/web|scheduling   controllers (one per endpoint), workers
   adapter/out/...             persistence, models, storage
-com.wtm.shared/               TemplateId, shared exceptions and ports; depends on no context
+com.wtm.shared/               the shared kernel, shared exceptions and ports; depends on no context
 com.wtm.config/               wiring, split per context
 ```
 
@@ -818,15 +819,22 @@ com.wtm.config/               wiring, split per context
 **Cost.** Moving about 150 files and changing the packages of their tests. Done one context at a time, with the build
 green after each.
 
-**Status.** Done for the package layout, with these shortcuts still to be removed:
+**Status.** Done. One shortcut remains: every use case is an interface with its service, but `Input` and `Output`
+exist only where a use case already had its own result types (they are now nested in the interface); plain arguments
+were not wrapped into `Input` records.
 
-- Every use case is an interface with its service, but `Input` and `Output` exist only where a use case already had
-  its own result types (they are now nested in the interface). Plain arguments were not wrapped into `Input` records.
-- The dependencies between contexts that are still there are recorded in `src/test/resources/archunit_store`
-  (Feedback reads templates through Curation's ports, Discovery's results carry Curation's value objects, the vision
-  adapters in Curation return Feedback's `Suggestion`, and the JDBC adapters share `TemplateRows`). The ArchUnit
-  store is meant to shrink: remove a line by fixing the code, never by adding to it.
+**What it took to separate the contexts.** The dependencies that crossed a border when the packages were first moved
+were removed, not tolerated:
 
+- Feedback no longer reads or changes templates through Curation's ports. It calls Curation's use cases
+  (`GetTemplateUseCase`, and the new `ReviseProfileFromProposalUseCase` and `RestoreProfileUseCase`, which own the
+  profile history), and has its own `ReviewProperties`.
+- What several contexts really share moved to `shared`: `MemeProfile`, `Slot` and `Reference` (what a template looks
+  like to everyone downstream, the shared kernel), the vision model port with its answer types
+  (`VisionTaggerPort`, `ImageTags`, `ReviewRequest`, `Suggestion`), the object storage and rate limiter ports, and
+  `TemplateRows`, which maps the template table for the JDBC adapters of three contexts.
+- `Hit` became a value object of Discovery, `ReportJudge` and `SearchText` moved to the `service` package because they
+  use ports.
 ## 29. Architecture rules that follow the contexts
 
 **Context.** `ArchitectureTest` names the layers by package (`..domain..`, `..application..`, `..adapter..`). After
@@ -842,5 +850,5 @@ decision 28 no class matches, and a rule with nothing to check either fails the 
 - No cycles between contexts.
 - `config` is used by nothing but the application class.
 
-**Cost.** The rules are stricter than before. The rules between contexts are *frozen* (ArchUnit `FreezingArchRule`): what
-already crosses a border is tolerated and listed, anything new fails the build.
+**Cost.** The rules are stricter than before, and a context cannot reach into another one any more: what it needs
+from it must be offered as a use case.

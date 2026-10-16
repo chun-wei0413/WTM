@@ -58,7 +58,7 @@ flowchart TB
 [![Context Map](images/context-map.drawio.png)](images/context-map.drawio.png)
 
 在 context 內部,依賴方向只能由外向內,並且有 ArchUnit 測試,一旦違反就無法通過建置。
-目前還跨過 context 邊界的依賴記在 `src/test/resources/archunit_store`,新增一條就會讓建置失敗。
+一個 context 只能經由另一個 context 的用例與 `shared` 使用它,同一個測試也會檢查這件事。
 用到的詞彙在 [GLOSSARY.md](GLOSSARY.md)(英文)。
 
 ## 技術
@@ -335,7 +335,7 @@ src/main/java/com/wtm
 │     └── adapter
 │         ├── in/web          REST 控制器(in/scheduling:背景工作)
 │         └── out/...         JDBC、Ollama / Gemini / 模擬模型、S3、圖片檢查、下載器
-├── shared          TemplateId、共用例外、物件儲存與限流器的 port、S3 轉接器
+├── shared          共用核心(TemplateId、MemeProfile、Slot、Reference)、共用例外、物件儲存、限流與視覺模型的 port、S3 轉接器
 └── config          依 context 組裝元件、錯誤對應與必要密碼的啟動檢查
 src/main/resources/db/migration    Flyway 遷移
 web/                               React + TypeScript 網頁前端(Vite)
