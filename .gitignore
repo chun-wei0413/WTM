@@ -44,6 +44,8 @@ k8s/*secret*.yml
 # Claude Code's local folder: personal settings and skills. Some of the skills (docx, pdf, pptx) are under
 # Anthropic's own license, which does not allow copies to be redistributed, so none of it is committed.
 .claude/
+# The same kind of folder for tools that follow the shared .agents convention; it holds the same skills.
+.agents/
 
 # The site's own data (database files, collected pictures, backups) must never be committed
 wtm-data/
