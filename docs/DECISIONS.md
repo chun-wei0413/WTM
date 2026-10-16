@@ -819,9 +819,9 @@ com.wtm.config/               wiring, split per context
 **Cost.** Moving about 150 files and changing the packages of their tests. Done one context at a time, with the build
 green after each.
 
-**Status.** Done. One shortcut remains: every use case is an interface with its service, but `Input` and `Output`
-exist only where a use case already had its own result types (they are now nested in the interface); plain arguments
-were not wrapped into `Input` records.
+**Status.** Done. A use case that takes more than one argument takes an `Input` record nested in its interface
+(`LoginUseCase.Input`); one with a single argument keeps it plain. Results that were already types of their own
+(`SearchResult`, `TemplateView`, `IngestOutcome`) stay where they were; no `Output` record was added for the rest.
 
 **What it took to separate the contexts.** The dependencies that crossed a border when the packages were first moved
 were removed, not tolerated:
