@@ -136,7 +136,7 @@ def convex(a, b, alpha):
     return [(i, name[i], score[i]) for i in sorted(score, key=lambda i: -score[i])]
 
 
-ALPHAS = (0.5, 0.6, 0.7, 0.8, 0.9)
+ALPHAS = tuple(round(k / 10, 1) for k in range(0, 11))   # 0.0 is the keyword ranking alone, 1.0 the semantic one alone
 SYSTEMS = {
     "dense":           lambda d, s, b: d,
     "pg_trgm":         lambda d, s, b: s,

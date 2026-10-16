@@ -59,3 +59,6 @@ wtm-data/
 eval/results/*
 !eval/results/baseline.json
 !eval/results/pick-baseline.json
+!eval/results/compare-author.json
+!eval/results/compare-blind.json
+!eval/results/compare-heldout.json

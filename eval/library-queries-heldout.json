@@ -1,0 +1,1081 @@
+{
+ "about": "Held-out queries written on 2026-10-17 by a separate model that saw only the NAMES of memes (no descriptions, no earlier queries, no search results), for 198 memes that no query of the other two files expects. Written from its own knowledge of the memes and only for the memes it said it knew (about 67 of the 198). They were never used to choose any setting. Any listed name counts as a hit.",
+ "queries": [
+  {
+   "q": "我們這群朋友都超討厭禮拜一",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "All My Homies Hate"
+   ]
+  },
+  {
+   "q": "all my homies hate Mondays",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "All My Homies Hate"
+   ]
+  },
+  {
+   "q": "老闆走過來我整個人縮到桌子底下假裝不在",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Anime Girl Hiding from Terminator"
+   ]
+  },
+  {
+   "q": "魔鬼終結者的機器人跟躲起來的動漫女孩",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Anime Girl Hiding from Terminator"
+   ]
+  },
+  {
+   "q": "接手前輩十年前留下的舊程式碼,居然還能跑",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "An Older Code Sir, But It Checks Out"
+   ]
+  },
+  {
+   "q": "Older code sir, but it checks out",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "An Older Code Sir, But It Checks Out"
+   ]
+  },
+  {
+   "q": "不小心在大家面前講錯話,全場瞬間安靜",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Awkward Moment Seal"
+   ]
+  },
+  {
+   "q": "尷尬海豹",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Awkward Moment Seal"
+   ]
+  },
+  {
+   "q": "加班到半夜,一個人在外面抽菸望著遠方一臉疲憊",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Ben affleck smoking"
+   ]
+  },
+  {
+   "q": "一個男人坐在戶外抽菸,表情很無奈",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Ben affleck smoking"
+   ]
+  },
+  {
+   "q": "忍了整整一個月最後還是失守按下去了",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Blank Nut Button"
+   ]
+  },
+  {
+   "q": "a big button you finally press after resisting temptation",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Blank Nut Button"
+   ]
+  },
+  {
+   "q": "開會時新人提出建議,結果被主管直接從窗戶丟出去",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Boardroom Meeting Suggestion"
+   ]
+  },
+  {
+   "q": "someone suggests an idea at the meeting and gets thrown out the window",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Boardroom Meeting Suggestion"
+   ]
+  },
+  {
+   "q": "兩個選項我都想要,乾脆兩個都按下去",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Both Buttons Pressed"
+   ]
+  },
+  {
+   "q": "一隻手同時按下兩個按鈕",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Both Buttons Pressed"
+   ]
+  },
+  {
+   "q": "笑著比讚的耶穌",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Buddy Christ"
+   ]
+  },
+  {
+   "q": "電影 Dogma 裡面那個雕像",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Buddy Christ"
+   ]
+  },
+  {
+   "q": "事情搞砸之後才有人說早知道就該先備份",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Captain Hindsight"
+   ]
+  },
+  {
+   "q": "南方公園的後見之明隊長",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Captain Hindsight"
+   ]
+  },
+  {
+   "q": "我偷偷把同事的零食吃光還假裝不知道,好想懺悔",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Confession Bear"
+   ]
+  },
+  {
+   "q": "a bear confessing a guilty secret",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Confession Bear"
+   ]
+  },
+  {
+   "q": "基努李維的陰謀論",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Conspiracy Keanu"
+   ]
+  },
+  {
+   "q": "deep thoughts what if everything is a conspiracy, guy with long hair",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Conspiracy Keanu"
+   ]
+  },
+  {
+   "q": "媽媽低頭滑手機完全沒發現小孩在泳池裡掙扎",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Mother Ignoring Kid Drowning In A Pool",
+    "drowning kid in the pool"
+   ]
+  },
+  {
+   "q": "一個女人在泳池邊看手機,背景有個小孩在水裡",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Mother Ignoring Kid Drowning In A Pool",
+    "drowning kid in the pool"
+   ]
+  },
+  {
+   "q": "公司規定貼得再大我也假裝沒看到",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "DW Sign Won't Stop Me Because I Can't Read"
+   ]
+  },
+  {
+   "q": "我不會識字所以擋不住我",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "DW Sign Won't Stop Me Because I Can't Read"
+   ]
+  },
+  {
+   "q": "專案要上線了整個系統都在爆炸,我只能淡定攤手",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "elmo fire"
+   ]
+  },
+  {
+   "q": "Elmo 站在熊熊烈火前面兩手一攤",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "elmo fire"
+   ]
+  },
+  {
+   "q": "Everything the light touches is our kingdom",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Everything the Light Touches is Our Kingdom"
+   ]
+  },
+  {
+   "q": "獅子王裡木法沙帶辛巴看遠方的土地",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Everything the Light Touches is Our Kingdom"
+   ]
+  },
+  {
+   "q": "綠色青蛙爽爽的",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Feels Good"
+   ]
+  },
+  {
+   "q": "feels good man",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Feels Good"
+   ]
+  },
+  {
+   "q": "情人節又是一個人過,看著別人成雙成對",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Forever Alone"
+   ]
+  },
+  {
+   "q": "孤單到老的那張臉",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Forever Alone"
+   ]
+  },
+  {
+   "q": "我跟舊的工具絕交了,新的才是我最好的朋友",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Friendship ended"
+   ]
+  },
+  {
+   "q": "Friendship ended with Mudasir, now Salman is my best friend",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Friendship ended"
+   ]
+  },
+  {
+   "q": "Get in loser, we're going shopping",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Get In Loser"
+   ]
+  },
+  {
+   "q": "電影 Mean Girls 裡 Regina 開車載人",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Get In Loser"
+   ]
+  },
+  {
+   "q": "朋友講了個超好笑的笑話我笑到停不下來",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Good Fellas Hilarious"
+   ]
+  },
+  {
+   "q": "好人不長命裡 Ray Liotta 大笑",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Good Fellas Hilarious"
+   ]
+  },
+  {
+   "q": "一個男人站在墓碑前低頭哀悼",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Grant Gustin Next To Oliver Queen's Grave",
+    "Grant Gustin over grave"
+   ]
+  },
+  {
+   "q": "閃電俠 Barry 站在綠箭俠的墓前",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Grant Gustin Next To Oliver Queen's Grave",
+    "Grant Gustin over grave"
+   ]
+  },
+  {
+   "q": "文青咖啡師",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Hipster Barista"
+   ]
+  },
+  {
+   "q": "snobby hipster barista",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Hipster Barista"
+   ]
+  },
+  {
+   "q": "全世界都沒發現這件事不對勁,是不是只有我覺得怪",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "I Feel Like I'm Taking Crazy Pills"
+   ]
+  },
+  {
+   "q": "I feel like I'm taking crazy pills",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "I Feel Like I'm Taking Crazy Pills"
+   ]
+  },
+  {
+   "q": "You're going to like the way you look, I guarantee it",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "I Guarantee It"
+   ]
+  },
+  {
+   "q": "Men's Wearhouse 老闆的廣告",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "I Guarantee It"
+   ]
+  },
+  {
+   "q": "公司不給我想要的,我要自己出去創業還要有賭場",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "I'm Going to Build My Own Theme Park"
+   ]
+  },
+  {
+   "q": "Bender 說要自己蓋遊樂園,有賭博跟美女",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "I'm Going to Build My Own Theme Park"
+   ]
+  },
+  {
+   "q": "心裡有兩個聲音,一個想運動一個想耍廢",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Inside you there are two wolves"
+   ]
+  },
+  {
+   "q": "Inside you there are two wolves",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Inside you there are two wolves"
+   ]
+  },
+  {
+   "q": "我該買艘船的貓",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "I Should Buy a Boat Cat"
+   ]
+  },
+  {
+   "q": "cat who thinks he should buy a boat",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "I Should Buy a Boat Cat"
+   ]
+  },
+  {
+   "q": "The Office 裡 Jim 站在白板前指著",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Jim Halpert Pointing to Whiteboard"
+   ]
+  },
+  {
+   "q": "一個男人在白板前指著上面的字做簡報",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Jim Halpert Pointing to Whiteboard"
+   ]
+  },
+  {
+   "q": "蘋果又把一個東西改得更薄更簡約",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Jony Ive Redesigns Things"
+   ]
+  },
+  {
+   "q": "Apple designer redesigns everything to be minimal",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Jony Ive Redesigns Things"
+   ]
+  },
+  {
+   "q": "保持冷靜繼續前進的紅色海報",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Keep Calm And Carry On Red"
+   ]
+  },
+  {
+   "q": "Keep calm and carry on",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Keep Calm And Carry On Red"
+   ]
+  },
+  {
+   "q": "喝了一口很奇怪的新飲料,臉上表情一秒變好幾次",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Kombucha Girl"
+   ]
+  },
+  {
+   "q": "康普茶女孩",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Kombucha Girl"
+   ]
+  },
+  {
+   "q": "歡樂單身派對 Kramer 衝進門",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Kramer, What's Going On In There"
+   ]
+  },
+  {
+   "q": "What's going on in there?",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Kramer, What's Going On In There"
+   ]
+  },
+  {
+   "q": "朋友聚會大家一起舉杯慶祝",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Leonardo Dicaprio Cheers"
+   ]
+  },
+  {
+   "q": "大亨小傳蓋茲比舉杯",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Leonardo Dicaprio Cheers"
+   ]
+  },
+  {
+   "q": "在臉書上點平安通報",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Marked Safe From"
+   ]
+  },
+  {
+   "q": "Facebook marked safe notification",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Marked Safe From"
+   ]
+  },
+  {
+   "q": "我完全聽不懂他在說什麼,腦袋裡一堆算式在飄",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Math lady Confused lady"
+   ]
+  },
+  {
+   "q": "一個女人周圍飄著數學公式一臉困惑",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Math lady Confused lady"
+   ]
+  },
+  {
+   "q": "No bitches?",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Megamind peeking"
+   ]
+  },
+  {
+   "q": "壞蛋奶爸 Megamind 探頭",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Megamind peeking"
+   ]
+  },
+  {
+   "q": "我要把你剛剛看到的事情全部忘掉",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Men in Black"
+   ]
+  },
+  {
+   "q": "星際戰警的閃光筆",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Men in Black"
+   ]
+  },
+  {
+   "q": "被問到敏感問題,只能尷尬地把視線移開",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Monkey Puppet"
+   ]
+  },
+  {
+   "q": "一隻猴子玩偶斜眼偷看鏡頭",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Monkey Puppet"
+   ]
+  },
+  {
+   "q": "等人等到無聊,一個人乾坐在那邊",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Mr bean waiting"
+   ]
+  },
+  {
+   "q": "豆豆先生在等待",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Mr bean waiting"
+   ]
+  },
+  {
+   "q": "沒人頒獎給我所以我自己頒給自己",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "obama medal"
+   ]
+  },
+  {
+   "q": "歐巴馬頒獎章給自己",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "obama medal"
+   ]
+  },
+  {
+   "q": "I believe you have my stapler",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Office Space Milton"
+   ]
+  },
+  {
+   "q": "上班族被搬到地下室還被拿走釘書機",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Office Space Milton"
+   ]
+  },
+  {
+   "q": "Heroes never die",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Overwatch Mercy Meme"
+   ]
+  },
+  {
+   "q": "鬥陣特攻天使復活隊友",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Overwatch Mercy Meme"
+   ]
+  },
+  {
+   "q": "要選知道真相還是繼續活在假象裡",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Red pill blue pill"
+   ]
+  },
+  {
+   "q": "駭客任務 Morpheus 伸出兩手的紅色與藍色藥丸",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Red pill blue pill"
+   ]
+  },
+  {
+   "q": "Put your gun down, Carl",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Rick and Carl"
+   ]
+  },
+  {
+   "q": "陰屍路 Rick 對兒子大吼",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Rick and Carl"
+   ]
+  },
+  {
+   "q": "The Office 裡 Dwight 一本正經講怪知識",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Schrute Facts"
+   ]
+  },
+  {
+   "q": "Dwight Schrute states a weird fact",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Schrute Facts"
+   ]
+  },
+  {
+   "q": "揭開真相才發現幕後黑手居然是熟人",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Scooby doo mask reveal"
+   ]
+  },
+  {
+   "q": "史酷比揭開怪物的面具",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Scooby doo mask reveal"
+   ]
+  },
+  {
+   "q": "明天要早起,我的腦袋卻在半夜一直播放過去的尷尬回憶",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Scumbag Brain"
+   ]
+  },
+  {
+   "q": "人渣大腦",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Scumbag Brain"
+   ]
+  },
+  {
+   "q": "What about second breakfast?",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Second Breakfast"
+   ]
+  },
+  {
+   "q": "魔戒裡 Pippin 問第二頓早餐",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Second Breakfast"
+   ]
+  },
+  {
+   "q": "我在講自己有多慘,但根本沒有人在乎",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "See Nobody Cares"
+   ]
+  },
+  {
+   "q": "Jonah Hill: see, nobody cares",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "See Nobody Cares"
+   ]
+  },
+  {
+   "q": "守護弱小的人不被世界打擾",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Soldier protecting sleeping child"
+   ]
+  },
+  {
+   "q": "一名士兵蹲著擋在前面,背後的小孩在睡覺",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Soldier protecting sleeping child"
+   ]
+  },
+  {
+   "q": "Soyboy 對 Chad",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Soyboy Vs Yes Chad"
+   ]
+  },
+  {
+   "q": "兩個人想法對比,一個過度反應一個淡定接受",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Soyboy Vs Yes Chad"
+   ]
+  },
+  {
+   "q": "把自己的失敗紀錄偷偷拿去燒掉",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Spongebob Burning Paper"
+   ]
+  },
+  {
+   "q": "海綿寶寶把紙張丟進火裡",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "Spongebob Burning Paper"
+   ]
+  },
+  {
+   "q": "IMAGINATION",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "spongebob rainbow"
+   ]
+  },
+  {
+   "q": "海綿寶寶雙手舉起一道彩虹",
+   "kind": "look",
+   "set": "v3",
+   "expect": [
+    "spongebob rainbow"
+   ]
+  },
+  {
+   "q": "You're gonna have a bad time",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Super Cool Ski Instructor"
+   ]
+  },
+  {
+   "q": "南方公園的滑雪教練",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Super Cool Ski Instructor"
+   ]
+  },
+  {
+   "q": "我說實話大家卻都討厭我",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "They hated jesus because he told them the truth"
+   ]
+  },
+  {
+   "q": "They hated Jesus because he told them the truth",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "They hated jesus because he told them the truth"
+   ]
+  },
+  {
+   "q": "They're the same picture",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "They're The Same Picture"
+   ]
+  },
+  {
+   "q": "The Office 裡 Pam 看兩張一模一樣的圖",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "They're The Same Picture"
+   ]
+  },
+  {
+   "q": "你的提案很不錯但我還是比較喜歡原本那版",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "This Is Brilliant But I Like This"
+   ]
+  },
+  {
+   "q": "這個很棒但我喜歡這個",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "This Is Brilliant But I Like This"
+   ]
+  },
+  {
+   "q": "I want you",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Uncle Sam"
+   ]
+  },
+  {
+   "q": "政府海報上的山姆大叔要徵召我入伍",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Uncle Sam"
+   ]
+  },
+  {
+   "q": "我要說一個大家一定會反對的冷門意見",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Unpopular opinion puffin"
+   ]
+  },
+  {
+   "q": "unpopular opinion puffin",
+   "kind": "english",
+   "set": "v3",
+   "expect": [
+    "Unpopular opinion puffin"
+   ]
+  },
+  {
+   "q": "不安的湯姆貓",
+   "kind": "nickname",
+   "set": "v3",
+   "expect": [
+    "Unsettled Tom"
+   ]
+  },
+  {
+   "q": "湯姆貓與傑利鼠裡的 Tom 一臉驚恐",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "Unsettled Tom"
+   ]
+  },
+  {
+   "q": "寶貝起床了,新遊戲預告出來了",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "Wake Up Babe"
+   ]
+  },
+  {
+   "q": "wake up babe, new one just dropped",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "Wake Up Babe"
+   ]
+  },
+  {
+   "q": "What is this, a center for ants?",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "What is this, a Center for Ants !"
+   ]
+  },
+  {
+   "q": "Zoolander 裡 Derek 看著建築模型",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "What is this, a Center for Ants !"
+   ]
+  },
+  {
+   "q": "I'm something of a scientist myself",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "You know, I'm something of a myself"
+   ]
+  },
+  {
+   "q": "雷神索爾說自己也算半個科學家",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "You know, I'm something of a myself"
+   ]
+  },
+  {
+   "q": "我最討厭人家遲到之後還不道歉",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "You Know What Really Grinds My Gears"
+   ]
+  },
+  {
+   "q": "You know what really grinds my gears?",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "You Know What Really Grinds My Gears"
+   ]
+  },
+  {
+   "q": "You sit on a throne of lies",
+   "kind": "quote",
+   "set": "v3",
+   "expect": [
+    "You Sit on a Throne of Lies"
+   ]
+  },
+  {
+   "q": "聖誕精靈 Buddy 對假聖誕老人大吼",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "You Sit on a Throne of Lies"
+   ]
+  },
+  {
+   "q": "我以為你會拯救大家結果你讓我失望了",
+   "kind": "situation",
+   "set": "v3",
+   "expect": [
+    "You Were the Chosen One!"
+   ]
+  },
+  {
+   "q": "星際大戰 Obi-Wan 對 Anakin 說你是天選之人",
+   "kind": "entity",
+   "set": "v3",
+   "expect": [
+    "You Were the Chosen One!"
+   ]
+  }
+ ]
+}
