@@ -37,6 +37,7 @@ Contents
 29. [Architecture rules that follow the contexts](#29-architecture-rules-that-follow-the-contexts)
 30. [ReportCase is the first aggregate that exists in the code](#30-reportcase-is-the-first-aggregate-that-exists-in-the-code)
 31. [Favorite is an aggregate with almost nothing in it](#31-favorite-is-an-aggregate-with-almost-nothing-in-it)
+32. [ProfileChange belongs to MemeTemplate, and taking a change back is its rule](#32-profilechange-belongs-to-memetemplate-and-taking-a-change-back-is-its-rule)
 
 ---
 
@@ -904,3 +905,26 @@ a favorite, as Feedback does for reports. Adding one twice changes nothing and k
 that Discovery now asks Curation for the one rule that is not its own and no longer reads another context's table
 inside a SQL statement, and that every aggregate on the domain model is built the same way. If favorites ever
 gain a rule (a limit, folders, an order) it has somewhere to live.
+
+## 32. ProfileChange belongs to MemeTemplate, and taking a change back is its rule
+
+**Context.** When a proposal replaces a description, the old one is kept so that the change can be taken back. That
+was `ProfileHistoryPort` with SQL: "the latest change the rules made, not yet undone" was an `ORDER BY ... LIMIT 1`,
+and "not if the description was changed since" was an `if` in a service that had to load the template to check.
+
+**Decision.** `ProfileChange` is an entity inside `MemeTemplate`, as the domain model drew it:
+
+- `adoptProfile(proposal, source, now)` replaces the description and remembers what it was;
+- `restoreProfile(now)` puts back the description from before the latest change *the rules made* that has not been
+  taken back, and refuses when the description was changed since (a retired template refuses everything);
+- `canRestoreProfile()` answers the administrator's list.
+
+An administrator's own adoption is remembered too, but the "undo what the rules did" button does not take it back,
+as before. Editing the description by hand (`reviseProfile`) is not recorded, as before.
+
+The repository loads only the changes that have not been taken back (all the rules need), and saves them with the
+template. The table `profile_change` is unchanged.
+
+**Cost.** Every command that loads a template now also reads its few un-undone changes, and any command that saves
+it writes them again; with a handful of changes per template this is not noticeable. `RestoreProfileService` is
+now a thin shell around the entity, and the history port is gone.
