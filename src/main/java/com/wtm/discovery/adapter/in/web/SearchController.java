@@ -1,0 +1,66 @@
+package com.wtm.discovery.adapter.in.web;
+
+import com.wtm.discovery.usecase.port.in.command.SearchHistoryUseCase;
+import com.wtm.discovery.usecase.port.in.query.PickMemeUseCase;
+import com.wtm.discovery.usecase.port.in.query.PickResult;
+import com.wtm.discovery.usecase.port.in.query.SearchResult;
+import com.wtm.discovery.usecase.port.in.query.SearchTemplatesUseCase;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import java.util.List;
+import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/templates")
+class SearchController {
+
+    private static final Logger log = LoggerFactory.getLogger(SearchController.class);
+
+    private final SearchTemplatesUseCase search;
+    private final SearchHistoryUseCase history;
+    private final PickMemeUseCase pick;
+
+    SearchController(SearchTemplatesUseCase search, SearchHistoryUseCase history, PickMemeUseCase pick) {
+        this.search = search;
+        this.history = history;
+        this.pick = pick;
+    }
+
+    /** "Pick one for me": the closest memes to a situation, one chosen by a language model with its reason. */
+    @PostMapping("/pick")
+    PickResult pick(@RequestBody PickRequest request, @AuthenticationPrincipal Jwt jwt) {
+        return pick.handle(jwt.getSubject(), request.situation());
+    }
+
+    record PickRequest(String situation) {
+    }
+
+    @GetMapping("/search")
+    List<SearchResult> search(@RequestParam("q") String query,
+                              @RequestParam(defaultValue = "10") @Min(1) @Max(50) int limit,
+                              // Searching without leaving a trace: for measuring the search, which must not
+                              // turn its own test queries into "popular searches".
+                              @RequestParam(defaultValue = "true") boolean record,
+                              @AuthenticationPrincipal Jwt jwt) {
+        List<SearchResult> results = search.handle(query, limit);
+        if (record && !results.isEmpty()) {
+            try {
+                history.record(UUID.fromString(jwt.getSubject()), query);
+            } catch (RuntimeException e) {
+                // Keeping a tally must never make a search fail.
+                log.warn("Could not record the search: {}", e.getMessage());
+            }
+        }
+        return results;
+    }
+}
