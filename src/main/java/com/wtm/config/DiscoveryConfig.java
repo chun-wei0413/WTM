@@ -1,8 +1,10 @@
 package com.wtm.config;
 
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.discovery.usecase.port.out.embedding.EmbeddingPort;
 import com.wtm.discovery.usecase.port.out.explainer.MemeExplainerPort;
-import com.wtm.discovery.usecase.port.out.favorite.FavoritePort;
+import com.wtm.discovery.usecase.port.out.favorite.FavoriteListPort;
+import com.wtm.discovery.usecase.port.out.favorite.FavoriteRepository;
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort;
 import com.wtm.discovery.usecase.port.out.search.KeywordSearchPort;
 import com.wtm.discovery.usecase.port.out.search.SearchIndexPort;
@@ -49,8 +51,9 @@ class DiscoveryConfig {
     }
 
     @Bean
-    FavoritesService favoritesService(FavoritePort favorites, ObjectStoragePort storage) {
-        return new FavoritesService(favorites, storage);
+    FavoritesService favoritesService(FavoriteRepository favorites, FavoriteListPort shelf,
+                                      GetTemplateUseCase templates, ObjectStoragePort storage) {
+        return new FavoritesService(favorites, shelf, templates, storage, Clock.systemUTC());
     }
 
     @Bean

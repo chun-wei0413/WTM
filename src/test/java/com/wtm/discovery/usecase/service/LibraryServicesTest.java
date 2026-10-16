@@ -11,9 +11,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
+import com.wtm.curation.usecase.port.in.query.TemplateView;
+import com.wtm.discovery.entity.Favorite;
 import com.wtm.discovery.usecase.port.in.query.GetLibraryImageUseCase.ImageFile;
 import com.wtm.discovery.usecase.port.in.query.LibraryItem;
-import com.wtm.discovery.usecase.port.out.favorite.FavoritePort;
+import com.wtm.discovery.usecase.port.out.favorite.FavoriteListPort;
+import com.wtm.discovery.usecase.port.out.favorite.FavoriteRepository;
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort;
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort.LibraryCard;
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort.LibraryImage;
@@ -34,7 +38,9 @@ import org.mockito.ArgumentCaptor;
 class LibraryServicesTest {
 
     private final LibraryBrowsePort library = mock(LibraryBrowsePort.class);
-    private final FavoritePort favorites = mock(FavoritePort.class);
+    private final FavoriteRepository favorites = mock(FavoriteRepository.class);
+    private final FavoriteListPort shelf = mock(FavoriteListPort.class);
+    private final GetTemplateUseCase templates = mock(GetTemplateUseCase.class);
     private final SearchLogPort searchLog = mock(SearchLogPort.class);
     private final ObjectStoragePort storage = mock(ObjectStoragePort.class);
     private final UUID user = UUID.randomUUID();
@@ -71,26 +77,45 @@ class LibraryServicesTest {
         assertThat(asked.getAllValues()).containsExactly(1, 50);
     }
 
+    private static final java.time.Instant NOW = java.time.Instant.parse("2026-10-09T12:00:00Z");
+
+    private FavoritesService favoriting() {
+        return new FavoritesService(favorites, shelf, templates, storage,
+                java.time.Clock.fixed(NOW, java.time.ZoneOffset.UTC));
+    }
+
+    private TemplateView view(UUID id, String status) {
+        return new TemplateView(id, "貓", status, 1, 600, 400, "library/a.png", null, null, List.of(),
+                NOW, NOW);
+    }
+
     @Test
     void favoritingAnUnpublishedMemeLooksLikeFavoritingAMissingOne() {
         UUID id = UUID.randomUUID();
-        when(favorites.add(user, id)).thenReturn(false);
+        when(templates.handle(id)).thenReturn(view(id, "RETIRED"));
 
-        assertThatThrownBy(() -> new FavoritesService(favorites, storage).add(user, id))
-                .isInstanceOf(TemplateNotFoundException.class);
+        assertThatThrownBy(() -> favoriting().add(user, id)).isInstanceOf(TemplateNotFoundException.class);
+        verify(favorites, never()).save(any());
     }
 
     @Test
     void aFavoriteIsAddedAndRemovedForTheUserWhoAskedOnly() {
         UUID id = UUID.randomUUID();
-        when(favorites.add(user, id)).thenReturn(true);
-        var handler = new FavoritesService(favorites, storage);
+        when(templates.handle(id)).thenReturn(view(id, "APPROVED"));
+        var service = favoriting();
 
-        handler.add(user, id);
-        handler.remove(user, id);
+        service.add(user, id);
+        service.remove(user, id);
 
-        verify(favorites).add(user, id);
+        verify(favorites).save(Favorite.make(user, id, NOW));
         verify(favorites).remove(user, id);
+    }
+
+    @Test
+    void theShelfShowsTheUsersFavoritesAsItems() {
+        when(shelf.list(user)).thenReturn(List.of());
+
+        assertThat(favoriting().list(user)).isEmpty();
     }
 
     @Test
