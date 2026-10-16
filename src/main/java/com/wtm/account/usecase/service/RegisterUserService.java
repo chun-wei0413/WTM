@@ -68,7 +68,7 @@ public class RegisterUserService implements RegisterUserUseCase {
         }
         User user = User.register(name, hasher.hash(rawPassword), Role.USER);
         users.save(user);
-        return new Output(user.id(), user.username());
+        return new Output(user.id().value(), user.username());
     }
 
     private static void checkPassword(String username, String password) {

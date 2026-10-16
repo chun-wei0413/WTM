@@ -1,6 +1,7 @@
 package com.wtm.discovery.adapter.in.web;
 
 import com.wtm.discovery.usecase.port.in.command.FavoritesUseCase;
+import com.wtm.shared.UserId;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +23,6 @@ class AddFavoriteController {
     @PutMapping("/api/favorites/{templateId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void add(@PathVariable UUID templateId, @AuthenticationPrincipal Jwt jwt) {
-        favorites.add(UUID.fromString(jwt.getSubject()), templateId);
+        favorites.add(new UserId(UUID.fromString(jwt.getSubject())), templateId);
     }
 }

@@ -9,6 +9,7 @@ import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.TemplateNotFoundException;
 import com.wtm.shared.TooManyRequestsException;
+import com.wtm.shared.UserId;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.UUID;
@@ -52,7 +53,7 @@ public class SubmitReportService implements SubmitReportUseCase {
     @Transactional
     @Override
     public void handle(Input input) {
-        UUID userId = input.userId();
+        UserId userId = input.userId();
         UUID templateId = input.templateId();
         if (reporters.openCountOf(userId) >= MAX_OPEN_PER_USER) {
             throw new TooManyRequestsException("You have too many reports waiting to be looked at", Duration.ofHours(1));

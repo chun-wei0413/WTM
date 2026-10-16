@@ -6,6 +6,7 @@ import com.wtm.feedback.entity.Resolution;
 import com.wtm.feedback.usecase.port.in.query.OpenReport;
 import com.wtm.feedback.usecase.port.out.report.ReportViewPort;
 import com.wtm.feedback.usecase.port.out.report.ReporterPort;
+import com.wtm.shared.UserId;
 import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -27,30 +28,30 @@ class JdbcReportQueryAdapter implements ReporterPort, ReportViewPort {
     }
 
     @Override
-    public int openCountOf(UUID userId) {
+    public int openCountOf(UserId userId) {
         return jdbc.sql("SELECT count(*) FROM meme_report WHERE user_id = ? AND status = 'OPEN'")
-                .param(userId)
+                .param(userId.value())
                 .query(Integer.class)
                 .single();
     }
 
     @Override
-    public int reportedSince(UUID userId, Instant since, UUID except) {
+    public int reportedSince(UserId userId, Instant since, UUID except) {
         // Changing a report moves its time forward, so editing one counts as reporting it again today.
         return jdbc.sql("SELECT count(DISTINCT template_id) FROM meme_report WHERE user_id = ? AND created_at >= ? AND template_id <> ?")
-                .params(List.of(userId, Timestamp.from(since), except))
+                .params(List.of(userId.value(), Timestamp.from(since), except))
                 .query(Integer.class)
                 .single();
     }
 
     @Override
-    public Standing standingOf(UUID userId) {
+    public Standing standingOf(UserId userId) {
         return jdbc.sql("""
                         SELECT (SELECT role = 'ADMIN' FROM app_user WHERE id = :user) AS administrator,
                                count(*) FILTER (WHERE resolution = 'APPLIED') AS adopted,
                                count(*) FILTER (WHERE resolution = 'DISMISSED') AS set_aside
                         FROM meme_report WHERE user_id = :user AND status = 'RESOLVED'""")
-                .param("user", userId)
+                .param("user", userId.value())
                 .query((rs, n) -> new Standing(rs.getBoolean("administrator"), rs.getInt("adopted"),
                         rs.getInt("set_aside")))
                 .single();

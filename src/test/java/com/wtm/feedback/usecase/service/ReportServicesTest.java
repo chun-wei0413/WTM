@@ -36,6 +36,7 @@ import com.wtm.shared.MemeProfile;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.TemplateNotFoundException;
 import com.wtm.shared.TooManyRequestsException;
+import com.wtm.shared.UserId;
 import com.wtm.shared.port.LlmUnavailableException;
 import com.wtm.shared.port.ObjectStoragePort;
 import com.wtm.shared.port.ReviewRequest;
@@ -67,7 +68,7 @@ class ReportServicesTest {
     private final Clock clock = Clock.fixed(NOW, ZoneOffset.UTC);
     private final ReportJudge judge = new ReportJudge(reporters, ReportPolicy.standard());
 
-    private final UUID user = UUID.randomUUID();
+    private final UserId user = UserId.newId();
     private final UUID memeId = UUID.randomUUID();
 
     private static final MemeProfile CURRENT = new MemeProfile("舊的意思", List.of("舊情境"), List.of("無奈"),
@@ -79,7 +80,7 @@ class ReportServicesTest {
 
     private static final Standing NEWCOMER = new Standing(false, 0, 0);
 
-    private Report report(UUID by, ReportReason reason, String comment) {
+    private Report report(UserId by, ReportReason reason, String comment) {
         return new Report(UUID.randomUUID(), by, reason, comment, Instant.now(), null);
     }
 
@@ -89,7 +90,7 @@ class ReportServicesTest {
     }
 
     private Report report(ReportReason reason, String comment) {
-        return report(UUID.randomUUID(), reason, comment);
+        return report(UserId.newId(), reason, comment);
     }
 
     {
@@ -124,7 +125,7 @@ class ReportServicesTest {
 
     @Test
     void aHabitualFalseReporterCountsForNothing() {
-        UUID liar = UUID.randomUUID();
+        UserId liar = UserId.newId();
         when(reporters.standingOf(liar)).thenReturn(new Standing(false, 0, ReportPolicy.standard().lowTrustDismissals()));
         reported(List.of(report(liar, ReportReason.OTHER, "x")));
 
@@ -135,7 +136,7 @@ class ReportServicesTest {
 
     @Test
     void anAdministratorsReportAloneGetsTheModelsLook() {
-        UUID admin = UUID.randomUUID();
+        UserId admin = UserId.newId();
         when(reporters.standingOf(admin)).thenReturn(new Standing(true, 0, 0));
         when(reviews.lastRunAt(memeId)).thenReturn(Optional.empty());
 
@@ -476,14 +477,14 @@ class ReportServicesTest {
         assertThat(cases.get(memeId).openReports()).isEmpty();
     }
 
-    private Report dismissedByTheRules(UUID by) {
+    private Report dismissedByTheRules(UserId by) {
         return new Report(UUID.randomUUID(), by, ReportReason.OTHER, "x", NOW.minus(Duration.ofDays(1)),
                 new Report.Closing(Resolution.DISMISSED, true, "沒問題", NOW.minus(Duration.ofHours(2))));
     }
 
     @Test
     void automaticallyClosedReportsCanBeOpenedAgainAndTheModelLooksOnceMore() {
-        reported(List.of(dismissedByTheRules(user), dismissedByTheRules(UUID.randomUUID())));
+        reported(List.of(dismissedByTheRules(user), dismissedByTheRules(UserId.newId())));
         when(restore.handle(memeId)).thenReturn(false);
 
         resolving().undoAutomatic(memeId);

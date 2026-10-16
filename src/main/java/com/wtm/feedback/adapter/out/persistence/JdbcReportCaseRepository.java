@@ -6,6 +6,7 @@ import com.wtm.feedback.entity.ReportCase;
 import com.wtm.feedback.entity.ReportReason;
 import com.wtm.feedback.entity.Resolution;
 import com.wtm.feedback.usecase.port.out.report.ReportCaseRepository;
+import com.wtm.shared.UserId;
 import com.wtm.shared.adapter.persistence.TemplateRows;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -58,7 +59,7 @@ class JdbcReportCaseRepository implements ReportCaseRepository {
                                 resolution = EXCLUDED.resolution, resolved_by = EXCLUDED.resolved_by,
                                 resolution_note = EXCLUDED.resolution_note, created_at = EXCLUDED.created_at,
                                 resolved_at = EXCLUDED.resolved_at""")
-                    .params(Arrays.asList(report.id(), reportCase.templateId(), report.userId(),
+                    .params(Arrays.asList(report.id(), reportCase.templateId(), report.userId().value(),
                             report.reason().name(), report.comment(), closing == null ? "OPEN" : "RESOLVED",
                             closing == null ? null : closing.resolution().name(),
                             closing == null ? null : closing.automatic() ? "AUTO" : "ADMIN",
@@ -76,7 +77,7 @@ class JdbcReportCaseRepository implements ReportCaseRepository {
                     "AUTO".equals(rs.getString("resolved_by")), rs.getString("resolution_note"),
                     TemplateRows.instant(rs, "resolved_at"));
         }
-        return new Report(rs.getObject("id", UUID.class), rs.getObject("user_id", UUID.class),
+        return new Report(rs.getObject("id", UUID.class), new UserId(rs.getObject("user_id", UUID.class)),
                 ReportReason.valueOf(rs.getString("reason")), rs.getString("comment"),
                 TemplateRows.instant(rs, "created_at"), closing);
     }

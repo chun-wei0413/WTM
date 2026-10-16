@@ -2,6 +2,7 @@ package com.wtm.feedback.adapter.in.web;
 
 import com.wtm.feedback.entity.ReportReason;
 import com.wtm.feedback.usecase.port.in.command.SubmitReportUseCase;
+import com.wtm.shared.UserId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,7 +28,7 @@ class SubmitReportController {
     @PostMapping("/api/reports")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void report(@Valid @RequestBody ReportRequest request, @AuthenticationPrincipal Jwt jwt) {
-        submit.handle(new SubmitReportUseCase.Input(UUID.fromString(jwt.getSubject()), request.templateId(), request.reason(), request.comment()));
+        submit.handle(new SubmitReportUseCase.Input(new UserId(UUID.fromString(jwt.getSubject())), request.templateId(), request.reason(), request.comment()));
     }
 
     record ReportRequest(@NotNull UUID templateId, @NotNull ReportReason reason, @Size(max = 1000) String comment) {

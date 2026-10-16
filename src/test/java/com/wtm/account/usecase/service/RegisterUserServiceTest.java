@@ -51,7 +51,7 @@ class RegisterUserServiceTest {
 
         ArgumentCaptor<User> saved = ArgumentCaptor.forClass(User.class);
         verify(users).save(saved.capture());
-        assertThat(created).isEqualTo(new RegisterUserUseCase.Output(saved.getValue().id(), "frank_li"));
+        assertThat(created).isEqualTo(new RegisterUserUseCase.Output(saved.getValue().id().value(), "frank_li"));
         assertThat(saved.getValue().username()).isEqualTo("frank_li");
         assertThat(saved.getValue().role()).isEqualTo(Role.USER);
         assertThat(saved.getValue().passwordHash()).isEqualTo("hashed");

@@ -1,8 +1,8 @@
 package com.wtm.discovery.usecase.port.out.favorite;
 
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort.LibraryCard;
+import com.wtm.shared.UserId;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * What the user's shortlist shows: the favorites that are still published, as cards. Reads only.
@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface FavoriteListPort {
 
     /** The user's favorites that are still published, most recently added first. */
-    List<LibraryCard> list(UUID userId);
+    List<LibraryCard> list(UserId userId);
 }

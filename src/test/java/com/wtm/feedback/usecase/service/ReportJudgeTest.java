@@ -4,13 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.wtm.feedback.entity.Report;
+import com.wtm.feedback.entity.ReportCase;
 import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.entity.ReportPolicy.Standing;
 import com.wtm.feedback.entity.ReportReason;
-import com.wtm.feedback.entity.Report;
-import com.wtm.feedback.entity.ReportCase;
 import com.wtm.feedback.usecase.port.out.report.ReporterPort;
 import com.wtm.feedback.usecase.service.ReportJudge.Outcome;
+import com.wtm.shared.UserId;
 import com.wtm.shared.port.Suggestion;
 import java.time.Instant;
 import java.util.List;
@@ -25,7 +26,7 @@ class ReportJudgeTest {
     private final ReportJudge judge = new ReportJudge(reporters, policy);
 
     private Report by(Standing standing, ReportReason reason) {
-        UUID user = UUID.randomUUID();
+        UserId user = UserId.newId();
         when(reporters.standingOf(user)).thenReturn(standing);
         return new Report(UUID.randomUUID(), user, reason, "", Instant.now(), null);
     }
@@ -71,7 +72,7 @@ class ReportJudgeTest {
 
     @Test
     void thePeopleAreCountedOnceEach() {
-        UUID user = UUID.randomUUID();
+        UserId user = UserId.newId();
         when(reporters.standingOf(user)).thenReturn(new Standing(false, 0, 0));
         assertThat(judge.weightOf(List.of(user, user, user))).isEqualTo(1);
     }

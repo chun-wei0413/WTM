@@ -1,5 +1,6 @@
 package com.wtm.feedback.entity;
 
+import com.wtm.shared.UserId;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -18,13 +19,13 @@ public final class Report {
     }
 
     private final UUID id;
-    private final UUID userId;
+    private final UserId userId;
     private final ReportReason reason;
     private final String comment;
     private final Instant createdAt;
     private final Closing closing;
 
-    public Report(UUID id, UUID userId, ReportReason reason, String comment, Instant createdAt, Closing closing) {
+    public Report(UUID id, UserId userId, ReportReason reason, String comment, Instant createdAt, Closing closing) {
         this.id = id;
         this.userId = userId;
         this.reason = reason;
@@ -37,7 +38,7 @@ public final class Report {
         return id;
     }
 
-    public UUID userId() {
+    public UserId userId() {
         return userId;
     }
 

@@ -8,6 +8,7 @@ import com.wtm.discovery.usecase.port.out.favorite.FavoriteListPort;
 import com.wtm.discovery.usecase.port.out.favorite.FavoriteRepository;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.TemplateNotFoundException;
+import com.wtm.shared.UserId;
 import com.wtm.shared.port.ObjectStoragePort;
 import java.time.Clock;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FavoritesService implements FavoritesUseCase {
     }
 
     @Override
-    public List<LibraryItem> list(UUID userId) {
+    public List<LibraryItem> list(UserId userId) {
         return shelf.list(userId).stream().map(card -> LibraryItems.of(card, storage)).toList();
     }
 
@@ -46,7 +47,7 @@ public class FavoritesService implements FavoritesUseCase {
      */
     @Transactional
     @Override
-    public void add(UUID userId, UUID templateId) {
+    public void add(UserId userId, UUID templateId) {
         if (!"APPROVED".equals(templates.handle(templateId).status())) {
             throw new TemplateNotFoundException(new TemplateId(templateId));
         }
@@ -55,7 +56,7 @@ public class FavoritesService implements FavoritesUseCase {
 
     @Transactional
     @Override
-    public void remove(UUID userId, UUID templateId) {
+    public void remove(UserId userId, UUID templateId) {
         favorites.remove(userId, templateId);
     }
 }

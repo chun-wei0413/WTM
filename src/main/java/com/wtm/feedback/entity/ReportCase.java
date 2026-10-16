@@ -1,6 +1,7 @@
 package com.wtm.feedback.entity;
 
 import com.wtm.feedback.entity.Report.Closing;
+import com.wtm.shared.UserId;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +59,7 @@ public final class ReportCase {
      *
      * @throws IllegalArgumentException for a missing reason or a comment that is too long
      */
-    public void submit(UUID userId, ReportReason reason, String comment, Instant now) {
+    public void submit(UserId userId, ReportReason reason, String comment, Instant now) {
         if (reason == null) {
             throw new IllegalArgumentException("A reason is required");
         }
@@ -103,12 +104,12 @@ public final class ReportCase {
      * @return how many were opened
      */
     public int reopenAutomaticallyDismissed(Instant closedSince) {
-        java.util.Map<UUID, Integer> latest = new java.util.HashMap<>();
+        java.util.Map<UserId, Integer> latest = new java.util.HashMap<>();
         for (int i = 0; i < reports.size(); i++) {
             Closing closing = reports.get(i).closing();
             if (closing != null && closing.resolution() == Resolution.DISMISSED && closing.automatic()
                     && !closing.at().isBefore(closedSince)) {
-                UUID user = reports.get(i).userId();
+                UserId user = reports.get(i).userId();
                 Integer best = latest.get(user);
                 if (best == null || reports.get(best).closing().at().isBefore(closing.at())) {
                     latest.put(user, i);

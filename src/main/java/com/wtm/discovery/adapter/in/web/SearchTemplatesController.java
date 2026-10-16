@@ -3,6 +3,7 @@ package com.wtm.discovery.adapter.in.web;
 import com.wtm.discovery.usecase.port.in.command.SearchHistoryUseCase;
 import com.wtm.discovery.usecase.port.in.query.SearchResult;
 import com.wtm.discovery.usecase.port.in.query.SearchTemplatesUseCase;
+import com.wtm.shared.UserId;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -38,7 +39,7 @@ class SearchTemplatesController {
         List<SearchResult> results = search.handle(new SearchTemplatesUseCase.Input(query, limit));
         if (record && !results.isEmpty()) {
             try {
-                history.record(UUID.fromString(jwt.getSubject()), query);
+                history.record(new UserId(UUID.fromString(jwt.getSubject())), query);
             } catch (RuntimeException e) {
                 // Keeping a tally must never make a search fail.
                 log.warn("Could not record the search: {}", e.getMessage());

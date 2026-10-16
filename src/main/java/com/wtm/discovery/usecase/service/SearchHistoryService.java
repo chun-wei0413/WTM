@@ -3,11 +3,11 @@ package com.wtm.discovery.usecase.service;
 import com.wtm.discovery.usecase.port.in.command.SearchHistoryUseCase;
 import com.wtm.discovery.usecase.port.in.query.HotTerm;
 import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort;
+import com.wtm.shared.UserId;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Keeps track of what people search for and offers the most common phrases as shortcuts.
@@ -29,7 +29,7 @@ public class SearchHistoryService implements SearchHistoryUseCase {
 
     /** Remembers a search that found something; phrases that are too short or too long are ignored. */
     @Override
-    public void record(UUID userId, String query) {
+    public void record(UserId userId, String query) {
         String term = normalize(query);
         if (term.length() >= MIN_LENGTH && term.length() <= MAX_LENGTH) {
             log.record(userId, term);

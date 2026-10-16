@@ -2,10 +2,10 @@ package com.wtm.discovery.adapter.out.persistence;
 
 import com.wtm.discovery.usecase.port.in.query.HotTerm;
 import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort;
+import com.wtm.shared.UserId;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -19,9 +19,9 @@ class JdbcSearchLogAdapter implements SearchLogPort {
     }
 
     @Override
-    public void record(UUID userId, String term) {
+    public void record(UserId userId, String term) {
         jdbc.sql("INSERT INTO search_log (user_id, term) VALUES (?, ?)")
-                .params(List.of(userId, term))
+                .params(List.of(userId.value(), term))
                 .update();
     }
 

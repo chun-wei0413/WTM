@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.wtm.feedback.entity.Report.Closing;
+import com.wtm.shared.UserId;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -15,8 +16,8 @@ class ReportCaseTest {
     private static final Instant NOW = Instant.parse("2026-10-09T12:00:00Z");
 
     private final UUID meme = UUID.randomUUID();
-    private final UUID ann = UUID.randomUUID();
-    private final UUID bob = UUID.randomUUID();
+    private final UserId ann = UserId.newId();
+    private final UserId bob = UserId.newId();
     private final ReportCase reportCase = ReportCase.empty(meme);
 
     @Test

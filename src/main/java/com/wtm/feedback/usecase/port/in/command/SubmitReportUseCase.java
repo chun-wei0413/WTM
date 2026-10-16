@@ -1,6 +1,7 @@
 package com.wtm.feedback.usecase.port.in.command;
 
 import com.wtm.feedback.entity.ReportReason;
+import com.wtm.shared.UserId;
 import java.util.UUID;
 
 public interface SubmitReportUseCase {
@@ -12,6 +13,6 @@ public interface SubmitReportUseCase {
      */
     void handle(Input input);
 
-    record Input(UUID userId, UUID templateId, ReportReason reason, String comment) {
+    record Input(UserId userId, UUID templateId, ReportReason reason, String comment) {
     }
 }

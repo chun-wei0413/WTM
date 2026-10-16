@@ -3,6 +3,7 @@ package com.wtm.discovery.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.wtm.shared.UserId;
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ class FavoriteTest {
 
     @Test
     void aFavoriteRemembersWhoKeptWhichMemeAndWhen() {
-        UUID user = UUID.randomUUID();
+        UserId user = UserId.newId();
         UUID meme = UUID.randomUUID();
 
         Favorite favorite = Favorite.make(user, meme, NOW);
@@ -25,20 +26,21 @@ class FavoriteTest {
 
     @Test
     void theSameUserAndMemeAreTheSameFavoriteWheneverItWasMade() {
-        UUID user = UUID.randomUUID();
+        UserId user = UserId.newId();
         UUID meme = UUID.randomUUID();
 
         assertThat(Favorite.make(user, meme, NOW)).isEqualTo(Favorite.restore(user, meme, NOW.minusSeconds(60)));
         assertThat(Favorite.make(user, meme, NOW)).isNotEqualTo(Favorite.make(user, UUID.randomUUID(), NOW));
-        assertThat(Favorite.make(user, meme, NOW)).isNotEqualTo(Favorite.make(UUID.randomUUID(), meme, NOW));
+        assertThat(Favorite.make(user, meme, NOW)).isNotEqualTo(Favorite.make(UserId.newId(), meme, NOW));
     }
 
     @Test
     void aFavoriteNeedsAUserAMemeAndATime() {
-        UUID id = UUID.randomUUID();
+        UserId user = UserId.newId();
+        UUID meme = UUID.randomUUID();
 
-        assertThatThrownBy(() -> Favorite.make(null, id, NOW)).isInstanceOf(NullPointerException.class);
-        assertThatThrownBy(() -> Favorite.make(id, null, NOW)).isInstanceOf(NullPointerException.class);
-        assertThatThrownBy(() -> Favorite.make(id, id, null)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> Favorite.make(null, meme, NOW)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> Favorite.make(user, null, NOW)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> Favorite.make(user, meme, null)).isInstanceOf(NullPointerException.class);
     }
 }

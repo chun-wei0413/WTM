@@ -12,6 +12,7 @@ import com.wtm.feedback.usecase.port.out.report.ReportViewPort.AutomaticAction;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort.ReviewState;
 import com.wtm.shared.TemplateNotFoundException;
+import com.wtm.shared.UserId;
 import com.wtm.shared.port.ObjectStoragePort;
 import java.time.Clock;
 import java.time.Duration;
@@ -83,7 +84,7 @@ public class ListReportCasesService implements ListReportCasesUseCase {
         return new ReportCase(template.id(), template.name(), template.status(),
                 storage.presignedGetUrl(template.imageKey(), IMAGE_URL_TTL), template.profile(), open,
                 review == null ? null : new Review(review.status(), review.suggestion(), review.error()),
-                judge.weightOf(open.stream().map(OpenReport::userId).toList()), judge.policy().analyzeAtWeight());
+                judge.weightOf(open.stream().map(report -> new UserId(report.userId())).toList()), judge.policy().analyzeAtWeight());
     }
 
     private AutomaticEntry toEntry(TemplateView template, AutomaticAction action) {

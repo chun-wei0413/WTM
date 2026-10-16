@@ -24,6 +24,7 @@ import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort.LibraryCard;
 import com.wtm.discovery.usecase.port.out.library.LibraryBrowsePort.LibraryImage;
 import com.wtm.discovery.usecase.port.out.searchlog.SearchLogPort;
 import com.wtm.shared.TemplateNotFoundException;
+import com.wtm.shared.UserId;
 import com.wtm.shared.port.ObjectStoragePort;
 import java.time.Clock;
 import java.time.Duration;
@@ -43,7 +44,7 @@ class LibraryServicesTest {
     private final GetTemplateUseCase templates = mock(GetTemplateUseCase.class);
     private final SearchLogPort searchLog = mock(SearchLogPort.class);
     private final ObjectStoragePort storage = mock(ObjectStoragePort.class);
-    private final UUID user = UUID.randomUUID();
+    private final UserId user = UserId.newId();
 
     private LibraryCard card(String key) {
         return new LibraryCard(UUID.randomUUID(), "name", key, 640, 480, "meaning", List.of("tag"), "???", "UPLOAD", null, null, null);

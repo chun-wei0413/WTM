@@ -4,6 +4,7 @@ import com.wtm.account.entity.Role;
 import com.wtm.account.entity.User;
 import com.wtm.account.usecase.port.in.UsernameTakenException;
 import com.wtm.account.usecase.port.out.UserRepository;
+import com.wtm.shared.UserId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +25,7 @@ class JdbcUserRepository implements UserRepository {
     public Optional<User> findByUsername(String username) {
         return jdbc.sql("SELECT id, username, password_hash, role FROM app_user WHERE lower(username) = lower(?)")
                 .param(username)
-                .query((rs, n) -> new User(rs.getObject("id", UUID.class), rs.getString("username"),
+                .query((rs, n) -> new User(new UserId(rs.getObject("id", UUID.class)), rs.getString("username"),
                         rs.getString("password_hash"), Role.valueOf(rs.getString("role"))))
                 .optional();
     }
@@ -41,7 +42,7 @@ class JdbcUserRepository implements UserRepository {
     public void save(User user) {
         try {
             jdbc.sql("INSERT INTO app_user (id, username, password_hash, role) VALUES (?, ?, ?, ?)")
-                    .params(List.of(user.id(), user.username(), user.passwordHash(), user.role().name()))
+                    .params(List.of(user.id().value(), user.username(), user.passwordHash(), user.role().name()))
                     .update();
         } catch (DuplicateKeyException e) {
             // Two people registering the same name at the same moment: the unique index decides.

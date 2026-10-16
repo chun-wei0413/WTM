@@ -31,7 +31,7 @@ class JwtTokenIssuer implements TokenIssuer {
         Instant expiresAt = now.plus(properties.jwt().ttl());
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(ISSUER)
-                .subject(user.id().toString())
+                .subject(user.id().value().toString())
                 .issuedAt(now)
                 .expiresAt(expiresAt)
                 .claim("username", user.username())

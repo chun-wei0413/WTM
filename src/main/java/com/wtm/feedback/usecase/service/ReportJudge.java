@@ -1,13 +1,13 @@
 package com.wtm.feedback.usecase.service;
 
-import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.entity.Report;
 import com.wtm.feedback.entity.ReportCase;
+import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.usecase.port.out.report.ReporterPort;
+import com.wtm.shared.UserId;
 import com.wtm.shared.port.Suggestion;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Decides how much a group of reports counts for, and what to do with them once the vision model has
@@ -36,7 +36,7 @@ public class ReportJudge {
     }
 
     /** The combined weight of these people, each counted once. */
-    public int weightOf(Collection<UUID> people) {
+    public int weightOf(Collection<UserId> people) {
         return people.stream().distinct().mapToInt(user -> policy.weightOf(reporters.standingOf(user))).sum();
     }
 

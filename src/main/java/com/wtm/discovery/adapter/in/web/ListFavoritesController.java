@@ -2,6 +2,7 @@ package com.wtm.discovery.adapter.in.web;
 
 import com.wtm.discovery.usecase.port.in.command.FavoritesUseCase;
 import com.wtm.discovery.usecase.port.in.query.LibraryItem;
+import com.wtm.shared.UserId;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +22,6 @@ class ListFavoritesController {
 
     @GetMapping("/api/favorites")
     List<LibraryItem> mine(@AuthenticationPrincipal Jwt jwt) {
-        return favorites.list(UUID.fromString(jwt.getSubject()));
+        return favorites.list(new UserId(UUID.fromString(jwt.getSubject())));
     }
 }
