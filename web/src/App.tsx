@@ -1,15 +1,15 @@
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
-import { useAuth } from './auth/AuthContext';
-import { FavoritesProvider } from './favorites/FavoritesContext';
-import { Layout } from './components/Layout';
-import { LoginPage } from './pages/LoginPage';
-import { CreatePage } from './Create/CreatePage';
-import { FavoritesPage } from './pages/FavoritesPage';
-import { SearchPage } from './Search/SearchPage';
 import { CollectionPage } from './Admin/Collection/CollectionPage';
 import { ReportsPage } from './Admin/Reports/ReportsPage';
 import { TemplateEditorPage } from './Admin/TemplateEditor/TemplateEditorPage';
 import { TemplatesPage } from './Admin/Templates/TemplatesPage';
+import { useAuth } from './Auth/AuthContext';
+import { LoginPage } from './Auth/LoginPage';
+import { Layout } from './components/Layout';
+import { CreatePage } from './Create/CreatePage';
+import { FavoritesProvider } from './Favorites/FavoritesContext';
+import { FavoritesPage } from './Favorites/FavoritesPage';
+import { SearchPage } from './Search/SearchPage';
 
 function RequireAuth() {
   const { user } = useAuth();

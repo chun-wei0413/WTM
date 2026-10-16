@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ErrorNotice } from '../components/ErrorNotice';
-import { MemeTile } from '../Meme/MemeTile';
-import { useFavorites } from '../favorites/FavoritesContext';
+import { FavoritesGrid } from './FavoritesGrid';
+import { useFavorites } from './FavoritesContext';
 
 export function FavoritesPage() {
   const { items, loading, error, refresh } = useFavorites();
@@ -29,17 +29,7 @@ export function FavoritesPage() {
         </div>
       )}
 
-      {items.length > 0 && (
-        <div className="masonry">
-          {items.map((item) => (
-            <MemeTile key={item.templateId} item={item}>
-              <Link to={`/create?from=${item.templateId}`} className="button button-primary">
-                加文字
-              </Link>
-            </MemeTile>
-          ))}
-        </div>
-      )}
+      {items.length > 0 && <FavoritesGrid items={items} />}
     </div>
   );
 }

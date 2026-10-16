@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { api } from '../api/client';
 import type { LibraryItem } from '../api/types';
-import { useFavorites } from '../favorites/FavoritesContext';
+import { useFavorites } from '../Favorites/FavoritesContext';
 import { fileNameFor, saveBlob } from '../lib/download';
 
 /** The two things people do with a meme: download the picture, and star it as a favorite. */

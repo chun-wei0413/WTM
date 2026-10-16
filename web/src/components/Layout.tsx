@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../Auth/AuthContext';
 
 const ADMIN_PAGES = [
   { to: '/admin/collection', label: '圖庫收集' },

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ErrorNotice } from '../components/ErrorNotice';
-import { useFavorites } from '../favorites/FavoritesContext';
+import { useFavorites } from '../Favorites/FavoritesContext';
 
 /** Where making a meme starts: the visitor's favorite memes, to pick the picture from. */
 export function TemplatePicker() {

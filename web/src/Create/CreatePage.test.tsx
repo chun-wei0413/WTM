@@ -12,7 +12,7 @@ const h = vi.hoisted(() => ({
   saveBlob: vi.fn(),
 }));
 vi.mock('../api/client', () => ({ api: { library: { image: h.image } } }));
-vi.mock('../favorites/FavoritesContext', () => ({ useFavorites: () => h.favorites }));
+vi.mock('../Favorites/FavoritesContext', () => ({ useFavorites: () => h.favorites }));
 vi.mock('../components/ErrorNotice', () => ({ ErrorNotice: () => <p role="alert">error</p> }));
 vi.mock('../lib/renderMeme', () => ({
   canvasMeasure: () => (text: string, size: number) => text.length * size * 0.6,

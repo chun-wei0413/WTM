@@ -7,7 +7,7 @@ import { useTileActions } from './useTileActions';
 const h = vi.hoisted(() => ({ image: vi.fn(), saveBlob: vi.fn(), add: vi.fn(), remove: vi.fn(), favorites: new Set<string>() }));
 vi.mock('../api/client', () => ({ api: { library: { image: h.image } } }));
 vi.mock('../lib/download', () => ({ saveBlob: h.saveBlob, fileNameFor: (base: string) => `${base}.png` }));
-vi.mock('../favorites/FavoritesContext', () => ({
+vi.mock('../Favorites/FavoritesContext', () => ({
   useFavorites: () => ({ isFavorite: (id: string) => h.favorites.has(id), add: h.add, remove: h.remove }),
 }));
 
