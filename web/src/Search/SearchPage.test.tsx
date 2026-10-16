@@ -12,7 +12,7 @@ const { random, search, pick, hotSearches } = vi.hoisted(() => ({
 }));
 vi.mock('../api/client', () => ({ api: { search, pick, library: { random, hotSearches } } }));
 // The tiles are not what is tested here, and they need the favorites and sign-in providers.
-vi.mock('../components/MemeTile', () => ({
+vi.mock('../Meme/MemeTile', () => ({
   MemeTile: ({ item, reason }: { item: LibraryItem; reason?: string }) => (
     <div data-testid="tile">
       {item.name}

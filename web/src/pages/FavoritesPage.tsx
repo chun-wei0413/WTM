@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ErrorNotice } from '../components/ErrorNotice';
-import { MemeTile } from '../components/MemeTile';
+import { MemeTile } from '../Meme/MemeTile';
 import { useFavorites } from '../favorites/FavoritesContext';
 
 export function FavoritesPage() {

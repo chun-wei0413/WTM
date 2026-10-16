@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { LibraryItem } from '../api/types';
-import { attributionNote, isHttpUrl, sourceTypeLabel } from '../lib/collection';
+import { MemeReference } from './MemeReference';
+import { MemeSource } from './MemeSource';
 import { ReportForm } from './ReportForm';
 
 interface Props {
@@ -13,41 +14,11 @@ interface Props {
 /** Where a meme comes from, and the button to report it. Shown on a card under "詳情" and in the big view. */
 export function MemeDetails({ item, reported, onReported }: Props) {
   const [reporting, setReporting] = useState(false);
-  const source = sourceTypeLabel(item.sourceType);
-  const note = attributionNote(source, item.attribution);
 
   return (
     <>
-      {item.reference && (
-        <div className="tile-reference">
-          <span className="tile-reference-label">來源說明</span>
-          <p>{item.reference.text}</p>
-          <p className="tile-reference-credit">
-            出處:
-            {item.reference.url && isHttpUrl(item.reference.url) ? (
-              <a href={item.reference.url} target="_blank" rel="noreferrer">
-                {item.reference.sourceName ?? '原文'}
-              </a>
-            ) : (
-              (item.reference.sourceName ?? '未知')
-            )}
-            {item.reference.license && `,${item.reference.license}`}
-          </p>
-        </div>
-      )}
-      {(source || note) && (
-        <span className="muted">
-          來源:
-          {item.sourceUrl && isHttpUrl(item.sourceUrl) ? (
-            <a href={item.sourceUrl} target="_blank" rel="noreferrer">
-              {source ?? '原始網址'}
-            </a>
-          ) : (
-            source
-          )}
-          {note && `(${note})`}
-        </span>
-      )}
+      {item.reference && <MemeReference reference={item.reference} />}
+      <MemeSource item={item} />
       <div>
         <button
           type="button"

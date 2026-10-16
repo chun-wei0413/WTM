@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import type { LibraryItem } from '../api/types';
+import { ViewerText } from './ViewerText';
 
 interface Props {
   item: LibraryItem;
@@ -28,9 +29,6 @@ export function MemeViewer({ item, onClose, actions, details, notice }: Props) {
     return () => element?.close();
   }, []);
 
-  // Only the search results carry these; a favorite does not.
-  const usage = 'usageExamples' in item ? (item.usageExamples as string[]) : [];
-
   return (
     <dialog
       ref={dialog}
@@ -50,36 +48,7 @@ export function MemeViewer({ item, onClose, actions, details, notice }: Props) {
         <div className="viewer-picture">
           <img src={item.imageUrl} alt={item.meaning ?? item.name} width={item.imageWidth} height={item.imageHeight} />
         </div>
-        <div className="viewer-text">
-          <h2>{item.name}</h2>
-          {item.meaning && <p className="viewer-meaning">{item.meaning}</p>}
-          {usage.length > 0 && (
-            <>
-              <h3>什麼時候用</h3>
-              <ul className="viewer-usage">
-                {usage.map((example) => (
-                  <li key={example}>{example}</li>
-                ))}
-              </ul>
-            </>
-          )}
-          {item.imageText && item.imageText.trim() !== '' && (
-            <>
-              <h3>圖上的字</h3>
-              <p className="viewer-image-text">{item.imageText}</p>
-            </>
-          )}
-          {item.tags.length > 0 && (
-            <ul className="tag-list" aria-label="標籤">
-              {item.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-          )}
-          <div className="viewer-actions">{actions}</div>
-          {notice}
-          <div className="viewer-details">{details}</div>
-        </div>
+        <ViewerText item={item} actions={actions} notice={notice} details={details} />
       </div>
     </dialog>
   );

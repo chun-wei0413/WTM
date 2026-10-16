@@ -1,8 +1,7 @@
-import { useState, type FormEvent } from 'react';
-import { api } from '../api/client';
 import type { ReportReason } from '../api/types';
-import { MAX_COMMENT_LENGTH, REASON_LABELS, REASON_ORDER, commentTooLong } from '../lib/reports';
-import { ErrorNotice } from './ErrorNotice';
+import { ErrorNotice } from '../components/ErrorNotice';
+import { MAX_COMMENT_LENGTH, REASON_LABELS, REASON_ORDER } from '../lib/reports';
+import { useReportForm } from './useReportForm';
 
 interface Props {
   templateId: string;
@@ -12,26 +11,7 @@ interface Props {
 
 /** A small form under a meme where a user says what is wrong with its description or tags. */
 export function ReportForm({ templateId, onSent, onCancel }: Props) {
-  const [reason, setReason] = useState<ReportReason>('WRONG_TAGS');
-  const [comment, setComment] = useState('');
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState<unknown>(null);
-
-  const tooLong = commentTooLong(comment);
-
-  async function submit(event: FormEvent) {
-    event.preventDefault();
-    if (tooLong) return;
-    setSending(true);
-    setError(null);
-    try {
-      await api.reports.submit(templateId, reason, comment.trim());
-      onSent();
-    } catch (e) {
-      setError(e);
-      setSending(false);
-    }
-  }
+  const { reason, setReason, comment, setComment, sending, error, tooLong, submit } = useReportForm(templateId, onSent);
 
   return (
     <form className="report-form" onSubmit={submit}>
