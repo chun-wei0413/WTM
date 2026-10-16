@@ -11,24 +11,20 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Where a user says that a meme's description or tags do not fit it.
- */
+/** Where a user says that a meme's description or tags do not fit it. */
 @RestController
-@RequestMapping("/api/reports")
-class ReportController {
+class SubmitReportController {
 
     private final SubmitReportUseCase submit;
 
-    ReportController(SubmitReportUseCase submit) {
+    SubmitReportController(SubmitReportUseCase submit) {
         this.submit = submit;
     }
 
-    @PostMapping
+    @PostMapping("/api/reports")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void report(@Valid @RequestBody ReportRequest request, @AuthenticationPrincipal Jwt jwt) {
         submit.handle(new SubmitReportUseCase.Input(UUID.fromString(jwt.getSubject()), request.templateId(), request.reason(), request.comment()));

@@ -1,8 +1,6 @@
 package com.wtm.discovery.adapter.in.web;
 
 import com.wtm.discovery.usecase.port.in.command.SearchHistoryUseCase;
-import com.wtm.discovery.usecase.port.in.query.PickMemeUseCase;
-import com.wtm.discovery.usecase.port.in.query.PickResult;
 import com.wtm.discovery.usecase.port.in.query.SearchResult;
 import com.wtm.discovery.usecase.port.in.query.SearchTemplatesUseCase;
 import jakarta.validation.constraints.Max;
@@ -14,38 +12,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/templates")
-class SearchController {
+class SearchTemplatesController {
 
-    private static final Logger log = LoggerFactory.getLogger(SearchController.class);
+    private static final Logger log = LoggerFactory.getLogger(SearchTemplatesController.class);
 
     private final SearchTemplatesUseCase search;
     private final SearchHistoryUseCase history;
-    private final PickMemeUseCase pick;
 
-    SearchController(SearchTemplatesUseCase search, SearchHistoryUseCase history, PickMemeUseCase pick) {
+    SearchTemplatesController(SearchTemplatesUseCase search, SearchHistoryUseCase history) {
         this.search = search;
         this.history = history;
-        this.pick = pick;
     }
 
-    /** "Pick one for me": the closest memes to a situation, one chosen by a language model with its reason. */
-    @PostMapping("/pick")
-    PickResult pick(@RequestBody PickRequest request, @AuthenticationPrincipal Jwt jwt) {
-        return pick.handle(new PickMemeUseCase.Input(jwt.getSubject(), request.situation()));
-    }
-
-    record PickRequest(String situation) {
-    }
-
-    @GetMapping("/search")
+    @GetMapping("/api/templates/search")
     List<SearchResult> search(@RequestParam("q") String query,
                               @RequestParam(defaultValue = "10") @Min(1) @Max(50) int limit,
                               // Searching without leaving a trace: for measuring the search, which must not
