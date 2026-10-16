@@ -1,10 +1,13 @@
 package com.wtm.feedback.usecase.service;
 
 import com.wtm.feedback.entity.ReportPolicy;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
+import com.wtm.feedback.entity.Report;
+import com.wtm.feedback.entity.ReportCase;
+import com.wtm.feedback.usecase.port.out.report.ReporterPort;
 import com.wtm.shared.port.Suggestion;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Decides how much a group of reports counts for, and what to do with them once the vision model has
@@ -20,11 +23,11 @@ public class ReportJudge {
         NEEDS_ADMINISTRATOR
     }
 
-    private final ReportPort reports;
+    private final ReporterPort reporters;
     private final ReportPolicy policy;
 
-    public ReportJudge(ReportPort reports, ReportPolicy policy) {
-        this.reports = reports;
+    public ReportJudge(ReporterPort reporters, ReportPolicy policy) {
+        this.reporters = reporters;
         this.policy = policy;
     }
 
@@ -32,24 +35,29 @@ public class ReportJudge {
         return policy;
     }
 
-    /** The reporters' combined weight, each person counted once. */
-    public int weightOf(List<OpenReport> open) {
-        return open.stream().map(OpenReport::userId).distinct()
-                .mapToInt(user -> policy.weightOf(reports.standingOf(user))).sum();
+    /** The combined weight of these people, each counted once. */
+    public int weightOf(Collection<UUID> people) {
+        return people.stream().distinct().mapToInt(user -> policy.weightOf(reporters.standingOf(user))).sum();
+    }
+
+    /** The weight of the people who have an open report about the meme. */
+    public int weightOf(ReportCase reportCase) {
+        return weightOf(reportCase.openReports().stream().map(Report::userId).toList());
     }
 
     /** Whether the reports are worth spending the model's time on without being asked by an administrator. */
-    public boolean worthAnalyzing(List<OpenReport> open) {
-        return weightOf(open) >= policy.analyzeAtWeight();
+    public boolean worthAnalyzing(ReportCase reportCase) {
+        return weightOf(reportCase) >= policy.analyzeAtWeight();
     }
 
-    public Outcome decide(List<OpenReport> open, Suggestion suggestion) {
+    public Outcome decide(ReportCase reportCase, Suggestion suggestion) {
+        List<Report> open = reportCase.openReports();
         // Anything about whether a picture belongs in the library at all is a person's call.
         if (open.isEmpty() || open.stream().anyMatch(r -> r.reason().questionsWhetherItBelongs())
                 || !suggestion.isMeme()) {
             return Outcome.NEEDS_ADMINISTRATOR;
         }
-        boolean agreed = weightOf(open) >= policy.autoApplyAtWeight();
+        boolean agreed = weightOf(reportCase) >= policy.autoApplyAtWeight();
         if (suggestion.keep()) {
             // Several people insisting against the model's answer is exactly what a person should look at.
             return agreed ? Outcome.NEEDS_ADMINISTRATOR : Outcome.AUTO_DISMISS;

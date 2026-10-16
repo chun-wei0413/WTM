@@ -2,9 +2,10 @@ package com.wtm.feedback.usecase.service;
 
 import com.wtm.curation.usecase.port.in.command.RestoreProfileUseCase;
 import com.wtm.curation.usecase.port.in.command.ReviseProfileFromProposalUseCase;
+import com.wtm.feedback.entity.ReportCase;
+import com.wtm.feedback.entity.Resolution;
 import com.wtm.feedback.usecase.port.in.command.ResolveReportsUseCase;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.Resolution;
+import com.wtm.feedback.usecase.port.out.report.ReportCaseRepository;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.shared.DomainRuleViolation;
 import com.wtm.shared.port.Suggestion;
@@ -23,15 +24,15 @@ public class ResolveReportsService implements ResolveReportsUseCase {
     /** How long an automatic decision can be taken back. */
     public static final Duration UNDO_WINDOW = Duration.ofDays(7);
 
-    private final ReportPort reports;
+    private final ReportCaseRepository cases;
     private final ReviewPort reviews;
     private final ReviseProfileFromProposalUseCase revise;
     private final RestoreProfileUseCase restore;
     private final Clock clock;
 
-    public ResolveReportsService(ReportPort reports, ReviewPort reviews, ReviseProfileFromProposalUseCase revise,
+    public ResolveReportsService(ReportCaseRepository cases, ReviewPort reviews, ReviseProfileFromProposalUseCase revise,
                                  RestoreProfileUseCase restore, Clock clock) {
-        this.reports = reports;
+        this.cases = cases;
         this.reviews = reviews;
         this.revise = revise;
         this.restore = restore;
@@ -60,7 +61,7 @@ public class ResolveReportsService implements ResolveReportsUseCase {
     @Transactional
     @Override
     public void dismiss(UUID templateId) {
-        reports.resolve(templateId, Resolution.DISMISSED, false, null);
+        close(templateId, Resolution.DISMISSED, false, null);
         reviews.delete(templateId);
     }
 
@@ -68,7 +69,7 @@ public class ResolveReportsService implements ResolveReportsUseCase {
     @Transactional
     @Override
     public void dismissAutomatically(UUID templateId, String note) {
-        reports.resolve(templateId, Resolution.DISMISSED, true, note);
+        close(templateId, Resolution.DISMISSED, true, note);
         reviews.delete(templateId);
     }
 
@@ -76,7 +77,7 @@ public class ResolveReportsService implements ResolveReportsUseCase {
     @Transactional
     @Override
     public void reanalyze(UUID templateId) {
-        if (reports.openAbout(templateId).isEmpty()) {
+        if (!cases.get(templateId).hasOpenReports()) {
             throw new DomainRuleViolation("This meme has no open reports");
         }
         reviews.request(templateId, true);
@@ -92,7 +93,9 @@ public class ResolveReportsService implements ResolveReportsUseCase {
     @Override
     public void undoAutomatic(UUID templateId) {
         boolean restored = restore.handle(templateId);
-        int reopened = reports.reopenAutomaticallyDismissed(templateId, clock.instant().minus(UNDO_WINDOW));
+        ReportCase reportCase = cases.getForUpdate(templateId);
+        int reopened = reportCase.reopenAutomaticallyDismissed(clock.instant().minus(UNDO_WINDOW));
+        cases.save(reportCase);
         if (!restored && reopened == 0) {
             throw new DomainRuleViolation("There is nothing automatic to take back for this meme");
         }
@@ -107,7 +110,13 @@ public class ResolveReportsService implements ResolveReportsUseCase {
                 .orElseThrow(() -> new DomainRuleViolation("There is no proposal to adopt for this meme"));
         revise.handle(new ReviseProfileFromProposalUseCase.Input(templateId, suggestion.meaning(),
                 suggestion.usageExamples(), suggestion.emotions(), suggestion.imageText(), suggestion.tags(), automatic));
-        reports.resolve(templateId, Resolution.APPLIED, automatic, suggestion.reasoning());
+        close(templateId, Resolution.APPLIED, automatic, suggestion.reasoning());
         reviews.delete(templateId);
+    }
+
+    private void close(UUID templateId, Resolution resolution, boolean automatic, String note) {
+        ReportCase reportCase = cases.getForUpdate(templateId);
+        reportCase.close(resolution, automatic, note, clock.instant());
+        cases.save(reportCase);
     }
 }

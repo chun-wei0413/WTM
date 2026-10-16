@@ -2,9 +2,10 @@ package com.wtm.feedback.usecase.service;
 
 import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
+import com.wtm.feedback.entity.Report;
+import com.wtm.feedback.entity.ReportCase;
 import com.wtm.feedback.usecase.port.in.command.RunReviewUseCase;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
+import com.wtm.feedback.usecase.port.out.report.ReportCaseRepository;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.shared.ImageTypes;
 import com.wtm.shared.TemplateNotFoundException;
@@ -29,19 +30,19 @@ public class RunReviewService implements RunReviewUseCase {
     private final GetTemplateUseCase templates;
     private final ObjectStoragePort storage;
     private final VisionTaggerPort tagger;
-    private final ReportPort reports;
+    private final ReportCaseRepository cases;
     private final ReviewPort reviews;
     private final ReportJudge judge;
     private final ResolveReportsService resolver;
     private final int maxAttempts;
 
     public RunReviewService(GetTemplateUseCase templates, ObjectStoragePort storage, VisionTaggerPort tagger,
-                            ReportPort reports, ReviewPort reviews, ReportJudge judge,
+                            ReportCaseRepository cases, ReviewPort reviews, ReportJudge judge,
                             ResolveReportsService resolver, int maxAttempts) {
         this.templates = templates;
         this.storage = storage;
         this.tagger = tagger;
-        this.reports = reports;
+        this.cases = cases;
         this.reviews = reviews;
         this.judge = judge;
         this.resolver = resolver;
@@ -52,7 +53,7 @@ public class RunReviewService implements RunReviewUseCase {
     public void handle(UUID templateId) {
         try {
             TemplateView template = find(templateId);
-            List<OpenReport> open = reports.openAbout(templateId);
+            List<Report> open = cases.get(templateId).openReports();
             if (template == null || !"APPROVED".equals(template.status()) || open.isEmpty()) {
                 reviews.delete(templateId);   // gone, withdrawn or already dealt with: nothing left to look at
                 return;
@@ -85,8 +86,8 @@ public class RunReviewService implements RunReviewUseCase {
     private void actOn(UUID templateId, Suggestion suggestion) {
         try {
             // Judge by who has reported by now, not by who had when the model started: it takes a while.
-            List<OpenReport> open = reports.openAbout(templateId);
-            switch (judge.decide(open, suggestion)) {
+            ReportCase reportCase = cases.get(templateId);
+            switch (judge.decide(reportCase, suggestion)) {
                 case AUTO_APPLY -> resolver.applyAutomatically(templateId);
                 case AUTO_DISMISS -> resolver.dismissAutomatically(templateId, suggestion.reasoning());
                 case NEEDS_ADMINISTRATOR -> { }
@@ -103,7 +104,7 @@ public class RunReviewService implements RunReviewUseCase {
     }
 
     /** One line per report, saying what kind of problem it was and what the person wrote. */
-    static String describe(OpenReport report) {
+    static String describe(Report report) {
         String label = switch (report.reason()) {
             case WRONG_TAGS -> "標籤不精確";
             case WRONG_MEANING -> "描述不貼切";

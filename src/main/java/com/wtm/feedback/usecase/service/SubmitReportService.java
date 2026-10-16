@@ -1,16 +1,16 @@
 package com.wtm.feedback.usecase.service;
 
-import com.wtm.feedback.entity.ReportReason;
+import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
+import com.wtm.feedback.entity.ReportCase;
 import com.wtm.feedback.usecase.port.in.command.SubmitReportUseCase;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
+import com.wtm.feedback.usecase.port.out.report.ReportCaseRepository;
+import com.wtm.feedback.usecase.port.out.report.ReporterPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.shared.TemplateId;
 import com.wtm.shared.TemplateNotFoundException;
 import com.wtm.shared.TooManyRequestsException;
 import java.time.Clock;
 import java.time.Duration;
-import java.util.List;
 import java.util.UUID;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,19 +22,22 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class SubmitReportService implements SubmitReportUseCase {
 
-    static final int MAX_COMMENT_LENGTH = 300;
     /** Each report can cost a minute of the graphics card, so one person may only have this many waiting. */
     static final int MAX_OPEN_PER_USER = 30;
 
-    private final ReportPort reports;
+    private final ReportCaseRepository cases;
+    private final ReporterPort reporters;
+    private final GetTemplateUseCase templates;
     private final ReviewPort reviews;
     private final ReportJudge judge;
     private final ResolveReportsService resolver;
     private final Clock clock;
 
-    public SubmitReportService(ReportPort reports, ReviewPort reviews, ReportJudge judge,
-                               ResolveReportsService resolver, Clock clock) {
-        this.reports = reports;
+    public SubmitReportService(ReportCaseRepository cases, ReporterPort reporters, GetTemplateUseCase templates,
+                               ReviewPort reviews, ReportJudge judge, ResolveReportsService resolver, Clock clock) {
+        this.cases = cases;
+        this.reporters = reporters;
+        this.templates = templates;
         this.reviews = reviews;
         this.judge = judge;
         this.resolver = resolver;
@@ -51,32 +54,31 @@ public class SubmitReportService implements SubmitReportUseCase {
     public void handle(Input input) {
         UUID userId = input.userId();
         UUID templateId = input.templateId();
-        ReportReason reason = input.reason();
-        String comment = input.comment();
-        if (reason == null) {
-            throw new IllegalArgumentException("A reason is required");
-        }
-        String text = comment == null ? "" : comment.strip();
-        if (text.codePointCount(0, text.length()) > MAX_COMMENT_LENGTH) {
-            throw new IllegalArgumentException("The comment must be at most " + MAX_COMMENT_LENGTH + " characters");
-        }
-        if (reports.openCountOf(userId) >= MAX_OPEN_PER_USER) {
+        if (reporters.openCountOf(userId) >= MAX_OPEN_PER_USER) {
             throw new TooManyRequestsException("You have too many reports waiting to be looked at", Duration.ofHours(1));
         }
         var policy = judge.policy();
-        if (reports.reportedSince(userId, clock.instant().minus(Duration.ofHours(24)), templateId) >= policy.dailyReportsPerUser()) {
+        if (reporters.reportedSince(userId, clock.instant().minus(Duration.ofHours(24)), templateId) >= policy.dailyReportsPerUser()) {
             throw new TooManyRequestsException("You have reported a lot of memes today; please try again tomorrow",
                     Duration.ofHours(1));
         }
-        if (!reports.submit(userId, templateId, reason, text)) {
-            throw new TemplateNotFoundException(new TemplateId(templateId));
-        }
-        askTheModelIfWorthIt(templateId);
+        requirePublished(templateId);
+        ReportCase reportCase = cases.getForUpdate(templateId);
+        reportCase.submit(userId, input.reason(), input.comment(), clock.instant());
+        cases.save(reportCase);
+        askTheModelIfWorthIt(reportCase);
     }
 
-    private void askTheModelIfWorthIt(UUID templateId) {
-        List<OpenReport> open = reports.openAbout(templateId);
-        if (!judge.worthAnalyzing(open)) {
+    /** Only a published meme can be reported; any other looks like a missing one. */
+    private void requirePublished(UUID templateId) {
+        if (!"APPROVED".equals(templates.handle(templateId).status())) {
+            throw new TemplateNotFoundException(new TemplateId(templateId));
+        }
+    }
+
+    private void askTheModelIfWorthIt(ReportCase reportCase) {
+        UUID templateId = reportCase.templateId();
+        if (!judge.worthAnalyzing(reportCase)) {
             return;   // recorded for the administrator, but not worth the model's time yet
         }
         // The model already looked, and with this report the people agreeing now reach the point where its
@@ -84,7 +86,7 @@ public class SubmitReportService implements SubmitReportUseCase {
         var existing = reviews.find(templateId);
         if (existing.isPresent() && !existing.get().forced() && existing.get().suggestion() != null
                 && "DONE".equals(existing.get().status())
-                && judge.decide(open, existing.get().suggestion()) == ReportJudge.Outcome.AUTO_APPLY) {
+                && judge.decide(reportCase, existing.get().suggestion()) == ReportJudge.Outcome.AUTO_APPLY) {
             resolver.applyAutomatically(templateId);
             return;
         }

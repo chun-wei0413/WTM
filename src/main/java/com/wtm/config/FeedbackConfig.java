@@ -6,7 +6,9 @@ import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.feedback.adapter.in.scheduling.ReportProperties;
 import com.wtm.feedback.adapter.in.scheduling.ReviewProperties;
 import com.wtm.feedback.entity.ReportPolicy;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
+import com.wtm.feedback.usecase.port.out.report.ReportCaseRepository;
+import com.wtm.feedback.usecase.port.out.report.ReportViewPort;
+import com.wtm.feedback.usecase.port.out.report.ReporterPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.feedback.usecase.service.ListReportCasesService;
 import com.wtm.feedback.usecase.service.ReportJudge;
@@ -32,22 +34,23 @@ class FeedbackConfig {
     }
 
     @Bean
-    ReportJudge reportJudge(ReportPort reports, ReportPolicy policy) {
-        return new ReportJudge(reports, policy);
+    ReportJudge reportJudge(ReporterPort reporters, ReportPolicy policy) {
+        return new ReportJudge(reporters, policy);
     }
 
     @Bean
-    SubmitReportService submitReportService(ReportPort reports, ReviewPort reviews, ReportJudge judge,
+    SubmitReportService submitReportService(ReportCaseRepository cases, ReporterPort reporters,
+                                            GetTemplateUseCase templates, ReviewPort reviews, ReportJudge judge,
                                             ResolveReportsService resolver) {
-        return new SubmitReportService(reports, reviews, judge, resolver, Clock.systemUTC());
+        return new SubmitReportService(cases, reporters, templates, reviews, judge, resolver, Clock.systemUTC());
     }
 
     @Bean
     RunReviewService runReviewService(GetTemplateUseCase templates, ObjectStoragePort storage,
-                                      VisionTaggerPort tagger, ReportPort reports, ReviewPort reviews,
+                                      VisionTaggerPort tagger, ReportCaseRepository cases, ReviewPort reviews,
                                       ReportJudge judge, ResolveReportsService resolver,
                                       ReviewProperties properties) {
-        return new RunReviewService(templates, storage, tagger, reports, reviews, judge, resolver,
+        return new RunReviewService(templates, storage, tagger, cases, reviews, judge, resolver,
                 properties.maxAttempts());
     }
 
@@ -57,15 +60,15 @@ class FeedbackConfig {
     }
 
     @Bean
-    ListReportCasesService listReportCasesService(ReportPort reports, ReviewPort reviews, GetTemplateUseCase templates,
+    ListReportCasesService listReportCasesService(ReportViewPort reports, ReviewPort reviews, GetTemplateUseCase templates,
                                                   ObjectStoragePort storage, RestoreProfileUseCase restore,
                                                   ReportJudge judge) {
         return new ListReportCasesService(reports, reviews, templates, storage, restore, judge, Clock.systemUTC());
     }
 
     @Bean
-    ResolveReportsService resolveReportsService(ReportPort reports, ReviewPort reviews,
+    ResolveReportsService resolveReportsService(ReportCaseRepository cases, ReviewPort reviews,
                                                 ReviseProfileFromProposalUseCase revise, RestoreProfileUseCase restore) {
-        return new ResolveReportsService(reports, reviews, revise, restore, Clock.systemUTC());
+        return new ResolveReportsService(cases, reviews, revise, restore, Clock.systemUTC());
     }
 }

@@ -7,8 +7,9 @@ import static org.mockito.Mockito.when;
 import com.wtm.feedback.entity.ReportPolicy;
 import com.wtm.feedback.entity.ReportPolicy.Standing;
 import com.wtm.feedback.entity.ReportReason;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
+import com.wtm.feedback.entity.Report;
+import com.wtm.feedback.entity.ReportCase;
+import com.wtm.feedback.usecase.port.out.report.ReporterPort;
 import com.wtm.feedback.usecase.service.ReportJudge.Outcome;
 import com.wtm.shared.port.Suggestion;
 import java.time.Instant;
@@ -18,17 +19,18 @@ import org.junit.jupiter.api.Test;
 
 class ReportJudgeTest {
 
-    private final ReportPort reports = mock(ReportPort.class);
+    private final ReporterPort reporters = mock(ReporterPort.class);
+    private final UUID meme = UUID.randomUUID();
     private final ReportPolicy policy = ReportPolicy.standard();
-    private final ReportJudge judge = new ReportJudge(reports, policy);
+    private final ReportJudge judge = new ReportJudge(reporters, policy);
 
-    private OpenReport by(Standing standing, ReportReason reason) {
+    private Report by(Standing standing, ReportReason reason) {
         UUID user = UUID.randomUUID();
-        when(reports.standingOf(user)).thenReturn(standing);
-        return new OpenReport(UUID.randomUUID(), UUID.randomUUID(), user, "u", reason, "", Instant.now());
+        when(reporters.standingOf(user)).thenReturn(standing);
+        return new Report(UUID.randomUUID(), user, reason, "", Instant.now(), null);
     }
 
-    private OpenReport newcomer(ReportReason reason) {
+    private Report newcomer(ReportReason reason) {
         return by(new Standing(false, 0, 0), reason);
     }
 
@@ -70,10 +72,8 @@ class ReportJudgeTest {
     @Test
     void thePeopleAreCountedOnceEach() {
         UUID user = UUID.randomUUID();
-        when(reports.standingOf(user)).thenReturn(new Standing(false, 0, 0));
-        var one = new OpenReport(UUID.randomUUID(), UUID.randomUUID(), user, "u", ReportReason.OTHER, "", Instant.now());
-
-        assertThat(judge.weightOf(List.of(one, one, one))).isEqualTo(1);
+        when(reporters.standingOf(user)).thenReturn(new Standing(false, 0, 0));
+        assertThat(judge.weightOf(List.of(user, user, user))).isEqualTo(1);
     }
 
     // -- what to do with the model's answer ----------------------------------------
@@ -82,7 +82,7 @@ class ReportJudgeTest {
     void nothingWrongAndFewInsistingClosesTheReports() {
         var open = List.of(newcomer(ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_MEANING));
 
-        assertThat(judge.decide(open, keep())).isEqualTo(Outcome.AUTO_DISMISS);
+        assertThat(judge.decide(ReportCase.restore(meme, open), keep())).isEqualTo(Outcome.AUTO_DISMISS);
     }
 
     @Test
@@ -90,7 +90,7 @@ class ReportJudgeTest {
         var open = List.of(newcomer(ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_TAGS),
                 newcomer(ReportReason.WRONG_TAGS));
 
-        assertThat(judge.decide(open, keep())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), keep())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
     }
 
     @Test
@@ -98,28 +98,28 @@ class ReportJudgeTest {
         var open = List.of(newcomer(ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_TAGS),
                 newcomer(ReportReason.WRONG_MEANING));
 
-        assertThat(judge.decide(open, change())).isEqualTo(Outcome.AUTO_APPLY);
+        assertThat(judge.decide(ReportCase.restore(meme, open), change())).isEqualTo(Outcome.AUTO_APPLY);
     }
 
     @Test
     void aTrustedReporterPlusOneOtherIsEnough() {
         var open = List.of(by(new Standing(false, 3, 0), ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_TAGS));
 
-        assertThat(judge.decide(open, change())).isEqualTo(Outcome.AUTO_APPLY);
+        assertThat(judge.decide(ReportCase.restore(meme, open), change())).isEqualTo(Outcome.AUTO_APPLY);
     }
 
     @Test
     void aChangeWithoutEnoughAgreementIsLeftToAPerson() {
         var open = List.of(newcomer(ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_TAGS));
 
-        assertThat(judge.decide(open, change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
     }
 
     @Test
     void anAdministratorsReportCountsTowardsAgreementLikeAnyoneElses() {
         var open = List.of(by(new Standing(true, 0, 0), ReportReason.WRONG_TAGS), newcomer(ReportReason.WRONG_TAGS));
 
-        assertThat(judge.decide(open, change())).as("2 + 1 reaches 3").isEqualTo(Outcome.AUTO_APPLY);
+        assertThat(judge.decide(ReportCase.restore(meme, open), change())).as("2 + 1 reaches 3").isEqualTo(Outcome.AUTO_APPLY);
     }
 
     @Test
@@ -127,16 +127,16 @@ class ReportJudgeTest {
         var open = List.of(newcomer(ReportReason.INAPPROPRIATE), newcomer(ReportReason.WRONG_TAGS),
                 newcomer(ReportReason.WRONG_TAGS));
 
-        assertThat(judge.decide(open, change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
-        assertThat(judge.decide(open, keep())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), keep())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
     }
 
     @Test
     void sayingItIsNotAMemeIsLeftToAPersonEvenWhenTheModelDisagrees() {
         var open = List.of(newcomer(ReportReason.NOT_A_MEME), newcomer(ReportReason.NOT_A_MEME));
 
-        assertThat(judge.decide(open, keep())).as("the model finds it a meme").isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
-        assertThat(judge.decide(open, change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), keep())).as("the model finds it a meme").isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), change())).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
     }
 
     @Test
@@ -145,7 +145,7 @@ class ReportJudgeTest {
                 newcomer(ReportReason.WRONG_TAGS));
         var notAMeme = new Suggestion(false, "", List.of(), List.of(), List.of(), "", "風景照", false);
 
-        assertThat(judge.decide(open, notAMeme)).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), notAMeme)).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
     }
 
     @Test
@@ -154,7 +154,7 @@ class ReportJudgeTest {
                 newcomer(ReportReason.WRONG_TAGS));
         var incomplete = new Suggestion(true, "有意思但沒有情境", List.of(), List.of(), List.of(), "", "x", false);
 
-        assertThat(judge.decide(open, incomplete)).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
+        assertThat(judge.decide(ReportCase.restore(meme, open), incomplete)).isEqualTo(Outcome.NEEDS_ADMINISTRATOR);
     }
 
     @Test
@@ -162,6 +162,6 @@ class ReportJudgeTest {
         var liars = List.of(by(new Standing(false, 0, 9), ReportReason.OTHER), by(new Standing(false, 0, 9), ReportReason.OTHER),
                 by(new Standing(false, 0, 9), ReportReason.OTHER));
 
-        assertThat(judge.worthAnalyzing(liars)).isFalse();
+        assertThat(judge.worthAnalyzing(ReportCase.restore(meme, liars))).isFalse();
     }
 }

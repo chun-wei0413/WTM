@@ -3,11 +3,12 @@ package com.wtm.feedback.usecase.service;
 import com.wtm.curation.usecase.port.in.command.RestoreProfileUseCase;
 import com.wtm.curation.usecase.port.in.query.GetTemplateUseCase;
 import com.wtm.curation.usecase.port.in.query.TemplateView;
+import com.wtm.feedback.entity.ReportCase;
+import com.wtm.feedback.entity.Resolution;
 import com.wtm.feedback.usecase.port.in.query.ListReportCasesUseCase;
-import com.wtm.feedback.usecase.port.out.report.ReportPort;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.AutomaticAction;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.OpenReport;
-import com.wtm.feedback.usecase.port.out.report.ReportPort.Resolution;
+import com.wtm.feedback.usecase.port.out.report.ReportViewPort;
+import com.wtm.feedback.usecase.port.out.report.ReportViewPort.AutomaticAction;
+import com.wtm.feedback.usecase.port.out.report.ReportViewPort.OpenReport;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort;
 import com.wtm.feedback.usecase.port.out.review.ReviewPort.ReviewState;
 import com.wtm.shared.TemplateNotFoundException;
@@ -28,7 +29,7 @@ public class ListReportCasesService implements ListReportCasesUseCase {
 
     private static final Duration IMAGE_URL_TTL = Duration.ofMinutes(15);
 
-    private final ReportPort reports;
+    private final ReportViewPort reports;
     private final ReviewPort reviews;
     private final GetTemplateUseCase templates;
     private final ObjectStoragePort storage;
@@ -36,7 +37,7 @@ public class ListReportCasesService implements ListReportCasesUseCase {
     private final ReportJudge judge;
     private final Clock clock;
 
-    public ListReportCasesService(ReportPort reports, ReviewPort reviews, GetTemplateUseCase templates,
+    public ListReportCasesService(ReportViewPort reports, ReviewPort reviews, GetTemplateUseCase templates,
                                   ObjectStoragePort storage, RestoreProfileUseCase restore, ReportJudge judge,
                                   Clock clock) {
         this.reports = reports;
@@ -82,7 +83,7 @@ public class ListReportCasesService implements ListReportCasesUseCase {
         return new ReportCase(template.id(), template.name(), template.status(),
                 storage.presignedGetUrl(template.imageKey(), IMAGE_URL_TTL), template.profile(), open,
                 review == null ? null : new Review(review.status(), review.suggestion(), review.error()),
-                judge.weightOf(open), judge.policy().analyzeAtWeight());
+                judge.weightOf(open.stream().map(OpenReport::userId).toList()), judge.policy().analyzeAtWeight());
     }
 
     private AutomaticEntry toEntry(TemplateView template, AutomaticAction action) {
