@@ -4,11 +4,13 @@ import com.wtm.shared.DomainRuleViolation;
 import com.wtm.shared.MemeProfile;
 import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 /**
  * A reusable meme image together with the knowledge of what it means and where
@@ -21,6 +23,8 @@ import java.util.TreeMap;
  *       and an approved template keeps a complete profile.</li>
  *   <li>A template may have no slots at all (the image carries its own text).</li>
  *   <li>A retired template can never be changed again.</li>
+ *   <li>A description replaced by a proposal is remembered, and the latest change the rules made can be taken
+ *       back, but only while nobody has changed the description since.</li>
  *   <li>The version increases whenever the slot layout of an approved template
  *       changes, so memes composed earlier can keep their own snapshot.</li>
  * </ul>
@@ -36,6 +40,7 @@ public class MemeTemplate {
     private int version;
     private MemeProfile profile;
     private final Map<Integer, Slot> slots = new TreeMap<>();
+    private final List<ProfileChange> profileChanges = new ArrayList<>();
 
     private MemeTemplate(TemplateId id, String name, String imageKey, int imageWidth, int imageHeight,
                          TemplateStatus status, int version, MemeProfile profile, List<Slot> slots) {
@@ -71,6 +76,16 @@ public class MemeTemplate {
                                        int version, MemeProfile profile, List<Slot> slots) {
         return new MemeTemplate(id, name, imageKey, imageWidth, imageHeight,
                 status, version, profile, slots);
+    }
+
+    /** Rebuilds a template from storage, with the changes of its description that have not been taken back. */
+    public static MemeTemplate restore(TemplateId id, String name, String imageKey,
+                                       int imageWidth, int imageHeight, TemplateStatus status,
+                                       int version, MemeProfile profile, List<Slot> slots,
+                                       List<ProfileChange> profileChanges) {
+        MemeTemplate template = restore(id, name, imageKey, imageWidth, imageHeight, status, version, profile, slots);
+        template.profileChanges.addAll(profileChanges);
+        return template;
     }
 
     public void defineSlot(Slot slot) {
@@ -116,6 +131,59 @@ public class MemeTemplate {
             throw new DomainRuleViolation("An approved template must keep a complete profile");
         }
         this.profile = newProfile;
+    }
+
+    /**
+     * Replaces the description with a proposal and remembers what it was, so that the change can be taken back.
+     *
+     * @param source who decided: the rules, or an administrator
+     */
+    public void adoptProfile(MemeProfile proposal, ProfileChange.Source source, Instant now) {
+        MemeProfile before = profile;
+        reviseProfile(proposal);
+        profileChanges.add(new ProfileChange(UUID.randomUUID(), before, proposal, source, now, null));
+    }
+
+    /** Whether the rules changed the description and nothing has taken that back yet. */
+    public boolean canRestoreProfile() {
+        return latestAutomaticChange() >= 0;
+    }
+
+    /**
+     * Puts back the description from before the latest change the rules made.
+     *
+     * @return false when there is no such change to take back
+     * @throws DomainRuleViolation when the description was changed again since, so it is not put back
+     */
+    public boolean restoreProfile(Instant now) {
+        int index = latestAutomaticChange();
+        if (index < 0) {
+            return false;
+        }
+        ProfileChange change = profileChanges.get(index);
+        if (!profile.equals(change.after())) {
+            throw new DomainRuleViolation("The description was changed again since, so it is not put back");
+        }
+        reviseProfile(change.before());
+        profileChanges.set(index, change.undone(now));
+        return true;
+    }
+
+    /** The changes to the description that are remembered, oldest first. */
+    public List<ProfileChange> profileChanges() {
+        return Collections.unmodifiableList(profileChanges);
+    }
+
+    private int latestAutomaticChange() {
+        int latest = -1;
+        for (int i = 0; i < profileChanges.size(); i++) {
+            ProfileChange change = profileChanges.get(i);
+            if (change.source() == ProfileChange.Source.AUTO && !change.isUndone()
+                    && (latest < 0 || !change.createdAt().isBefore(profileChanges.get(latest).createdAt()))) {
+                latest = i;
+            }
+        }
+        return latest;
     }
 
     public void approve() {

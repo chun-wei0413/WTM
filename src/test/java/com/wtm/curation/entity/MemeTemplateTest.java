@@ -7,6 +7,7 @@ import com.wtm.shared.DomainRuleViolation;
 import com.wtm.shared.MemeProfile;
 import com.wtm.shared.Slot;
 import com.wtm.shared.TemplateId;
+import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -149,5 +150,101 @@ class MemeTemplateTest {
         assertThat(restored.version()).isEqualTo(3);
         assertThat(restored.status()).isEqualTo(TemplateStatus.APPROVED);
         assertThat(restored.slots()).hasSize(1);
+    }
+
+    // -- the description proposed by someone else, and taking it back ---------------------
+
+    private static final Instant NOW = Instant.parse("2026-10-09T12:00:00Z");
+    private static final MemeProfile PROPOSED = new MemeProfile("Another meaning", List.of("another use"),
+            List.of("calm"), List.of("Drake"));
+
+    @Test
+    void anAdoptedProposalReplacesTheDescriptionAndIsRemembered() {
+        MemeTemplate template = approvedWithTwoSlots();
+
+        template.adoptProfile(PROPOSED, ProfileChange.Source.AUTO, NOW);
+
+        assertThat(template.profile()).isEqualTo(PROPOSED);
+        assertThat(template.profileChanges()).singleElement().satisfies(change -> {
+            assertThat(change.before()).isEqualTo(COMPLETE_PROFILE);
+            assertThat(change.after()).isEqualTo(PROPOSED);
+            assertThat(change.source()).isEqualTo(ProfileChange.Source.AUTO);
+            assertThat(change.createdAt()).isEqualTo(NOW);
+            assertThat(change.isUndone()).isFalse();
+        });
+        assertThat(template.status()).isEqualTo(TemplateStatus.APPROVED);
+    }
+
+    @Test
+    void whatTheRulesChangedCanBeTakenBack() {
+        MemeTemplate template = approvedWithTwoSlots();
+        template.adoptProfile(PROPOSED, ProfileChange.Source.AUTO, NOW);
+        assertThat(template.canRestoreProfile()).isTrue();
+
+        boolean restored = template.restoreProfile(NOW.plusSeconds(60));
+
+        assertThat(restored).isTrue();
+        assertThat(template.profile()).isEqualTo(COMPLETE_PROFILE);
+        assertThat(template.profileChanges().get(0).undoneAt()).isEqualTo(NOW.plusSeconds(60));
+        assertThat(template.canRestoreProfile()).as("only once").isFalse();
+        assertThat(template.restoreProfile(NOW.plusSeconds(120))).isFalse();
+    }
+
+    @Test
+    void whatAnAdministratorAdoptedIsRememberedButNotTakenBackByTheRulesUndo() {
+        MemeTemplate template = approvedWithTwoSlots();
+        template.adoptProfile(PROPOSED, ProfileChange.Source.ADMIN, NOW);
+
+        assertThat(template.canRestoreProfile()).isFalse();
+        assertThat(template.restoreProfile(NOW.plusSeconds(1))).isFalse();
+        assertThat(template.profile()).isEqualTo(PROPOSED);
+    }
+
+    @Test
+    void aChangeIsNotTakenBackOverALaterEdit() {
+        MemeTemplate template = approvedWithTwoSlots();
+        template.adoptProfile(PROPOSED, ProfileChange.Source.AUTO, NOW);
+        template.reviseProfile(new MemeProfile("Edited by hand", List.of("x"), List.of(), List.of()));
+
+        assertThatThrownBy(() -> template.restoreProfile(NOW.plusSeconds(60)))
+                .isInstanceOf(DomainRuleViolation.class);
+        assertThat(template.profileChanges().get(0).isUndone()).isFalse();
+    }
+
+    @Test
+    void onlyTheLatestChangeTheRulesMadeIsTakenBack() {
+        MemeTemplate template = approvedWithTwoSlots();
+        template.adoptProfile(PROPOSED, ProfileChange.Source.AUTO, NOW);
+        MemeProfile later = new MemeProfile("Third meaning", List.of("third use"), List.of(), List.of("Drake"));
+        template.adoptProfile(later, ProfileChange.Source.AUTO, NOW.plusSeconds(10));
+
+        assertThat(template.restoreProfile(NOW.plusSeconds(20))).isTrue();
+
+        assertThat(template.profile()).isEqualTo(PROPOSED);
+        assertThat(template.canRestoreProfile()).as("the earlier one can still be taken back").isTrue();
+    }
+
+    @Test
+    void aRetiredTemplateCannotHaveItsDescriptionChangedOrPutBack() {
+        MemeTemplate template = approvedWithTwoSlots();
+        template.adoptProfile(PROPOSED, ProfileChange.Source.AUTO, NOW);
+        template.retire();
+
+        assertThatThrownBy(() -> template.restoreProfile(NOW)).isInstanceOf(DomainRuleViolation.class);
+        assertThatThrownBy(() -> template.adoptProfile(COMPLETE_PROFILE, ProfileChange.Source.AUTO, NOW))
+                .isInstanceOf(DomainRuleViolation.class);
+    }
+
+    @Test
+    void theChangesThatWereKeptComeBackWithTheTemplate() {
+        var change = new ProfileChange(java.util.UUID.randomUUID(), COMPLETE_PROFILE, PROPOSED,
+                ProfileChange.Source.AUTO, NOW, null);
+
+        MemeTemplate template = MemeTemplate.restore(TemplateId.newId(), "Drake", "templates/drake.png", 600, 600,
+                TemplateStatus.APPROVED, 1, PROPOSED, List.of(), List.of(change));
+
+        assertThat(template.canRestoreProfile()).isTrue();
+        assertThat(template.restoreProfile(NOW.plusSeconds(1))).isTrue();
+        assertThat(template.profile()).isEqualTo(COMPLETE_PROFILE);
     }
 }

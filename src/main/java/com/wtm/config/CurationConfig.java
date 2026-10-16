@@ -6,7 +6,6 @@ import com.wtm.curation.usecase.port.out.image.ImageFingerprintPort;
 import com.wtm.curation.usecase.port.out.image.ImageInspectorPort;
 import com.wtm.curation.usecase.port.out.library.LibraryPort;
 import com.wtm.curation.usecase.port.out.tagging.TaggingQueuePort;
-import com.wtm.curation.usecase.port.out.template.ProfileHistoryPort;
 import com.wtm.curation.usecase.port.out.template.TemplateReadPort;
 import com.wtm.curation.usecase.port.out.template.TemplateRepository;
 import com.wtm.curation.usecase.service.ApplyTagsService;
@@ -29,6 +28,7 @@ import com.wtm.curation.usecase.service.TagTemplateService;
 import com.wtm.curation.usecase.service.TaggingQueueService;
 import com.wtm.shared.port.ObjectStoragePort;
 import com.wtm.shared.port.VisionTaggerPort;
+import java.time.Clock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -123,13 +123,12 @@ class CurationConfig {
     }
 
     @Bean
-    ReviseProfileFromProposalService reviseProfileFromProposalService(TemplateRepository templates,
-                                                                      ProfileHistoryPort history) {
-        return new ReviseProfileFromProposalService(templates, history);
+    ReviseProfileFromProposalService reviseProfileFromProposalService(TemplateRepository templates) {
+        return new ReviseProfileFromProposalService(templates, Clock.systemUTC());
     }
 
     @Bean
-    RestoreProfileService restoreProfileService(TemplateRepository templates, ProfileHistoryPort history) {
-        return new RestoreProfileService(templates, history);
+    RestoreProfileService restoreProfileService(TemplateRepository templates) {
+        return new RestoreProfileService(templates, Clock.systemUTC());
     }
 }

@@ -10,6 +10,9 @@ import java.util.Optional;
  */
 public interface TemplateRepository {
 
+    /** Loads the template without locking it, for asking questions. */
+    Optional<MemeTemplate> findById(TemplateId id);
+
     /** Loads the template and locks it until the surrounding transaction ends. */
     Optional<MemeTemplate> findByIdForUpdate(TemplateId id);
 
