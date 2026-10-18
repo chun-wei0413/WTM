@@ -19,7 +19,7 @@ public record SourceProperties(
         @DefaultValue("PT20S") Duration timeout,
         @DefaultValue("15MB") DataSize maxImageSize,
         @DefaultValue("3MB") DataSize maxTextSize,
-        /** Lets the collector reach loopback and private addresses. Only for tests; never switch it on otherwise. */
+        /** Lets the URL importer reach loopback and private addresses. Only for tests; never switch it on otherwise. */
         @DefaultValue("false") boolean allowPrivateAddresses) {
 
     /** The product name robots.txt groups are matched against. */

@@ -6,7 +6,7 @@ import java.net.URI;
 import java.net.UnknownHostException;
 
 /**
- * Stops the collector from being talked into reading things on the machine or network it runs on
+ * Stops the importer from being talked into reading things on the machine or network it runs on
  * (server-side request forgery): an address that points at a private network is refused, even when
  * it comes in through a redirect or a host name that resolves to one.
  */
