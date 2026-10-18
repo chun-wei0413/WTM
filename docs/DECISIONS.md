@@ -172,8 +172,8 @@ result (p = 0.09), and on the held-out queries alone none of the three gains is 
 keyword ranking is the fallback. The result holds for this library, this embedding model, the two-character segmentation
 and the min-max scaling of each list; changing any of them means measuring again (`python scripts/eval-alpha.py`).
 
-**Re-measured on the 1,305-meme library (2026-10-19), same queries.** MRR@10 at 0.7 fell to 0.710, 0.151 and 0.724 (part of the
-fall may be right answers that the old labels do not cover; not measured). The claim "highest on every set" no longer holds
+**Re-measured on the 1,305-meme library (2026-10-19), same queries.** MRR@10 at 0.7 fell to 0.710, 0.151 and 0.724 (much of the
+fall was right answers the old labels did not cover: after adding 144 names of new copies of the same meme to the expected lists of 75 of the author's queries, A is 0.827 and first place 76%; B and C were not relabelled). The claim "highest on every set" no longer holds
 (best is 0.6 on A, 0.7 on B, 0.8 on C), but 0.5 to 1.0 cannot be told apart (paired differences ≤ 0.003, p ≥ 0.24) and 0.4 and
 below are still clearly worse, so 0.7 stays. The gain over the semantic ranking alone has almost vanished: MRR +0.002 (p = 0.68),
 first result −0.009 (n.s.), first ten +0.023 (p = 0.002). Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
