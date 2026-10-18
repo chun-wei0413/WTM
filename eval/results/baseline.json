@@ -1,12 +1,12 @@
 {
-  "at": "2026-10-18T18:53:37.582Z",
+  "at": "2026-10-18T19:19:03.640Z",
   "limit": 10,
   "summary": {
     "n": 237,
-    "top1": 0.5907172995780591,
-    "top3": 0.8185654008438819,
-    "top10": 0.919831223628692,
-    "mrr": 0.7097247337753667
+    "top1": 0.7637130801687764,
+    "top3": 0.8776371308016878,
+    "top10": 0.9324894514767933,
+    "mrr": 0.826779853995044
   },
   "results": [
     {
@@ -14,9 +14,10 @@
       "kind": "situation",
       "set": "v1",
       "expect": [
-        "Distracted Boyfriend"
+        "Distracted Boyfriend",
+        "回頭看其他女生"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "回頭看其他女生",
         "I Bet He's Thinking About Other Women",
@@ -74,16 +75,19 @@
           "score": 0.17049150395780832
         }
       ],
-      "milliseconds": 8473.622800000001
+      "milliseconds": 2915.8698
     },
     {
       "q": "兩個選項都想選,手懸在按鈕上滿頭大汗",
       "kind": "situation",
       "set": "v1",
       "expect": [
-        "Two Buttons"
+        "Two Buttons",
+        "Two Buttons Original Four Panels",
+        "Two Buttons Blue Button Slam",
+        "兩顆按鈕都按"
       ],
-      "rank": 5,
+      "rank": 1,
       "top": [
         "Two Buttons Original Four Panels",
         "兩顆按鈕都按",
@@ -141,7 +145,7 @@
           "score": 0.42135391745436857
         }
       ],
-      "milliseconds": 964.1764000000003
+      "milliseconds": 178.1257999999998
     },
     {
       "q": "一切都在燃燒,但我還是假裝沒事",
@@ -208,16 +212,17 @@
           "score": 0.3440586354586804
         }
       ],
-      "milliseconds": 624.9768999999997
+      "milliseconds": 105.38650000000007
     },
     {
       "q": "想法一格比一格更高端,腦袋越來越大",
       "kind": "situation",
       "set": "v1",
       "expect": [
-        "Expanding Brain"
+        "Expanding Brain",
+        "昇華智障(銀河大腦、level meme、Expanding Brain、Whomst meme)"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "昇華智障(銀河大腦、level meme、Expanding Brain、Whomst meme)",
         "Expanding Brain",
@@ -275,7 +280,7 @@
           "score": 0.18821237290271117
         }
       ],
-      "milliseconds": 537.663199999999
+      "milliseconds": 114.10370000000012
     },
     {
       "q": "老闆又改需求,我只能微笑硬撐",
@@ -342,16 +347,17 @@
           "score": 0.24439073745746162
         }
       ],
-      "milliseconds": 433.8850999999995
+      "milliseconds": 101.88290000000006
     },
     {
       "q": "等了好久好久,等到變成骷髏",
       "kind": "situation",
       "set": "v1",
       "expect": [
-        "Waiting Skeleton"
+        "Waiting Skeleton",
+        "I'll Just Wait Here"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "I'll Just Wait Here",
         "Waiting Skeleton",
@@ -409,7 +415,7 @@
           "score": 0.07304303495452372
         }
       ],
-      "milliseconds": 272.1064000000006
+      "milliseconds": 83.66989999999987
     },
     {
       "q": "我就爛 做什麼都倒楣",
@@ -476,7 +482,7 @@
           "score": 0.11235093329762011
         }
       ],
-      "milliseconds": 340.40289999999914
+      "milliseconds": 120.61739999999963
     },
     {
       "q": "別人都在恐慌,只有我很淡定",
@@ -543,7 +549,7 @@
           "score": 0.13189230286301656
         }
       ],
-      "milliseconds": 202.23589999999967
+      "milliseconds": 81.20859999999993
     },
     {
       "q": "這個價錢已經是我能給的極限了",
@@ -610,7 +616,7 @@
           "score": 0.21206528532455504
         }
       ],
-      "milliseconds": 196.0617000000002
+      "milliseconds": 88.29539999999997
     },
     {
       "q": "又來求大家支持我一次",
@@ -678,7 +684,7 @@
           "score": 0.1575352752962831
         }
       ],
-      "milliseconds": 190.58259999999973
+      "milliseconds": 100.78729999999996
     },
     {
       "q": "你們兩個都是假的,互相指著對方",
@@ -686,9 +692,11 @@
       "set": "v1",
       "expect": [
         "spiderman pointing at spiderman",
-        "Spider Man Triple"
+        "Spider Man Triple",
+        "Spider-Man Pointing Six Way",
+        "三蜘蛛人"
       ],
-      "rank": 3,
+      "rank": 2,
       "top": [
         "Spider Man Double",
         "Spider-Man Pointing Six Way",
@@ -746,7 +754,7 @@
           "score": 0.35634482323736955
         }
       ],
-      "milliseconds": 152.9914000000008
+      "milliseconds": 80.54880000000003
     },
     {
       "q": "我跟你們不一樣",
@@ -813,7 +821,7 @@
           "score": 0.10429341603456392
         }
       ],
-      "milliseconds": 166.73909999999887
+      "milliseconds": 93.90490000000045
     },
     {
       "q": "誰都不知道我其實是個科學家",
@@ -880,16 +888,18 @@
           "score": 0.10747649609266999
         }
       ],
-      "milliseconds": 166.57650000000103
+      "milliseconds": 92.52930000000015
     },
     {
       "q": "三個人吵得面紅耳赤,誰都不讓誰",
       "kind": "situation",
       "set": "v1",
       "expect": [
-        "American Chopper Argument"
+        "American Chopper Argument",
+        "American Chopper Argument (8格)",
+        "American Chopper Argument Black Top"
       ],
-      "rank": null,
+      "rank": 2,
       "top": [
         "Tom and Jerry Cats at the Door",
         "American Chopper Argument (8格)",
@@ -947,7 +957,7 @@
           "score": 0.26511402766277153
         }
       ],
-      "milliseconds": 175.92479999999887
+      "milliseconds": 107.61629999999968
     },
     {
       "q": "在偷看鄰居的窗戶",
@@ -1014,7 +1024,7 @@
           "score": 0.22294657871058077
         }
       ],
-      "milliseconds": 151.78160000000025
+      "milliseconds": 79.07540000000063
     },
     {
       "q": "怎麼離開 Vim",
@@ -1081,7 +1091,7 @@
           "score": 0.03613291756430123
         }
       ],
-      "milliseconds": 194.52700000000004
+      "milliseconds": 111.2509
     },
     {
       "q": "選擇太多,車子在最後一刻猛然轉向另一條路",
@@ -1148,7 +1158,7 @@
           "score": 0.11541042495854134
         }
       ],
-      "milliseconds": 127.8778000000002
+      "milliseconds": 94.3153000000002
     },
     {
       "q": "背後房子燒起來了她還在笑",
@@ -1215,16 +1225,18 @@
           "score": 0.1068937640830286
         }
       ],
-      "milliseconds": 141.2506000000012
+      "milliseconds": 79.72270000000026
     },
     {
       "q": "女人對著貓大吼,貓一臉無辜坐在餐桌前",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Woman Yelling At Cat"
+        "Woman Yelling At Cat",
+        "Woman Yelling at a Cat",
+        "對著貓吼的女人"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Woman Yelling at a Cat",
         "Woman Yelling At Cat",
@@ -1282,7 +1294,7 @@
           "score": 0.09612326551047672
         }
       ],
-      "milliseconds": 147.54969999999958
+      "milliseconds": 79.17720000000008
     },
     {
       "q": "坐在桌子後面的人,桌上放著一個牌子",
@@ -1349,7 +1361,7 @@
           "score": 0.23070148637822457
         }
       ],
-      "milliseconds": 134.02059999999983
+      "milliseconds": 90.04609999999957
     },
     {
       "q": "一個人指著蝴蝶問這是不是鴿子",
@@ -1416,7 +1428,7 @@
           "score": 0.059319999359659495
         }
       ],
-      "milliseconds": 130.8604000000014
+      "milliseconds": 81.22370000000046
     },
     {
       "q": "穿燕尾服的小熊維尼,看起來比較高級",
@@ -1483,7 +1495,7 @@
           "score": 0.08844289641929944
         }
       ],
-      "milliseconds": 129.07250000000022
+      "milliseconds": 93.39630000000034
     },
     {
       "q": "海鷗從平靜變成大叫再變成發光",
@@ -1550,14 +1562,15 @@
           "score": 0.07393661912845073
         }
       ],
-      "milliseconds": 138.3697000000011
+      "milliseconds": 94.27060000000074
     },
     {
       "q": "小丑在化妝,越畫越誇張",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Clown Applying Makeup"
+        "Clown Applying Makeup",
+        "化妝小丑"
       ],
       "rank": 1,
       "top": [
@@ -1617,14 +1630,16 @@
           "score": 0.09300121613591443
         }
       ],
-      "milliseconds": 140.1875999999993
+      "milliseconds": 94.42349999999988
     },
     {
       "q": "指著太陽穴的人,一臉我想到了很聰明的事",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Roll Safe Think About It"
+        "Roll Safe Think About It",
+        "black guy pointing at head",
+        "Thinking Black Guy"
       ],
       "rank": 2,
       "top": [
@@ -1684,16 +1699,19 @@
           "score": 0.1070829568463173
         }
       ],
-      "milliseconds": 128.84329999999864
+      "milliseconds": 96.28819999999996
     },
     {
       "q": "肌肉發達的柴犬跟哭哭的柴犬對比",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Buff Doge vs. Cheems"
+        "Buff Doge vs. Cheems",
+        "Swole Doge vs Cheems",
+        "Swole Doge vs Cheems Blank",
+        "肌肉doge與小廢狗(Buff Doge v.s. Cheems) 寬版"
       ],
-      "rank": 5,
+      "rank": 1,
       "top": [
         "Swole Doge vs Cheems",
         "Swole Doge vs Cheems Blank",
@@ -1751,16 +1769,17 @@
           "score": 0.19927716930229372
         }
       ],
-      "milliseconds": 121.55569999999898
+      "milliseconds": 82.89410000000044
     },
     {
       "q": "兩隻手用力握在一起的史詩級畫面",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Epic Handshake"
+        "Epic Handshake",
+        "強壯握手"
       ],
-      "rank": 3,
+      "rank": 2,
       "top": [
         "Black White Arms",
         "強壯握手",
@@ -1818,7 +1837,7 @@
           "score": 0.14099503869057584
         }
       ],
-      "milliseconds": 111.84820000000036
+      "milliseconds": 88.26539999999932
     },
     {
       "q": "一個人手上拿著一堆UNO牌",
@@ -1885,7 +1904,7 @@
           "score": 0.10564821692712124
         }
       ],
-      "milliseconds": 117.90020000000004
+      "milliseconds": 91.42119999999977
     },
     {
       "q": "死神在敲門",
@@ -1952,16 +1971,17 @@
           "score": 0.0729250467939769
         }
       ],
-      "milliseconds": 163.57380000000012
+      "milliseconds": 103.13369999999941
     },
     {
       "q": "智商鐘形曲線,最左邊跟最右邊的人一樣",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Bell Curve"
+        "Bell Curve",
+        "IQ Bell Curve Wojak Hood"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "IQ Bell Curve Wojak Hood",
         "Bell Curve",
@@ -2019,16 +2039,17 @@
           "score": 0.04214861023156792
         }
       ],
-      "milliseconds": 111.92009999999937
+      "milliseconds": 92.12710000000061
     },
     {
       "q": "格魯拿著白板講他的計畫,四格",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Gru's Plan"
+        "Gru's Plan",
+        "Gru's Plan Five Panels"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Gru's Plan Five Panels",
         "Gru's Plan",
@@ -2086,7 +2107,7 @@
           "score": 0.07354207946004503
         }
       ],
-      "milliseconds": 99.21569999999883
+      "milliseconds": 87.25999999999931
     },
     {
       "q": "Drake 一個嫌棄的手勢,一個喜歡的手勢",
@@ -2154,7 +2175,7 @@
           "score": 0.12195309748572357
         }
       ],
-      "milliseconds": 111.3752000000004
+      "milliseconds": 87.6278999999995
     },
     {
       "q": "到處都是巴斯光年指著遠方",
@@ -2221,16 +2242,18 @@
           "score": 0.09774642823314902
         }
       ],
-      "milliseconds": 120.58410000000003
+      "milliseconds": 79.35199999999986
     },
     {
       "q": "三個頭的龍,每個頭表情不同",
       "kind": "look",
       "set": "v1",
       "expect": [
-        "Three headed Dragon"
+        "Three headed Dragon",
+        "King Ghidorah Three Heads",
+        "三頭龍"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "King Ghidorah Three Heads",
         "三頭龍",
@@ -2288,7 +2311,7 @@
           "score": 0.12060879163853867
         }
       ],
-      "milliseconds": 133.09059999999954
+      "milliseconds": 83.9390000000003
     },
     {
       "q": "一個人坐著睡覺,另一個人睜眼看著",
@@ -2355,7 +2378,7 @@
           "score": 0.24681545592226178
         }
       ],
-      "milliseconds": 121.80869999999959
+      "milliseconds": 90.95980000000054
     },
     {
       "q": "皮卡丘驚訝",
@@ -2422,7 +2445,7 @@
           "score": 0.06994801048980673
         }
       ],
-      "milliseconds": 112.14750000000095
+      "milliseconds": 91.46149999999943
     },
     {
       "q": "痛苦面具老爺爺",
@@ -2489,7 +2512,7 @@
           "score": 0.11305431211854422
         }
       ],
-      "milliseconds": 142.1301000000003
+      "milliseconds": 88.0634
     },
     {
       "q": "嘲諷海綿寶寶",
@@ -2556,16 +2579,18 @@
           "score": 0.1578168993506845
         }
       ],
-      "milliseconds": 117.73970000000008
+      "milliseconds": 78.34950000000026
     },
     {
       "q": "憤怒的女人和貓",
       "kind": "nickname",
       "set": "v1",
       "expect": [
-        "Woman Yelling At Cat"
+        "Woman Yelling At Cat",
+        "Woman Yelling at a Cat",
+        "對著貓吼的女人"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Woman Yelling at a Cat",
         "Woman Yelling At Cat",
@@ -2623,7 +2648,7 @@
           "score": 0.1326419201212492
         }
       ],
-      "milliseconds": 97.93419999999969
+      "milliseconds": 79.22199999999975
     },
     {
       "q": "我現在是船長了",
@@ -2690,7 +2715,7 @@
           "score": 0.07615195810364406
         }
       ],
-      "milliseconds": 104.09539999999834
+      "milliseconds": 76.27509999999984
     },
     {
       "q": "絕對電影",
@@ -2757,14 +2782,15 @@
           "score": 0.1265775268936588
         }
       ],
-      "milliseconds": 137.6688000000031
+      "milliseconds": 94.61070000000018
     },
     {
       "q": "分心男友",
       "kind": "name",
       "set": "v1",
       "expect": [
-        "Distracted Boyfriend"
+        "Distracted Boyfriend",
+        "回頭看其他女生"
       ],
       "rank": 1,
       "top": [
@@ -2824,14 +2850,15 @@
           "score": 0.02500011500340907
         }
       ],
-      "milliseconds": 109.84899999999834
+      "milliseconds": 87.77089999999953
     },
     {
       "q": "Expanding Brain",
       "kind": "name",
       "set": "v1",
       "expect": [
-        "Expanding Brain"
+        "Expanding Brain",
+        "昇華智障(銀河大腦、level meme、Expanding Brain、Whomst meme)"
       ],
       "rank": 1,
       "top": [
@@ -2891,7 +2918,7 @@
           "score": 0.07145010799670426
         }
       ],
-      "milliseconds": 105.24070000000211
+      "milliseconds": 83.03240000000005
     },
     {
       "q": "Surprised Pikachu",
@@ -2958,7 +2985,7 @@
           "score": 0.07768168866429637
         }
       ],
-      "milliseconds": 105.04229999999734
+      "milliseconds": 91.72680000000037
     },
     {
       "q": "this is fine",
@@ -3025,16 +3052,19 @@
           "score": 0.09102817942300344
         }
       ],
-      "milliseconds": 96.5518000000011
+      "milliseconds": 75.79039999999986
     },
     {
       "q": "Two Buttons",
       "kind": "name",
       "set": "v1",
       "expect": [
-        "Two Buttons"
+        "Two Buttons",
+        "Two Buttons Original Four Panels",
+        "Two Buttons Blue Button Slam",
+        "兩顆按鈕都按"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "Two Buttons Blue Button Slam",
         "Two Buttons Original Four Panels",
@@ -3092,7 +3122,7 @@
           "score": 0.125691084872057
         }
       ],
-      "milliseconds": 105.40230000000156
+      "milliseconds": 78.0659999999998
     },
     {
       "q": "明明自己做了蠢事,結果壞事發生還一臉意外",
@@ -3159,7 +3189,7 @@
           "score": 0.3063755129286316
         }
       ],
-      "milliseconds": 114.02379999999903
+      "milliseconds": 97.86869999999999
     },
     {
       "q": "主管笑笑地說週末能不能進來加班,那就太好了",
@@ -3226,7 +3256,7 @@
           "score": 0.1396636772803479
         }
       ],
-      "milliseconds": 106.99629999999888
+      "milliseconds": 91.20409999999993
     },
     {
       "q": "什麼事都要怪給外星人",
@@ -3294,7 +3324,7 @@
           "score": 0.13377318627995605
         }
       ],
-      "milliseconds": 111.3137999999999
+      "milliseconds": 86.92950000000019
     },
     {
       "q": "手上的專案做到一半,又被新點子吸引",
@@ -3303,7 +3333,8 @@
       "expect": [
         "Distracted Boyfriend",
         "I Bet He's Thinking About Other Women",
-        "Distracted Girlfriend"
+        "Distracted Girlfriend",
+        "回頭看其他女生"
       ],
       "rank": 2,
       "top": [
@@ -3363,7 +3394,7 @@
           "score": 0.11818835869145168
         }
       ],
-      "milliseconds": 97.05819999999949
+      "milliseconds": 83.46450000000004
     },
     {
       "q": "不要這個,要那個",
@@ -3432,7 +3463,7 @@
           "score": 0.22647865266645173
         }
       ],
-      "milliseconds": 122.0454000000027
+      "milliseconds": 87.43269999999939
     },
     {
       "q": "我的看法就是這樣,有種來反駁我",
@@ -3499,7 +3530,7 @@
           "score": 0.30000000000000004
         }
       ],
-      "milliseconds": 108.89700000000084
+      "milliseconds": 91.75939999999991
     },
     {
       "q": "把完全不同的東西誤認成別的東西",
@@ -3566,7 +3597,7 @@
           "score": 0.21849782531117973
         }
       ],
-      "milliseconds": 106.08569999999963
+      "milliseconds": 90.6234999999997
     },
     {
       "q": "不交作業就不會被扣分,我真聰明",
@@ -3574,9 +3605,11 @@
       "set": "v2",
       "expect": [
         "Roll Safe Think About It",
-        "Roll Safe"
+        "Roll Safe",
+        "black guy pointing at head",
+        "Thinking Black Guy"
       ],
-      "rank": 9,
+      "rank": 1,
       "top": [
         "black guy pointing at head",
         "Thinking Black Guy",
@@ -3634,16 +3667,17 @@
           "score": 0.36787768688445
         }
       ],
-      "milliseconds": 109.73949999999968
+      "milliseconds": 100.03920000000016
     },
     {
       "q": "終於成功了,握拳慶祝",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "Success Kid"
+        "Success Kid",
+        "Success Kid Original"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "Success Kid Original",
         "含淚握拳激動演說",
@@ -3701,7 +3735,7 @@
           "score": 0.1971088990287675
         }
       ],
-      "milliseconds": 119.41849999999977
+      "milliseconds": 84.42600000000039
     },
     {
       "q": "超級不爽,什麼都討厭",
@@ -3768,7 +3802,7 @@
           "score": 0.16192212187904748
         }
       ],
-      "milliseconds": 114.07940000000235
+      "milliseconds": 96.09699999999975
     },
     {
       "q": "借了東西都不還的混蛋",
@@ -3835,7 +3869,7 @@
           "score": 0.16214587998886038
         }
       ],
-      "milliseconds": 105.38760000000184
+      "milliseconds": 89.52729999999974
     },
     {
       "q": "每次都願意幫忙的大好人",
@@ -3902,16 +3936,17 @@
           "score": 0.2218139824200946
         }
       ],
-      "milliseconds": 125.8044000000009
+      "milliseconds": 91.9351000000006
     },
     {
       "q": "手機電量剩一點就開始焦慮的現代人問題",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "First World Problems"
+        "First World Problems",
+        "First World Problems Crying Woman"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "First World Problems Crying Woman",
         "Brain Before Sleep",
@@ -3969,7 +4004,7 @@
           "score": 0.13824146019986294
         }
       ],
-      "milliseconds": 128.65100000000166
+      "milliseconds": 95.76440000000002
     },
     {
       "q": "如果沒人看見,那算不算真的發生過",
@@ -4036,14 +4071,16 @@
           "score": 0.2561607555883533
         }
       ],
-      "milliseconds": 113.11640000000261
+      "milliseconds": 87.49619999999959
     },
     {
       "q": "看不下去了,太蠢了,用手掩面",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "Facepalm"
+        "Facepalm",
+        "Computer Guy Facepalm",
+        "Captain Picard Facepalm"
       ],
       "rank": null,
       "top": [
@@ -4103,7 +4140,7 @@
           "score": 0.19694509589819634
         }
       ],
-      "milliseconds": 114.6297999999988
+      "milliseconds": 96.1882000000005
     },
     {
       "q": "為什麼你就是不肯這樣做",
@@ -4171,7 +4208,7 @@
           "score": 0.2639346032278636
         }
       ],
-      "milliseconds": 105.66259999999966
+      "milliseconds": 94.48909999999887
     },
     {
       "q": "哦,你說你很忙?你一定很重要吧",
@@ -4239,7 +4276,7 @@
           "score": 0.24496228309478907
         }
       ],
-      "milliseconds": 101.75069999999687
+      "milliseconds": 93.49009999999907
     },
     {
       "q": "我分不出他是在生氣還是我想太多",
@@ -4306,7 +4343,7 @@
           "score": 0.22287273318162645
         }
       ],
-      "milliseconds": 114.99750000000131
+      "milliseconds": 95.22190000000046
     },
     {
       "q": "控制慾超強、黏人黏到可怕的女友",
@@ -4373,7 +4410,7 @@
           "score": 0.11337264473711876
         }
       ],
-      "milliseconds": 103.10050000000047
+      "milliseconds": 91.08469999999943
     },
     {
       "q": "極端又誇張的人生建議",
@@ -4441,7 +4478,7 @@
           "score": 0.1959304094273198
         }
       ],
-      "milliseconds": 115.74159999999756
+      "milliseconds": 91.05949999999939
     },
     {
       "q": "心裡的惡魔慫恿我去做壞事",
@@ -4508,7 +4545,7 @@
           "score": 0.24346293740955696
         }
       ],
-      "milliseconds": 118.42049999999654
+      "milliseconds": 83.16959999999926
     },
     {
       "q": "用嘲笑的語氣把別人說的話重複一遍",
@@ -4575,7 +4612,7 @@
           "score": 0.29346085715341325
         }
       ],
-      "milliseconds": 103.50710000000254
+      "milliseconds": 101.00090000000091
     },
     {
       "q": "你不能就這樣直接走進魔多",
@@ -4642,7 +4679,7 @@
           "score": 0.1438137922957982
         }
       ],
-      "milliseconds": 112.07049999999799
+      "milliseconds": 86.1796000000013
     },
     {
       "q": "等等,所以一直都是這樣?一直都是",
@@ -4709,16 +4746,17 @@
           "score": 0.09787296789176836
         }
       ],
-      "milliseconds": 103.84430000000066
+      "milliseconds": 96.07309999999961
     },
     {
       "q": "亂買股票結果大賺",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "Stonks"
+        "Stonks",
+        "Empty Stonks"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Empty Stonks",
         "Stonks",
@@ -4776,7 +4814,7 @@
           "score": 0.19233533302849085
         }
       ],
-      "milliseconds": 108.98849999999948
+      "milliseconds": 90.23199999999997
     },
     {
       "q": "我給你這個,你給我那個,成交嗎",
@@ -4843,7 +4881,7 @@
           "score": 0.07455965340330387
         }
       ],
-      "milliseconds": 98.05169999999998
+      "milliseconds": 91.22659999999996
     },
     {
       "q": "我已經說過很多次了,不要再問",
@@ -4910,7 +4948,7 @@
           "score": 0.17916876756560593
         }
       ],
-      "milliseconds": 90.56559999999808
+      "milliseconds": 91.25190000000111
     },
     {
       "q": "你是為了大家好,對吧?對吧?",
@@ -4978,7 +5016,7 @@
           "score": 0.21108857105153303
         }
       ],
-      "milliseconds": 105.89760000000024
+      "milliseconds": 91.3819999999996
     },
     {
       "q": "你閉嘴,我不想聽",
@@ -5045,7 +5083,7 @@
           "score": 0.21714410357428293
         }
       ],
-      "milliseconds": 105.13940000000002
+      "milliseconds": 95.78129999999874
     },
     {
       "q": "我不相信你說的話",
@@ -5113,7 +5151,7 @@
           "score": 0.18491488100705827
         }
       ],
-      "milliseconds": 101.20219999999972
+      "milliseconds": 90.54269999999997
     },
     {
       "q": "假裝自己跟年輕人很熟的大人",
@@ -5180,7 +5218,7 @@
           "score": 0.07661801334850353
         }
       ],
-      "milliseconds": 127.98219999999856
+      "milliseconds": 104.58580000000075
     },
     {
       "q": "一巴掌打下去",
@@ -5247,7 +5285,7 @@
           "score": 0.1475872226887066
         }
       ],
-      "milliseconds": 108.4984000000004
+      "milliseconds": 90.98099999999977
     },
     {
       "q": "天啊,不要,不要這樣",
@@ -5314,7 +5352,7 @@
           "score": 0.30000000000000004
         }
       ],
-      "milliseconds": 104.25920000000042
+      "milliseconds": 87.20999999999913
     },
     {
       "q": "一個人孤零零地等著",
@@ -5381,7 +5419,7 @@
           "score": 0.2580148805975749
         }
       ],
-      "milliseconds": 101.39419999999882
+      "milliseconds": 95.35319999999956
     },
     {
       "q": "這麼簡單的事,為什麼你們要搞得這麼複雜",
@@ -5448,7 +5486,7 @@
           "score": 0.08262253043966435
         }
       ],
-      "milliseconds": 131.32440000000133
+      "milliseconds": 99.70360000000073
     },
     {
       "q": "阿嬤第一次學上網",
@@ -5515,7 +5553,7 @@
           "score": 0.06435456995481377
         }
       ],
-      "milliseconds": 102.6224000000002
+      "milliseconds": 79.29279999999926
     },
     {
       "q": "很難接受但就是事實的真相",
@@ -5582,7 +5620,7 @@
           "score": 0.14775348845582112
         }
       ],
-      "milliseconds": 113.34579999999914
+      "milliseconds": 100.47499999999854
     },
     {
       "q": "你以為你有選擇,其實結果都一樣",
@@ -5649,7 +5687,7 @@
           "score": 0.12790168958242948
         }
       ],
-      "milliseconds": 95.52680000000328
+      "milliseconds": 94.74569999999949
     },
     {
       "q": "一邊開車一邊露出震驚的表情",
@@ -5716,16 +5754,17 @@
           "score": 0.1569897522076352
         }
       ],
-      "milliseconds": 104.83770000000004
+      "milliseconds": 83.64809999999852
     },
     {
       "q": "還有嗎,再給我多一點",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "Y'all Got Any More Of That"
+        "Y'all Got Any More Of That",
+        "Oliver Twist Please Sir"
       ],
-      "rank": null,
+      "rank": 2,
       "top": [
         "Please sir may I have some more",
         "Oliver Twist Please Sir",
@@ -5783,7 +5822,7 @@
           "score": 0.15442079205319653
         }
       ],
-      "milliseconds": 96.68379999999888
+      "milliseconds": 96.64260000000104
     },
     {
       "q": "氣到把桌子掀了",
@@ -5850,7 +5889,7 @@
           "score": 0.0726338096088178
         }
       ],
-      "milliseconds": 95.2494000000006
+      "milliseconds": 92.2469000000001
     },
     {
       "q": "如果這件事成真,世界會變得更美好",
@@ -5917,7 +5956,7 @@
           "score": 0.1292651998712577
         }
       ],
-      "milliseconds": 108.33689999999842
+      "milliseconds": 102.93189999999959
     },
     {
       "q": "一個小失誤引發連鎖反應",
@@ -5984,7 +6023,7 @@
           "score": 0.03778917714318082
         }
       ],
-      "milliseconds": 104.76710000000094
+      "milliseconds": 98.83120000000054
     },
     {
       "q": "自己把棍子插進輪子裡,然後怪別人害他跌倒",
@@ -6051,16 +6090,18 @@
           "score": 0.02719227135845265
         }
       ],
-      "milliseconds": 114.65309999999954
+      "milliseconds": 95.88240000000042
     },
     {
       "q": "這個膠帶可以補好所有東西",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "Flex Tape"
+        "Flex Tape",
+        "膠帶廣告(貼不住)",
+        "膠帶廣告"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "膠帶廣告(貼不住)",
         "膠帶廣告",
@@ -6118,7 +6159,7 @@
           "score": 0.11207445565086414
         }
       ],
-      "milliseconds": 101.3550000000032
+      "milliseconds": 88.02980000000025
     },
     {
       "q": "現在最紅最夯的東西",
@@ -6185,7 +6226,7 @@
           "score": 0.11574767443363221
         }
       ],
-      "milliseconds": 106.78199999999924
+      "milliseconds": 89.75829999999951
     },
     {
       "q": "你有一台車,你有一台車,大家都有一台車",
@@ -6193,9 +6234,10 @@
       "set": "v2",
       "expect": [
         "Oprah You Get A",
-        "Oprah You Get A Car Everybody Gets A Car"
+        "Oprah You Get A Car Everybody Gets A Car",
+        "Oprah You Get a Car"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Oprah You Get a Car",
         "Oprah You Get A Car Everybody Gets A Car",
@@ -6253,7 +6295,7 @@
           "score": 0.11812432762957818
         }
       ],
-      "milliseconds": 93.93900000000212
+      "milliseconds": 91.1854000000003
     },
     {
       "q": "我聽說你喜歡這個,所以我在這個裡面放了一個這個",
@@ -6321,7 +6363,7 @@
           "score": 0.151537939843402
         }
       ],
-      "milliseconds": 101.89619999999923
+      "milliseconds": 92.82450000000063
     },
     {
       "q": "我不認為這個詞的意思是你以為的那樣",
@@ -6388,16 +6430,17 @@
           "score": 0.20017004939934455
         }
       ],
-      "milliseconds": 98.76510000000053
+      "milliseconds": 94.8101999999999
     },
     {
       "q": "如果我告訴你這一切都是假的",
       "kind": "situation",
       "set": "v2",
       "expect": [
-        "Matrix Morpheus"
+        "Matrix Morpheus",
+        "What if i told you"
       ],
-      "rank": null,
+      "rank": 2,
       "top": [
         "You Sit on a Throne of Lies",
         "What if i told you",
@@ -6455,7 +6498,7 @@
           "score": 0.23996931904284016
         }
       ],
-      "milliseconds": 106.84289999999964
+      "milliseconds": 90.46080000000075
     },
     {
       "q": "凜冬將至,大事不妙",
@@ -6522,7 +6565,7 @@
           "score": 0.0466899952717806
         }
       ],
-      "milliseconds": 95.47769999999946
+      "milliseconds": 96.83429999999862
     },
     {
       "q": "不要硬要讓它流行起來",
@@ -6589,7 +6632,7 @@
           "score": 0.09569421643177828
         }
       ],
-      "milliseconds": 105.98119999999835
+      "milliseconds": 86.6820000000007
     },
     {
       "q": "閉嘴快收下我的錢",
@@ -6656,7 +6699,7 @@
           "score": 0.10116352497929465
         }
       ],
-      "milliseconds": 103.02379999999903
+      "milliseconds": 99.19380000000092
     },
     {
       "q": "我記得以前的事,我都記得",
@@ -6723,7 +6766,7 @@
           "score": 0.10694018911075373
         }
       ],
-      "milliseconds": 97.61070000000109
+      "milliseconds": 88.13500000000022
     },
     {
       "q": "誰會贏,一邊超強壯一邊超弱小",
@@ -6790,7 +6833,7 @@
           "score": 0.23286258507829505
         }
       ],
-      "milliseconds": 110.34840000000258
+      "milliseconds": 95.65679999999884
     },
     {
       "q": "他們不知道我其實什麼都懂",
@@ -6857,7 +6900,7 @@
           "score": 0.19948881146747735
         }
       ],
-      "milliseconds": 101.98540000000139
+      "milliseconds": 84.04249999999956
     },
     {
       "q": "一個小問題越滾越大最後整個爆炸",
@@ -6925,7 +6968,7 @@
           "score": 0.14909861210561035
         }
       ],
-      "milliseconds": 107.41439999999784
+      "milliseconds": 95.17309999999998
     },
     {
       "q": "一隻很不爽的貓,臉很臭",
@@ -6992,16 +7035,17 @@
           "score": 0.09700729796697057
         }
       ],
-      "milliseconds": 103.33499999999913
+      "milliseconds": 97.24039999999877
     },
     {
       "q": "一個握著拳頭的小男孩,一臉得意",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Success Kid"
+        "Success Kid",
+        "Success Kid Original"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Success Kid Original",
         "Success Kid",
@@ -7059,7 +7103,7 @@
           "score": 0.26125859238721766
         }
       ],
-      "milliseconds": 99.89999999999782
+      "milliseconds": 98.115600000001
     },
     {
       "q": "戴著眼鏡的恐龍在思考",
@@ -7126,7 +7170,7 @@
           "score": 0.230182112063731
         }
       ],
-      "milliseconds": 101.12069999999949
+      "milliseconds": 99.53050000000076
     },
     {
       "q": "穿著西裝、留著鬍子、手拿啤酒的帥氣男人",
@@ -7193,7 +7237,7 @@
           "score": 0.2517228189351574
         }
       ],
-      "milliseconds": 112.24729999999909
+      "milliseconds": 95.59900000000016
     },
     {
       "q": "一個人把鹽從手臂上撒下來",
@@ -7260,7 +7304,7 @@
           "score": 0.1293442413975789
         }
       ],
-      "milliseconds": 99.9594999999972
+      "milliseconds": 86.93559999999889
     },
     {
       "q": "一隻敲著鼓的貓",
@@ -7327,7 +7371,7 @@
           "score": 0.20355616157672038
         }
       ],
-      "milliseconds": 93.5506000000023
+      "milliseconds": 90.55279999999948
     },
     {
       "q": "一個人在笑,旁邊有一個在哭,海綿寶寶",
@@ -7396,7 +7440,7 @@
           "score": 0.20291747179782763
         }
       ],
-      "milliseconds": 89.19470000000001
+      "milliseconds": 92.78750000000036
     },
     {
       "q": "兩個蜘蛛人互相指著對方",
@@ -7405,9 +7449,11 @@
       "expect": [
         "spiderman pointing at spiderman",
         "Spider Man Double",
-        "Spider Man Triple"
+        "Spider Man Triple",
+        "Spider-Man Pointing Six Way",
+        "三蜘蛛人"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Spider-Man Pointing Six Way",
         "spiderman pointing at spiderman",
@@ -7465,7 +7511,7 @@
           "score": 0.08882729524566967
         }
       ],
-      "milliseconds": 100.0814999999966
+      "milliseconds": 91.28180000000066
     },
     {
       "q": "蝙蝠俠搧小羅賓一巴掌",
@@ -7532,7 +7578,7 @@
           "score": 0.06835357388753968
         }
       ],
-      "milliseconds": 106.07519999999931
+      "milliseconds": 95.6306999999997
     },
     {
       "q": "戴著墨鏡的人在開車",
@@ -7599,16 +7645,17 @@
           "score": 0.24173493564791107
         }
       ],
-      "milliseconds": 101.19160000000193
+      "milliseconds": 86.75900000000001
     },
     {
       "q": "兩個人握手握得很用力,手臂肌肉很誇張",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Epic Handshake"
+        "Epic Handshake",
+        "強壯握手"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "強壯握手",
         "Black White Arms",
@@ -7666,7 +7713,7 @@
           "score": 0.14133878436755898
         }
       ],
-      "milliseconds": 117.28880000000208
+      "milliseconds": 95.78360000000066
     },
     {
       "q": "一個老爺爺露出痛苦又勉強的微笑",
@@ -7733,16 +7780,17 @@
           "score": 0.07041098988146095
         }
       ],
-      "milliseconds": 88.31240000000253
+      "milliseconds": 93.29920000000129
     },
     {
       "q": "一個小丑在鏡子前化妝",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Clown Applying Makeup"
+        "Clown Applying Makeup",
+        "化妝小丑"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "化妝小丑",
         "Clown Applying Makeup",
@@ -7800,14 +7848,15 @@
           "score": 0.09526409325018793
         }
       ],
-      "milliseconds": 108.47119999999995
+      "milliseconds": 90.5005000000001
     },
     {
       "q": "一個骷髏坐在椅子上等",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Waiting Skeleton"
+        "Waiting Skeleton",
+        "I'll Just Wait Here"
       ],
       "rank": 1,
       "top": [
@@ -7867,14 +7916,17 @@
           "score": 0.20667857705953002
         }
       ],
-      "milliseconds": 136.77110000000175
+      "milliseconds": 95.9286000000011
     },
     {
       "q": "兩個選項按鈕,一個人在冒汗",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Two Buttons"
+        "Two Buttons",
+        "Two Buttons Original Four Panels",
+        "Two Buttons Blue Button Slam",
+        "兩顆按鈕都按"
       ],
       "rank": 1,
       "top": [
@@ -7934,16 +7986,18 @@
           "score": 0.4709365461790248
         }
       ],
-      "milliseconds": 94.54279999999926
+      "milliseconds": 87.61479999999938
     },
     {
       "q": "女人指著桌上的貓,貓一臉無辜",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Woman Yelling At Cat"
+        "Woman Yelling At Cat",
+        "Woman Yelling at a Cat",
+        "對著貓吼的女人"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Woman Yelling at a Cat",
         "Woman Yelling At Cat",
@@ -8001,7 +8055,7 @@
           "score": 0.31010192442517126
         }
       ],
-      "milliseconds": 94.1820000000007
+      "milliseconds": 91.48769999999968
     },
     {
       "q": "男人轉頭看路過的女生,女友一臉不爽",
@@ -8010,9 +8064,10 @@
       "expect": [
         "Distracted Boyfriend",
         "I Bet He's Thinking About Other Women",
-        "Distracted Girlfriend"
+        "Distracted Girlfriend",
+        "回頭看其他女生"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "回頭看其他女生",
         "Distracted Boyfriend",
@@ -8070,7 +8125,7 @@
           "score": 0.13856605058504615
         }
       ],
-      "milliseconds": 111.73070000000007
+      "milliseconds": 96.01130000000012
     },
     {
       "q": "皮卡丘張大嘴巴一臉驚訝",
@@ -8137,16 +8192,19 @@
           "score": 0.051750201136447425
         }
       ],
-      "milliseconds": 100.29529999999795
+      "milliseconds": 105.67669999999998
     },
     {
       "q": "肌肉很大的柴犬和很小很弱的柴犬",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "Buff Doge vs. Cheems"
+        "Buff Doge vs. Cheems",
+        "Swole Doge vs Cheems",
+        "Swole Doge vs Cheems Blank",
+        "肌肉doge與小廢狗(Buff Doge v.s. Cheems) 寬版"
       ],
-      "rank": 6,
+      "rank": 2,
       "top": [
         "大小柴犬反",
         "Swole Doge vs Cheems Blank",
@@ -8204,7 +8262,7 @@
           "score": 0.19155344204698468
         }
       ],
-      "milliseconds": 101.23619999999937
+      "milliseconds": 95.84269999999924
     },
     {
       "q": "一隻柴犬,旁邊有很多彩色的字",
@@ -8272,7 +8330,7 @@
           "score": 0.3624672407220953
         }
       ],
-      "milliseconds": 96.0625
+      "milliseconds": 99.67240000000129
     },
     {
       "q": "一個人站在桌子後面舉著牌子",
@@ -8340,7 +8398,7 @@
           "score": 0.1640271229702262
         }
       ],
-      "milliseconds": 113.64600000000064
+      "milliseconds": 99.55420000000049
     },
     {
       "q": "一個太空人從太空看地球,後面還有一個太空人拿著槍",
@@ -8407,7 +8465,7 @@
           "score": 0.08744530515805397
         }
       ],
-      "milliseconds": 114.04579999999987
+      "milliseconds": 107.21860000000015
     },
     {
       "q": "兩個男人在巴士上對話",
@@ -8474,14 +8532,16 @@
           "score": 0.14193831994549833
         }
       ],
-      "milliseconds": 116.0490000000027
+      "milliseconds": 99.43479999999909
     },
     {
       "q": "一個女人和一個大腿很粗的男人在吵架,背景是工廠",
       "kind": "look",
       "set": "v2",
       "expect": [
-        "American Chopper Argument"
+        "American Chopper Argument",
+        "American Chopper Argument (8格)",
+        "American Chopper Argument Black Top"
       ],
       "rank": null,
       "top": [
@@ -8541,7 +8601,7 @@
           "score": 0.25230877148540043
         }
       ],
-      "milliseconds": 107.49099999999817
+      "milliseconds": 99.88180000000102
     },
     {
       "q": "一個戴著帽子的男人比出數字,在拍賣店",
@@ -8608,7 +8668,7 @@
           "score": 0.20390742835272485
         }
       ],
-      "milliseconds": 109.53410000000076
+      "milliseconds": 106.58560000000034
     },
     {
       "q": "柴犬",
@@ -8617,7 +8677,10 @@
       "expect": [
         "Doge",
         "Cheems",
-        "Buff Doge vs. Cheems"
+        "Buff Doge vs. Cheems",
+        "Swole Doge vs Cheems",
+        "Swole Doge vs Cheems Blank",
+        "肌肉doge與小廢狗(Buff Doge v.s. Cheems) 寬版"
       ],
       "rank": 8,
       "top": [
@@ -8677,7 +8740,7 @@
           "score": 0.6021603958877413
         }
       ],
-      "milliseconds": 100.77349999999933
+      "milliseconds": 83.41269999999895
     },
     {
       "q": "臭臉貓",
@@ -8744,7 +8807,7 @@
           "score": 0.06039777273008825
         }
       ],
-      "milliseconds": 110.27469999999812
+      "milliseconds": 95.10440000000017
     },
     {
       "q": "壞運布萊恩",
@@ -8811,16 +8874,17 @@
           "score": 0.022170741852118262
         }
       ],
-      "milliseconds": 107.65639999999985
+      "milliseconds": 91.22370000000046
     },
     {
       "q": "成功小子",
       "kind": "nickname",
       "set": "v2",
       "expect": [
-        "Success Kid"
+        "Success Kid",
+        "Success Kid Original"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Success Kid Original",
         "Success Kid",
@@ -8878,7 +8942,7 @@
           "score": 0.09398342212584507
         }
       ],
-      "milliseconds": 94.70440000000235
+      "milliseconds": 91.71109999999862
     },
     {
       "q": "社交尷尬企鵝",
@@ -8947,7 +9011,7 @@
           "score": 0.2102065938930541
         }
       ],
-      "milliseconds": 90.47270000000208
+      "milliseconds": 91.09180000000015
     },
     {
       "q": "哲學恐龍",
@@ -9014,7 +9078,7 @@
           "score": 0.06336916635876085
         }
       ],
-      "milliseconds": 89.96240000000034
+      "milliseconds": 92.28699999999844
     },
     {
       "q": "世界上最有趣的男人",
@@ -9081,7 +9145,7 @@
           "score": 0.08161801137541554
         }
       ],
-      "milliseconds": 92.55149999999776
+      "milliseconds": 94.6877999999997
     },
     {
       "q": "撒鹽哥",
@@ -9148,7 +9212,7 @@
           "score": 0.03636868315192828
         }
       ],
-      "milliseconds": 93.70799999999872
+      "milliseconds": 95.01189999999951
     },
     {
       "q": "派大星",
@@ -9158,9 +9222,17 @@
         "Push it somewhere else Patrick",
         "Patrick Star's Wallet",
         "Stop It Patrick You're Scaring Him",
-        "patrick to do list actually blank"
+        "patrick to do list actually blank",
+        "No Patrick",
+        "Patrick Running Happily",
+        "派大星 我需要錢",
+        "Patrick Dirty Plate",
+        "邪惡派大星",
+        "派大星 美乃滋是一種樂器嗎",
+        "Patrick Overlaid Construction Ghost",
+        "Patrick Laughing Tilted"
       ],
-      "rank": 9,
+      "rank": 1,
       "top": [
         "Patrick Overlaid Construction Ghost",
         "Patrick Running Happily",
@@ -9218,14 +9290,15 @@
           "score": 0.49644245113147845
         }
       ],
-      "milliseconds": 104.78480000000127
+      "milliseconds": 83.57499999999891
     },
     {
       "q": "小丑化妝",
       "kind": "nickname",
       "set": "v2",
       "expect": [
-        "Clown Applying Makeup"
+        "Clown Applying Makeup",
+        "化妝小丑"
       ],
       "rank": 1,
       "top": [
@@ -9285,7 +9358,7 @@
           "score": 0.06935845016944303
         }
       ],
-      "milliseconds": 87.86419999999998
+      "milliseconds": 95.6239000000005
     },
     {
       "q": "蝙蝠俠打小羅賓",
@@ -9352,7 +9425,7 @@
           "score": 0.0793394723750045
         }
       ],
-      "milliseconds": 105.7497000000003
+      "milliseconds": 99.43309999999838
     },
     {
       "q": "分心女友",
@@ -9362,7 +9435,8 @@
         "Distracted Girlfriend",
         "Distracted Boyfriend",
         "I Bet He's Thinking About Other Women",
-        "Distracted Girlfriend"
+        "Distracted Girlfriend",
+        "回頭看其他女生"
       ],
       "rank": 1,
       "top": [
@@ -9422,7 +9496,7 @@
           "score": 0.10130301142936758
         }
       ],
-      "milliseconds": 103.63810000000012
+      "milliseconds": 88.4479999999985
     },
     {
       "q": "魷魚遊戲",
@@ -9430,9 +9504,16 @@
       "set": "v2",
       "expect": [
         "Squid Game",
-        "Squid Game (Season 1 vs Season 2)"
+        "Squid Game (Season 1 vs Season 2)",
+        "魷魚遊戲 阿北",
+        "魷魚遊戲 我知道...下一個遊戲是什麼",
+        "魷魚阿北",
+        "魷魚遊戲舔爆模板",
+        "魷魚遊戲●▲■",
+        "魷魚遊戲老人分組",
+        "魷魚遊戲 001 老爺爺 前後對比"
       ],
-      "rank": 7,
+      "rank": 1,
       "top": [
         "魷魚遊戲●▲■",
         "魷魚阿北",
@@ -9490,7 +9571,7 @@
           "score": 0.24728675238908532
         }
       ],
-      "milliseconds": 105.11510000000271
+      "milliseconds": 90.95210000000043
     },
     {
       "q": "烏干達小子",
@@ -9557,14 +9638,15 @@
           "score": 0.06435598993051682
         }
       ],
-      "milliseconds": 107.65350000000035
+      "milliseconds": 91.39940000000024
     },
     {
       "q": "史詩級握手",
       "kind": "nickname",
       "set": "v2",
       "expect": [
-        "Epic Handshake"
+        "Epic Handshake",
+        "強壯握手"
       ],
       "rank": 1,
       "top": [
@@ -9624,7 +9706,7 @@
           "score": 0.07730073713114269
         }
       ],
-      "milliseconds": 98.06680000000051
+      "milliseconds": 91.44499999999971
     },
     {
       "q": "巴斯光年到處都是",
@@ -9692,7 +9774,7 @@
           "score": 0.06969491879444831
         }
       ],
-      "milliseconds": 114.16860000000088
+      "milliseconds": 92.40790000000015
     },
     {
       "q": "蜘蛛人指蜘蛛人",
@@ -9701,7 +9783,9 @@
       "expect": [
         "spiderman pointing at spiderman",
         "Spider Man Double",
-        "Spider Man Triple"
+        "Spider Man Triple",
+        "Spider-Man Pointing Six Way",
+        "三蜘蛛人"
       ],
       "rank": 1,
       "top": [
@@ -9761,7 +9845,7 @@
           "score": 0.48172441543483596
         }
       ],
-      "milliseconds": 104.22920000000158
+      "milliseconds": 94.64029999999912
     },
     {
       "q": "嘲諷海綿寶寶",
@@ -9828,7 +9912,7 @@
           "score": 0.1578168993506845
         }
       ],
-      "milliseconds": 116.37589999999909
+      "milliseconds": 87.48080000000118
     },
     {
       "q": "Roll Safe",
@@ -9836,7 +9920,9 @@
       "set": "v2",
       "expect": [
         "Roll Safe Think About It",
-        "Roll Safe"
+        "Roll Safe",
+        "black guy pointing at head",
+        "Thinking Black Guy"
       ],
       "rank": 1,
       "top": [
@@ -9896,14 +9982,15 @@
           "score": 0.05851091983619517
         }
       ],
-      "milliseconds": 139.47920000000158
+      "milliseconds": 107.6864999999998
     },
     {
       "q": "Stonks",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Stonks"
+        "Stonks",
+        "Empty Stonks"
       ],
       "rank": 1,
       "top": [
@@ -9963,7 +10050,7 @@
           "score": 0.052492119262447345
         }
       ],
-      "milliseconds": 97.62620000000243
+      "milliseconds": 91.71320000000196
     },
     {
       "q": "Salt Bae",
@@ -10030,7 +10117,7 @@
           "score": 0.027856027695959143
         }
       ],
-      "milliseconds": 112.26770000000033
+      "milliseconds": 91.8060000000005
     },
     {
       "q": "Doge",
@@ -10097,7 +10184,7 @@
           "score": 0.3787493105305852
         }
       ],
-      "milliseconds": 90.7476999999999
+      "milliseconds": 96.53930000000037
     },
     {
       "q": "Grumpy Cat",
@@ -10164,14 +10251,15 @@
           "score": 0.12623535210098433
         }
       ],
-      "milliseconds": 102.04039999999804
+      "milliseconds": 90.79439999999886
     },
     {
       "q": "Success Kid",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Success Kid"
+        "Success Kid",
+        "Success Kid Original"
       ],
       "rank": 1,
       "top": [
@@ -10231,7 +10319,7 @@
           "score": 0.029671635063095017
         }
       ],
-      "milliseconds": 99.52919999999722
+      "milliseconds": 95.89710000000196
     },
     {
       "q": "Philosoraptor",
@@ -10298,7 +10386,7 @@
           "score": 0.04764321974242446
         }
       ],
-      "milliseconds": 99.06830000000264
+      "milliseconds": 87.8015000000014
     },
     {
       "q": "Sad Pablo Escobar",
@@ -10365,7 +10453,7 @@
           "score": 0.07939440669330329
         }
       ],
-      "milliseconds": 94.29950000000099
+      "milliseconds": 90.62640000000101
     },
     {
       "q": "Y U No",
@@ -10433,7 +10521,7 @@
           "score": 0.07545911885843352
         }
       ],
-      "milliseconds": 105.11449999999968
+      "milliseconds": 97.0554000000011
     },
     {
       "q": "Disaster Girl",
@@ -10500,7 +10588,7 @@
           "score": 0.09069257974381759
         }
       ],
-      "milliseconds": 114.62299999999959
+      "milliseconds": 91.09569999999803
     },
     {
       "q": "Always Has Been",
@@ -10567,7 +10655,7 @@
           "score": 0.08396013122172932
         }
       ],
-      "milliseconds": 95.91350000000239
+      "milliseconds": 91.52300000000105
     },
     {
       "q": "Trade Offer",
@@ -10634,7 +10722,7 @@
           "score": 0.027320639483757733
         }
       ],
-      "milliseconds": 95.03250000000116
+      "milliseconds": 95.60000000000218
     },
     {
       "q": "Bad Luck Brian",
@@ -10701,7 +10789,7 @@
           "score": 0.05997792478184512
         }
       ],
-      "milliseconds": 109.96440000000075
+      "milliseconds": 87.47469999999885
     },
     {
       "q": "Mocking Spongebob",
@@ -10768,7 +10856,7 @@
           "score": 0.10988014584444028
         }
       ],
-      "milliseconds": 104.77980000000025
+      "milliseconds": 95.47300000000178
     },
     {
       "q": "Change My Mind",
@@ -10835,7 +10923,7 @@
           "score": 0.04580611144227113
         }
       ],
-      "milliseconds": 105.83150000000023
+      "milliseconds": 92.1752000000015
     },
     {
       "q": "Is This A Pigeon",
@@ -10902,16 +10990,18 @@
           "score": 0.08623325552174348
         }
       ],
-      "milliseconds": 130.79029999999693
+      "milliseconds": 87.1242999999995
     },
     {
       "q": "Woman Yelling At Cat",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Woman Yelling At Cat"
+        "Woman Yelling At Cat",
+        "Woman Yelling at a Cat",
+        "對著貓吼的女人"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Woman Yelling at a Cat",
         "Woman Yelling At Cat",
@@ -10969,7 +11059,7 @@
           "score": 0.09882508944327974
         }
       ],
-      "milliseconds": 101.45609999999942
+      "milliseconds": 91.11459999999715
     },
     {
       "q": "Panik Kalm Panik",
@@ -11036,14 +11126,15 @@
           "score": 0.02905005307224351
         }
       ],
-      "milliseconds": 113.22739999999976
+      "milliseconds": 100.33829999999944
     },
     {
       "q": "Waiting Skeleton",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Waiting Skeleton"
+        "Waiting Skeleton",
+        "I'll Just Wait Here"
       ],
       "rank": 1,
       "top": [
@@ -11103,16 +11194,17 @@
           "score": 0.0881080179395615
         }
       ],
-      "milliseconds": 118.69570000000022
+      "milliseconds": 99.29230000000098
     },
     {
       "q": "Gru's Plan",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Gru's Plan"
+        "Gru's Plan",
+        "Gru's Plan Five Panels"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Gru's Plan Five Panels",
         "Gru's Plan",
@@ -11170,7 +11262,7 @@
           "score": 0.020044818071845813
         }
       ],
-      "milliseconds": 103.83490000000165
+      "milliseconds": 95.607600000003
     },
     {
       "q": "Ugandan Knuckles",
@@ -11237,7 +11329,7 @@
           "score": 0.018073258072855636
         }
       ],
-      "milliseconds": 103.74399999999878
+      "milliseconds": 88.04420000000027
     },
     {
       "q": "Drake Hotline Bling",
@@ -11306,7 +11398,7 @@
           "score": 0.05870873369287142
         }
       ],
-      "milliseconds": 108.7458000000006
+      "milliseconds": 94.59960000000137
     },
     {
       "q": "Hide the Pain Harold",
@@ -11373,7 +11465,7 @@
           "score": 0.029164358213547514
         }
       ],
-      "milliseconds": 108.25560000000041
+      "milliseconds": 92.443299999999
     },
     {
       "q": "This is Sparta",
@@ -11440,16 +11532,18 @@
           "score": 0.0864380440757696
         }
       ],
-      "milliseconds": 124.91839999999866
+      "milliseconds": 91.29539999999906
     },
     {
       "q": "Facepalm",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Facepalm"
+        "Facepalm",
+        "Computer Guy Facepalm",
+        "Captain Picard Facepalm"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Computer Guy Facepalm",
         "Facepalm",
@@ -11507,14 +11601,16 @@
           "score": 0.10675878178490626
         }
       ],
-      "milliseconds": 98.61330000000089
+      "milliseconds": 91.73799999999756
     },
     {
       "q": "Flex Tape",
       "kind": "name",
       "set": "v2",
       "expect": [
-        "Flex Tape"
+        "Flex Tape",
+        "膠帶廣告(貼不住)",
+        "膠帶廣告"
       ],
       "rank": 1,
       "top": [
@@ -11574,7 +11670,7 @@
           "score": 0.035949823394134016
         }
       ],
-      "milliseconds": 98.81420000000071
+      "milliseconds": 91.65950000000157
     },
     {
       "q": "everyone is panicking but I am completely calm",
@@ -11641,14 +11737,15 @@
           "score": 0.18548980285964428
         }
       ],
-      "milliseconds": 113.03930000000037
+      "milliseconds": 100.40610000000015
     },
     {
       "q": "waiting forever for a reply that never comes",
       "kind": "english",
       "set": "v2",
       "expect": [
-        "Waiting Skeleton"
+        "Waiting Skeleton",
+        "I'll Just Wait Here"
       ],
       "rank": 2,
       "top": [
@@ -11708,7 +11805,7 @@
           "score": 0.30000000000000004
         }
       ],
-      "milliseconds": 115.88479999999981
+      "milliseconds": 87.24259999999776
     },
     {
       "q": "everything is on fire and I am pretending it is fine",
@@ -11775,7 +11872,7 @@
           "score": 0.23781622912046624
         }
       ],
-      "milliseconds": 115.65719999999783
+      "milliseconds": 92.08850000000166
     },
     {
       "q": "distracted by something new while already in a relationship",
@@ -11784,7 +11881,8 @@
       "expect": [
         "Distracted Boyfriend",
         "I Bet He's Thinking About Other Women",
-        "Distracted Girlfriend"
+        "Distracted Girlfriend",
+        "回頭看其他女生"
       ],
       "rank": 1,
       "top": [
@@ -11844,7 +11942,7 @@
           "score": 0.24517024262610565
         }
       ],
-      "milliseconds": 100.02079999999842
+      "milliseconds": 95.8077000000012
     },
     {
       "q": "I will take that trade",
@@ -11911,14 +12009,17 @@
           "score": 0.08074031310466782
         }
       ],
-      "milliseconds": 106.81879999999728
+      "milliseconds": 90.93439999999828
     },
     {
       "q": "a man cannot decide between two buttons",
       "kind": "english",
       "set": "v2",
       "expect": [
-        "Two Buttons"
+        "Two Buttons",
+        "Two Buttons Original Four Panels",
+        "Two Buttons Blue Button Slam",
+        "兩顆按鈕都按"
       ],
       "rank": 1,
       "top": [
@@ -11978,7 +12079,7 @@
           "score": 0.20140083522060345
         }
       ],
-      "milliseconds": 112.04910000000018
+      "milliseconds": 91.21410000000105
     },
     {
       "q": "shocked that something obvious happened",
@@ -12045,7 +12146,7 @@
           "score": 0.27421317141182544
         }
       ],
-      "milliseconds": 111.34959999999774
+      "milliseconds": 87.8028000000013
     },
     {
       "q": "smart idea: if I do not turn it in I cannot fail",
@@ -12053,9 +12154,11 @@
       "set": "v2",
       "expect": [
         "Roll Safe Think About It",
-        "Roll Safe"
+        "Roll Safe",
+        "black guy pointing at head",
+        "Thinking Black Guy"
       ],
-      "rank": 4,
+      "rank": 2,
       "top": [
         "DW Sign Won't Stop Me Because I Can't Read",
         "black guy pointing at head",
@@ -12113,7 +12216,7 @@
           "score": 0.2182977825828885
         }
       ],
-      "milliseconds": 100.25050000000192
+      "milliseconds": 96.16929999999775
     },
     {
       "q": "you think you have a choice but you do not",
@@ -12180,7 +12283,7 @@
           "score": 0.14311717271229632
         }
       ],
-      "milliseconds": 100.53970000000118
+      "milliseconds": 95.35589999999866
     },
     {
       "q": "dsitracted boyfriend",
@@ -12189,7 +12292,8 @@
       "expect": [
         "Distracted Boyfriend",
         "I Bet He's Thinking About Other Women",
-        "Distracted Girlfriend"
+        "Distracted Girlfriend",
+        "回頭看其他女生"
       ],
       "rank": 1,
       "top": [
@@ -12249,7 +12353,7 @@
           "score": 0.11235527084362945
         }
       ],
-      "milliseconds": 114.26910000000134
+      "milliseconds": 83.3060000000005
     },
     {
       "q": "surpised pikachu",
@@ -12316,14 +12420,15 @@
           "score": 0.19451034432256148
         }
       ],
-      "milliseconds": 120.80429999999978
+      "milliseconds": 102.8018000000011
     },
     {
       "q": "exapnding brain",
       "kind": "typo",
       "set": "v2",
       "expect": [
-        "Expanding Brain"
+        "Expanding Brain",
+        "昇華智障(銀河大腦、level meme、Expanding Brain、Whomst meme)"
       ],
       "rank": 1,
       "top": [
@@ -12383,14 +12488,15 @@
           "score": 0.1211277989415171
         }
       ],
-      "milliseconds": 105.92039999999906
+      "milliseconds": 103.8169999999991
     },
     {
       "q": "succes kid",
       "kind": "typo",
       "set": "v2",
       "expect": [
-        "Success Kid"
+        "Success Kid",
+        "Success Kid Original"
       ],
       "rank": 1,
       "top": [
@@ -12450,16 +12556,17 @@
           "score": 0.06604505248495093
         }
       ],
-      "milliseconds": 111.1301999999996
+      "milliseconds": 87.90480000000025
     },
     {
       "q": "gru plan",
       "kind": "typo",
       "set": "v2",
       "expect": [
-        "Gru's Plan"
+        "Gru's Plan",
+        "Gru's Plan Five Panels"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Gru's Plan Five Panels",
         "Gru's Plan",
@@ -12517,7 +12624,7 @@
           "score": 0.06425496864239875
         }
       ],
-      "milliseconds": 126.38910000000033
+      "milliseconds": 94.72260000000097
     },
     {
       "q": "bad luk brian",
@@ -12584,7 +12691,7 @@
           "score": 0.04448506241148055
         }
       ],
-      "milliseconds": 100.90279999999984
+      "milliseconds": 91.98860000000059
     },
     {
       "q": "阿克巴上將",
@@ -12651,7 +12758,7 @@
           "score": 0.044374583428441104
         }
       ],
-      "milliseconds": 111.2548999999999
+      "milliseconds": 95.41029999999955
     },
     {
       "q": "Admiral Ackbar",
@@ -12718,7 +12825,7 @@
           "score": 0.042731015748274995
         }
       ],
-      "milliseconds": 102.43089999999938
+      "milliseconds": 87.82140000000072
     },
     {
       "q": "星際大戰 這是陷阱",
@@ -12785,7 +12892,7 @@
           "score": 0.19015449306296914
         }
       ],
-      "milliseconds": 106.86589999999705
+      "milliseconds": 95.97100000000137
     },
     {
       "q": "Zoidberg",
@@ -12852,7 +12959,7 @@
           "score": 0.0989803425834475
         }
       ],
-      "milliseconds": 109.45100000000093
+      "milliseconds": 87.39159999999902
     },
     {
       "q": "飛出個未來",
@@ -12860,9 +12967,11 @@
       "set": "v2b",
       "expect": [
         "Futurama Fry",
-        "You Should Feel Bad"
+        "You Should Feel Bad",
+        "Blackjack and Hookers",
+        "Bender"
       ],
-      "rank": 5,
+      "rank": 2,
       "top": [
         "Shut Up and Take My Money!",
         "Bender",
@@ -12920,16 +13029,17 @@
           "score": 0.11549625701957758
         }
       ],
-      "milliseconds": 105.41040000000066
+      "milliseconds": 91.53350000000137
     },
     {
       "q": "Archer 間諜亞契",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "Do You Want Ants?"
+        "Do You Want Ants?",
+        "Archer"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "Archer",
         "Commonsjak as CIA agent",
@@ -12987,7 +13097,7 @@
           "score": 0.12577244181134867
         }
       ],
-      "milliseconds": 114.20309999999881
+      "milliseconds": 99.92569999999978
     },
     {
       "q": "辛普森家庭",
@@ -13060,7 +13170,7 @@
           "score": 0.6437688942391792
         }
       ],
-      "milliseconds": 115.35360000000219
+      "milliseconds": 84.96960000000036
     },
     {
       "q": "漫畫店老闆",
@@ -13127,7 +13237,7 @@
           "score": 0.05764903828386445
         }
       ],
-      "milliseconds": 110.65899999999965
+      "milliseconds": 95.39770000000135
     },
     {
       "q": "史金納校長",
@@ -13194,7 +13304,7 @@
           "score": 0.0341493613093854
         }
       ],
-      "milliseconds": 110.51120000000083
+      "milliseconds": 93.77390000000014
     },
     {
       "q": "侏羅紀公園",
@@ -13261,7 +13371,7 @@
           "score": 0.10050475580911054
         }
       ],
-      "milliseconds": 109.52629999999772
+      "milliseconds": 88.45400000000154
     },
     {
       "q": "王牌播報員",
@@ -13328,7 +13438,7 @@
           "score": 0.10723084676183345
         }
       ],
-      "milliseconds": 120.80089999999473
+      "milliseconds": 90.85189999999784
     },
     {
       "q": "公園與遊憩 安迪",
@@ -13395,7 +13505,7 @@
           "score": 0.16660715038814963
         }
       ],
-      "milliseconds": 105.25420000000304
+      "milliseconds": 89.6218000000008
     },
     {
       "q": "汪達幻視",
@@ -13462,14 +13572,16 @@
           "score": 0.04228847779929041
         }
       ],
-      "milliseconds": 107.23760000000038
+      "milliseconds": 95.37880000000223
     },
     {
       "q": "星艦奇航記 皮卡艦長",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "Facepalm"
+        "Facepalm",
+        "Computer Guy Facepalm",
+        "Captain Picard Facepalm"
       ],
       "rank": 1,
       "top": [
@@ -13529,16 +13641,17 @@
           "score": 0.146182796387441
         }
       ],
-      "milliseconds": 115.1981999999989
+      "milliseconds": 97.49460000000181
     },
     {
       "q": "駭客任務",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "Matrix Morpheus"
+        "Matrix Morpheus",
+        "What if i told you"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "What if i told you",
         "Matrix Morpheus",
@@ -13596,7 +13709,7 @@
           "score": 0.12165596376854625
         }
       ],
-      "milliseconds": 101.818299999999
+      "milliseconds": 102.02969999999914
     },
     {
       "q": "魔戒 甘道夫",
@@ -13663,7 +13776,7 @@
           "score": 0.10877195894900436
         }
       ],
-      "milliseconds": 117.90159999999742
+      "milliseconds": 95.91509999999835
     },
     {
       "q": "辦公室 麥可史考特",
@@ -13730,16 +13843,19 @@
           "score": 0.16558910165141622
         }
       ],
-      "milliseconds": 124.6015999999945
+      "milliseconds": 104.02659999999742
     },
     {
       "q": "六人行",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "Phoebe Teaching Joey"
+        "Phoebe Teaching Joey",
+        "Phoebe Joey",
+        "Joey Smirk Then Shocked",
+        "Surprised Joey"
       ],
-      "rank": 5,
+      "rank": 1,
       "top": [
         "Surprised Joey",
         "Joey Smirk Then Shocked",
@@ -13797,7 +13913,7 @@
           "score": 0.08936448328543779
         }
       ],
-      "milliseconds": 114.33349999999336
+      "milliseconds": 90.98470000000088
     },
     {
       "q": "冰與火之歌",
@@ -13864,7 +13980,7 @@
           "score": 0.1186124017693044
         }
       ],
-      "milliseconds": 109.38920000000508
+      "milliseconds": 86.72810000000027
     },
     {
       "q": "300壯士 斯巴達",
@@ -13931,7 +14047,7 @@
           "score": 0.059194908895031144
         }
       ],
-      "milliseconds": 120.83340000000317
+      "milliseconds": 97.50870000000214
     },
     {
       "q": "公主新娘 伊尼戈",
@@ -13998,7 +14114,7 @@
           "score": 0.032869345093611495
         }
       ],
-      "milliseconds": 107.02429999999731
+      "milliseconds": 90.17669999999998
     },
     {
       "q": "海綿寶寶 派大星",
@@ -14008,9 +14124,17 @@
         "Push it somewhere else Patrick",
         "Patrick Star's Wallet",
         "Stop It Patrick You're Scaring Him",
-        "patrick to do list actually blank"
+        "patrick to do list actually blank",
+        "No Patrick",
+        "Patrick Running Happily",
+        "派大星 我需要錢",
+        "Patrick Dirty Plate",
+        "邪惡派大星",
+        "派大星 美乃滋是一種樂器嗎",
+        "Patrick Overlaid Construction Ghost",
+        "Patrick Laughing Tilted"
       ],
-      "rank": 5,
+      "rank": 1,
       "top": [
         "Patrick Running Happily",
         "邪惡派大星",
@@ -14068,7 +14192,7 @@
           "score": 0.4243486759083225
         }
       ],
-      "milliseconds": 110.28749999999854
+      "milliseconds": 95.49140000000261
     },
     {
       "q": "小熊維尼",
@@ -14135,16 +14259,18 @@
           "score": 0.1770317741720012
         }
       ],
-      "milliseconds": 123.29899999999907
+      "milliseconds": 93.20620000000054
     },
     {
       "q": "寶可夢 皮卡丘",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "Surprised Pikachu"
+        "Surprised Pikachu",
+        "皮卡丘 傻眼",
+        "皮卡丘"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "皮卡丘",
         "皮卡丘 傻眼",
@@ -14202,16 +14328,17 @@
           "score": 0.07013046341740872
         }
       ],
-      "milliseconds": 113.45160000000033
+      "milliseconds": 108.10219999999754
     },
     {
       "q": "絕命毒師",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "Gus Fring we are not the same"
+        "Gus Fring we are not the same",
+        "Huell Money"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Huell Money",
         "Gus Fring we are not the same",
@@ -14269,7 +14396,7 @@
           "score": 0.084517745811091
         }
       ],
-      "milliseconds": 101.98649999999907
+      "milliseconds": 102.06680000000051
     },
     {
       "q": "蜘蛛人",
@@ -14280,9 +14407,19 @@
         "Spider Man Double",
         "Spider Man Triple",
         "Peter Parker's Glasses",
-        "Spiderman Glasses"
+        "Spiderman Glasses",
+        "Spider-Man Pointing Six Way",
+        "三蜘蛛人",
+        "四個蜘蛛人",
+        "Peter Parker Cry Then Smile",
+        "Peter Parker Cry",
+        "Spiderman Peter Parker",
+        "蜘蛛人戴眼鏡（高畫質",
+        "Crying Peter Parker",
+        "Spider-Man Binoculars Looking",
+        "蜘蛛人 everywhere i go,i see his face"
       ],
-      "rank": 7,
+      "rank": 1,
       "top": [
         "三蜘蛛人",
         "Spider-Man Pointing Six Way",
@@ -14340,7 +14477,7 @@
           "score": 0.5845288678086871
         }
       ],
-      "milliseconds": 110.71689999999944
+      "milliseconds": 90.79169999999795
     },
     {
       "q": "黑暗騎士 小丑",
@@ -14407,7 +14544,7 @@
           "score": 0.12816305415137336
         }
       ],
-      "milliseconds": 108.25129999999626
+      "milliseconds": 91.95910000000003
     },
     {
       "q": "蝙蝠俠",
@@ -14415,9 +14552,12 @@
       "set": "v2b",
       "expect": [
         "Batman Slapping Robin",
-        "It's Simple, Kill the Batman"
+        "It's Simple, Kill the Batman",
+        "Batman Smiles",
+        "蝙蝠俠一群人打臉羅賓",
+        "蝙蝠俠"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "蝙蝠俠",
         "Batman Smiles",
@@ -14475,7 +14615,7 @@
           "score": 0.14262153817383838
         }
       ],
-      "milliseconds": 110.50019999999495
+      "milliseconds": 91.42900000000009
     },
     {
       "q": "獅子王 辛巴",
@@ -14542,16 +14682,18 @@
           "score": 0.06439146985588189
         }
       ],
-      "milliseconds": 116.7577999999994
+      "milliseconds": 90.33740000000034
     },
     {
       "q": "復仇者聯盟 薩諾斯",
       "kind": "entity",
       "set": "v2b",
       "expect": [
-        "thanos what did it cost"
+        "thanos what did it cost",
+        "薩諾斯03",
+        "Thanos Perfectly Balanced"
       ],
-      "rank": 3,
+      "rank": 1,
       "top": [
         "薩諾斯03",
         "Thanos Perfectly Balanced",
@@ -14609,16 +14751,17 @@
           "score": 0.032370686456186654
         }
       ],
-      "milliseconds": 116.77539999999863
+      "milliseconds": 104.89500000000044
     },
     {
       "q": "ain't nobody got time for that",
       "kind": "quote",
       "set": "v2b",
       "expect": [
-        "Sweet Brown"
+        "Sweet Brown",
+        "Ain't Nobody Got Time For That"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "Ain't Nobody Got Time For That",
         "Sweet Brown",
@@ -14676,7 +14819,7 @@
           "score": 0.05914990786535314
         }
       ],
-      "milliseconds": 119.85540000000037
+      "milliseconds": 99.60680000000139
     },
     {
       "q": "one does not simply walk into mordor",
@@ -14743,16 +14886,17 @@
           "score": 0.08338298210942269
         }
       ],
-      "milliseconds": 121.01230000000214
+      "milliseconds": 86.67889999999898
     },
     {
       "q": "what if I told you",
       "kind": "quote",
       "set": "v2b",
       "expect": [
-        "Matrix Morpheus"
+        "Matrix Morpheus",
+        "What if i told you"
       ],
-      "rank": 2,
+      "rank": 1,
       "top": [
         "What if i told you",
         "Matrix Morpheus",
@@ -14810,7 +14954,7 @@
           "score": 0.07418294086051523
         }
       ],
-      "milliseconds": 125.63229999999749
+      "milliseconds": 96.09200000000055
     },
     {
       "q": "I'm not saying it was aliens",
@@ -14878,7 +15022,7 @@
           "score": 0.1743837700957023
         }
       ],
-      "milliseconds": 133.9586000000054
+      "milliseconds": 86.27939999999944
     },
     {
       "q": "I see dead people",
@@ -14945,7 +15089,7 @@
           "score": 0.04765636971438082
         }
       ],
-      "milliseconds": 129.56550000000425
+      "milliseconds": 96.10239999999976
     },
     {
       "q": "you should feel bad",
@@ -15012,7 +15156,7 @@
           "score": 0.04836201154538114
         }
       ],
-      "milliseconds": 115.44799999999668
+      "milliseconds": 94.62000000000262
     },
     {
       "q": "what's in the box",
@@ -15079,7 +15223,7 @@
           "score": 0.14797470128967585
         }
       ],
-      "milliseconds": 114.18620000000374
+      "milliseconds": 87.85859999999957
     },
     {
       "q": "that would be great",
@@ -15146,7 +15290,7 @@
           "score": 0.03853255839314647
         }
       ],
-      "milliseconds": 119.0561000000016
+      "milliseconds": 92.29239999999845
     },
     {
       "q": "shut up and take my money",
@@ -15213,7 +15357,7 @@
           "score": 0.0964462620025757
         }
       ],
-      "milliseconds": 110.72400000000198
+      "milliseconds": 95.80619999999908
     },
     {
       "q": "no soup for you",
@@ -15280,7 +15424,7 @@
           "score": 0.05357231810221641
         }
       ],
-      "milliseconds": 126.30369999999675
+      "milliseconds": 90.81999999999971
     },
     {
       "q": "I fear no man",
@@ -15347,7 +15491,7 @@
           "score": 0.0847429054132017
         }
       ],
-      "milliseconds": 103.27040000000125
+      "milliseconds": 92.0002999999997
     },
     {
       "q": "we have food at home",
@@ -15414,7 +15558,7 @@
           "score": 0.06521168269120292
         }
       ],
-      "milliseconds": 106.43239999999787
+      "milliseconds": 94.88520000000062
     },
     {
       "q": "so I got that going for me which is nice",
@@ -15481,7 +15625,7 @@
           "score": 0.08608092191111334
         }
       ],
-      "milliseconds": 101.46360000000277
+      "milliseconds": 91.84059999999954
     },
     {
       "q": "why can't I hold all these limes",
@@ -15548,7 +15692,7 @@
           "score": 0.06516363856127487
         }
       ],
-      "milliseconds": 112.49549999999726
+      "milliseconds": 92.431700000001
     },
     {
       "q": "member berries",
@@ -15615,7 +15759,7 @@
           "score": 0.06688030654460736
         }
       ],
-      "milliseconds": 97.92729999999574
+      "milliseconds": 90.0737999999983
     },
     {
       "q": "it's happening",
@@ -15682,7 +15826,7 @@
           "score": 0.07893698057671242
         }
       ],
-      "milliseconds": 112.27870000000257
+      "milliseconds": 92.46120000000155
     },
     {
       "q": "ermahgerd",
@@ -15749,7 +15893,7 @@
           "score": 0.05070520289715459
         }
       ],
-      "milliseconds": 102.42290000000503
+      "milliseconds": 90.21350000000166
     },
     {
       "q": "I can has cheezburger",
@@ -15816,7 +15960,7 @@
           "score": 0.06736131857723023
         }
       ],
-      "milliseconds": 121.45200000000477
+      "milliseconds": 96.24930000000313
     },
     {
       "q": "all your base are belong to us",
@@ -15883,7 +16027,7 @@
           "score": 0.06444598898024868
         }
       ],
-      "milliseconds": 129.79609999999957
+      "milliseconds": 95.69670000000042
     },
     {
       "q": "stop trying to make fetch happen",
@@ -15950,7 +16094,7 @@
           "score": 0.03951907501948016
         }
       ],
-      "milliseconds": 118.31390000000101
+      "milliseconds": 92.33689999999842
     },
     {
       "q": "今天晚餐吃什麼比較好",
@@ -16015,7 +16159,7 @@
           "score": 0.16477581967097718
         }
       ],
-      "milliseconds": 100.11999999999534
+      "milliseconds": 103.22859999999855
     },
     {
       "q": "高鐵台北到台中的時刻表",
@@ -16080,7 +16224,7 @@
           "score": 0.32445287057506866
         }
       ],
-      "milliseconds": 109.00890000000072
+      "milliseconds": 98.64789999999994
     },
     {
       "q": "怎麼申請護照要帶哪些文件",
@@ -16145,7 +16289,7 @@
           "score": 0.17213937084108788
         }
       ],
-      "milliseconds": 111.67380000000412
+      "milliseconds": 99.81359999999768
     },
     {
       "q": "Python 怎麼把陣列排序",
@@ -16210,7 +16354,7 @@
           "score": 0.18201050664621904
         }
       ],
-      "milliseconds": 101.40299999999843
+      "milliseconds": 95.59820000000036
     },
     {
       "q": "報稅要準備哪些資料",
@@ -16275,7 +16419,7 @@
           "score": 0.17967996683034676
         }
       ],
-      "milliseconds": 102.92859999999928
+      "milliseconds": 95.87349999999788
     },
     {
       "q": "明天的天氣預報",
@@ -16340,7 +16484,7 @@
           "score": 0.10542367163901786
         }
       ],
-      "milliseconds": 107.42259999999806
+      "milliseconds": 83.71340000000055
     },
     {
       "q": "紅燒肉的食譜",
@@ -16405,7 +16549,7 @@
           "score": 0.15153779567436498
         }
       ],
-      "milliseconds": 106.49610000000393
+      "milliseconds": 95.20409999999902
     },
     {
       "q": "新竹有哪些好吃的餐廳",
@@ -16470,7 +16614,7 @@
           "score": 0.30000000000000004
         }
       ],
-      "milliseconds": 108.10639999999694
+      "milliseconds": 88.35169999999925
     }
   ]
 }
