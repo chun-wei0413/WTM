@@ -62,3 +62,4 @@ eval/results/*
 !eval/results/compare-author.json
 !eval/results/compare-blind.json
 !eval/results/compare-heldout.json
+!eval/results/before-1305/
