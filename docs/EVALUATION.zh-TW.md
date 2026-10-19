@@ -281,4 +281,4 @@ python scripts/eval-alpha.py                                    # 權重曲線,�
 | `eval/blind-judgments.json` | 抽樣的 39 題與判斷 |
 | `eval/results/baseline.json` | 對執行中的應用程式跑 A 題組(237 題)的整條鏈結果(`node scripts/eval-search.mjs --out eval/results/baseline.json`):每題的名次、前幾名的名稱、耗時,加上第 1/3/10 名與 MRR 的摘要。2026-10-19 用 1,305 張圖庫與重標後的標答重跑(之前是 10/13、410 張,舊版是 pg_trgm + RRF 的做法:第 1 名 84%、MRR 0.866) |
 | `scripts/eval-alpha.py` | 從存下來的結果算權重曲線、在 A 選在 B 與 C 驗證、0.7 與其他權重的配對比較 |
-| `scripts/eval-compare.py` | 比較各種排序方式的程式(只用 Python 標準函式庫);它的「rrf+trgm (before)」是改前的做法,「cc+bm25 a=0.7」是現在應用程式的做法 |
+| `scripts/eval-compare.py` | 比較各種排序方式的程式(只用 Python 標準函式庫);「cc+bm25 a=0.7」是現在應用程式的做法;改前的 pg_trgm 做法(「rrf+trgm (before)」)在 2026-10-20 移除 pg_trgm 時一併從腳本拿掉,下面「改前」的數字是當時量到的紀錄,現在的腳本已無法重現 |

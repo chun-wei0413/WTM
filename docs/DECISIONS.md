@@ -178,6 +178,8 @@ fall was right answers the old labels did not cover: after adding 144 names of n
 below are still clearly worse, so 0.7 stays. The gain over the semantic ranking alone has almost vanished: MRR +0.002 (p = 0.68),
 first result −0.009 (n.s.), first ten +0.023 (p = 0.002). Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
 
+**pg_trgm removed (2026-10-20).** Nothing searched with the trigram index any more, so migration V13 drops the index and the extension (it cost disk and slowed every write to `template_search`). The comparison script lost its two pg_trgm systems with it; the numbers of the old approach stay in the evaluation document as a record, but can no longer be reproduced with the script. The ranking of the current approach is unchanged (checked: the author's set gives the same MRR 0.827).
+
 Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
 
 **Why not earlier.** `pg_trgm` was chosen in decision 4 because it is built into PostgreSQL and matches Chinese substrings
