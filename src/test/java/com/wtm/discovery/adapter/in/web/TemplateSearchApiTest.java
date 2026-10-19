@@ -51,14 +51,6 @@ class TemplateSearchApiTest extends IntegrationTestBase {
     }
 
     @Test
-    void trigramMatchingWorksOnChineseText() {
-        Double similarity = jdbc.queryForObject(
-                "SELECT word_similarity('量子貓咪', '量子貓咪議會的決議')", Double.class);
-
-        assertThat(similarity).isGreaterThan(0.5);
-    }
-
-    @Test
     void searchRequiresAuthenticationAndAText() throws Exception {
         mvc.perform(get("/api/templates/search").param("q", "anything")).andExpect(status().isUnauthorized());
         mvc.perform(get("/api/templates/search").param("q", "   ").header("Authorization", bearer(adminToken)))

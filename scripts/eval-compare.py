@@ -8,9 +8,7 @@ It reproduces the application's own search (the query embedded with bge-m3 throu
 ranking) and then ranks the SAME candidates in different ways:
 
   dense          semantic search alone (cosine similarity of the embeddings in pgvector)
-  pg_trgm        keyword search alone, as the application does it (word_similarity > 0.3)
   bm25           keyword search with BM25 over ASCII words and Chinese two-character pieces
-  rrf (before)   dense + pg_trgm, reciprocal rank fusion with k = 60: what the application did until 2026-10-14
   rrf+bm25       dense + bm25, reciprocal rank fusion
   cc+bm25        dense + bm25, convex combination of min-max normalised scores (alpha * dense + (1 - alpha) * bm25);
                  alpha = 0.7 is what the application does now
@@ -35,7 +33,6 @@ DB_USER = os.environ.get("DB_USERNAME", "wtm")
 OLLAMA = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 MODEL = os.environ.get("EMBED_MODEL", "bge-m3")
 CANDIDATES = 20          # per ranking, as SearchTemplatesHandler asks for with a limit of 10
-KEYWORD_THRESHOLD = 0.3  # as JdbcTemplateSearchAdapter
 LIMIT = 10
 CACHE = os.path.join(ROOT, "eval", "results", "embedding-cache.json")
 rng = random.Random(20261014)
@@ -69,15 +66,10 @@ def save_cache():
 
 def candidates(query):
     vec = "[" + ",".join(f"{x:.7g}" for x in embed(query)) + "]"
-    q = query.replace("'", "''")
     dense = psql(f"""SELECT t.id, t.name, 1 - (s.embedding <=> '{vec}'::vector) FROM template_search s
                      JOIN meme_template t ON t.id = s.template_id WHERE t.status = 'APPROVED'
                      ORDER BY s.embedding <=> '{vec}'::vector LIMIT {CANDIDATES}""")
-    sparse = psql(f"""SELECT t.id, t.name, word_similarity('{q}', s.search_text) FROM template_search s
-                      JOIN meme_template t ON t.id = s.template_id
-                      WHERE t.status = 'APPROVED' AND word_similarity('{q}', s.search_text) > {KEYWORD_THRESHOLD}
-                      ORDER BY word_similarity('{q}', s.search_text) DESC LIMIT {CANDIDATES}""")
-    return [(i, n, float(s)) for i, n, s in dense], [(i, n, float(s)) for i, n, s in sparse]
+    return [(i, n, float(s)) for i, n, s in dense]
 
 
 # ------------------------------------------------------------------ BM25 over words and two-character pieces
@@ -138,14 +130,12 @@ def convex(a, b, alpha):
 
 ALPHAS = tuple(round(k / 10, 1) for k in range(0, 11))   # 0.0 is the keyword ranking alone, 1.0 the semantic one alone
 SYSTEMS = {
-    "dense":           lambda d, s, b: d,
-    "pg_trgm":         lambda d, s, b: s,
-    "bm25":            lambda d, s, b: b,
-    "rrf+trgm (before)": lambda d, s, b: rrf([d, s]),
-    "rrf+bm25":        lambda d, s, b: rrf([d, b]),
+    "dense":           lambda d, b: d,
+    "bm25":            lambda d, b: b,
+    "rrf+bm25":        lambda d, b: rrf([d, b]),
 }
 for _a in ALPHAS:
-    SYSTEMS[f"cc+bm25 a={_a}"] = (lambda a: lambda d, s, b: convex(d, b, a))(_a)
+    SYSTEMS[f"cc+bm25 a={_a}"] = (lambda a: lambda d, b: convex(d, b, a))(_a)
 
 
 # ------------------------------------------------------------------ metrics and statistics
@@ -193,7 +183,7 @@ def main():
     bm25 = Bm25()
     cand = {}
     for k, q in enumerate(Q, 1):
-        d, s = candidates(q["q"]); cand[q["q"]] = (d, s, bm25.rank(q["q"]))
+        cand[q["q"]] = (candidates(q["q"]), bm25.rank(q["q"]))
         if k % 50 == 0:
             save_cache(); print(f"  ... {k}/{len(Q)} queries searched", file=sys.stderr)
     save_cache()
@@ -211,19 +201,19 @@ def main():
 
     print("\nDifference from dense on the same queries (paired; 95% interval; randomisation test p)")
     diffs = {}
-    for name in ("rrf+trgm (before)", "rrf+bm25", "cc+bm25 a=0.7", "bm25", "pg_trgm"):
+    for name in ("rrf+bm25", "cc+bm25 a=0.7", "bm25"):
         for m, label in METRICS[:4]:
             d, lo, hi, p = paired([r[m] for r in per["dense"]], [r[m] for r in per[name]], args.boot)
             diffs[(name, m)] = (d, lo, hi, p)
             if m in ("s1", "s10", "rr"):
                 print(f"  {name:14} {label:7} {d:+.3f}  [{lo:+.3f}, {hi:+.3f}]  p={p:.3f}")
 
-    print("\nBy kind of query: S@1 / S@10 / MRR@10 (dense | pg_trgm | rrf now | bm25 | rrf+bm25)")
+    print("\nBy kind of query: S@1 / S@10 / MRR@10 (dense | bm25 | rrf+bm25)")
     by = collections.defaultdict(list)
     for i, q in enumerate(Q): by[q["kind"]].append(i)
     for kind, idx in by.items():
         cells = []
-        for name in ("dense", "pg_trgm", "rrf+trgm (before)", "bm25", "rrf+bm25"):
+        for name in ("dense", "bm25", "rrf+bm25"):
             cells.append("/".join(f"{mean([per[name][i][m] for i in idx]):.2f}" for m in ("s1", "s10", "rr")))
         print(f"  {kind:10}{len(idx):>4}   " + " | ".join(f"{c:>14}" for c in cells))
 
@@ -234,7 +224,7 @@ def main():
         ranks["1" if r == 1 else "2-3" if r and r <= 3 else "4-10" if r and r <= 10 else "11-20" if r else ">20"] += 1
     print("\nWhere the right answer is in the dense ranking: " +
           ", ".join(f"{k} {ranks[k]} ({ranks[k] / len(Q):.0%})" for k in ("1", "2-3", "4-10", "11-20", ">20")))
-    print(f"In the dense or the keyword candidates (20 each), the share a re-ranker could reach: "
+    print(f"In the dense or the BM25 candidates (20 each), the share a re-ranker could reach: "
           f"{sum(1 for q in Q if any(n.lower() in {e.lower() for e in q['expect']} for _, n, _ in cand[q['q']][0] + cand[q['q']][1])) / len(Q):.0%}")
 
     tuned = None
