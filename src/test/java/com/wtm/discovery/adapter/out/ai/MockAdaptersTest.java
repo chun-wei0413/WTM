@@ -1,9 +1,7 @@
 package com.wtm.discovery.adapter.out.ai;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.wtm.shared.port.LlmUnavailableException;
 import org.junit.jupiter.api.Test;
 
 class MockAdaptersTest {

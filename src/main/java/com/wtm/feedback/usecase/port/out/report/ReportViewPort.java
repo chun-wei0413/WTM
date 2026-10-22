@@ -1,6 +1,5 @@
 package com.wtm.feedback.usecase.port.out.report;
 
-import com.wtm.feedback.entity.ReportReason;
 import com.wtm.feedback.entity.Resolution;
 import com.wtm.feedback.usecase.port.in.query.OpenReport;
 import java.time.Instant;

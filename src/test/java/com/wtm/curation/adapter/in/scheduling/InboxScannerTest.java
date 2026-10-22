@@ -2,13 +2,11 @@ package com.wtm.curation.adapter.in.scheduling;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.wtm.curation.entity.Origin;
 import com.wtm.curation.usecase.port.in.command.IngestMemeUseCase;
 import com.wtm.curation.usecase.port.in.command.IngestOutcome;
 import com.wtm.curation.usecase.service.IngestMemeService;
