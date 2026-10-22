@@ -180,6 +180,8 @@ first result −0.009 (n.s.), first ten +0.023 (p = 0.002). Details: [docs/EVALU
 
 **Re-measured again on 1,514 memes (2026-10-20).** The author's set gives MRR 0.803 and first place 72.6% end to end (labels not extended to the 209 newest memes; 13 of the 65 misses have one of them first). The conclusions on the weight did not change: 0.5 to 1.0 cannot be told apart, 0.4 and below are worse, and the gain over the semantic ranking alone is not significant on any measure.
 
+**Re-measured on 1,948 memes (2026-10-22), with a fourth query set.** Author's set: MRR 0.776, first place 70.0% (labels not extended to the newest memes, so part of the fall is labels). The weight conclusions are the same as before. A new set D (238 queries by Gemini from the names of the 643 newest memes, not reviewed by a person) gives MRR 0.561 for alpha 0.7 against 0.542 for the semantic ranking alone (p = 0.032): the first set where the mix is measurably better, but D is a lower bound and not evidence enough to change anything. Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).
+
 **pg_trgm removed (2026-10-20).** Nothing searched with the trigram index any more, so migration V13 drops the index and the extension (it cost disk and slowed every write to `template_search`). The comparison script lost its two pg_trgm systems with it; the numbers of the old approach stay in the evaluation document as a record, but can no longer be reproduced with the script. The ranking of the current approach is unchanged (checked: the author's set gives the same MRR 0.827).
 
 Details: [docs/EVALUATION.zh-TW.md](EVALUATION.zh-TW.md).

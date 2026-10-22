@@ -1,0 +1,1909 @@
+{
+ "about": "Held-out queries written on 2026-10-22 by gemini-3.5-flash-lite, which saw only the NAMES of 643 memes added to the library after the 1,305-meme stage (no descriptions, no earlier queries, no search results). It wrote queries for the 238 it said it knew. They were never used to choose any setting. Any listed name counts as a hit. Not checked by a person: a query can fit more than one meme (see docs/EVALUATION.zh-TW.md).",
+ "queries": [
+  {
+   "q": "咒術迴戰 腰腰斬 梗圖",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "2.5條悟"
+   ]
+  },
+  {
+   "q": "爺爺跟雲講話 辛普森",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Abe Simpson telling stories"
+   ]
+  },
+  {
+   "q": "海綿寶寶 時間過了一會兒",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "a few moments later 過了一會兒"
+   ]
+  },
+  {
+   "q": "兇猛大鵝 暴走 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Angry goose"
+   ]
+  },
+  {
+   "q": "我們是壞人嗎 迷因",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Are we the baddies?"
+   ]
+  },
+  {
+   "q": "真心話 大衛鮑森 梗圖",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Austin Powers Honestly"
+   ]
+  },
+  {
+   "q": "骷髏頭 帥氣 語錄 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Badass Skeleton"
+   ]
+  },
+  {
+   "q": "巴特用椅子砸荷馬",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "bart hitting homer with a chair"
+   ]
+  },
+  {
+   "q": "西部牛仔 尖叫 迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "Big Enough AAAAAAAAAAAA"
+   ]
+  },
+  {
+   "q": "今天又是同一天 尼克惡搞 梗圖",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "Bill Murray Groundhog Day"
+   ]
+  },
+  {
+   "q": "給這傢伙一面盾牌 黑豹",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Black Panther Get this man a shield"
+   ]
+  },
+  {
+   "q": "科米蛙 等待 眼神死",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "blank kermit waiting"
+   ]
+  },
+  {
+   "q": "小丑 打電腦 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "clown computer"
+   ]
+  },
+  {
+   "q": "嘲諷 孫悟空 七龍珠 梗圖",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Condescending Goku"
+   ]
+  },
+  {
+   "q": "小男孩 小時候 坦白 梗圖",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Confession Kid"
+   ]
+  },
+  {
+   "q": "困惑 崩潰 尖叫 迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "confused screaming"
+   ]
+  },
+  {
+   "q": "歐巴馬 戴墨鏡 帥氣 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Cool Obama"
+   ]
+  },
+  {
+   "q": "這裡來了個青蛙 獨輪車 迷因",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "Dat Boi"
+   ]
+  },
+  {
+   "q": "邪惡博士 小指放嘴邊 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "dr evil pinky"
+   ]
+  },
+  {
+   "q": "黑人指著頭 聰明 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Eddie Murphy thinking"
+   ]
+  },
+  {
+   "q": "大腦升級 智商對比 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Expanding Brain 5 Panel"
+   ]
+  },
+  {
+   "q": "布萊恩 喝酒 惡搞 迷因",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Family Guy Brian"
+   ]
+  },
+  {
+   "q": "阿爾托莉亞 亞瑟王 呢喃 梗圖",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Fate 阿瑟王"
+   ]
+  },
+  {
+   "q": "查水表 破門而入 聯邦調查局",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "FBI"
+   ]
+  },
+  {
+   "q": "星艦迷航 拒絕 讚賞 希爾 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Geordi Drake"
+   ]
+  },
+  {
+   "q": "上車啦廢物 我們要去血拼",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Get in Loser, We're Going Shopping"
+   ]
+  },
+  {
+   "q": "女生跟男友解釋事情 迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "Girlspaining"
+   ]
+  },
+  {
+   "q": "Google 搜尋引擎 自動完成 惡搞",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "google建議搜尋"
+   ]
+  },
+  {
+   "q": "死神 夾娃娃機 抓走 梗圖",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Grim Reaper Claw Machine"
+   ]
+  },
+  {
+   "q": "不爽貓 躺床 眼神死",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Grumpy Cat Bed"
+   ]
+  },
+  {
+   "q": "不爽貓 臭臉 嫌棄",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Grumpy Cat Not Amused"
+   ]
+  },
+  {
+   "q": "鯊鯊 固拉 貼圖 選擇",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Gura Yes No"
+   ]
+  },
+  {
+   "q": "快樂小松鼠 跳舞 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Happy Squirrel"
+   ]
+  },
+  {
+   "q": "健康 迷因錯字 股票男",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "helth 醫療 健康 stonks"
+   ]
+  },
+  {
+   "q": "Avril Lavigne Sk8er Boi 歌詞 迷因",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "He was a boy, she was a girl"
+   ]
+  },
+  {
+   "q": "嗑藥狗狗 眼神迷茫 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "High Dog"
+   ]
+  },
+  {
+   "q": "荷馬辛普森 垂涎三尺 讚",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Homer Simpson MMM"
+   ]
+  },
+  {
+   "q": "網路explorer很慢 梗圖",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "IE"
+   ]
+  },
+  {
+   "q": "如果沒有人支持我 迷因格式",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "If nobody got me blank"
+   ]
+  },
+  {
+   "q": "豆豆先生 色情 眼神 迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "If You Know What I Mean Bean"
+   ]
+  },
+  {
+   "q": "我要講囉 企鵝 迷因",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Im gonna say it"
+   ]
+  },
+  {
+   "q": "他不能傷害你 虛構怪物 迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "It cant hurt you"
+   ]
+  },
+  {
+   "q": "千真萬確 韓索羅 星際大戰",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "It's True All of It Han Solo"
+   ]
+  },
+  {
+   "q": "祝大家都有美好的一天 迷因",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "I wish all x a very y"
+   ]
+  },
+  {
+   "q": "約翰要睡覺了 迷因",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "john to sleep"
+   ]
+  },
+  {
+   "q": "麥可喬丹哭泣迷因",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "Jordan 哭哭"
+   ]
+  },
+  {
+   "q": "Will Smith Oscars slap quote",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Keep my wifes name out of your mouth"
+   ]
+  },
+  {
+   "q": "金正恩看起來很難過",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Kim Jong Un Sad"
+   ]
+  },
+  {
+   "q": "李奧納多丟錢 華爾街之狼",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Leonardo DiCaprio throwing Money"
+   ]
+  },
+  {
+   "q": "憤怒鳥氣氣氣迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Mega Rage Face"
+   ]
+  },
+  {
+   "q": "Super Troopers surprised cop",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Mother Of God"
+   ]
+  },
+  {
+   "q": "Mark Twain quote meme",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "My death was greatly exaggerated"
+   ]
+  },
+  {
+   "q": "BanG Dream It's MyGO!!!!! 睦 祥子",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "MyGo 為甚麼要演奏春日影"
+   ]
+  },
+  {
+   "q": "我已經把這裡的事情都辦妥了",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "My job here is done"
+   ]
+  },
+  {
+   "q": "尼奧下腰閃子彈",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "neo dodging a bullet matrix"
+   ]
+  },
+  {
+   "q": "妮琪米娜拿手機講電話",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Nicki Minaj “So there’s this...”"
+   ]
+  },
+  {
+   "q": "沒有人天生就很酷 冷儒 老師教書",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Nobody is born cool"
+   ]
+  },
+  {
+   "q": "迷因股下跌哭泣股票圖",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Not stonks"
+   ]
+  },
+  {
+   "q": "彩虹貓太空飛翔歌",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Nyan Cat"
+   ]
+  },
+  {
+   "q": "星際大戰尤比王肯諾比揮手",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Obi Wan Kenobi Jedi Mind Trick"
+   ]
+  },
+  {
+   "q": "GTA CJ 走在巷子裡法克",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "oh shit here we go again"
+   ]
+  },
+  {
+   "q": "卡車無奈接受現實",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "Okay Truck"
+   ]
+  },
+  {
+   "q": "飛出個未來教授 好消息大家",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Professor Farnsworth Good News Everyone"
+   ]
+  },
+  {
+   "q": "別再玩了指著別人",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Quit Having Fun"
+   ]
+  },
+  {
+   "q": "that just sounds like slavery with extra steps",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "rick and morty extra steps"
+   ]
+  },
+  {
+   "q": "Pulp Fiction Samuel L Jackson gun",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Say what again"
+   ]
+  },
+  {
+   "q": "Homer Simpson smarts brain meme",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "smrts 智慧 stonks"
+   ]
+  },
+  {
+   "q": "史瑞克法夸爾領主台詞",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Some of you may die"
+   ]
+  },
+  {
+   "q": "蜘蛛人笑翻大笑迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Spiderman Laugh"
+   ]
+  },
+  {
+   "q": "海綿寶寶 巧克力 meme",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "Spongebob Chocolate"
+   ]
+  },
+  {
+   "q": "patrick and spongebob watching squidward meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "Spongebob looking out window"
+   ]
+  },
+  {
+   "q": "黑人主持人 嚴肅 爆笑",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Steve Harvey Laughing Serious"
+   ]
+  },
+  {
+   "q": "薩諾斯 無限手套 收集",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Thanos Infinity Stones"
+   ]
+  },
+  {
+   "q": "think mark think template",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "think mark think"
+   ]
+  },
+  {
+   "q": "Ice Cube - Today Was A Good Day face",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Today Was A Good Day"
+   ]
+  },
+  {
+   "q": "楚門的世界 早安meme",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Truman show"
+   ]
+  },
+  {
+   "q": "小喇叭 小男孩 耳邊吹",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Trumpet Boy"
+   ]
+  },
+  {
+   "q": "不要相信任何人 不包括你自己",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Trust Nobody, Not Even Yourself"
+   ]
+  },
+  {
+   "q": "紳士小熊維尼 嫌棄",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "Tuxedo Winnie the Pooh grossed reverse"
+   ]
+  },
+  {
+   "q": "叔叔 哎呀 煮飯",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "Uncle Roger HAIYAAAA"
+   ]
+  },
+  {
+   "q": "戰鬥力 幹 超過九千",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "Vegeta over 9000"
+   ]
+  },
+  {
+   "q": "我們不一樣 meme",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "We are not the same"
+   ]
+  },
+  {
+   "q": "事情急轉直下",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "Well That Escalated Quickly"
+   ]
+  },
+  {
+   "q": "小事情 災難 重建",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "We Will Rebuild"
+   ]
+  },
+  {
+   "q": "iCarly 鵜鶘 這是什麼",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "Whatcha Got There?"
+   ]
+  },
+  {
+   "q": "我媽以為我都在幹嘛 梗圖",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "What my friends think I do"
+   ]
+  },
+  {
+   "q": "威爾史密斯 巴掌 奧斯卡",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "Will Smith Slap"
+   ]
+  },
+  {
+   "q": "你說得對喔 尼可拉斯凱吉",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "YOU DON'T SAY尼可拉斯凱吉"
+   ]
+  },
+  {
+   "q": "小當家 黑暗料理界 meme",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "中華一番"
+   ]
+  },
+  {
+   "q": "綠色乖乖 科技業 普渡",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "乖乖"
+   ]
+  },
+  {
+   "q": "周星馳 像這種要求 我這輩子沒見過",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "九品芝麻官 像這種要求 我這輩子都沒見過"
+   ]
+  },
+  {
+   "q": "五條悟 236 夾子",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "五條悟被斬"
+   ]
+  },
+  {
+   "q": "Gavin Thomas meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "假笑男孩"
+   ]
+  },
+  {
+   "q": "登大人杰哥不要",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "傑哥"
+   ]
+  },
+  {
+   "q": "返校经典台词表情包",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "你是忘記了 還是害怕想起來"
+   ]
+  },
+  {
+   "q": "钟培生反正是我很闲",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "你為什麼不早講 反正我很閒"
+   ]
+  },
+  {
+   "q": "神隱少女 坊寶寶 壁咚",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "【吉卜力】【神隱少女】史塔亮壁咚"
+   ]
+  },
+  {
+   "q": "館長 怒吼 氣pupu",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "吵架王"
+   ]
+  },
+  {
+   "q": "星爺 經典表情包",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "周星馳"
+   ]
+  },
+  {
+   "q": "小叮噹 嚇到 跌倒",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "哆啦A夢大吃一驚"
+   ]
+  },
+  {
+   "q": "大雄 哭著求救",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "哆啦A夢救我"
+   ]
+  },
+  {
+   "q": "Harry Potter meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "哈利波特"
+   ]
+  },
+  {
+   "q": "群組有人發廢文",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "哪來的猴子"
+   ]
+  },
+  {
+   "q": "政委 制止 畫面",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "唐鳳住手"
+   ]
+  },
+  {
+   "q": "放閃 報復 燒死情侶",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "單身狗的憤怒"
+   ]
+  },
+  {
+   "q": "Confused Travolta",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "困惑屈伏塔"
+   ]
+  },
+  {
+   "q": "張葦航 崩潰 咆哮",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "國動AAAAA"
+   ]
+  },
+  {
+   "q": "遊戲王 崩壞臉",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "城之內"
+   ]
+  },
+  {
+   "q": "Swole Doge vs Cheems",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "壯Doge與Cheems"
+   ]
+  },
+  {
+   "q": "L change the World 忍笑",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "夜神月 還不能笑 Death Note"
+   ]
+  },
+  {
+   "q": "怪獸電力公司 麥克華斯基 驚訝",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "大眼仔"
+   ]
+  },
+  {
+   "q": "害羞 靦腆 表情",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "大雄臉紅微笑"
+   ]
+  },
+  {
+   "q": "Teletubbies sun baby",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "天線寶寶 太陽寶寶"
+   ]
+  },
+  {
+   "q": "Doctor Strange I've come to bargain",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "奇異博士"
+   ]
+  },
+  {
+   "q": "部落衝突 廣告台詞",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "妳剛攻擊我的村莊"
+   ]
+  },
+  {
+   "q": "bad mom throwing baby",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "媽媽丟嬰兒投球"
+   ]
+  },
+  {
+   "q": "Spy x Family Anya",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "安妮亞"
+   ]
+  },
+  {
+   "q": "呵女人 這個眼神",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "安妮亞邪笑"
+   ]
+  },
+  {
+   "q": "狀況外 鴨子聽雷",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "完全不懂喔"
+   ]
+  },
+  {
+   "q": "當作沒聽到 敷衍",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "寶貴的意見"
+   ]
+  },
+  {
+   "q": "大雄 胖虎 哆啦王本本梗",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "小夫我要進來了"
+   ]
+  },
+  {
+   "q": "比噓的手勢 安靜點",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "小女孩 請你安靜 噓"
+   ]
+  },
+  {
+   "q": "中華一番 發光料理",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "小當家"
+   ]
+  },
+  {
+   "q": "機車維修修理費用暴增爭議影片",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "平偉 你在大聲什麼啦"
+   ]
+  },
+  {
+   "q": "旺角卡門張學友表情包",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "張學友 吃屎 啦 你"
+   ]
+  },
+  {
+   "q": "Jackie Chan confused meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "成龍疑惑"
+   ]
+  },
+  {
+   "q": "山doraemon",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "我看你完全是不懂喔"
+   ]
+  },
+  {
+   "q": "我想買GTR我想上山",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "我要買GTR"
+   ]
+  },
+  {
+   "q": "周潤發黑幫電影開會名場景",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "我話說完，誰贊成，誰反對"
+   ]
+  },
+  {
+   "q": "新南極物語國軍同性影片",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "我超勇的"
+   ]
+  },
+  {
+   "q": "讓子彈飛黃四郎馬邦德",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "師爺 翻譯驚喜"
+   ]
+  },
+  {
+   "q": "假笑男孩",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "尷尬不失禮貌地微笑"
+   ]
+  },
+  {
+   "q": "超商大夜班車禍借錢改車",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "山道猴子"
+   ]
+  },
+  {
+   "q": "鬼滅之刃我妻善逸哭鬧",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "崩潰的善逸"
+   ]
+  },
+  {
+   "q": "It's dangerous to go alone take this",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "帶上這個吧"
+   ]
+  },
+  {
+   "q": "九品芝麻官常威台詞",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "年輕人終究是年輕人，太衝動了"
+   ]
+  },
+  {
+   "q": "Avengers endgame portals scene",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "復仇者聯盟 傳送門大軍"
+   ]
+  },
+  {
+   "q": "功夫周星馳星爺拿磚頭",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "想學啊 我教你啊"
+   ]
+  },
+  {
+   "q": "Bleach Chad trope",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "我根本無法想像 茶渡他可能會輸"
+   ]
+  },
+  {
+   "q": "培因名言",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "我的痛苦在你之上"
+   ]
+  },
+  {
+   "q": "唐伯虎點秋香華府打通關",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "我要寫個慘字"
+   ]
+  },
+  {
+   "q": "夏天太熱不想出門迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "我這條命是冷氣給的"
+   ]
+  },
+  {
+   "q": "兩隻貓互毆梗圖",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "打人貓貓"
+   ]
+  },
+  {
+   "q": "廚藝白痴迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "把水煮焦"
+   ]
+  },
+  {
+   "q": "Two buttons meme template",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "按鈕擦汗 2"
+   ]
+  },
+  {
+   "q": "糾正中國用語梗圖",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "支語警察"
+   ]
+  },
+  {
+   "q": "罵人三字經迷因",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "文英"
+   ]
+  },
+  {
+   "q": "This is Sparta kick",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "斯巴達踢人"
+   ]
+  },
+  {
+   "q": "John Xina ice cream meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "早上好中國 現在我有冰淇淋"
+   ]
+  },
+  {
+   "q": "明知山有虎偏向虎山行搞笑版",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "明知山有屎"
+   ]
+  },
+  {
+   "q": "I must go my planet needs me",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "是時候該走了"
+   ]
+  },
+  {
+   "q": "食神洋蔥台詞",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "是洋蔥 我加了洋蔥"
+   ]
+  },
+  {
+   "q": "統神端火鍋梗圖",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "時間差不多囉！"
+   ]
+  },
+  {
+   "q": "JoJo的神父表情包",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "普奇你為什麼要重置世界"
+   ]
+  },
+  {
+   "q": "PTT經典推文迷因",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "有批牛肉很便宜"
+   ]
+  },
+  {
+   "q": "飛哥與小佛迷因",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "有時候言語跟刀子一樣傷人"
+   ]
+  },
+  {
+   "q": "Phineas and Ferb Candace meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "有的時候我真的很擔心你，凱蒂絲"
+   ]
+  },
+  {
+   "q": "Leonardo DiCaprio laughing glass meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "李奧納多嘲諷"
+   ]
+  },
+  {
+   "q": "阿北怪笑迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "柯文哲笑"
+   ]
+  },
+  {
+   "q": "困惑的狗表情包",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "柴犬問號"
+   ]
+  },
+  {
+   "q": "Doge smile meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "柴犬笑容"
+   ]
+  },
+  {
+   "q": "Family Guy death door long version meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "死神加長版"
+   ]
+  },
+  {
+   "q": "求出處迷因",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "沒醬汁"
+   ]
+  },
+  {
+   "q": "葉問經典台詞迷因",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "洪師傅不要跟他拚拳"
+   ]
+  },
+  {
+   "q": "派大星 我準備好了 表情包",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "派大星準備好了"
+   ]
+  },
+  {
+   "q": "假的 眼睛業障重",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "海濤法師"
+   ]
+  },
+  {
+   "q": "進擊的巨人 艾連 海的對面",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "海的對面是敵人（巨人）"
+   ]
+  },
+  {
+   "q": "SpongeBob SquarePants reaction meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "海綿寶寶"
+   ]
+  },
+  {
+   "q": "海綿寶寶大喊崩潰迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "海綿寶寶崩潰"
+   ]
+  },
+  {
+   "q": "Imagination 海綿寶寶 彩虹",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "海綿寶寶 彩虹2"
+   ]
+  },
+  {
+   "q": "Is mayonnaise an instrument meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "海綿寶寶/派大星/美乃滋是一種樂器嗎"
+   ]
+  },
+  {
+   "q": "兩隻海鷗對話迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "海鷗對談"
+   ]
+  },
+  {
+   "q": "黑人問號逐漸消失",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "消失黑人橫版"
+   ]
+  },
+  {
+   "q": "崩潰大叫迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "混亂的尖叫(Confused Scream)"
+   ]
+  },
+  {
+   "q": "Tom reading a book and laughing",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "湯姆貓 看書 大笑"
+   ]
+  },
+  {
+   "q": "湯姆貓無奈聳肩",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "湯姆貓聳肩"
+   ]
+  },
+  {
+   "q": "湯瑪士小火車看傻了",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "湯瑪士從沒看過"
+   ]
+  },
+  {
+   "q": "女人抽菸背景失火迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "火災與拿菸女人"
+   ]
+  },
+  {
+   "q": "鬼滅之刃 煉獄杏壽郎 裝熟",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "炎柱大哥"
+   ]
+  },
+  {
+   "q": "熊貓人表情包 指著別人",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "熊貓人指責"
+   ]
+  },
+  {
+   "q": "熊貓人眼神死",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "熊貓人黑眼圈"
+   ]
+  },
+  {
+   "q": "小燕子沒有你我怎麼活啊",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "燕子沒有你我怎麼活"
+   ]
+  },
+  {
+   "q": "mind blown meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "爆炸"
+   ]
+  },
+  {
+   "q": "食神 撒尿牛丸 台詞",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "爭什麼，摻在一起做成撒尿牛丸啊"
+   ]
+  },
+  {
+   "q": "還珠格格 爾康伸出手的表情包",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "爾康手"
+   ]
+  },
+  {
+   "q": "柴犬偷笑迷因",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "狗狗捂嘴笑"
+   ]
+  },
+  {
+   "q": "進擊的巨人 調查兵團敬禮",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "獻出你們的心臟吧"
+   ]
+  },
+  {
+   "q": "藍色蜘蛛網 我不要這不是肯德基",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "玫瑰瞳鈴眼－我不要"
+   ]
+  },
+  {
+   "q": "甘安捏 國興衛視誇張表情",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "甘阿捏"
+   ]
+  },
+  {
+   "q": "當我塑膠做的逆",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "當我塑膠"
+   ]
+  },
+  {
+   "q": "腦袋當機迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "當機"
+   ]
+  },
+  {
+   "q": "黑人問號 充滿疑惑",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "疑惑"
+   ]
+  },
+  {
+   "q": "Severus Snape using my own spells against me",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "石內卜：波特，你敢用我的咒語來對付我？（無字幕版）"
+   ]
+  },
+  {
+   "q": "斷水流大師兄 師徒對話 表情包",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "破壞之王 我沒死啊！"
+   ]
+  },
+  {
+   "q": "海綿寶寶下班迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "章魚哥 準時下班"
+   ]
+  },
+  {
+   "q": "趙本山經典迷因",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "笑得你心裡發寒"
+   ]
+  },
+  {
+   "q": "pepe punching",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "綠青蛙 出拳"
+   ]
+  },
+  {
+   "q": "rolling eyes meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "翻白眼"
+   ]
+  },
+  {
+   "q": "讓函數給我翻譯翻譯",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "翻譯翻譯"
+   ]
+  },
+  {
+   "q": "Adventure Time Jake screaming",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "老皮崩潰"
+   ]
+  },
+  {
+   "q": "Jesus knocking on door meme",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "耶穌敲你門"
+   ]
+  },
+  {
+   "q": "Swole Doge vs Cheems",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "肌肉柴犬"
+   ]
+  },
+  {
+   "q": "expanding brain meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "腦內發光"
+   ]
+  },
+  {
+   "q": "希望你也有一個",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "腦袋是個好東西"
+   ]
+  },
+  {
+   "q": "食神經典台詞梗圖",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "自從我吃了撒尿牛丸以後"
+   ]
+  },
+  {
+   "q": "一拳超人無證騎士",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "英雄可不能臨陣脫逃阿"
+   ]
+  },
+  {
+   "q": "Gate of Babylon vs Unlimited Blade Works",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "英雄王你的武器存量夠嗎"
+   ]
+  },
+  {
+   "q": "Sacabambaspis fish open mouth",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "薩卡班甲魚"
+   ]
+  },
+  {
+   "q": "Spider-Man stopping the train",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "蜘蛛人拉火車"
+   ]
+  },
+  {
+   "q": "confused lizard meme",
+   "kind": "nickname",
+   "set": "v4",
+   "expect": [
+    "蜥蜴湯姆"
+   ]
+  },
+  {
+   "q": "Batman slapping Robin meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "蝙蝠俠&羅賓( 1080p 高清無碼)"
+   ]
+  },
+  {
+   "q": "everything is going according to plan",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "計畫通"
+   ]
+  },
+  {
+   "q": "LeBron James laughing crying meme",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "詹姆斯 笑 痛哭"
+   ]
+  },
+  {
+   "q": "檢舉表情包",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "警察叔叔就是這個人"
+   ]
+  },
+  {
+   "q": "培因名言",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "讓世界感受痛苦吧"
+   ]
+  },
+  {
+   "q": "cat questioning meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "貓貓問號"
+   ]
+  },
+  {
+   "q": "船上開會迷因",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "賭俠 是不是到公海了？"
+   ]
+  },
+  {
+   "q": "讓子彈飛 站著還把錢賺了",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "跪著要飯"
+   ]
+  },
+  {
+   "q": "Matrix bullet dodge",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "躲子彈"
+   ]
+  },
+  {
+   "q": "disaster girl meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "逃跑的小女孩"
+   ]
+  },
+  {
+   "q": "米奇妙妙屋台詞",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "這是等一下會用到的神奇妙妙工具"
+   ]
+  },
+  {
+   "q": "艾連海邊指遠方",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "進擊的巨人 自由啊"
+   ]
+  },
+  {
+   "q": "抽牌卡圖",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "遊戲王 對決"
+   ]
+  },
+  {
+   "q": "FMA equivalent exchange",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "鋼之煉金術師 等價交換"
+   ]
+  },
+  {
+   "q": "dog rainbow background meme",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "開心狗 彩虹"
+   ]
+  },
+  {
+   "q": "Anya Forger face",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "間諜家家酒 安妮亞"
+   ]
+  },
+  {
+   "q": "舒服瞇眼海豹",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "陶醉海豹"
+   ]
+  },
+  {
+   "q": "甄嬛傳雍正照鏡子",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "雍正拿鏡子"
+   ]
+  },
+  {
+   "q": "要撞死一個人還是五個人",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "電車難題"
+   ]
+  },
+  {
+   "q": "黯然銷魂飯洋蔥",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "食神 洋蔥 高清"
+   ]
+  },
+  {
+   "q": "九品芝麻官餵餅",
+   "kind": "quote",
+   "set": "v4",
+   "expect": [
+    "餵公子吃餅"
+   ]
+  },
+  {
+   "q": "香港男孩受訪感情",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "香港毒男 阿源 這些機會不是屬於我的"
+   ]
+  },
+  {
+   "q": "一派輕鬆攤手貼圖",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "鯊魚案讚 我就爛"
+   ]
+  },
+  {
+   "q": "認真讀書的鳥",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "鸚鵡看書"
+   ]
+  },
+  {
+   "q": "麥當勞叔叔報警",
+   "kind": "situation",
+   "set": "v4",
+   "expect": [
+    "麥當勞叔叔打電話"
+   ]
+  },
+  {
+   "q": "key and peele sweating button",
+   "kind": "english",
+   "set": "v4",
+   "expect": [
+    "黑人 流汗 選擇題 高清"
+   ]
+  },
+  {
+   "q": "黑人攤手問號",
+   "kind": "look",
+   "set": "v4",
+   "expect": [
+    "黑人 無奈"
+   ]
+  },
+  {
+   "q": "宮崎駿大叫迷因",
+   "kind": "entity",
+   "set": "v4",
+   "expect": [
+    "龍貓 大喊"
+   ]
+  }
+ ]
+}
