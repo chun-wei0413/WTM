@@ -24,7 +24,7 @@ The two containers must be running (`docker compose up -d`). The application can
 bash scripts/export-data.sh
 ```
 
-It writes `<data folder>/backups/wtm-export-<date>/` (about 100 MB for 500 memes) and checks that every meme has its picture.
+It writes `<data folder>/backups/wtm-export-<date>/` (about 800 MB for 2,100 memes) and checks that every meme has its picture.
 If it prints a warning, do not use that export. **Run it again just before you move**, so that the last few favourites and
 memes come along.
 

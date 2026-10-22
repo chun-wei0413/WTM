@@ -195,6 +195,9 @@ The backend reaches the object storage by its container name, but a browser cann
 addresses use `WTM_STORAGE_PUBLIC_ENDPOINT` (default `http://localhost:9000`). If the application is opened from
 another machine, set it to an address that machine can reach.
 
+[`k8s/wtm.yaml`](k8s/wtm.yaml) is the same stack written for Kubernetes (a learning exercise). Its YAML and the names it uses
+were checked against the Compose file, but it has **not been run on a cluster** and is not tested in CI.
+
 ## API
 
 | Method and path | Who | Purpose |
@@ -242,11 +245,11 @@ registration can be switched off with `wtm.security.registration-enabled=false`.
 mvn test
 ```
 
-The backend has 277 tests that run by default (plus the on-demand evaluation below). The integration
+The backend has 355 tests that run by default (plus the on-demand evaluation below). The integration
 tests start real PostgreSQL (pgvector) and an S3-compatible store with Testcontainers and are skipped
 automatically when Docker is not running.
 
-The web client has 95 tests (the logic behind the box editor and text fitting, the API client, favorites, sign-in state):
+The web client has 354 tests (pages, the box editor and text fitting, the API client, favorites, sign-in state):
 
 ```bash
 cd web
@@ -261,6 +264,17 @@ mvn test -Dtest=SearchQualityEvalTest -Dwtm.eval=true       # retrieval quality 
 ```
 
 ## What was measured
+
+**Current numbers (library of 1,948 memes, 2026-10-22; full evaluation in [EVALUATION.zh-TW.md](EVALUATION.zh-TW.md)):**
+on the author's 237 searches the first result is right 70% of the time and the right meme is in the top ten 91.6% of the
+time (MRR 0.776). On searches written by other models that only knew the names of memes, the top ten holds the right
+meme 84% (held-out set, 134 searches) and 78% of the time (newest 643 memes, 238 searches; a lower bound, because
+some of its queries are vague and some right answers are copies of the same meme). The numbers fall a little each time
+the library grows, because similar memes pile up; part of that is labels that did not grow with the library. The weight
+of the semantic ranking (0.7) is in a flat region (0.5 to 1.0 cannot be told apart) and was not changed.
+
+The two tables below are the **earliest** measurements, kept as history: they are from before the keyword ranking
+was changed (pg_trgm to BM25) and before the library grew.
 
 Real `bge-m3`, 12 hand-written templates, 20 situation queries (written by the author, so treat the
 absolute numbers as optimistic and use them to compare changes):
@@ -316,6 +330,16 @@ More detail, including an experiment that was **not** adopted and why, is in
 - **The vision model decides whether a picture is a meme, and it is cautious.** Of 201 collected pictures it
   withdrew 35, including six well-known Imgflip templates. Withdrawn pictures can be looked at and brought back by
   an administrator.
+- **The pictures are other people's work.** The library was filled by importing pictures from public meme sites, and
+  the copyright stays with the original authors. It is meant for private use. Putting it on the public internet
+  would need a different source of pictures or a take-down process first; no decision has been written for it yet.
+- **Descriptions written by Gemini are not checked one by one.** Spot checks of several hundred found a mistake in
+  about one of every ten to twenty, mostly an invented name of a person or a work. Withdrawn pictures can be brought back,
+  and the descriptions can be edited by an administrator.
+- **The same meme often appears more than once** (different screenshots, with and without text). The duplicate check only
+  stops pictures that look almost the same. Search shows every copy, so one meme can take several places in the top ten.
+- **Load has not been measured.** The speed of one search (median about 90 ms for one user) is known; how many people
+  can search at the same time is not. The embedding model on the local graphics card is expected to be the limit.
 - **Search always returns the nearest templates**, even for an unrelated description; relevant and
   irrelevant distances overlap, so no cut-off is applied.
 - **Sign-in and registration throttling is per instance** (in memory), and the client address is
