@@ -20,7 +20,7 @@
     <properties>
         <java.version>21</java.version>
         <archunit.version>1.5.1</archunit.version>
-        <awssdk.version>2.55.11</awssdk.version>
+        <awssdk.version>2.57.0</awssdk.version>
         <lucene.version>10.5.2</lucene.version>
     </properties>
 
